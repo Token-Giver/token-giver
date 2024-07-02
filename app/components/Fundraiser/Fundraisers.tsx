@@ -4,7 +4,7 @@ import Card from "./Card";
 import CardLoader from "@/app/loading/CardLoader";
 
 const Fundraisers = () => {
-  const [collections, setCollections] = useState([]);
+  const [collections, setCollections] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
