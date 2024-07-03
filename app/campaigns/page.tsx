@@ -72,7 +72,7 @@ const page = () => {
               return (
                 <Card
                   causeName={name || "Unknown Cause"}
-                  imageSrc={image || "/default-image.jpg"}
+                  imageSrc={image || "/default-image.webp"}
                   location="Abuja,Nigeria"
                   key={idx}
                   progress={43}

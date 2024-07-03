@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 const page = () => {
   const [campaignDetails, setCampaignDetails] = useState({
     name: "",
-    image: "/default-image.jpg",
+    image: "/default-image.webp",
     description: "",
     date: "",
   });

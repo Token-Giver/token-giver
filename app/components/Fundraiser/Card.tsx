@@ -54,7 +54,7 @@ const Card = ({
       </div>
       <div className="col-span-4 py-8 px-4 lg:py-4 lg:w-full">
         <div className=" h-[100px] flex flex-col gap-4 overflow-hidden ">
-          <h4 className="text-[.9em] overflow-hidden capitalize   line-clamp">
+          <h4 className="text-[.9em] overflow-hidden capitalize line-clamp">
             {causeName}
           </h4>
           <p className=" flex items-center gap-x-1">
