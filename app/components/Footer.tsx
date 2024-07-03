@@ -9,7 +9,7 @@ const Footer = () => {
             href="/"
             className="font-bold text-[#127C56] text-[1.3em] self-start justify-self-start"
           >
-            Logo.
+            token giver.
           </Link>
         </div>
         <div className="flex gap-4">
@@ -87,7 +87,7 @@ const Footer = () => {
         <div className="flex gap-2 items-center">
           <p>
             <span>&copy;</span>
-            <span>2024 logo.</span>
+            <span>2024 token giver.</span>
           </p>
           <span>All rights reserved</span>
         </div>

@@ -61,7 +61,7 @@ const Page = () => {
     <main className="h-screen  flex justify-between bg-theme-green md:mb-10 relative">
       <div className="w-[40%] items-center justify-center hidden md:flex">
         <div className="flex flex-col gap-8 p-4">
-          <p className="font-bold text-white text-[1.5em]">Logo.</p>
+          <p className="font-bold text-white text-[1.5em]">token giver.</p>
 
           <h2 className="text-amber-400">Start your fundraising journey!</h2>
           <div className="flex gap-2 items-center text-white">

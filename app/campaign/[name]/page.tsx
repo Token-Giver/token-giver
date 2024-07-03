@@ -1,11 +1,9 @@
 "use client";
-import Header from "@/app/components/Header";
 import CauseLoader from "@/app/loading/CauseLoader";
 import CalenderIcon from "@/svgs/CalenderIcon";
 import DonateIcon from "@/svgs/DonateIcon";
 import ProfileIcon from "@/svgs/ProfileIcon";
 import ShareIcon from "@/svgs/ShareIcon";
-import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -63,19 +61,6 @@ const page = () => {
 
   return (
     <>
-      <>
-        <div className="fixed top-0 left-0  w-screen h-[10vh]  -z-50 bg-header-gradient"></div>
-
-        <header
-          id="header-container"
-          className="absolute top-0 left-0  w-full flex items-center justify-between h-[3.5rem] z-50 py-8 px-8 md:px-16"
-        >
-          <Link href="/" className="font-bold text-[#127C56]">
-            Logo.
-          </Link>
-        </header>
-      </>
-
       {campaignDetails.name ? (
         <section className="mt-[4rem] py-10 md:py-16 px-4 md:px-10 lg:px-40 bg-[#fffcf5] ">
           <div className="max-w-[780px] lg:max-w-full mx-auto flex justify-between">
@@ -83,7 +68,7 @@ const page = () => {
               <h2 className="font-bold">{campaignDetails.name}</h2>
               <div className="rounded-[10px] h-[400px] w-full md:w-[80%] mx-auto lg:w-full">
                 <img
-                  className="rounded-[10px]  h-full w-full"
+                  className="rounded-[10px]   h-full w-full"
                   src={campaignDetails.image}
                   alt=""
                 />
