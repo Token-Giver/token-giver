@@ -5,6 +5,7 @@ import CardLoader from "../loading/CardLoader";
 
 const page = () => {
   const [cursor, setCursor] = useState(null);
+  const [reachedEnd, setReachedEnd] = useState<"more" | "end">("more");
   const [collections, setCollections] = useState<any[]>([]);
   const [cachedCollections, setCachedCollections] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -13,8 +14,8 @@ const page = () => {
     const collectionAddress =
       "0x06f10e1524d583b2c894512670c4fb7359d7d9287e29f86421d68a10a8ee11f4";
     const apiKey = process.env.NEXT_PUBLIC_ARK_API_KEY || "";
-    const endpoint = `https://api.arkproject.dev/v1/tokens/${collectionAddress}?limit=99`;
-    const cursorEndpoint = `https://api.arkproject.dev/v1/tokens/${collectionAddress}?cursor=${cursor}&limit=99`;
+    const endpoint = `https://api.arkproject.dev/v1/tokens/${collectionAddress}?limit=24`;
+    const cursorEndpoint = `https://api.arkproject.dev/v1/tokens/${collectionAddress}?cursor=${cursor}&limit=12`;
 
     try {
       const response = await fetch(cursor ? cursorEndpoint : endpoint, {
@@ -30,12 +31,14 @@ const page = () => {
       setCollections(data.result);
       setLoading(false);
       setCursor(data.cursor);
+
       console.log(data);
     } catch (error) {
       console.log(error);
     }
   };
   useEffect(() => {
+    window.scrollTo({ top: 0 });
     fetchCampaigns();
     return () => {};
   }, []);
@@ -48,9 +51,10 @@ const page = () => {
       );
       return [...prev, ...newCollections];
     });
+    if (cursor === undefined) {
+      setReachedEnd("end");
+    }
   }, [collections]);
-
-  console.log("current cursor:", cursor);
 
   return (
     <section className="min-h-screen mt-[5rem] py-10 px-4 md:px-10 lg:px-16">
@@ -80,8 +84,13 @@ const page = () => {
       </section>
       <div className=" flex justify-center">
         <button
+          disabled={reachedEnd === "end"}
           onClick={fetchCampaigns}
-          className="px-6 py-2 border-solid border-[1px] ml-10 mt-10 h-fit border-[#127C56] rounded-[25px]"
+          className={`px-6 py-2 border-solid border-[1px] ml-10 mt-10 h-fit border-[#127C56]  rounded-[25px] ${
+            reachedEnd === "end"
+              ? "opacity-50 cursor-not-allowed"
+              : "opacity-100 cursor-pointer"
+          }`}
         >
           Show more
         </button>

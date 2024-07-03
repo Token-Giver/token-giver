@@ -1,5 +1,5 @@
 "use client";
-import CauseLoader from "@/app/loading/CauseLoader";
+import CampaignLoader from "@/app/loading/CampaignLoader";
 import CalenderIcon from "@/svgs/CalenderIcon";
 import DonateIcon from "@/svgs/DonateIcon";
 import ProfileIcon from "@/svgs/ProfileIcon";
@@ -62,7 +62,7 @@ const page = () => {
   return (
     <>
       {campaignDetails.name ? (
-        <section className="mt-[4rem] py-10 md:py-16 px-4 md:px-10 lg:px-40 bg-[#fffcf5] ">
+        <section className="mt-[4rem] max-w-[550px]  w-fit mx-auto py-10 md:py-16 px-4 md:max-w-none md:px-10 lg:px-40 bg-[#fffcf5] ">
           <div className="max-w-[780px] lg:max-w-full mx-auto flex justify-between">
             <div className="lg:w-[60%] flex flex-col gap-12">
               <h2 className="font-bold">{campaignDetails.name}</h2>
@@ -193,7 +193,7 @@ const page = () => {
           </div>
         </section>
       ) : (
-        <CauseLoader />
+        <CampaignLoader />
       )}
     </>
   );
