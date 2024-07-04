@@ -3,10 +3,12 @@ import "./globals.css";
 import Footer from "./components/Footer";
 import Features from "./components/Features";
 import StarknetProvider from "./components/StarknetProvider";
+import Header from "./components/Header";
 
 export const metadata: Metadata = {
-  title: "Demo",
-  description: "Demo app",
+  title: "Token Giver",
+  description:
+    "Token Giver: Revolutionizing Fundraising with NFT and Token-Bound Accounts. Empower your campaigns with secure, innovative blockchain technology. Join us to transform donations into digital assets.",
 };
 
 export default function RootLayout({
@@ -18,6 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="">
         <StarknetProvider>
+          <Header />
           {children}
           <Features />
           <Footer />

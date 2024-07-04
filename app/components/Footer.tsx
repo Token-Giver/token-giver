@@ -2,24 +2,24 @@ import Link from "next/link";
 import React from "react";
 const Footer = () => {
   return (
-    <footer className="justify-self-end bg-[#F5F7F8] h-[40vh] px-12 pt-12 flex flex-col justify-between ">
-      <div className="flex justify-between items-center px-12 flex-1">
-        <div className="mb-32">
+    <footer className="justify-self-end bg-[#F5F7F8] md:h-[40vh] p-8 md:px-12 md:pt-12 flex flex-col justify-between ">
+      <div className="flex flex-col gap-8 md:flex-row md:justify-between px-8 pb-8 md:pb-0 md:items-center  lg:px-12 flex-1">
+        <div className="md:mb-32">
           <Link
             href="/"
             className="font-bold text-[#127C56] text-[1.3em] self-start justify-self-start"
           >
-            Logo.
+            token giver.
           </Link>
         </div>
-        <div className="flex gap-4">
+        <div className="flex flex-col md:flex-row  gap-4">
           <span>Overview</span>
           <span>Features</span>
           <span>Help</span>
           <span>Privacy</span>
         </div>
 
-        <div className="flex gap-4 items-center">
+        <div className="flex flex-wrap gap-4 items-center">
           <span>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -83,15 +83,15 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className=" flex justify-between border-solid border-t-[1px] pb-12 pt-8 border-gray-400">
-        <div className="flex gap-2 items-center">
+      <div className=" flex flex-wrap gap-4  justify-between border-solid border-t-[1px] pb-12 pt-8 border-gray-400">
+        <div className="flex  gap-2 items-center">
           <p>
             <span>&copy;</span>
-            <span>2024 logo.</span>
+            <span>2024 Token Giver.</span>
           </p>
           <span>All rights reserved</span>
         </div>
-        <div className="flex gap-4">
+        <div className="flex  flex-wrap gap-4">
           <span>Terms</span>
           <span>Privacy</span>
           <span>Cookies</span>

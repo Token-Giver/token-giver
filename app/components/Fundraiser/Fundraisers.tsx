@@ -2,11 +2,15 @@
 import { useEffect, useState } from "react";
 import Card from "./Card";
 import CardLoader from "@/app/loading/CardLoader";
+import { useRouter } from "next/navigation";
 
 const Fundraisers = () => {
+  const router = useRouter();
   const [collections, setCollections] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const handleRouteToCampaigns = () => {
+    router.push("/campaigns");
+  };
   useEffect(() => {
     const fetchCampaigns = async () => {
       const collectionAddress =
@@ -51,7 +55,7 @@ const Fundraisers = () => {
               return (
                 <Card
                   causeName={name || "Unknown Cause"}
-                  imageSrc={image || "/default-image.jpg"}
+                  imageSrc={image || "/default-image.webp"}
                   location="Abuja,Nigeria"
                   key={idx}
                   progress={43}
@@ -62,7 +66,10 @@ const Fundraisers = () => {
             })}
       </section>
       <div className=" flex justify-center">
-        <button className="px-6 py-2 border-solid border-[1px] ml-10 mt-10 h-fit border-[#127C56] rounded-[25px]">
+        <button
+          onClick={handleRouteToCampaigns}
+          className="px-6 py-2 border-solid border-[1px] ml-10 mt-10 h-fit border-[#127C56] rounded-[25px]"
+        >
           Show more
         </button>
       </div>

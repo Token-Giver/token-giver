@@ -12,6 +12,10 @@ const config: Config = {
         "theme-green": "#127C56",
         "off-white": "#fffcf5",
       },
+      fontFamily: {
+        "Holly-Bale": ["Belanosima", "sans-serif"],
+      },
+
       boxShadow: {
         small: "rgba(0, 0, 0, 0.2) 0px -1px 0.7rem",
         "hero-shadow": "rgba(0, 0, 0, 0.5) 0px 0px 0.9rem",
