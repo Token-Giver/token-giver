@@ -4,6 +4,7 @@ import CalenderIcon from "@/svgs/CalenderIcon";
 import DonateIcon from "@/svgs/DonateIcon";
 import ProfileIcon from "@/svgs/ProfileIcon";
 import ShareIcon from "@/svgs/ShareIcon";
+import Image from "next/image";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -62,14 +63,16 @@ const page = () => {
   return (
     <>
       {campaignDetails.name ? (
-        <section className="mt-[4rem] max-w-[550px]  w-fit mx-auto py-10 md:py-16 px-4 md:max-w-none md:px-10 lg:px-40 bg-[#fffcf5] ">
-          <div className="max-w-[780px] lg:max-w-full mx-auto flex justify-between">
-            <div className="lg:w-[60%] flex flex-col gap-12">
+        <section className=" mt-[4rem] mx-auto py-10 md:py-16 px-4 md:max-w-none md:px-10 bg-off-white lg:px-40">
+          <div className="flex gap-8  max-w-[500px] mx-auto md:mx-0  md:max-w-none relative">
+            <div className="lg:w-[60%] mx-auto flex flex-col gap-12">
               <h2 className="font-bold">{campaignDetails.name}</h2>
-              <div className="rounded-[10px] h-[400px] w-full md:w-[80%] mx-auto lg:w-full">
-                <img
-                  className="rounded-[10px]   h-full w-full"
+              <div className="rounded-[10px] h-[400px] relative w-full object-contain md:w-[80%] mx-auto">
+                <Image
+                  className="rounded-[10px] h-full w-full"
+                  loader={() => campaignDetails.image}
                   src={campaignDetails.image}
+                  fill
                   alt=""
                 />
               </div>
