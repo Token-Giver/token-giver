@@ -1,6 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import ConnectTBAButton from "./ConnectTBAButton";
 
 const Header = () => {
   const router = useRouter();
@@ -32,13 +33,14 @@ const Header = () => {
             </li>
           </ul>
         </nav>
-        <div className="hidden lg:block">
-          <button
+        <div className="hidden lg:block relative">
+          {/* <button
             onClick={createCampaign}
             className="bg-[#127C56] text-white px-6 py-2 rounded-[25px]"
           >
             Start a Campaign
-          </button>
+          </button> */}
+          <ConnectTBAButton />
         </div>
         <button
           title="toggle menu"
