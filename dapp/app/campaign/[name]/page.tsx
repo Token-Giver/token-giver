@@ -22,7 +22,7 @@ const page = () => {
       const contractAddress = searchParams.get("a");
       const tokenId = searchParams.get("t");
       const apiKey = process.env.NEXT_PUBLIC_ARK_API_KEY || "";
-      const endpoint = `https://api.arkproject.dev/v1/tokens/${contractAddress}/${tokenId}`;
+      const endpoint = `https://testnet-api.arkproject.dev/v1/tokens/${contractAddress}/${tokenId}`;
       const fetchNFT = async () => {
         try {
           if (contractAddress && tokenId) {
@@ -36,6 +36,8 @@ const page = () => {
               throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
+            console.log(data);
+
             if (data) {
               const timestamp = data.result.mint_info.timestamp;
               const date = new Date(timestamp * 1000);
@@ -43,11 +45,13 @@ const page = () => {
               const month = date.toLocaleString("default", { month: "long" });
               const year = date.getFullYear();
               const formattedDate = `Created ${day} ${month} ${year}`;
-
+              const img = data.result.metadata.normalized.image;
+              const imageUrl = img.replace("ipfs://", "");
               setCampaignDetails({
                 name: data.result.metadata.normalized.name || "",
                 description: data.result.metadata.normalized.description,
-                image: data.result.metadata.normalized.image,
+                image:
+                  `https://ipfs.io/ipfs/${imageUrl}` || "/default-image.webp",
                 date: formattedDate,
               });
             }

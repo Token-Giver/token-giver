@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import Card from "./Card";
 import CardLoader from "@/app/loading/CardLoader";
 import { useRouter } from "next/navigation";
+import { COLLECTION_CONTRACT_ADDRESS } from "@/address";
 
 const Fundraisers = () => {
   const router = useRouter();
@@ -13,10 +14,8 @@ const Fundraisers = () => {
   };
   useEffect(() => {
     const fetchCampaigns = async () => {
-      const collectionAddress =
-        "0x06f10e1524d583b2c894512670c4fb7359d7d9287e29f86421d68a10a8ee11f4";
       const apiKey = process.env.NEXT_PUBLIC_ARK_API_KEY || "";
-      const endpoint = `https://api.arkproject.dev/v1/tokens/${collectionAddress}?limit=12`;
+      const endpoint = `https://testnet-api.arkproject.dev/v1/tokens/${COLLECTION_CONTRACT_ADDRESS}?limit=12`;
 
       try {
         const response = await fetch(endpoint, {
@@ -51,11 +50,14 @@ const Fundraisers = () => {
           ? Array.from({ length: 12 }).map((_, idx) => <CardLoader key={idx} />)
           : collections.map((nft, idx) => {
               const { name, image } = nft.metadata?.normalized || {};
+              const imageUrl = image.replace("ipfs://", "");
               const { contract_address, token_id } = nft || {};
               return (
                 <Card
                   causeName={name || "Unknown Cause"}
-                  imageSrc={image || "/default-image.webp"}
+                  imageSrc={
+                    `https://ipfs.io/ipfs/${imageUrl}` || "/default-image.webp"
+                  }
                   location="Abuja,Nigeria"
                   key={idx}
                   progress={43}

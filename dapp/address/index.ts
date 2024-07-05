@@ -1,0 +1,2 @@
+export const COLLECTION_CONTRACT_ADDRESS =
+  "0x698362ce724b071cef848e9fc78437ff268ccce7a2ac448471c39ae9ebda0fb";
