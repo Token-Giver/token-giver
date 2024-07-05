@@ -28,6 +28,8 @@ const Page = () => {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
+    console.log(e.target.checkValidity);
+
     setInputData((prev) => {
       if (
         name === "image" &&
@@ -152,20 +154,32 @@ const Page = () => {
           >
             <span>&lt;</span>
           </button>
-          <button
-            disabled={!address}
-            onClick={() =>
-              setStep(() => {
-                return {
-                  text: "Tell us about you and your goals",
-                  number: 3,
-                };
-              })
-            }
-            className="bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end "
-          >
-            {step.number === 3 ? "Mint a campaign" : "Continue"}
-          </button>
+          <div className="flex">
+            <button
+              disabled={!inputData.name || !inputData.description || !address}
+              onClick={() =>
+                setStep(() => {
+                  return {
+                    text: "Tell us about you and your goals",
+                    number: 3,
+                  };
+                })
+              }
+              className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
+                step.number === 3 ? "hidden" : "block"
+              } `}
+            >
+              Continue
+            </button>
+            <button
+              disabled={!inputData.target || !inputData.location}
+              className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
+                step.number === 3 ? "block" : "hidden"
+              } `}
+            >
+              Mint a campaign
+            </button>
+          </div>
         </div>
       </div>
 

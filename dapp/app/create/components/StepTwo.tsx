@@ -22,13 +22,16 @@ const StepTwo = ({
 }) => {
   return (
     <fieldset
+      id="step2Fieldset"
       className={`flex-col gap-4  ${
         step.number === 2 || step.number === 1 ? "flex" : "hidden"
       }`}
     >
       <label htmlFor="name">Name:</label>
-      <div className="flex flex-col gap-1">
-        <p className="self-end">Required*</p>
+      <div className="relative">
+        <p className="absolute top-[-1.2rem] right-[.5em] text-red-600 text-[.7em]">
+          Required*
+        </p>
         <input
           type="text"
           name="name"
@@ -41,12 +44,14 @@ const StepTwo = ({
         />
       </div>
       <label htmlFor="description">Description of campaign:</label>
-      <div className="flex flex-col gap-1">
-        <p className="self-end">Required*</p>
+      <div className="relative">
+        <p className="absolute top-[-1.2rem] right-[.5em] text-red-600 text-[.7em]">
+          Required*
+        </p>
         <textarea
           required
           placeholder="Write your description here..."
-          className={`bg-transparent border-solid border-[1px] border-gray-400 p-4  leading-6 rounded-[10px] resize-none overflow-y-auto no-scrollbar`}
+          className={`w-full bg-transparent border-solid border-[1px] border-gray-400 p-4  leading-6 rounded-[10px] resize-none overflow-y-auto no-scrollbar`}
           disabled={!address}
           onChange={handleInputChange}
           name="description"

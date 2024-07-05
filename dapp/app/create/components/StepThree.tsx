@@ -22,14 +22,34 @@ const StepThree = ({
       className={`flex-col gap-4  ${step.number === 3 ? "flex" : "hidden"}`}
     >
       <label htmlFor="target">Target:</label>
-      <input
-        type="text"
-        name="target"
-        onChange={handleInputChange}
-        value={inputData.target}
-        placeholder="USDT"
-        className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
-      />
+      <div className="relative">
+        <p className="absolute top-[-1.2rem] right-[.5em] text-red-600 text-[.7em]">
+          Required*
+        </p>
+        <input
+          type="text"
+          name="target"
+          onChange={handleInputChange}
+          value={inputData.target}
+          placeholder="USDT"
+          className="w-full bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
+        />
+      </div>
+
+      <label htmlFor="location">Location:</label>
+      <div className="relative">
+        <p className="text-red-600  absolute top-[-1.2rem] right-[.5em] text-[.7em]">
+          Required*
+        </p>
+        <input
+          type="text"
+          name="location"
+          value={inputData.location}
+          onChange={handleInputChange}
+          placeholder="Name of organizer"
+          className="w-full bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
+        />
+      </div>
       <label htmlFor="organizer">Organizer:</label>
       <input
         type="text"
@@ -44,15 +64,6 @@ const StepThree = ({
         type="text"
         name="beneficiary"
         value={inputData.beneficiary}
-        onChange={handleInputChange}
-        placeholder="Name of organizer"
-        className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
-      />
-      <label htmlFor="location">Location:</label>
-      <input
-        type="text"
-        name="location"
-        value={inputData.location}
         onChange={handleInputChange}
         placeholder="Name of organizer"
         className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
