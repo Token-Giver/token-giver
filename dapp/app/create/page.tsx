@@ -28,8 +28,6 @@ const Page = () => {
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    console.log(e.target.checkValidity);
-
     setInputData((prev) => {
       if (
         name === "image" &&
@@ -94,8 +92,6 @@ const Page = () => {
       });
     }
   }, [address]);
-
-  console.log(inputData);
 
   return (
     <main className="min-h-screen  flex justify-between bg-theme-green md:mb-10 relative">
