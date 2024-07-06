@@ -67,8 +67,8 @@ const page = () => {
   return (
     <>
       {campaignDetails.name ? (
-        <section className=" mt-[4rem] mx-auto py-10 md:py-16 px-4 md:max-w-none md:px-10 bg-off-white lg:px-40">
-          <div className="flex gap-8  max-w-[500px] mx-auto md:mx-0  md:max-w-none relative">
+        <section className=" mt-[4rem] mx-auto py-10 md:py-16 px-4 md:max-w-none md:px-10 bg-off-white lg:px-[10vw]">
+          <div className="lg:flex gap-8  max-w-[500px] mx-auto md:mx-0  md:max-w-none relative">
             <div className="lg:w-[60%] mx-auto flex flex-col gap-12">
               <h2 className="font-bold">{campaignDetails.name}</h2>
               <div className="rounded-[10px] h-[400px] relative w-full object-contain md:w-[80%] mx-auto">
@@ -80,7 +80,7 @@ const page = () => {
                   alt=""
                 />
               </div>
-              <div className="flex flex-col gap-8 lg:hidden">
+              <div className="flex flex-col gap-8 w-full md:w-[85%] md:mx-auto  lg:hidden">
                 <div className="flex flex-col gap-4">
                   <p>
                     <span className="text-[2rem]">$20</span> raised of $300
@@ -115,10 +115,10 @@ const page = () => {
                 </div>
               </div>
 
-              <div>
+              <div className="w-full md:w-[85%] md:mx-auto lg:w-full">
                 <p>{campaignDetails.description}</p>
               </div>
-              <div className="flex flex-col md:flex-row gap-4">
+              <div className="flex flex-col w-full md:w-[85%] md:mx-auto md:flex-row gap-4 lg:w-full">
                 <button className=" w-full md:w-1/2 border-[1px] border-solid border-theme-green p-3 rounded-[5px] font-bold">
                   Donate
                 </button>

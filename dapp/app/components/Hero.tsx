@@ -9,12 +9,7 @@ const Hero = () => {
     router.push("/create");
   };
   return (
-    <section
-      style={{
-        height: "calc(100vh - 10rem)",
-      }}
-      className="flex flex-col justify-between  items-center"
-    >
+    <section id="hero" className="flex flex-col justify-between  items-center">
       <div>
         <h1 className=" font-semibold mb-4 text-center">
           Lorem ipsum dolor sit amet, adipisicing elit.

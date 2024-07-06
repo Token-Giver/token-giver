@@ -1,10 +1,12 @@
 "use client";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import MobileMenu from "./MobileMenu";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const router = useRouter();
   const createCampaign = () => {
     router.push("/create");
@@ -71,7 +73,7 @@ const Header = () => {
           ></div>
         </button>
 
-        <div
+        {/* <div
           onClick={(e) => {
             e.stopPropagation();
             setIsMenuOpen(false);
@@ -132,7 +134,13 @@ const Header = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
+        <MobileMenu
+          createCampaign={createCampaign}
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen}
+          toggleMenu={toggleMenu}
+        />
       </header>
     </>
   );
