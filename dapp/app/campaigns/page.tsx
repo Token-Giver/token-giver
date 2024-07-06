@@ -2,6 +2,7 @@
 import { useEffect, useState } from "react";
 import Card from "../components/Fundraiser/Card";
 import CardLoader from "../loading/CardLoader";
+import { COLLECTION_CONTRACT_ADDRESS } from "@/address";
 
 const page = () => {
   const [cursor, setCursor] = useState(null);
@@ -11,11 +12,10 @@ const page = () => {
   const [loading, setLoading] = useState(true);
 
   const fetchCampaigns = async () => {
-    const collectionAddress =
-      "0x06f10e1524d583b2c894512670c4fb7359d7d9287e29f86421d68a10a8ee11f4";
     const apiKey = process.env.NEXT_PUBLIC_ARK_API_KEY || "";
-    const endpoint = `https://api.arkproject.dev/v1/tokens/${collectionAddress}?limit=24`;
-    const cursorEndpoint = `https://api.arkproject.dev/v1/tokens/${collectionAddress}?cursor=${cursor}&limit=12`;
+
+    const endpoint = `https://testnet-api.arkproject.dev/v1/tokens/${COLLECTION_CONTRACT_ADDRESS}?limit=24`;
+    const cursorEndpoint = `https://testnet-api.arkproject.dev/v1/tokens/${COLLECTION_CONTRACT_ADDRESS}?cursor=${cursor}&limit=12`;
 
     try {
       const response = await fetch(cursor ? cursorEndpoint : endpoint, {
@@ -31,8 +31,6 @@ const page = () => {
       setCollections(data.result);
       setLoading(false);
       setCursor(data.cursor);
-
-      console.log(data);
     } catch (error) {
       console.log(error);
     }
@@ -68,11 +66,14 @@ const page = () => {
           ? Array.from({ length: 12 }).map((_, idx) => <CardLoader key={idx} />)
           : cachedCollections.map((nft, idx) => {
               const { name, image } = nft.metadata?.normalized || {};
+              const imageUrl = image.replace("ipfs://", "");
               const { contract_address, token_id } = nft || {};
               return (
                 <Card
                   causeName={name || "Unknown Cause"}
-                  imageSrc={image || "/default-image.webp"}
+                  imageSrc={
+                    `https://ipfs.io/ipfs/${imageUrl}` || "/default-image.webp"
+                  }
                   location="Abuja,Nigeria"
                   key={idx}
                   progress={43}
