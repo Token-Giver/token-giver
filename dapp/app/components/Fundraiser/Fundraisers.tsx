@@ -12,6 +12,7 @@ const Fundraisers = () => {
   const handleRouteToCampaigns = () => {
     router.push("/campaigns");
   };
+
   useEffect(() => {
     const fetchCampaigns = async () => {
       const apiKey = process.env.NEXT_PUBLIC_ARK_API_KEY || "";
@@ -29,6 +30,8 @@ const Fundraisers = () => {
         }
         const data = await response.json();
         setCollections(data.result);
+        console.log(data);
+
         setLoading(false);
       } catch (error) {
         console.log(error);

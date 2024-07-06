@@ -2,15 +2,9 @@
 import { ChangeEvent, useEffect, useState } from "react";
 import ConnectButton from "../components/ConnectButton";
 import { useAccount } from "@starknet-react/core";
-type InputDateType = {
-  name: string;
-  description: string;
-  image: null | File;
-  target: string;
-  organizer: string;
-  beneficiary: string;
-  location: string;
-};
+import StepTwo from "./components/StepTwo";
+import { InputDateType } from "@/types";
+import StepThree from "./components/StepThree";
 
 const Page = () => {
   const { address } = useAccount();
@@ -27,18 +21,60 @@ const Page = () => {
     beneficiary: "",
     location: "",
   });
+  const [cid, setCid] = useState("");
+  const [uploading, setUploading] = useState(false);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     setInputData((prev) => {
+      if (
+        name === "image" &&
+        e.target instanceof HTMLInputElement &&
+        e.target.files
+      ) {
+        return {
+          ...prev,
+          image: e.target.files[0],
+        };
+      }
       return {
         ...prev,
         [name]: value,
       };
     });
   };
+
+  const uploadFileToPinata = async ({
+    fileToUpload,
+  }: {
+    fileToUpload: File;
+  }) => {
+    try {
+      setUploading(true);
+      const data = new FormData();
+      data.set("file", fileToUpload);
+      const res = await fetch(
+        `https://api.pinata.cloud/pinning/pinFileToIPFS`,
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_API_KEY}`,
+          },
+          body: data,
+        }
+      );
+      const resData = await res.json();
+      setCid(resData.IpfsHash);
+      setUploading(false);
+    } catch (e) {
+      console.log(e);
+      setUploading(false);
+      alert("Trouble uploading file");
+    }
+  };
+
   useEffect(() => {
     if (address) {
       setStep(() => {
@@ -58,7 +94,7 @@ const Page = () => {
   }, [address]);
 
   return (
-    <main className="h-screen  flex justify-between bg-theme-green md:mb-10 relative">
+    <main className="min-h-screen  flex justify-between bg-theme-green md:mb-10 relative">
       <div className="w-[40%] items-center justify-center hidden md:flex">
         <div className="flex flex-col gap-8 p-4">
           <p className="font-bold text-white text-[1.5em]">token giver.</p>
@@ -77,98 +113,22 @@ const Page = () => {
         <ConnectButton />
         <form className="flex flex-col gap-4  md:p-4" action="">
           <h2>Create your campaign</h2>
-          <fieldset
-            className={`flex-col gap-4  ${
-              step.number === 2 || step.number === 1 ? "flex" : "hidden"
-            }`}
-          >
-            <label htmlFor="name">Name:</label>
-            <input
-              type="text"
-              name="name"
-              value={inputData.name}
-              onChange={handleInputChange}
-              placeholder="Name of campaign"
-              className={`bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]`}
-              disabled={!address}
-            />
-            <label htmlFor="description">Description of campaign:</label>
-            <textarea
-              placeholder="Write your description here..."
-              className={`bg-transparent border-solid border-[1px] border-gray-400 p-4  leading-6 rounded-[10px] resize-none overflow-y-auto no-scrollbar`}
-              disabled={!address}
-              onChange={handleInputChange}
-              name="description"
-              value={inputData.description}
-              id=""
-              cols={30}
-              rows={10}
-            ></textarea>
-
-            <label htmlFor="image">Upload campaign image:</label>
-            <input
-              type="file"
-              name="image"
-              id=""
-              disabled={!address}
-              onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                if (e.target.files) {
-                  const file = e.target.files[0];
-                  setInputData((prev) => {
-                    return {
-                      ...prev,
-                      image: file,
-                    };
-                  });
-                }
-              }}
-            />
-          </fieldset>
-          <fieldset
-            className={`flex-col gap-4  ${
-              step.number === 3 ? "flex" : "hidden"
-            }`}
-          >
-            <label htmlFor="target">Target:</label>
-            <input
-              type="text"
-              name="target"
-              onChange={handleInputChange}
-              value={inputData.target}
-              placeholder="USDT"
-              className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
-            />
-            <label htmlFor="organizer">Organizer:</label>
-            <input
-              type="text"
-              name="organizer"
-              value={inputData.organizer}
-              onChange={handleInputChange}
-              placeholder="Name of organizer"
-              className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
-            />
-            <label htmlFor="beneficiary">Beneficiary:</label>
-            <input
-              type="text"
-              name="beneficiary"
-              value={inputData.beneficiary}
-              onChange={handleInputChange}
-              placeholder="Name of organizer"
-              className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
-            />
-            <label htmlFor="location">Location:</label>
-            <input
-              type="text"
-              name="location"
-              value={inputData.location}
-              onChange={handleInputChange}
-              placeholder="Name of organizer"
-              className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
-            />
-          </fieldset>
+          <StepTwo
+            inputData={inputData}
+            handleInputChange={handleInputChange}
+            address={address}
+            step={step}
+            setInputData={setInputData}
+          />
+          <StepThree
+            inputData={inputData}
+            handleInputChange={handleInputChange}
+            address={address}
+            step={step}
+          />
         </form>
         <div
-          className={`flex  md:p-4  ${
+          className={`flex mt-4  md:p-4  ${
             step.number === 2 || step.number === 1
               ? "justify-end"
               : "justify-between"
@@ -190,20 +150,32 @@ const Page = () => {
           >
             <span>&lt;</span>
           </button>
-          <button
-            disabled={!address}
-            onClick={() =>
-              setStep(() => {
-                return {
-                  text: "Tell us about you and your goals",
-                  number: 3,
-                };
-              })
-            }
-            className="bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end "
-          >
-            {step.number === 2 ? "Continue" : "Create"}
-          </button>
+          <div className="flex">
+            <button
+              disabled={!inputData.name || !inputData.description || !address}
+              onClick={() =>
+                setStep(() => {
+                  return {
+                    text: "Tell us about you and your goals",
+                    number: 3,
+                  };
+                })
+              }
+              className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
+                step.number === 3 ? "hidden" : "block"
+              } `}
+            >
+              Continue
+            </button>
+            <button
+              disabled={!inputData.target || !inputData.location}
+              className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
+                step.number === 3 ? "block" : "hidden"
+              } `}
+            >
+              Mint a campaign
+            </button>
+          </div>
         </div>
       </div>
 
