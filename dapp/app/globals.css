@@ -31,8 +31,8 @@ main {
   background-color: #fffcf5;
 }
 #hero {
-  height: calc(100svh - 10rem);
   height: calc(100vh - 10rem);
+  height: calc(100svh - 10rem);
 }
 /* Typography */
 p {
