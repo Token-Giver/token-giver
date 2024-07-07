@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Card from "./Card";
-import CardLoader from "@/app/loading/CardLoader";
+import CardLoader from "@/app/components/loading/CardLoader";
 import { useRouter } from "next/navigation";
 import { COLLECTION_CONTRACT_ADDRESS } from "@/address";
 

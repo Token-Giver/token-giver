@@ -1,26 +1,41 @@
 "use client";
-import CampaignLoader from "@/app/loading/CampaignLoader";
+
+import CampaignLoader from "@/app/components/loading/CampaignLoader";
 import CalenderIcon from "@/svgs/CalenderIcon";
 import DonateIcon from "@/svgs/DonateIcon";
 import ProfileIcon from "@/svgs/ProfileIcon";
 import ShareIcon from "@/svgs/ShareIcon";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const page = () => {
+const page = ({
+  params,
+}: {
+  params: { name: string; token_id: string; address: string };
+}) => {
+  const router = useRouter();
+
+  const donateNow = () => {
+    if (params.token_id && params.address) {
+      const tokenId = params.token_id;
+      const contractAddress = params.address;
+      const campaignName = params.name;
+      router.push(`/${campaignName}/${tokenId}/${contractAddress}/donate`);
+    }
+  };
+
   const [campaignDetails, setCampaignDetails] = useState({
     name: "",
     image: "/default-image.webp",
     description: "",
     date: "",
   });
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (searchParams) {
-      const contractAddress = searchParams.get("a");
-      const tokenId = searchParams.get("t");
+    if (params.token_id && params.address) {
+      const tokenId = params.token_id;
+      const contractAddress = params.address;
       const apiKey = process.env.NEXT_PUBLIC_ARK_API_KEY || "";
       const endpoint = `https://testnet-api.arkproject.dev/v1/tokens/${contractAddress}/${tokenId}`;
       const fetchNFT = async () => {
@@ -60,6 +75,7 @@ const page = () => {
           console.log(error);
         }
       };
+
       fetchNFT();
     }
   }, []);
@@ -100,7 +116,10 @@ const page = () => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-4 text-white md:flex-row   ">
-                  <button className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px] flex justify-center items-center gap-2 ">
+                  <button
+                    onClick={donateNow}
+                    className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px] flex justify-center items-center gap-2 "
+                  >
                     <span>Donate now</span>{" "}
                     <span className="text-amber-300">
                       <DonateIcon />
@@ -119,7 +138,10 @@ const page = () => {
                 <p>{campaignDetails.description}</p>
               </div>
               <div className="flex flex-col w-full md:w-[85%] md:mx-auto md:flex-row gap-4 lg:w-full">
-                <button className=" w-full md:w-1/2 border-[1px] border-solid border-theme-green p-3 rounded-[5px] font-bold">
+                <button
+                  onClick={donateNow}
+                  className=" w-full md:w-1/2 border-[1px] border-solid border-theme-green p-3 rounded-[5px] font-bold"
+                >
                   Donate
                 </button>
                 <button className="w-full md:w-1/2 border-[1px] border-solid border-theme-green p-3 rounded-[5px] font-bold">
@@ -183,7 +205,10 @@ const page = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-4 text-white  ">
-                <button className="w-full bg-theme-green p-2 rounded-[5px] flex justify-center items-center gap-2 ">
+                <button
+                  onClick={donateNow}
+                  className="w-full bg-theme-green p-2 rounded-[5px] flex justify-center items-center gap-2 "
+                >
                   <span>Donate now</span>{" "}
                   <span className="text-amber-300">
                     <DonateIcon />
