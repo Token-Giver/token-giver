@@ -1,10 +1,19 @@
+"use client";
 import GiveIcon from "@/svgs/GiveIcon";
 import GrowIcon from "@/svgs/GrowIcon";
 import LoveIcon from "@/svgs/LoveIcon";
+import { usePathname } from "next/navigation";
 
 const Features = () => {
+  const pathname = usePathname();
+  const isDonationPage = pathname?.endsWith("/donate");
+
   return (
-    <div className="py-10 px-4 md:p-10 bg-off-white">
+    <div
+      className={`${
+        isDonationPage ? "hidden" : "block"
+      } py-10 px-4 md:p-10 bg-off-white`}
+    >
       <div className="mb-[5rem]">
         <h2>Fundraising on logo. only takes a few minutes</h2>
       </div>

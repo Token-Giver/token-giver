@@ -1,15 +1,25 @@
+"use client";
+
+import Logo from "@/svgs/Logo";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 const Footer = () => {
+  const pathname = usePathname();
+  const isDonationPage = pathname?.endsWith("/donate");
   return (
-    <footer className="justify-self-end bg-[#F5F7F8] md:h-[40vh] p-8 md:px-12 md:pt-12 flex flex-col justify-between ">
+    <footer
+      className={` ${
+        isDonationPage ? "hidden" : "flex"
+      } justify-self-end bg-[#F5F7F8] md:h-[40vh] p-8 md:px-12 md:pt-12 flex-col justify-between `}
+    >
       <div className="flex flex-col gap-8 md:flex-row md:justify-between px-8 pb-8 md:pb-0 md:items-center  lg:px-12 flex-1">
         <div className="md:mb-32">
           <Link
             href="/"
             className="font-bold text-[#127C56] text-[1.3em] self-start justify-self-start"
           >
-            token giver.
+            <Logo />
           </Link>
         </div>
         <div className="flex flex-col md:flex-row  gap-4">
