@@ -67,7 +67,7 @@ const Donate = ({
                 fill
               />
             </div>
-            <p className="col-span-2 text-[1em]">
+            <p className="col-span-2 text-clamp md:text-[1em]">
               You’re supporting{" "}
               <span className="font-semibold"> Help my family evacuate</span>{" "}
               from Rafah
