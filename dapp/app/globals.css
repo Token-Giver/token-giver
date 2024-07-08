@@ -111,3 +111,8 @@ select:disabled {
   opacity: 1 !important;
   transition: opacity 0.3s ease-in;
 }
+textarea,
+input,
+select {
+  outline-color: #159968;
+}
