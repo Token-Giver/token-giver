@@ -67,7 +67,6 @@ const MobileMenu = ({
   }, [isMenuOpen]);
 
   return (
-    // <div className="w-screen h-screen bg-red-700 fixed top-0 left-0"></div>
     <div
       onClick={(e) => {
         e.stopPropagation();
