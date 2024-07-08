@@ -1,4 +1,5 @@
 "use client";
+import Logo from "@/svgs/Logo";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 const MobileMenu = ({
@@ -66,6 +67,7 @@ const MobileMenu = ({
   }, [isMenuOpen]);
 
   return (
+    // <div className="w-screen h-screen bg-red-700 fixed top-0 left-0"></div>
     <div
       onClick={(e) => {
         e.stopPropagation();
@@ -74,7 +76,7 @@ const MobileMenu = ({
           document.body.style.overflow = "auto";
         }, 300);
       }}
-      className={`container h-screen w-screen fixed top-0 left-0  ${
+      className={`h-screen w-screen fixed top-0 left-0  ${
         isMenuOpen ? "pointer-events-auto" : "pointer-events-none"
       } lg:hidden`}
     >
@@ -124,7 +126,7 @@ const MobileMenu = ({
         </button>
         <div className="mt-8">
           <Link href="/" className="font-bold text-[#127C56]  text-[4vw]">
-            token giver.
+            <Logo />
           </Link>
         </div>
         <nav className="">

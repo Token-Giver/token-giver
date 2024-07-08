@@ -2,15 +2,21 @@
 import ConnectButton from "@/app/components/ConnectButton";
 import Logo from "@/svgs/Logo";
 import SendIcon from "@/svgs/SendIcon";
+import { useAccount } from "@starknet-react/core";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { ChangeEvent, useEffect, useState } from "react";
 
 const Donate = ({
   params,
 }: {
   params: { name: string; token_id: string; address: string };
 }) => {
+  const { address } = useAccount();
   const router = useRouter();
+  const [fontSize, setFontSize] = useState(2);
+  const [amount, setAmount] = useState("");
+  const [token, setToken] = useState("ETH");
 
   const handleRouteToCampaign = () => {
     if (params.token_id && params.address) {
@@ -18,6 +24,25 @@ const Donate = ({
       const contractAddress = params.address;
       const campaignName = params.name;
       router.push(`/${campaignName}/${tokenId}/${contractAddress}`);
+    }
+  };
+
+  const handleTokenSelect = (event: ChangeEvent<HTMLSelectElement>) => {
+    setToken(event.target.value);
+  };
+
+  const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const { scrollWidth, clientWidth, value } = event.target;
+    const numericValue = Number(value);
+    if (!isNaN(numericValue)) {
+      setAmount(value);
+    }
+
+    if (value === "") {
+      setFontSize(2);
+    }
+    if (scrollWidth > clientWidth) {
+      setFontSize((prev) => Math.max(prev - 0.2, 0.8));
     }
   };
 
@@ -78,7 +103,7 @@ const Donate = ({
             <div className="h-[70px] w-[70px]  relative rounded-full mx-auto">
               <img
                 className="rounded-full h-full w-full"
-                src="/eth.svg"
+                src={`${token === "STRK" ? "/strk.webp" : "/eth.svg"}`}
                 alt=""
               />
               <div className="right-[-10%] top-[60%] absolute bg-theme-green h-[30px] w-[30px] flex items-center justify-center rounded-full">
@@ -89,26 +114,39 @@ const Donate = ({
 
           <div className="flex flex-col gap-4">
             <label className="font-medium">Enter your donation</label>
-            <div className="relative w-full">
-              <div className="absolute right-[1rem]  top-[25%] flex flex-col items-end justify-end">
-                <select
-                  className=" text-[.875em] w-fit  border-solid border-[1px] border-gray-400  bg-transparent rounded-full"
-                  name=""
-                  id=""
-                >
-                  {" "}
-                  <option value="">ETH</option> <option value="">STRK</option>
-                </select>
-                <p className="text-[.75em]">Balance: 10.000 ETH</p>
-              </div>
 
+            <div className="relative w-full min-h-[5.5rem] bg-transparent border-solid border-[1px] rounded-[10px] px-5 border-gray-400 grid grid-cols-10 justify-between ">
               <input
-                className="text-[2em] w-full bg-transparent border-solid border-[1px] border-gray-400 p-5 rounded-[10px]"
+                disabled={!address}
                 type="text"
+                style={{
+                  fontSize: `${fontSize}em`,
+                }}
+                name="amount"
+                value={amount}
+                className="col-span-8  w-full py-5 bg-transparent focus:outline-none"
                 placeholder="0"
+                onChange={handleInputChange}
               />
+              <div className="col-span-2  flex flex-col gap-4 items-center  mt-[1.5rem] relative">
+                <select
+                  disabled={!address}
+                  onChange={handleTokenSelect}
+                  className=" text-[.875em] w-fit  border-solid border-[1px] border-gray-400  bg-transparent rounded-full"
+                  name="token"
+                >
+                  <option value="ETH">ETH</option>{" "}
+                  <option value="STRK">STRK</option>
+                </select>
+                <p className="absolute min-w-[120px] right-0 bottom-[.5rem] text-[.75em]">
+                  Balance: 10.000 ETH
+                </p>
+              </div>
             </div>
-            <button className="bg-theme-green text-white py-3 px-6 rounded-[10px] w-full">
+            <button
+              disabled={!amount}
+              className=" bg-theme-green text-white py-3 px-6 rounded-[10px] w-full"
+            >
               Send
             </button>
           </div>

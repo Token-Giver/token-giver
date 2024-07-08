@@ -97,7 +97,8 @@ input::file-selector-button {
 textarea:disabled,
 input:disabled,
 input[type="file"]:disabled::file-selector-button,
-button:disabled {
+button:disabled,
+select:disabled {
   cursor: not-allowed;
   opacity: 0.5;
 }

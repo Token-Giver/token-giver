@@ -51,7 +51,6 @@ const page = ({
               throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            console.log(data);
 
             if (data) {
               const timestamp = data.result.mint_info.timestamp;
@@ -92,6 +91,8 @@ const page = ({
                   className="rounded-[10px] h-full w-full"
                   loader={() => campaignDetails.image}
                   src={campaignDetails.image}
+                  unoptimized
+                  priority
                   fill
                   alt=""
                 />
