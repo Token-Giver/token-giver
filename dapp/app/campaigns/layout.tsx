@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
-import Header from "../components/Header";
 
 export const metadata: Metadata = {
-  title: "Campaigns | Token Giver",
-  description: "This page shows all the available campaigns on token giver",
+  title: "Explore Campaigns | Token Giver - Discover & Support Causes",
+  description:
+    "Browse and support a variety of impactful campaigns on Token Giver. Find causes that matter to you and make a difference by contributing today.",
 };
-
 export default function RootLayout({
   children,
 }: Readonly<{

@@ -5,6 +5,7 @@ import { useAccount } from "@starknet-react/core";
 import StepTwo from "./components/StepTwo";
 import { InputDateType } from "@/types";
 import StepThree from "./components/StepThree";
+import Logo from "@/svgs/Logo";
 
 const Page = () => {
   const { address } = useAccount();
@@ -97,7 +98,9 @@ const Page = () => {
     <main className="min-h-screen  flex justify-between bg-theme-green md:mb-10 relative">
       <div className="w-[40%] items-center justify-center hidden md:flex">
         <div className="flex flex-col gap-8 p-4">
-          <p className="font-bold text-white text-[1.5em]">token giver.</p>
+          <p className="font-bold text-white text-[1.5em]">
+            <Logo />
+          </p>
 
           <h2 className="text-amber-400">Start your fundraising journey!</h2>
           <div className="flex gap-2 items-center text-white">

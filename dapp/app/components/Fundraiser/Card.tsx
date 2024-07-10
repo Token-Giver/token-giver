@@ -30,7 +30,7 @@ const Card = ({
       .replace(/ /g, "-")
       .toLocaleLowerCase()
       .replace(/-+/g, "-");
-    router.push(`campaign/${path}?a=${contract_address}&t=${token_id}`);
+    router.push(`/${path}/${token_id}/${contract_address}`);
   };
 
   return (

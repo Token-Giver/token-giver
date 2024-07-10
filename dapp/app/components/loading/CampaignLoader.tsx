@@ -4,7 +4,7 @@ const CampaignLoader = () => {
       <div className="max-w-[780px]  lg:max-w-full flex-1 flex flex-col  gap-8 mx-auto">
         <div className="rounded-[10px] bg-gray-200 h-6 w-[80%] lg:w-[80%] mx-10 lg:mx-0"></div>
         <div className="rounded-[10px] bg-gray-200 h-[60%] w-[80%] mx-auto self-center lg:mx-0"></div>
-        <div className="rounded-[10px] bg-gray-200 h-[10%] w-[100%] mx-auto lg:mx-0"></div>
+        <div className="rounded-[10px] bg-gray-200 h-12 w-[80%] lg:w-[80%] self-center mx-10 lg:mx-0"></div>
       </div>
       <div className="p-8 hidden  rounded-[10px] w-[35%] h-[35%] bg-gray-200 lg:block"></div>
     </div>

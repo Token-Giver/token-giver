@@ -1,26 +1,41 @@
 "use client";
-import CampaignLoader from "@/app/loading/CampaignLoader";
+
+import CampaignLoader from "@/app/components/loading/CampaignLoader";
 import CalenderIcon from "@/svgs/CalenderIcon";
 import DonateIcon from "@/svgs/DonateIcon";
 import ProfileIcon from "@/svgs/ProfileIcon";
 import ShareIcon from "@/svgs/ShareIcon";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-const page = () => {
+const page = ({
+  params,
+}: {
+  params: { name: string; token_id: string; address: string };
+}) => {
+  const router = useRouter();
+
+  const donateNow = () => {
+    if (params.token_id && params.address) {
+      const tokenId = params.token_id;
+      const contractAddress = params.address;
+      const campaignName = params.name;
+      router.push(`/${campaignName}/${tokenId}/${contractAddress}/donate`);
+    }
+  };
+
   const [campaignDetails, setCampaignDetails] = useState({
     name: "",
     image: "/default-image.webp",
     description: "",
     date: "",
   });
-  const searchParams = useSearchParams();
 
   useEffect(() => {
-    if (searchParams) {
-      const contractAddress = searchParams.get("a");
-      const tokenId = searchParams.get("t");
+    if (params.token_id && params.address) {
+      const tokenId = params.token_id;
+      const contractAddress = params.address;
       const apiKey = process.env.NEXT_PUBLIC_ARK_API_KEY || "";
       const endpoint = `https://testnet-api.arkproject.dev/v1/tokens/${contractAddress}/${tokenId}`;
       const fetchNFT = async () => {
@@ -36,7 +51,6 @@ const page = () => {
               throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            console.log(data);
 
             if (data) {
               const timestamp = data.result.mint_info.timestamp;
@@ -60,6 +74,7 @@ const page = () => {
           console.log(error);
         }
       };
+
       fetchNFT();
     }
   }, []);
@@ -67,8 +82,8 @@ const page = () => {
   return (
     <>
       {campaignDetails.name ? (
-        <section className=" mt-[4rem] mx-auto py-10 md:py-16 px-4 md:max-w-none md:px-10 bg-off-white lg:px-40">
-          <div className="flex gap-8  max-w-[500px] mx-auto md:mx-0  md:max-w-none relative">
+        <section className=" mt-[4rem] mx-auto py-10 md:py-16 px-4 md:max-w-none md:px-10 bg-off-white lg:px-[10vw]">
+          <div className="lg:flex gap-8  max-w-[500px] mx-auto md:mx-0  md:max-w-none relative">
             <div className="lg:w-[60%] mx-auto flex flex-col gap-12">
               <h2 className="font-bold">{campaignDetails.name}</h2>
               <div className="rounded-[10px] h-[400px] relative w-full object-contain md:w-[80%] mx-auto">
@@ -76,11 +91,13 @@ const page = () => {
                   className="rounded-[10px] h-full w-full"
                   loader={() => campaignDetails.image}
                   src={campaignDetails.image}
+                  unoptimized
+                  priority
                   fill
                   alt=""
                 />
               </div>
-              <div className="flex flex-col gap-8 lg:hidden">
+              <div className="flex flex-col gap-8 w-full md:w-[85%] md:mx-auto  lg:hidden">
                 <div className="flex flex-col gap-4">
                   <p>
                     <span className="text-[2rem]">$20</span> raised of $300
@@ -100,7 +117,10 @@ const page = () => {
                   </div>
                 </div>
                 <div className="flex flex-col gap-4 text-white md:flex-row   ">
-                  <button className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px] flex justify-center items-center gap-2 ">
+                  <button
+                    onClick={donateNow}
+                    className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px] flex justify-center items-center gap-2 "
+                  >
                     <span>Donate now</span>{" "}
                     <span className="text-amber-300">
                       <DonateIcon />
@@ -115,11 +135,14 @@ const page = () => {
                 </div>
               </div>
 
-              <div>
+              <div className="w-full md:w-[85%] md:mx-auto lg:w-full">
                 <p>{campaignDetails.description}</p>
               </div>
-              <div className="flex flex-col md:flex-row gap-4">
-                <button className=" w-full md:w-1/2 border-[1px] border-solid border-theme-green p-3 rounded-[5px] font-bold">
+              <div className="flex flex-col w-full md:w-[85%] md:mx-auto md:flex-row gap-4 lg:w-full">
+                <button
+                  onClick={donateNow}
+                  className=" w-full md:w-1/2 border-[1px] border-solid border-theme-green p-3 rounded-[5px] font-bold"
+                >
                   Donate
                 </button>
                 <button className="w-full md:w-1/2 border-[1px] border-solid border-theme-green p-3 rounded-[5px] font-bold">
@@ -183,7 +206,10 @@ const page = () => {
                 </div>
               </div>
               <div className="flex flex-col gap-4 text-white  ">
-                <button className="w-full bg-theme-green p-2 rounded-[5px] flex justify-center items-center gap-2 ">
+                <button
+                  onClick={donateNow}
+                  className="w-full bg-theme-green p-2 rounded-[5px] flex justify-center items-center gap-2 "
+                >
                   <span>Donate now</span>{" "}
                   <span className="text-amber-300">
                     <DonateIcon />

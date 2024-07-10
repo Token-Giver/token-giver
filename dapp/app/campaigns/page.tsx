@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import Card from "../components/Fundraiser/Card";
-import CardLoader from "../loading/CardLoader";
+import CardLoader from "../components/loading/CardLoader";
 import { COLLECTION_CONTRACT_ADDRESS } from "@/address";
 
 const page = () => {

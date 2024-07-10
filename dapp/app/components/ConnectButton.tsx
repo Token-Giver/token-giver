@@ -56,7 +56,7 @@ const ConnectButton = () => {
             }`}
           >
             <h5 className="font-bold text-[1.1em]">Choose a wallet:</h5>
-            <div className="">
+            <div className=" flex flex-col gap-4">
               {connectors.map((connector) => {
                 return (
                   <button

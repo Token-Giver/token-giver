@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontSize: {
+        clamp: "clamp(0.5rem, 5vw, 1rem)",
+      },
       colors: {
         "theme-green": "#127C56",
         "off-white": "#fffcf5",

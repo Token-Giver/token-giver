@@ -1,15 +1,22 @@
 "use client";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import MobileMenu from "./MobileMenu";
+import Logo from "@/svgs/Logo";
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
+  const pathname = usePathname();
+
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const createCampaign = () => {
     router.push("/create");
   };
-  const pathname = usePathname();
+
+  const isDonationPage = pathname?.endsWith("/donate");
+  const isCreatePage = pathname === "/create";
 
   const toggleMenu = () => {
     setIsMenuOpen((prev) => {
@@ -29,11 +36,11 @@ const Header = () => {
       <header
         id="header-container"
         className={`absolute top-0 left-0  w-full  items-center justify-between h-[3.5rem] z-50 py-8 px-8 md:px-16 ${
-          pathname === "/create" ? "hidden" : "flex"
+          isDonationPage || isCreatePage ? "hidden" : "flex"
         } `}
       >
         <Link href="/" className="font-bold text-[#127C56]  text-[1.2em]">
-          token giver.
+          <Logo />
         </Link>
         <nav className="hidden lg:block">
           <ul className="flex gap-8">
@@ -71,7 +78,7 @@ const Header = () => {
           ></div>
         </button>
 
-        <div
+        {/* <div
           onClick={(e) => {
             e.stopPropagation();
             setIsMenuOpen(false);
@@ -132,7 +139,13 @@ const Header = () => {
               </button>
             </div>
           </div>
-        </div>
+        </div> */}
+        <MobileMenu
+          createCampaign={createCampaign}
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen}
+          toggleMenu={toggleMenu}
+        />
       </header>
     </>
   );
