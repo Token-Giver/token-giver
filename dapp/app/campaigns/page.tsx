@@ -66,7 +66,7 @@ const page = () => {
           ? Array.from({ length: 12 }).map((_, idx) => <CardLoader key={idx} />)
           : cachedCollections.map((nft, idx) => {
               const { name, image } = nft.metadata?.normalized || {};
-              const imageUrl = image.replace("ipfs://", "");
+              const imageUrl = image?.replace("ipfs://", "");
               const { contract_address, token_id } = nft || {};
               return (
                 <Card

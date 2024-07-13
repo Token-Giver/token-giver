@@ -5,7 +5,7 @@ import SendIcon from "@/svgs/SendIcon";
 import { useAccount } from "@starknet-react/core";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useRef, useState } from "react";
 
 const Donate = ({
   params,
@@ -45,6 +45,7 @@ const Donate = ({
       setFontSize((prev) => Math.max(prev - 0.2, 0.8));
     }
   };
+  const divRef = useRef<HTMLDivElement | null>(null);
 
   return (
     <section className="bg-off-white md:bg-theme-green w-screen min-h-screen   flex justify-between ">
@@ -115,8 +116,21 @@ const Donate = ({
           <div className="flex flex-col gap-4">
             <label className="font-medium">Enter your donation</label>
 
-            <div className="relative w-full min-h-[5.5rem] bg-transparent border-solid border-[1px] rounded-[10px] px-5 border-gray-400 grid grid-cols-10 justify-between ">
+            <div
+              ref={divRef}
+              className="relative w-full min-h-[5.5rem] bg-transparent border-solid border-[1px] rounded-[10px] px-5 border-gray-400 grid grid-cols-10 justify-between focus:border-[#159968] focus:border-[2px]"
+            >
               <input
+                onFocus={() => {
+                  if (divRef.current && address) {
+                    divRef.current.style.outline = "1px solid #159968";
+                  }
+                }}
+                onBlur={() => {
+                  if (divRef.current) {
+                    divRef.current.style.outline = "none";
+                  }
+                }}
                 disabled={!address}
                 type="text"
                 style={{
@@ -128,7 +142,7 @@ const Donate = ({
                 placeholder="0"
                 onChange={handleInputChange}
               />
-              <div className="col-span-2  flex flex-col gap-4 items-center  mt-[1.5rem] relative">
+              <div className="col-span-2  flex flex-col gap-4 items-center mt-[1.5rem] relative">
                 <select
                   disabled={!address}
                   onChange={handleTokenSelect}
