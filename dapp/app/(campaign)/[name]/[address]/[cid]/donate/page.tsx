@@ -225,7 +225,7 @@ const Donate = ({
             </p>
           </div>
           <div className="w-fit mx-auto mt-8">
-            <h5 className="font-medium">Send ETH</h5>
+            <h5 className="font-medium">Send STRK</h5>
             <div className="h-[70px] w-[70px]  relative rounded-full mx-auto">
               <img
                 className="rounded-full h-full w-full"

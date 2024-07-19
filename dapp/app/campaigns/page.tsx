@@ -69,8 +69,15 @@ const page = () => {
         {loading
           ? Array.from({ length: 12 }).map((_, idx) => <CardLoader key={idx} />)
           : cachedCollections.map((nft, idx) => {
-              const { name, image, campaign_address, id, location, cid } =
-                nft || {};
+              const {
+                name,
+                image,
+                campaign_address,
+                id,
+                location,
+                cid,
+                target,
+              } = nft || {};
               console.log(nft);
               return (
                 <Card
@@ -80,6 +87,7 @@ const page = () => {
                     "/default-image.webp"
                   }
                   location={location}
+                  target={target}
                   key={idx}
                   progress={43}
                   token_id={id}
