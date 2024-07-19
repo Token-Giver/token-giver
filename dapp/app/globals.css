@@ -111,3 +111,34 @@ select:disabled {
   opacity: 1 !important;
   transition: opacity 0.3s ease-in;
 }
+textarea,
+input,
+select {
+  outline-color: #159968;
+}
+[popover] {
+  /* Final state of the exit animation */
+  transform: scale(0.7);
+  opacity: 0;
+
+  transition-property: opacity, transform, overlay, display;
+  transition-duration: 0.5s;
+  transition-behavior: allow-discrete;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+[popover]:popover-open {
+  transform: scale(1);
+  opacity: 1;
+}
+
+[popover]::backdrop {
+  background-color: #0000005d;
+  backdrop-filter: blur(3px);
+}
+
+@starting-style {
+  [popover]:popover-open {
+    transform: scale(0.7);
+    opacity: 0;
+  }
+}
