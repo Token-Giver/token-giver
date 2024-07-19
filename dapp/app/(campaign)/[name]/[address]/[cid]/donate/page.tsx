@@ -7,9 +7,15 @@ import { useAccount } from "@starknet-react/core";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { Contract, RpcProvider, Uint256, cairo } from "starknet";
+import { CallData, Contract, RpcProvider, Uint256, cairo } from "starknet";
 import token_abi from "../../../../../../public/abi/token_abi.json";
+import campaign_abi from "../../../../../../public/abi/campaign_abi.json";
 import { formatCurrency } from "@/app/utils/currency";
+import {
+  CAMPAIGN_CONTRACT_ADDRESS,
+  TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
+} from "@/app/utils/data";
+import { STRK_SEPOLIA } from "@/app/utils/constant";
 
 const Donate = ({
   params,
@@ -23,7 +29,7 @@ const Donate = ({
   const [token, setToken] = useState("STRK");
   const [loading, setLoading] = useState<boolean>(false);
   const { account, address } = useAccount();
-  const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState("0");
 
   const [campaignDetails, setCampaignDetails] = useState({
     name: "",
@@ -78,9 +84,11 @@ const Donate = ({
   });
 
   let starknet_contract: any;
-  starknet_contract = new Contract(
-    token_abi,
-    "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+  starknet_contract = new Contract(token_abi, STRK_SEPOLIA, provider);
+
+  let campaign_contract = new Contract(
+    campaign_abi,
+    CAMPAIGN_CONTRACT_ADDRESS,
     provider
   );
 
@@ -89,7 +97,7 @@ const Donate = ({
       const strk = await starknet_contract.balanceOf(address);
       // @ts-ignore
       const strkBalance = formatCurrency(strk?.balance?.low.toString());
-      setBalance(strkBalance.toFixed(2) || 0);
+      setBalance(strk ? strkBalance.toFixed(2) : "0");
     } catch (err) {
       console.log(err);
     }
@@ -105,17 +113,29 @@ const Donate = ({
       setLoading(true);
       starknet_contract.connect(account);
       const toTransferTk: Uint256 = cairo.uint256(Number(amount) * 1e18);
-      // const { suggestedMaxFee: maxFee } = await account?.estimateInvokeFee({
-      //   contractAddress: starknet_contract.address,
-      //   entrypoint: "transfer",
-      //   calldata: [campaignDetails.address, toTransferTk],
-      // });
-      const { transaction_hash: transferTxHash } =
-        await starknet_contract.invoke("transfer", [
-          campaignDetails.address,
-          toTransferTk,
-        ]);
-      await provider.waitForTransaction(transferTxHash);
+      const multiCall = await account?.execute([
+        // Transfer Token
+        {
+          contractAddress: STRK_SEPOLIA,
+          entrypoint: "transfer",
+          calldata: CallData.compile({
+            recipient: campaignDetails.address,
+            amount: toTransferTk,
+          }),
+        },
+        // Increase Donation Count
+        {
+          contractAddress: CAMPAIGN_CONTRACT_ADDRESS,
+          entrypoint: "set_donation_count",
+          calldata: CallData.compile({
+            campaign_address: campaignDetails.address,
+          }),
+        },
+      ]);
+      if (!multiCall) {
+        return;
+      }
+      await provider.waitForTransaction(multiCall.transaction_hash);
       handleRouteToCampaign();
     } catch (err: any) {
       console.log(err.message);
@@ -129,7 +149,7 @@ const Donate = ({
       const campaignAddress = params.address;
       const campaignName = params.name;
       const cid = params.cid;
-      router.push(`${campaignName}/${campaignAddress}/${cid}`);
+      router.push(`/${campaignName}/${campaignAddress}/${cid}`);
     }
   };
 
@@ -194,7 +214,8 @@ const Donate = ({
             <div className="hidden md:block w-[130px] h-[90px] rounded-[5px] relative">
               <Image
                 className="w-full h-full rounded-[5px] object-cover"
-                src="/tim-mossholder-kxk3rAa9thw-unsplash.jpg"
+                loader={() => campaignDetails.image}
+                src={campaignDetails.image}
                 alt=""
                 fill
               />

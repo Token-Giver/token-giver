@@ -12,8 +12,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import token_abi from "../../../../../public/abi/token_abi.json";
+import campaign_abi from "../../../../../public/abi/campaign_abi.json";
 import { Contract, RpcProvider } from "starknet";
 import { formatCurrency } from "@/app/utils/currency";
+import { CAMPAIGN_CONTRACT_ADDRESS } from "@/app/utils/data";
 
 const page = ({
   params,
@@ -22,12 +24,16 @@ const page = ({
 }) => {
   const router = useRouter();
   const [balance, setBalance] = useState(0);
+  const [donationCount, setDonationCount] = useState(0);
   const provider = new RpcProvider({
     nodeUrl: "https://starknet-sepolia.public.blastapi.io",
   });
-  let eth_contract = new Contract(token_abi, ETH_SEPOLIA, provider);
-
   let strk_contract = new Contract(token_abi, STRK_SEPOLIA, provider);
+  const campaign_contract = new Contract(
+    campaign_abi,
+    CAMPAIGN_CONTRACT_ADDRESS,
+    provider
+  );
 
   async function fetchBalances() {
     try {
@@ -70,8 +76,8 @@ const page = ({
           console.log(data);
 
           if (data) {
-            const timestamp = data.createdAt || "12 July 2024";
-            const date = new Date(timestamp * 1000);
+            const timestamp = data.created_at;
+            const date = new Date(timestamp);
             const day = date.getDate();
             const month = date.toLocaleString("default", { month: "long" });
             const year = date.getFullYear();
@@ -94,7 +100,14 @@ const page = ({
         }
       };
 
+      const fetchDonationCount = async () => {
+        let count = await campaign_contract.get_donation_count(params.address);
+        console.log(Number(count));
+        setDonationCount(Number(count));
+      };
+
       fetchNFT();
+      fetchDonationCount();
     }
   }, []);
 
@@ -119,21 +132,27 @@ const page = ({
               <div className="flex flex-col gap-8 w-full md:w-[85%] md:mx-auto  lg:hidden">
                 <div className="flex flex-col gap-4">
                   <p>
-                    <span className="text-[2rem]">{balance} STRK</span> raised
-                    of
-                    {campaignDetails.target || 4000}STRK target
+                    <span className="text-[2rem]">
+                      {balance.toFixed(2)} STRK
+                    </span>{" "}
+                    raised of {campaignDetails.target || 4000}STRK target
                   </p>
                   <div className="">
                     <div className="w-full h-[.25rem] mb-2 relative">
                       <div className="w-full h-[1vw] max-h-[.25rem] bg-[#127c5548] rounded-full mb-4"></div>
                       <div
                         style={{
-                          width: `5%`,
+                          width: `${
+                            (balance / parseInt(campaignDetails.target)) * 100
+                          }%`,
                         }}
                         className={`h-[1vw] max-h-[.25rem] bg-[#127C56] rounded-full mb-4 top-0 absolute`}
                       ></div>
                     </div>
-                    <p>2 donations</p>
+                    <p>
+                      {donationCount || 0} donation
+                      {donationCount === 1 ? "" : "s"}
+                    </p>
                   </div>
                 </div>
                 <div className="flex flex-col gap-4 text-white md:flex-row   ">
@@ -210,20 +229,24 @@ const page = ({
             <div className="hidden sticky top-8 bg-off-white p-8  rounded-[10px] w-[35%] h-fit lg:flex flex-col gap-8 shadow-small ">
               <div className="flex flex-col gap-4">
                 <p>
-                  <span className="text-[2rem]">{balance} STRK</span> raised of
-                  {campaignDetails.target || "4000"} STRK target
+                  <span className="text-[2rem]">{balance.toFixed(2)} STRK</span>{" "}
+                  raised of {campaignDetails.target || "4000"} STRK target
                 </p>
                 <div className="">
                   <div className="w-full h-[.25rem] mb-2 relative">
                     <div className="w-full h-[1vw] max-h-[.25rem] bg-[#127c5548] rounded-full mb-4"></div>
                     <div
                       style={{
-                        width: `5%`,
+                        width: `${
+                          (balance / parseInt(campaignDetails.target)) * 100
+                        }%`,
                       }}
                       className={`h-[1vw] max-h-[.25rem] bg-[#127C56] rounded-full mb-4 top-0 absolute`}
                     ></div>
                   </div>
-                  <p>2 donations</p>
+                  <p>
+                    {donationCount} donation{donationCount === 1 ? "" : "s"}
+                  </p>
                 </div>
               </div>
               <div className="flex flex-col gap-4 text-white  ">
