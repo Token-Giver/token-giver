@@ -1,29 +1,135 @@
 "use client";
 import ConnectButton from "@/app/components/ConnectButton";
+import { fetchContentFromIPFS } from "@/app/utils/helper";
 import Logo from "@/svgs/Logo";
 import SendIcon from "@/svgs/SendIcon";
 import { useAccount } from "@starknet-react/core";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ChangeEvent, useRef, useState } from "react";
+import { ChangeEvent, useEffect, useRef, useState } from "react";
+import { Contract, RpcProvider, Uint256, cairo } from "starknet";
+import token_abi from "../../../../../../public/abi/token_abi.json";
+import { formatCurrency } from "@/app/utils/currency";
 
 const Donate = ({
   params,
 }: {
-  params: { name: string; token_id: string; address: string };
+  params: { name: string; address: string; cid: string };
 }) => {
-  const { address } = useAccount();
   const router = useRouter();
+
   const [fontSize, setFontSize] = useState(2);
   const [amount, setAmount] = useState("");
-  const [token, setToken] = useState("ETH");
+  const [token, setToken] = useState("STRK");
+  const [loading, setLoading] = useState<boolean>(false);
+  const { account, address } = useAccount();
+  const [balance, setBalance] = useState(0);
+
+  const [campaignDetails, setCampaignDetails] = useState({
+    name: "",
+    image: "/default-image.webp",
+    description: "",
+    date: "",
+    organizer: "",
+    beneficiary: "",
+    location: "",
+    target: "",
+    address: "",
+  });
+
+  useEffect(() => {
+    if (params.address && params.cid) {
+      const fetchNFT = async () => {
+        try {
+          const data = await fetchContentFromIPFS(params.cid);
+          console.log(data);
+          if (data) {
+            const timestamp = data.createdAt || "12 July 2024";
+            const date = new Date(timestamp * 1000);
+            const day = date.getDate();
+            const month = date.toLocaleString("default", { month: "long" });
+            const year = date.getFullYear();
+            const formattedDate = `Created ${day} ${month} ${year}`;
+            const imageUrl = data.image.slice(7, -1);
+            setCampaignDetails({
+              name: data.name || "",
+              description: data.description || "",
+              image:
+                `https://ipfs.io/ipfs/${imageUrl}` || "/default-image.webp",
+              date: formattedDate,
+              organizer: data.organizer,
+              beneficiary: data.beneficiary,
+              location: data.location,
+              target: data.target,
+              address: data.campaign_address,
+            });
+          }
+        } catch (error) {
+          console.log(error);
+        }
+      };
+
+      fetchNFT();
+    }
+  }, []);
+
+  const provider = new RpcProvider({
+    nodeUrl: "https://starknet-sepolia.public.blastapi.io",
+  });
+
+  let starknet_contract: any;
+  starknet_contract = new Contract(
+    token_abi,
+    "0x04718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d",
+    provider
+  );
+
+  async function fetchBalances() {
+    try {
+      const strk = await starknet_contract.balanceOf(address);
+      // @ts-ignore
+      const strkBalance = formatCurrency(strk?.balance?.low.toString());
+      setBalance(strkBalance.toFixed(2) || 0);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  fetchBalances();
+
+  async function handleTransfer() {
+    try {
+      if (!amount) {
+        return;
+      }
+      setLoading(true);
+      starknet_contract.connect(account);
+      const toTransferTk: Uint256 = cairo.uint256(Number(amount) * 1e18);
+      // const { suggestedMaxFee: maxFee } = await account?.estimateInvokeFee({
+      //   contractAddress: starknet_contract.address,
+      //   entrypoint: "transfer",
+      //   calldata: [campaignDetails.address, toTransferTk],
+      // });
+      const { transaction_hash: transferTxHash } =
+        await starknet_contract.invoke("transfer", [
+          campaignDetails.address,
+          toTransferTk,
+        ]);
+      await provider.waitForTransaction(transferTxHash);
+      handleRouteToCampaign();
+    } catch (err: any) {
+      console.log(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   const handleRouteToCampaign = () => {
-    if (params.token_id && params.address) {
-      const tokenId = params.token_id;
-      const contractAddress = params.address;
+    if (params.address && params.cid) {
+      const campaignAddress = params.address;
       const campaignName = params.name;
-      router.push(`/${campaignName}/${tokenId}/${contractAddress}`);
+      const cid = params.cid;
+      router.push(`${campaignName}/${campaignAddress}/${cid}`);
     }
   };
 
@@ -94,9 +200,7 @@ const Donate = ({
               />
             </div>
             <p className="col-span-2 text-clamp md:text-[1em]">
-              You’re supporting{" "}
-              <span className="font-semibold"> Help my family evacuate</span>{" "}
-              from Rafah
+              {campaignDetails.description}
             </p>
           </div>
           <div className="w-fit mx-auto mt-8">
@@ -149,19 +253,22 @@ const Donate = ({
                   className=" text-[.875em] w-fit  border-solid border-[1px] border-gray-400  bg-transparent rounded-full"
                   name="token"
                 >
-                  <option value="ETH">ETH</option>{" "}
                   <option value="STRK">STRK</option>
                 </select>
                 <p className="absolute min-w-[120px] right-0 bottom-[.5rem] text-[.75em]">
-                  Balance: 10.000 ETH
+                  Balance: {balance} STRK
                 </p>
               </div>
             </div>
             <button
               disabled={!amount}
+              onClick={async (e) => {
+                e.preventDefault();
+                await handleTransfer();
+              }}
               className=" bg-theme-green text-white py-3 px-6 rounded-[10px] w-full"
             >
-              Send
+              {loading ? "Sending..." : "Send"}
             </button>
           </div>
         </div>

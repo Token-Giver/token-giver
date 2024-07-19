@@ -1,14 +1,19 @@
 "use client";
 
 import CampaignLoader from "@/app/components/loading/CampaignLoader";
+import { ETH_SEPOLIA, STRK_SEPOLIA } from "@/app/utils/constant";
 import { fetchContentFromIPFS } from "@/app/utils/helper";
 import CalenderIcon from "@/svgs/CalenderIcon";
 import DonateIcon from "@/svgs/DonateIcon";
 import ProfileIcon from "@/svgs/ProfileIcon";
 import ShareIcon from "@/svgs/ShareIcon";
+import { useAccount, useContractRead } from "@starknet-react/core";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import token_abi from "../../../../../public/abi/token_abi.json";
+import { Contract, RpcProvider } from "starknet";
+import { formatCurrency } from "@/app/utils/currency";
 
 const page = ({
   params,
@@ -16,7 +21,26 @@ const page = ({
   params: { name: string; address: string; cid: string };
 }) => {
   const router = useRouter();
-  console.log(params);
+  const [balance, setBalance] = useState(0);
+  const provider = new RpcProvider({
+    nodeUrl: "https://starknet-sepolia.public.blastapi.io",
+  });
+  let eth_contract = new Contract(token_abi, ETH_SEPOLIA, provider);
+
+  let strk_contract = new Contract(token_abi, STRK_SEPOLIA, provider);
+
+  async function fetchBalances() {
+    try {
+      const strk = await strk_contract.balanceOf(params.address);
+      // @ts-ignore
+      const strkBalance = formatCurrency(strk?.balance?.low.toString());
+      setBalance(strkBalance || 0);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  fetchBalances();
 
   const donateNow = () => {
     if (params.address && params.cid) {
@@ -44,6 +68,7 @@ const page = ({
         try {
           const data = await fetchContentFromIPFS(params.cid);
           console.log(data);
+
           if (data) {
             const timestamp = data.createdAt || "12 July 2024";
             const date = new Date(timestamp * 1000);
@@ -94,9 +119,9 @@ const page = ({
               <div className="flex flex-col gap-8 w-full md:w-[85%] md:mx-auto  lg:hidden">
                 <div className="flex flex-col gap-4">
                   <p>
-                    <span className="text-[2rem]">$20</span> raised of $
-                    {campaignDetails.target || 4000}
-                    target
+                    <span className="text-[2rem]">{balance} STRK</span> raised
+                    of
+                    {campaignDetails.target || 4000}STRK target
                   </p>
                   <div className="">
                     <div className="w-full h-[.25rem] mb-2 relative">
@@ -185,8 +210,8 @@ const page = ({
             <div className="hidden sticky top-8 bg-off-white p-8  rounded-[10px] w-[35%] h-fit lg:flex flex-col gap-8 shadow-small ">
               <div className="flex flex-col gap-4">
                 <p>
-                  <span className="text-[2rem]">$20</span> raised of $
-                  {campaignDetails.target || "4000"} target
+                  <span className="text-[2rem]">{balance} STRK</span> raised of
+                  {campaignDetails.target || "4000"} STRK target
                 </p>
                 <div className="">
                   <div className="w-full h-[.25rem] mb-2 relative">
