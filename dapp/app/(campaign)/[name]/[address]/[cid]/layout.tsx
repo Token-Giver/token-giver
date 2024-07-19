@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 export const generateMetadata = async ({
   params,
 }: {
-  params: { name: string; token_id: string; address: string };
+  params: { name: string; address: string; cid: string };
 }): Promise<Metadata> => {
   const campaignName = params.name;
 

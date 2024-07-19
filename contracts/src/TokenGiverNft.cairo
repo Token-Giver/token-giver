@@ -37,7 +37,8 @@ pub mod TokenGiverNFT {
     // *************************************************************************
     //                             IMPORTS
     // *************************************************************************
-    use starknet::{ContractAddress, get_caller_address};
+    use openzeppelin::token::erc721::interface::IERC721Metadata;
+    use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
     use core::num::traits::zero::Zero;
     use tokengiver::interfaces::ITokenGiverNft;
     use openzeppelin::{
@@ -83,6 +84,7 @@ pub mod TokenGiverNFT {
         ownable: OwnableComponent::Storage,
         admin: ContractAddress,
         last_minted_id: u256,
+        mint_timestamp: LegacyMap<u256, u64>,
         user_token_id: LegacyMap<ContractAddress, u256>,
     }
 
@@ -109,25 +111,30 @@ pub mod TokenGiverNFT {
         self
             .erc721
             .initializer(
-                "TokenGiverNFT", "TGN", "ipfs://QmTcHng6M9yj2pfKbDdzCnJrmdW7tVSDwbYuoshB4UYfmY/"
+                "TESTNFT1.0",
+                "TNFT1",
+                "ipfs://QmdQzbQSgsZAZCAbnW38PUJatkCzDRjz4rBCvSYqkvd2rH/"
             );
     }
 
     #[abi(embed_v0)]
     impl TokenGiverImpl of ITokenGiverNft::ITokenGiverNft<ContractState> {
         fn mint_token_giver_nft(ref self: ContractState, address: ContractAddress) {
-            let balance = self.erc721.balance_of(address);
-            assert(balance.is_zero(), 'ALREADY MINTED');
-
             let mut token_id = self.last_minted_id.read() + 1;
             self.erc721._mint(address, token_id);
+            let timestamp: u64 = get_block_timestamp();
 
             self.user_token_id.write(address, token_id);
             self.last_minted_id.write(token_id);
+            self.mint_timestamp.write(token_id, timestamp);
         }
 
         fn get_user_token_id(self: @ContractState, user: ContractAddress) -> u256 {
             self.user_token_id.read(user)
+        }
+
+        fn get_token_mint_timestamp(self: @ContractState, token_id: u256) -> u64 {
+            self.mint_timestamp.read(token_id)
         }
 
         fn get_last_minted_id(self: @ContractState) -> u256 {

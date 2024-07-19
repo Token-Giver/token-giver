@@ -9,17 +9,19 @@ type CardType = {
   imageAltText?: string;
   location: string;
   progress: number;
-  contract_address: string;
+  campaign_address: string;
   token_id: string;
+  cid: string;
 };
 
 const Card = ({
+  cid,
   causeName,
   imageSrc,
   location,
   progress,
   imageAltText,
-  contract_address,
+  campaign_address,
   token_id,
 }: CardType) => {
   const router = useRouter();
@@ -30,7 +32,7 @@ const Card = ({
       .replace(/ /g, "-")
       .toLocaleLowerCase()
       .replace(/-+/g, "-");
-    router.push(`/${path}/${token_id}/${contract_address}`);
+    router.push(`${path}/${campaign_address}/${cid}`);
   };
 
   return (

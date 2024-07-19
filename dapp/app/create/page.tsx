@@ -6,9 +6,18 @@ import StepTwo from "./components/StepTwo";
 import { InputDateType } from "@/types";
 import StepThree from "./components/StepThree";
 import Logo from "@/svgs/Logo";
-
+import campaign_contract_abi from "../../public/abi/campaign_abi.json";
+import nft_contract_abi from "../../public/abi/nft_abi.json";
+import { CallData, Contract, RpcProvider, cairo } from "starknet";
+import {
+  CAMPAIGN_CONTRACT_ADDRESS,
+  IMPLEMENTATION_HASH,
+  REGISTRY_HASH,
+  TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
+  bearer,
+} from "../utils/data";
 const Page = () => {
-  const { address } = useAccount();
+  const account: any = useAccount();
   const [step, setStep] = useState({
     number: 1,
     text: "First connect your wallet",
@@ -22,8 +31,6 @@ const Page = () => {
     beneficiary: "",
     location: "",
   });
-  const [cid, setCid] = useState("");
-  const [uploading, setUploading] = useState(false);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -47,37 +54,139 @@ const Page = () => {
     });
   };
 
-  const uploadFileToPinata = async ({
-    fileToUpload,
-  }: {
-    fileToUpload: File;
-  }) => {
+  const provider = new RpcProvider({
+    nodeUrl: "https://starknet-sepolia.public.blastapi.io",
+  });
+
+  let campaign_contract = new Contract(
+    campaign_contract_abi,
+    CAMPAIGN_CONTRACT_ADDRESS,
+    provider
+  );
+
+  let nft_contract = new Contract(
+    nft_contract_abi,
+    TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
+    provider
+  );
+
+  useEffect(() => {
+    async function dfs() {
+      const campaignnnn = await campaign_contract.get_campaigns();
+
+      console.log(campaignnnn, "all campaigns");
+    }
+
+    dfs();
+  }, []);
+
+  async function testCreate() {
     try {
-      setUploading(true);
-      const data = new FormData();
-      data.set("file", fileToUpload);
-      const res = await fetch(
-        `https://api.pinata.cloud/pinning/pinFileToIPFS`,
+      campaign_contract.connect(account.account);
+      const last_minted_id = await nft_contract.get_last_minted_id();
+      const salt = Math.floor(Math.random() * 9999)
+        .toString()
+        .padStart(4, "0");
+      console.log(salt, "salt");
+
+      // CREATE CAMAPAIGN -> campaign address
+      const create_campaign_res = await campaign_contract.create_campaign(
+        CallData.compile([
+          TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
+          REGISTRY_HASH,
+          IMPLEMENTATION_HASH,
+          salt,
+          account.address,
+        ])
+      );
+      const txnDet = await provider.waitForTransaction(
+        create_campaign_res.transaction_hash
+      );
+      console.log(txnDet, "txn details");
+      console.log(create_campaign_res, "create campaign response");
+
+      // Upload Campaign NFT image to pinata
+      if (!inputData.image) {
+        alert("No file selected");
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append("file", inputData.image);
+
+      const image_upload_res = await fetch(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${process.env.NEXT_PUBLIC_PINATA_API_KEY}`,
+            Authorization: `Bearer ${bearer}`,
           },
-          body: data,
+          body: formData,
         }
       );
-      const resData = await res.json();
-      setCid(resData.IpfsHash);
-      setUploading(false);
-    } catch (e) {
-      console.log(e);
-      setUploading(false);
-      alert("Trouble uploading file");
+
+      const image_upload_resData = await image_upload_res.json();
+      console.log(image_upload_resData, "image upload response");
+
+      // Create new Metadata URI JSON
+      let new_metadata = JSON.stringify({
+        id: Number(last_minted_id) + 1,
+        image: `ipfs://${image_upload_resData.IpfsHash}/`,
+        name: inputData.name,
+        description: inputData.description,
+        target: inputData.target,
+        organizer: inputData.organizer,
+        beneficiary: inputData.beneficiary,
+        location: inputData.location,
+        campaign_address: txnDet.events.at(1).from_address,
+      });
+
+      // Upload new MetadataURI JSON to Pinata
+      const metadata_upload_res = await fetch(
+        "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${bearer}`,
+          },
+          body: new_metadata,
+        }
+      );
+
+      const metadata_upload_resData = await metadata_upload_res.json();
+      console.log(metadata_upload_resData, "uploaded metadata uri");
+
+      // Call set_metadata_uri function
+      campaign_contract.connect(account.account);
+      const set_campaign_metadata_res =
+        await campaign_contract.set_campaign_metadata_uri(
+          CallData.compile([
+            txnDet.events.at(1).from_address,
+            `ipfs://${metadata_upload_resData.IpfsHash}/`,
+          ])
+        );
+
+      console.log(set_campaign_metadata_res, "set campaign metadata response");
+      const formatAnswer = {
+        campaign_address: "string",
+        campaign_owner: "string",
+        metadata_URI: "string",
+      };
+
+      // const gvfdc = await campaign_contract.get_campaign(
+      //   txnDet.events.at(1).from_address,
+      //   { formatResponse: formatAnswer }
+      // );
+
+      // console.log(gvfdc, "hnndg");
+    } catch (err) {
+      console.log(err);
     }
-  };
+  }
 
   useEffect(() => {
-    if (address) {
+    if (account.address) {
       setStep(() => {
         return {
           text: "Tell us about your campaign",
@@ -92,7 +201,7 @@ const Page = () => {
         };
       });
     }
-  }, [address]);
+  }, [account.address]);
 
   return (
     <main className="min-h-screen  flex justify-between bg-theme-green md:mb-10 relative">
@@ -119,14 +228,14 @@ const Page = () => {
           <StepTwo
             inputData={inputData}
             handleInputChange={handleInputChange}
-            address={address}
+            address={account.address}
             step={step}
             setInputData={setInputData}
           />
           <StepThree
             inputData={inputData}
             handleInputChange={handleInputChange}
-            address={address}
+            address={account.address}
             step={step}
           />
         </form>
@@ -138,7 +247,7 @@ const Page = () => {
           }`}
         >
           <button
-            disabled={!address}
+            disabled={!account.address}
             onClick={() =>
               setStep(() => {
                 return {
@@ -155,7 +264,9 @@ const Page = () => {
           </button>
           <div className="flex">
             <button
-              disabled={!inputData.name || !inputData.description || !address}
+              disabled={
+                !inputData.name || !inputData.description || !account.address
+              }
               onClick={() =>
                 setStep(() => {
                   return {
@@ -171,6 +282,9 @@ const Page = () => {
               Continue
             </button>
             <button
+              onClick={() => {
+                testCreate();
+              }}
               disabled={!inputData.target || !inputData.location}
               className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
                 step.number === 3 ? "block" : "hidden"
