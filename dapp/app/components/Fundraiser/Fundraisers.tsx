@@ -5,13 +5,17 @@ import CardLoader from "@/app/components/loading/CardLoader";
 import { useRouter } from "next/navigation";
 import { COLLECTION_CONTRACT_ADDRESS } from "@/address";
 import campaign_contract_abi from "../../../public/abi/campaign_abi.json";
+import token_abi from "../../../public/abi/token_abi.json";
 import { Contract, RpcProvider } from "starknet";
 import { CAMPAIGN_CONTRACT_ADDRESS } from "@/app/utils/data";
 import { fetchContentFromIPFS } from "@/app/utils/helper";
+import { STRK_SEPOLIA } from "@/app/utils/constant";
+import { formatCurrency } from "@/app/utils/currency";
 
 const Fundraisers = () => {
   const router = useRouter();
   const [collections, setCollections] = useState<any[]>([]);
+  const [balance, setBalance] = useState("0");
   const [loading, setLoading] = useState(true);
   const handleRouteToCampaigns = () => {
     router.push("/campaigns");
@@ -63,14 +67,15 @@ const Fundraisers = () => {
                   cid={data.cid}
                   causeName={data.name || "Unknown Cause"}
                   imageSrc={
-                    `https://ipfs.io/ipfs/${data.image.slice(7, -1)}` ||
+                    `https://ipfs.io/ipfs/${data.image?.slice(7, -1)}` ||
                     "/default-image.webp"
                   }
                   location={data.location}
+                  progress={0}
                   key={idx}
-                  progress={43}
                   token_id={data.id}
                   campaign_address={data.campaign_address || "0x0"}
+                  target={data.target}
                 />
               );
             })}

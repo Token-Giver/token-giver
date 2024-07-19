@@ -12,11 +12,11 @@ const Hero = () => {
     <section id="hero" className="flex flex-col justify-between  items-center">
       <div>
         <h1 className=" font-semibold mb-4 text-center">
-          Lorem ipsum dolor sit amet, adipisicing elit.
+          Transform Charity with Blockchain.
         </h1>
         <p className="text-center">
-          Lorem ipsum dolor sit, amet consectetur adipisicing elit. Asperiores
-          minus sit itaque odio molestiae porro repudiandae.{" "}
+          Create impactful campaigns and donate through innovative NFTs. Token
+          Giver empowers every act of kindness.
         </p>
       </div>
       <div>
