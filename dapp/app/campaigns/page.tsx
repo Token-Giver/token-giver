@@ -3,6 +3,10 @@ import { useEffect, useState } from "react";
 import Card from "../components/Fundraiser/Card";
 import CardLoader from "../components/loading/CardLoader";
 import { COLLECTION_CONTRACT_ADDRESS } from "@/address";
+import { Contract, RpcProvider } from "starknet";
+import campaign_contract_abi from "../../public/abi/campaign_abi.json";
+import { CAMPAIGN_CONTRACT_ADDRESS } from "../utils/data";
+import { fetchContentFromIPFS } from "../utils/helper";
 
 const page = () => {
   const [cursor, setCursor] = useState(null);
@@ -11,26 +15,26 @@ const page = () => {
   const [cachedCollections, setCachedCollections] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
+  const provider = new RpcProvider({
+    nodeUrl: "https://starknet-sepolia.public.blastapi.io",
+  });
+
+  let campaign_contract = new Contract(
+    campaign_contract_abi,
+    CAMPAIGN_CONTRACT_ADDRESS,
+    provider
+  );
+
   const fetchCampaigns = async () => {
-    const apiKey = process.env.NEXT_PUBLIC_ARK_API_KEY || "";
-
-    const endpoint = `https://testnet-api.arkproject.dev/v1/tokens/${COLLECTION_CONTRACT_ADDRESS}?limit=24`;
-    const cursorEndpoint = `https://testnet-api.arkproject.dev/v1/tokens/${COLLECTION_CONTRACT_ADDRESS}?cursor=${cursor}&limit=12`;
-
     try {
-      const response = await fetch(cursor ? cursorEndpoint : endpoint, {
-        method: "GET",
-        headers: {
-          "x-api-key": apiKey,
-        },
-      });
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-      const data = await response.json();
-      setCollections(data.result);
+      const campaigns = await campaign_contract.get_campaigns();
+      const campaignPromises = campaigns.map((cid: string) =>
+        fetchContentFromIPFS(cid.slice(7, -1))
+      );
+      const campaignData = await Promise.all(campaignPromises);
+      setCollections(campaignData.filter((data) => data !== null));
+      console.log(campaignData, "campaign data");
       setLoading(false);
-      setCursor(data.cursor);
     } catch (error) {
       console.log(error);
     }
@@ -65,20 +69,22 @@ const page = () => {
         {loading
           ? Array.from({ length: 12 }).map((_, idx) => <CardLoader key={idx} />)
           : cachedCollections.map((nft, idx) => {
-              const { name, image } = nft.metadata?.normalized || {};
-              const imageUrl = image?.replace("ipfs://", "");
-              const { contract_address, token_id } = nft || {};
+              const { name, image, campaign_address, id, location, cid } =
+                nft || {};
+              console.log(nft);
               return (
                 <Card
                   causeName={name || "Unknown Cause"}
                   imageSrc={
-                    `https://ipfs.io/ipfs/${imageUrl}` || "/default-image.webp"
+                    `https://ipfs.io/ipfs/${image.slice(7, -1)}` ||
+                    "/default-image.webp"
                   }
-                  location="Abuja,Nigeria"
+                  location={location}
                   key={idx}
                   progress={43}
-                  token_id={token_id}
-                  contract_address={contract_address}
+                  token_id={id}
+                  campaign_address={campaign_address || "0x0"}
+                  cid={cid}
                 />
               );
             })}

@@ -1,6 +1,7 @@
 "use client";
 
 import CampaignLoader from "@/app/components/loading/CampaignLoader";
+import { fetchContentFromIPFS } from "@/app/utils/helper";
 import CalenderIcon from "@/svgs/CalenderIcon";
 import DonateIcon from "@/svgs/DonateIcon";
 import ProfileIcon from "@/svgs/ProfileIcon";
@@ -12,16 +13,17 @@ import { useEffect, useState } from "react";
 const page = ({
   params,
 }: {
-  params: { name: string; token_id: string; address: string };
+  params: { name: string; address: string; cid: string };
 }) => {
   const router = useRouter();
+  console.log(params);
 
   const donateNow = () => {
-    if (params.token_id && params.address) {
-      const tokenId = params.token_id;
-      const contractAddress = params.address;
+    if (params.address && params.cid) {
+      const campaignAddress = params.address;
       const campaignName = params.name;
-      router.push(`/${campaignName}/${tokenId}/${contractAddress}/donate`);
+      const cid = params.cid;
+      router.push(`/${campaignName}/${campaignAddress}/${cid}/donate`);
     }
   };
 
@@ -30,45 +32,37 @@ const page = ({
     image: "/default-image.webp",
     description: "",
     date: "",
+    organizer: "",
+    beneficiary: "",
+    location: "",
+    target: "",
   });
 
   useEffect(() => {
-    if (params.token_id && params.address) {
-      const tokenId = params.token_id;
-      const contractAddress = params.address;
-      const apiKey = process.env.NEXT_PUBLIC_ARK_API_KEY || "";
-      const endpoint = `https://testnet-api.arkproject.dev/v1/tokens/${contractAddress}/${tokenId}`;
+    if (params.address && params.cid) {
       const fetchNFT = async () => {
         try {
-          if (contractAddress && tokenId) {
-            const response = await fetch(endpoint, {
-              method: "GET",
-              headers: {
-                "x-api-key": apiKey,
-              },
+          const data = await fetchContentFromIPFS(params.cid);
+          console.log(data);
+          if (data) {
+            const timestamp = data.createdAt || "12 July 2024";
+            const date = new Date(timestamp * 1000);
+            const day = date.getDate();
+            const month = date.toLocaleString("default", { month: "long" });
+            const year = date.getFullYear();
+            const formattedDate = `Created ${day} ${month} ${year}`;
+            const imageUrl = data.image.slice(7, -1);
+            setCampaignDetails({
+              name: data.name || "",
+              description: data.description || "",
+              image:
+                `https://ipfs.io/ipfs/${imageUrl}` || "/default-image.webp",
+              date: formattedDate,
+              organizer: data.organizer,
+              beneficiary: data.beneficiary,
+              location: data.location,
+              target: data.target,
             });
-            if (!response.ok) {
-              throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-
-            if (data) {
-              const timestamp = data.result.mint_info.timestamp;
-              const date = new Date(timestamp * 1000);
-              const day = date.getDate();
-              const month = date.toLocaleString("default", { month: "long" });
-              const year = date.getFullYear();
-              const formattedDate = `Created ${day} ${month} ${year}`;
-              const img = data.result.metadata.normalized.image;
-              const imageUrl = img.replace("ipfs://", "");
-              setCampaignDetails({
-                name: data.result.metadata.normalized.name || "",
-                description: data.result.metadata.normalized.description,
-                image:
-                  `https://ipfs.io/ipfs/${imageUrl}` || "/default-image.webp",
-                date: formattedDate,
-              });
-            }
           }
         } catch (error) {
           console.log(error);
@@ -100,7 +94,8 @@ const page = ({
               <div className="flex flex-col gap-8 w-full md:w-[85%] md:mx-auto  lg:hidden">
                 <div className="flex flex-col gap-4">
                   <p>
-                    <span className="text-[2rem]">$20</span> raised of $300
+                    <span className="text-[2rem]">$20</span> raised of $
+                    {campaignDetails.target || 4000}
                     target
                   </p>
                   <div className="">
@@ -158,9 +153,9 @@ const page = ({
                       <ProfileIcon />
                     </div>
                     <div className="flex flex-col gap-2">
-                      <p className="font-bold">Stephanie Ezinne</p>
+                      <p className="font-bold">{campaignDetails.organizer}</p>
                       <p>Organizer</p>
-                      <p>Abuja</p>
+                      <p>{campaignDetails.location}</p>
                     </div>
                   </div>
                   <p className="text-[1.5em] font-extralight hidden md:block">
@@ -174,7 +169,7 @@ const page = ({
                       <ProfileIcon />
                     </div>
                     <div className="flex flex-col gap-2">
-                      <p className="font-bold">Stephanie Ezinne</p>
+                      <p className="font-bold">{campaignDetails.beneficiary}</p>
                       <p>Beneficiary</p>
                     </div>
                   </div>
@@ -190,7 +185,8 @@ const page = ({
             <div className="hidden sticky top-8 bg-off-white p-8  rounded-[10px] w-[35%] h-fit lg:flex flex-col gap-8 shadow-small ">
               <div className="flex flex-col gap-4">
                 <p>
-                  <span className="text-[2rem]">$20</span> raised of $300 target
+                  <span className="text-[2rem]">$20</span> raised of $
+                  {campaignDetails.target || "4000"} target
                 </p>
                 <div className="">
                   <div className="w-full h-[.25rem] mb-2 relative">

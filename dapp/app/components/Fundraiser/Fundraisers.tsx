@@ -4,6 +4,10 @@ import Card from "./Card";
 import CardLoader from "@/app/components/loading/CardLoader";
 import { useRouter } from "next/navigation";
 import { COLLECTION_CONTRACT_ADDRESS } from "@/address";
+import campaign_contract_abi from "../../../public/abi/campaign_abi.json";
+import { Contract, RpcProvider } from "starknet";
+import { CAMPAIGN_CONTRACT_ADDRESS } from "@/app/utils/data";
+import { fetchContentFromIPFS } from "@/app/utils/helper";
 
 const Fundraisers = () => {
   const router = useRouter();
@@ -13,25 +17,27 @@ const Fundraisers = () => {
     router.push("/campaigns");
   };
 
+  const provider = new RpcProvider({
+    nodeUrl: "https://starknet-sepolia.public.blastapi.io",
+  });
+
+  let campaign_contract = new Contract(
+    campaign_contract_abi,
+    CAMPAIGN_CONTRACT_ADDRESS,
+    provider
+  );
+
   useEffect(() => {
     const fetchCampaigns = async () => {
-      const apiKey = process.env.NEXT_PUBLIC_ARK_API_KEY || "";
-      const endpoint = `https://testnet-api.arkproject.dev/v1/tokens/${COLLECTION_CONTRACT_ADDRESS}?limit=12`;
-
       try {
-        const response = await fetch(endpoint, {
-          method: "GET",
-          headers: {
-            "x-api-key": apiKey,
-          },
-        });
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        setCollections(data.result);
-        console.log(data);
-
+        const campaigns: any = await campaign_contract.get_campaigns();
+        console.log(campaigns, "campdsf");
+        const campaignPromises = campaigns.map((cid: string) =>
+          fetchContentFromIPFS(cid.slice(7, -1))
+        );
+        const campaignData = await Promise.all(campaignPromises);
+        setCollections(campaignData.filter((data) => data !== null));
+        console.log(campaignData, "campaign data");
         setLoading(false);
       } catch (error) {
         console.log(error);
@@ -51,21 +57,20 @@ const Fundraisers = () => {
       >
         {loading
           ? Array.from({ length: 12 }).map((_, idx) => <CardLoader key={idx} />)
-          : collections.map((nft, idx) => {
-              const { name, image } = nft.metadata?.normalized || {};
-              const imageUrl = image?.replace("ipfs://", "");
-              const { contract_address, token_id } = nft || {};
+          : collections.map((data, idx) => {
               return (
                 <Card
-                  causeName={name || "Unknown Cause"}
+                  cid={data.cid}
+                  causeName={data.name || "Unknown Cause"}
                   imageSrc={
-                    `https://ipfs.io/ipfs/${imageUrl}` || "/default-image.webp"
+                    `https://ipfs.io/ipfs/${data.image.slice(7, -1)}` ||
+                    "/default-image.webp"
                   }
-                  location="Abuja,Nigeria"
+                  location={data.location}
                   key={idx}
                   progress={43}
-                  token_id={token_id}
-                  contract_address={contract_address}
+                  token_id={data.id}
+                  campaign_address={data.campaign_address || "0x0"}
                 />
               );
             })}
