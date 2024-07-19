@@ -70,16 +70,6 @@ const Page = () => {
     provider
   );
 
-  useEffect(() => {
-    async function dfs() {
-      const campaignnnn = await campaign_contract.get_campaigns();
-
-      console.log(campaignnnn, "all campaigns");
-    }
-
-    dfs();
-  }, []);
-
   async function testCreate() {
     try {
       campaign_contract.connect(account.account);
@@ -139,6 +129,7 @@ const Page = () => {
         beneficiary: inputData.beneficiary,
         location: inputData.location,
         campaign_address: txnDet.events.at(1).from_address,
+        created_at: new Date(),
       });
 
       // Upload new MetadataURI JSON to Pinata
@@ -168,18 +159,6 @@ const Page = () => {
         );
 
       console.log(set_campaign_metadata_res, "set campaign metadata response");
-      const formatAnswer = {
-        campaign_address: "string",
-        campaign_owner: "string",
-        metadata_URI: "string",
-      };
-
-      // const gvfdc = await campaign_contract.get_campaign(
-      //   txnDet.events.at(1).from_address,
-      //   { formatResponse: formatAnswer }
-      // );
-
-      // console.log(gvfdc, "hnndg");
     } catch (err) {
       console.log(err);
     }
