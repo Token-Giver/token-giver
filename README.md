@@ -10,7 +10,7 @@
     View Demo
     </a>
     .
-    <a>Report Bug</a>
+    <a href="https://github.com/othneildrew/Best-README-Template/issues/new">Report Bug</a>
      ·
     <a href="https://github.com/othneildrew/Best-README-Template/issues/new">Request Feature</a>
   </p>
