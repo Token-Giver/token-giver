@@ -1,6 +1,6 @@
 <a id="readme-top"></a>
 
-# Token Giver ![product logo](/dapp/public/bx--donate-heart.png)
+# Token Giver ![product logo](./dapp/public/bx--donate-heart.png)
 
 <div align="center">
   <p align="center">
@@ -48,8 +48,6 @@
 
 ## About The Project
 
-#
-
 <br/>
 
 ![Product screen shot](dapp/public/project-screenshot.png)
@@ -63,27 +61,16 @@ This is a decentralized application allows users to mint a campaign NFT and depl
 
 ## Features
 
-#
-
 - **Start Campaign**: Users can mint unique campaign NFTs, then automatically deploy a TBA for campaign NFT .
 - **Token Donations**: Facilitate donations in STRK tokens directly to the TBA associated with each campaign NFT.
 
-<br/>
-<br/>
-
 ## Built With
-
-#
 
 - **Frontend**: Next.js, Starknet React
 - **Smart Contracts**: Cairo
 - **Backend**: Starknet TBA SDK
 
-<br/>
-<br/>
- 
 ## Getting Started
-#
 
 Follow these steps to set up and run the project locally.
 
@@ -121,46 +108,25 @@ npm run dev
 
 The app will be available at http://localhost:3000.
 
-<br/>
-<br/>
-
 <!-- USAGE-->
-
 ## Usage
-
-#
 
 1. **Start a Campaign**: Navigate to the "Start a campaign" button and follow the instructions to mint your campaign NFT.
 2. **Deploying a TBA**: Once the NFT is minted, the app will automatically deploy a Token Bound Account (TBA) for it.
 3. **Donating Tokens**: Users can donate STRK tokens to the TBA associated with each campaign NFT through the platform by clicking of the campaign card.
 
-<br/>
-<br/>
-
 ## Smart Contracts
-
-#
 
 The smart contracts are written in Cairo and deployed on the Starknet network. You can find the contract files in the contracts directory.
 
-<br/>
-<br/>
-
 ## Authors
-
-#
 
 - Stephanie Egbuonu ✨
 - Oshioke Salaki 🦎
 
-<br/>
-<br/>
-
 <!-- ACKNOWLEDGMENTS -->
 
 ## Acknowledgments
-
-#
 
 Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
 
