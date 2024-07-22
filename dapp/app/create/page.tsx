@@ -129,7 +129,8 @@ const Page = () => {
         organizer: inputData.organizer,
         beneficiary: inputData.beneficiary,
         location: inputData.location,
-        campaign_address: txnDet.events.at(1).from_address,
+        campaign_address:
+          txnDet.isSuccess() && txnDet.events.at(1)?.from_address,
         created_at: new Date(),
       });
 
@@ -154,7 +155,7 @@ const Page = () => {
       const set_campaign_metadata_res =
         await campaign_contract.set_campaign_metadata_uri(
           CallData.compile([
-            txnDet.events.at(1).from_address,
+            txnDet.isSuccess() && txnDet.events[1].from_address,
             `ipfs://${metadata_upload_resData.IpfsHash}/`,
           ])
         );
