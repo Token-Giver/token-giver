@@ -111,9 +111,7 @@ pub mod TokenGiverNFT {
         self
             .erc721
             .initializer(
-                "TESTNFT1.0",
-                "TNFT1",
-                "ipfs://QmdQzbQSgsZAZCAbnW38PUJatkCzDRjz4rBCvSYqkvd2rH/"
+                "TokenGiverNFT", "TGNFT", "ipfs://QmdQzbQSgsZAZCAbnW38PUJatkCzDRjz4rBCvSYqkvd2rH/"
             );
     }
 

@@ -25,7 +25,7 @@ mod CampaignComponent {
     #[storage]
     struct Storage {
         campaign: LegacyMap<ContractAddress, Campaign>,
-        campaigns:  LegacyMap<u16, ContractAddress>,
+        campaigns: LegacyMap<u16, ContractAddress>,
         count: u16
     }
 
@@ -124,12 +124,13 @@ mod CampaignComponent {
             let count = self.count.read();
             let mut i: u16 = 1;
 
-            while i < count + 1 {
-                let campaignAddress: ContractAddress = self.campaigns.read(i);
-                let campaign: Campaign = self.campaign.read(campaignAddress);
-                campaigns.append(campaign);
-                i += 1;
-            };
+            while i < count
+                + 1 {
+                    let campaignAddress: ContractAddress = self.campaigns.read(i);
+                    let campaign: Campaign = self.campaign.read(campaignAddress);
+                    campaigns.append(campaign);
+                    i += 1;
+                };
             campaigns
         }
     }

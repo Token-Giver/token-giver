@@ -1,7 +1,7 @@
 use starknet::ContractAddress;
 use tokengiver::base::types::Campaign;
 // *************************************************************************
-//                              INTERFACE of KARST NFT
+//                              INTERFACE of TOKEN GIVER NFT
 // *************************************************************************
 
 #[starknet::interface]

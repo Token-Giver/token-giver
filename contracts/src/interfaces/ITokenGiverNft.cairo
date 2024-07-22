@@ -1,6 +1,6 @@
 use starknet::ContractAddress;
 // *************************************************************************
-//                              INTERFACE of KARST NFT
+//                              INTERFACE of TOKEN GIVER NFT
 // *************************************************************************
 #[starknet::interface]
 pub trait ITokenGiverNft<TState> {
