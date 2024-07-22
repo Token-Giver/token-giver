@@ -1,6 +1,5 @@
 "use client";
 import HeartIcon from "@/svgs/HeartIcon";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 const Hero = () => {
@@ -9,7 +8,10 @@ const Hero = () => {
     router.push("/create");
   };
   return (
-    <section id="hero" className="flex flex-col justify-between  items-center">
+    <section
+      id="hero"
+      className="container mx-auto flex flex-col justify-between  items-center"
+    >
       <div>
         <h1 className=" font-semibold mb-4 text-center">
           Transform Charity with Blockchain.
@@ -30,9 +32,8 @@ const Hero = () => {
       <div className="w-screen lg:min-w-[1024px] lg:w-[80%] h-[65%]">
         <div className=" w-full h-full grid grid-cols-3 gap-1 px-4 mt-8  md:hidden">
           <div className="h-full rounded-tl-[150px]">
-            <Image
+            <img
               className=" rounded-tl-[150px] object-cover w-full h-full group-hover:scale-105 transition-all"
-              loader={() => "/4.webp"}
               src={"/4.webp"}
               alt=""
               width={400}
@@ -45,9 +46,8 @@ const Hero = () => {
           </div>
 
           <div className=" w-full h-full rounded-r-full">
-            <Image
+            <img
               className="rounded-r-full object-cover w-full h-full group-hover:scale-105 transition-all"
-              loader={() => "/3.webp"}
               src={"/3.webp"}
               alt=""
               width={400}
@@ -57,9 +57,8 @@ const Hero = () => {
         </div>
         <div className=" w-full h-full justify-between mt-8 px-4 md:p-8 gap-4 hidden md:flex">
           <div className="h-full w-[20%] rounded-tl-[150px] hidden md:block">
-            <Image
+            <img
               className=" rounded-tl-[150px] object-cover w-full h-full group-hover:scale-105 transition-all"
-              loader={() => "/4.webp"}
               src={"/4.webp"}
               alt=""
               width={400}
@@ -68,9 +67,8 @@ const Hero = () => {
           </div>
           <div className="grid grid-rows-2  grid-cols-5 gap-4 flex-1">
             <div className=" w-full h-full col-span-2 rounded-r-full">
-              <Image
+              <img
                 className="rounded-r-full object-cover w-full h-full group-hover:scale-105 transition-all"
-                loader={() => "/1.webp"}
                 src={"/1.webp"}
                 alt=""
                 width={400}
@@ -78,9 +76,8 @@ const Hero = () => {
               />
             </div>
             <div className=" w-full h-full col-span-3 rounded-l-full rounded-tr-full">
-              <Image
+              <img
                 className="rounded-l-full rounded-tr-full object-cover w-full h-full group-hover:scale-105 transition-all"
-                loader={() => "/2.webp"}
                 src={"/2.webp"}
                 alt=""
                 width={400}
@@ -88,9 +85,8 @@ const Hero = () => {
               />
             </div>
             <div className=" w-full h-full col-span-3 rounded-bl-[120px] rounded-tr-[120px]">
-              <Image
+              <img
                 className="rounded-bl-[120px] rounded-tr-[120px] object-cover w-full h-full group-hover:scale-105 transition-all"
-                loader={() => "/3.webp"}
                 src={"/3.webp"}
                 alt=""
                 width={400}
@@ -102,9 +98,8 @@ const Hero = () => {
             </div>
           </div>
           <div className=" h-full w-[20%] rounded-full">
-            <Image
+            <img
               className=" rounded-full object-cover w-full h-full group-hover:scale-105 transition-all"
-              loader={() => "/0.webp"}
               src={"/0.webp"}
               alt=""
               width={400}

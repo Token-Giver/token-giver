@@ -19,7 +19,7 @@ const ConnectButton = () => {
           if (address) disconnect();
         }}
         popoverTarget={address ? "" : "connect-modal"}
-        className="border-solid border-[1px] border-theme-green text-theme-green py-2 px-6 rounded-[10px] w-fit justify-self-end self-end outline-none"
+        className="border-solid border-[1px] border-theme-green text-theme-green py-2 px-6 rounded-[10px] w-fit justify-self-end self-end "
       >
         {address ? shortenedAddress : "connect"}
       </button>

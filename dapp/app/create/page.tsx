@@ -16,6 +16,7 @@ import {
   TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
   bearer,
 } from "../utils/data";
+import Container from "../components/util/Container";
 const Page = () => {
   const account: any = useAccount();
   const [step, setStep] = useState({
@@ -128,7 +129,8 @@ const Page = () => {
         organizer: inputData.organizer,
         beneficiary: inputData.beneficiary,
         location: inputData.location,
-        campaign_address: txnDet.events.at(1).from_address,
+        campaign_address:
+          txnDet.isSuccess() && txnDet.events.at(1)?.from_address,
         created_at: new Date(),
       });
 
@@ -153,7 +155,7 @@ const Page = () => {
       const set_campaign_metadata_res =
         await campaign_contract.set_campaign_metadata_uri(
           CallData.compile([
-            txnDet.events.at(1).from_address,
+            txnDet.isSuccess() && txnDet.events[1].from_address,
             `ipfs://${metadata_upload_resData.IpfsHash}/`,
           ])
         );
@@ -184,95 +186,99 @@ const Page = () => {
 
   return (
     <main className="min-h-screen  flex justify-between bg-theme-green md:mb-10 relative">
-      <div className="w-[40%] items-center justify-center hidden md:flex">
-        <div className="flex flex-col gap-8 p-4">
-          <p className="font-bold text-white text-[1.5em]">
-            <Logo />
-          </p>
+      <Container className="my-auto w-[40%] hidden md:flex">
+        <div className="items-center justify-center ">
+          <div className="flex flex-col gap-8 p-4">
+            <p className="font-bold text-white text-[1.5em]">
+              <Logo />
+            </p>
 
-          <h2 className="text-amber-400">Start your fundraising journey!</h2>
-          <div className="flex gap-2 items-center text-white">
-            <span className="">
-              <span className="text-[1.8em] mr-2">{step.number}</span>/ 3
-            </span>
-            <p className=" mt-3 ">{step.text}</p>
+            <h2 className="text-amber-400">Start your fundraising journey!</h2>
+            <div className="flex gap-2 items-center text-white">
+              <span className="">
+                <span className="text-[1.8em] mr-2">{step.number}</span>/ 3
+              </span>
+              <p className=" mt-3 ">{step.text}</p>
+            </div>
           </div>
         </div>
-      </div>
+      </Container>
 
-      <div className=" w-full bg-off-white md:rounded-tl-[50px] md:shadow-hero-shadow py-10 px-4 lg:py-10 lg:px-20 md:w-[60%] flex flex-col justify-between ">
-        <ConnectButton />
-        <form className="flex flex-col gap-4  md:p-4" action="">
-          <h2>Create your campaign</h2>
-          <StepTwo
-            inputData={inputData}
-            handleInputChange={handleInputChange}
-            address={account.address}
-            step={step}
-            setInputData={setInputData}
-          />
-          <StepThree
-            inputData={inputData}
-            handleInputChange={handleInputChange}
-            address={account.address}
-            step={step}
-          />
-        </form>
-        <div
-          className={`flex mt-4  md:p-4  ${
-            step.number === 2 || step.number === 1
-              ? "justify-end"
-              : "justify-between"
-          }`}
-        >
-          <button
-            disabled={!account.address}
-            onClick={() =>
-              setStep(() => {
-                return {
-                  text: "Tell us about your campaign",
-                  number: 2,
-                };
-              })
-            }
-            className={`text-theme-green text-[2em] ${
-              step.number === 2 || step.number === 1 ? "hidden" : "block"
-            } `}
+      <div className=" w-full bg-off-white md:rounded-tl-[50px] md:shadow-hero-shadow py-10 px-4 lg:py-10 lg:px-20 md:w-[60%] flex items-center ">
+        <Container className=" flex flex-col justify-between">
+          <ConnectButton />
+          <form className="flex flex-col gap-4  md:p-4" action="">
+            <h2>Create your campaign</h2>
+            <StepTwo
+              inputData={inputData}
+              handleInputChange={handleInputChange}
+              address={account.address}
+              step={step}
+              setInputData={setInputData}
+            />
+            <StepThree
+              inputData={inputData}
+              handleInputChange={handleInputChange}
+              address={account.address}
+              step={step}
+            />
+          </form>
+          <div
+            className={`flex mt-4  md:p-4  ${
+              step.number === 2 || step.number === 1
+                ? "justify-end"
+                : "justify-between"
+            }`}
           >
-            <span>&lt;</span>
-          </button>
-          <div className="flex">
             <button
-              disabled={
-                !inputData.name || !inputData.description || !account.address
-              }
+              disabled={!account.address}
               onClick={() =>
                 setStep(() => {
                   return {
-                    text: "Tell us about you and your goals",
-                    number: 3,
+                    text: "Tell us about your campaign",
+                    number: 2,
                   };
                 })
               }
-              className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
-                step.number === 3 ? "hidden" : "block"
+              className={`text-theme-green text-[2em] ${
+                step.number === 2 || step.number === 1 ? "hidden" : "block"
               } `}
             >
-              Continue
+              <span>&lt;</span>
             </button>
-            <button
-              onClick={() => {
-                testCreate();
-              }}
-              disabled={!inputData.target || !inputData.location}
-              className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
-                step.number === 3 ? "block" : "hidden"
-              } `}
-            >
-              Mint a campaign
-            </button>
+            <div className="flex">
+              <button
+                disabled={
+                  !inputData.name || !inputData.description || !account.address
+                }
+                onClick={() =>
+                  setStep(() => {
+                    return {
+                      text: "Tell us about you and your goals",
+                      number: 3,
+                    };
+                  })
+                }
+                className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
+                  step.number === 3 ? "hidden" : "block"
+                } `}
+              >
+                Continue
+              </button>
+              <button
+                onClick={() => {
+                  testCreate();
+                }}
+                disabled={!inputData.target || !inputData.location}
+                className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
+                  step.number === 3 ? "block" : "hidden"
+                } `}
+              >
+                Mint a campaign
+              </button>
+            </div>
           </div>
-        </div>
+        </Container>
       </div>
 
       <div className="bg-off-white h-[50px] p-8 w-full absolute bottom-[-64px] left-0 hidden md:block"></div>

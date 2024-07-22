@@ -11,6 +11,7 @@ import { CAMPAIGN_CONTRACT_ADDRESS } from "@/app/utils/data";
 import { fetchContentFromIPFS } from "@/app/utils/helper";
 import { STRK_SEPOLIA } from "@/app/utils/constant";
 import { formatCurrency } from "@/app/utils/currency";
+import Container from "../util/Container";
 
 const Fundraisers = () => {
   const router = useRouter();
@@ -53,41 +54,45 @@ const Fundraisers = () => {
 
   return (
     <section>
-      <h2 className="my-[5rem]">Browse Fundraisers</h2>
+      <Container>
+        <h2 className="my-[5rem]">Browse Fundraisers</h2>
 
-      <section
-        id="fundraisers"
-        className="grid gap-4  md:gap-8 lg:grid-cols-3 md:max-w-[800px] lg:max-w-none md:mx-auto  md:justify-center "
-      >
-        {loading
-          ? Array.from({ length: 12 }).map((_, idx) => <CardLoader key={idx} />)
-          : collections.map((data, idx) => {
-              return (
-                <Card
-                  cid={data.cid}
-                  causeName={data.name || "Unknown Cause"}
-                  imageSrc={
-                    `https://ipfs.io/ipfs/${data.image?.slice(7, -1)}` ||
-                    "/default-image.webp"
-                  }
-                  location={data.location}
-                  progress={0}
-                  key={idx}
-                  token_id={data.id}
-                  campaign_address={data.campaign_address || "0x0"}
-                  target={data.target}
-                />
-              );
-            })}
-      </section>
-      <div className=" flex justify-center">
-        <button
-          onClick={handleRouteToCampaigns}
-          className="px-6 py-2 border-solid border-[1px] ml-10 mt-10 h-fit border-[#127C56] rounded-[25px]"
+        <section
+          id="fundraisers"
+          className="grid gap-4  md:gap-8 lg:grid-cols-3 md:max-w-[800px] lg:max-w-none md:mx-auto  md:justify-center "
         >
-          Show more
-        </button>
-      </div>
+          {loading
+            ? Array.from({ length: 12 }).map((_, idx) => (
+                <CardLoader key={idx} />
+              ))
+            : collections.map((data, idx) => {
+                return (
+                  <Card
+                    cid={data.cid}
+                    causeName={data.name || "Unknown Cause"}
+                    imageSrc={
+                      `https://ipfs.io/ipfs/${data.image?.slice(7, -1)}` ||
+                      "/default-image.webp"
+                    }
+                    location={data.location}
+                    progress={0}
+                    key={idx}
+                    token_id={data.id}
+                    campaign_address={data.campaign_address || "0x0"}
+                    target={data.target}
+                  />
+                );
+              })}
+        </section>
+        <div className=" flex justify-center">
+          <button
+            onClick={handleRouteToCampaigns}
+            className="px-6 py-2 border-solid border-[1px] ml-10 mt-10 h-fit border-[#127C56] rounded-[25px]"
+          >
+            Show more
+          </button>
+        </div>
+      </Container>
     </section>
   );
 };
