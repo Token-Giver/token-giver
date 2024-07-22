@@ -24,7 +24,15 @@ const Fundraisers = () => {
           fetchContentFromIPFS(cid.slice(7, -1))
         );
         const campaignData = await Promise.all(campaignPromises);
-        setCollections(campaignData.filter((data) => data !== null));
+        setCollections(
+          campaignData
+            .filter((data) => data !== null)
+            .sort((a, b) => {
+              const dateA = new Date(a.created_at).getTime();
+              const dateB = new Date(b.created_at).getTime();
+              return dateB - dateA;
+            })
+        );
         console.log(campaignData, "campaign data");
         setLoading(false);
       } catch (error) {

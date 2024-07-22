@@ -26,7 +26,8 @@ mod CampaignComponent {
     struct Storage {
         campaign: LegacyMap<ContractAddress, Campaign>,
         campaigns: LegacyMap<u16, ContractAddress>,
-        count: u16
+        count: u16,
+        donation_count: LegacyMap<ContractAddress, u16>
     }
 
     // *************************************************************************
@@ -100,6 +101,13 @@ mod CampaignComponent {
             self.campaign.write(campaign_address, campaign);
         }
 
+        fn set_donation_count(
+            ref self: ComponentState<TContractState>, campaign_address: ContractAddress
+        ) {
+            let prev_count: u16 = self.donation_count.read(campaign_address);
+            self.donation_count.write(campaign_address, prev_count + 1);
+        }
+
         // *************************************************************************
         //                            GETTERS
         // *************************************************************************
@@ -119,7 +127,7 @@ mod CampaignComponent {
         }
 
 
-        fn get_campaigns(self: @ComponentState<TContractState>) -> Array<Campaign> {
+        fn get_campaigns(self: @ComponentState<TContractState>) -> Array<ByteArray> {
             let mut campaigns = ArrayTrait::new();
             let count = self.count.read();
             let mut i: u16 = 1;
@@ -128,10 +136,16 @@ mod CampaignComponent {
                 + 1 {
                     let campaignAddress: ContractAddress = self.campaigns.read(i);
                     let campaign: Campaign = self.campaign.read(campaignAddress);
-                    campaigns.append(campaign);
+                    campaigns.append(campaign.metadata_URI);
                     i += 1;
                 };
             campaigns
+        }
+
+        fn get_donation_count(
+            self: @ComponentState<TContractState>, campaign_address: ContractAddress
+        ) -> u16 {
+            self.donation_count.read(campaign_address)
         }
     }
 }
