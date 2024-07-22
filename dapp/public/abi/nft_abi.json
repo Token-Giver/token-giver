@@ -689,7 +689,7 @@
   },
   {
     "type": "event",
-    "name": "tokengiver::tokenGiverNft::TokenGiverNFT::Event",
+    "name": "tokengiver::token_giver_nft::TokenGiverNFT::Event",
     "kind": "enum",
     "variants": [
       {

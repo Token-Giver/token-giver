@@ -61,7 +61,8 @@ const Donate = ({
               name: data.name || "",
               description: data.description || "",
               image:
-                `https://ipfs.io/ipfs/${imageUrl}` || "/default-image.webp",
+                `${process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL}${imageUrl}?pinataGatewayToken=${process.env.NEXT_PUBLIC_PINATA_API_KEY}` ||
+                "/default-image.webp",
               date: formattedDate,
               organizer: data.organizer,
               beneficiary: data.beneficiary,
@@ -96,7 +97,7 @@ const Donate = ({
     try {
       const strk = await starknet_contract.balanceOf(address);
       // @ts-ignore
-      const strkBalance = formatCurrency(strk?.balance?.low.toString());
+      const strkBalance = formatCurrency(strk.toString());
       setBalance(strk ? strkBalance.toFixed(2) : "0");
     } catch (err) {
       console.log(err);
