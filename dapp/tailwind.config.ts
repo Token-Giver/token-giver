@@ -7,6 +7,12 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    fontSize: {
+      "2xl": ["6em", "1.06"],
+      xl: ["clamp(0.75rem, 10vw, 3.5rem)", "1.15"],
+      l: ["1em", "1.21"],
+      sm: ["0.875em", "1.21"],
+    },
     extend: {
       fontSize: {
         clamp: "clamp(0.5rem, 5vw, 1rem)",
@@ -14,6 +20,7 @@ const config: Config = {
       colors: {
         "theme-green": "#127C56",
         "off-white": "#fffcf5",
+        "theme-yellow": "#fbbf24",
       },
       fontFamily: {
         "Holly-Bale": ["Belanosima", "sans-serif"],
@@ -30,6 +37,14 @@ const config: Config = {
         "gradient-linear": "linear-gradient(160deg, #0093E9 0%, #80D0C7 100%)",
         "header-gradient":
           "linear-gradient(90deg,rgba(232, 249, 253, 1) 0%,rgba(228, 239, 231, 1) 50%,rgba(122, 178, 157, 1) 100%)",
+      },
+      animation: {
+        "scale-pulse": "scale-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+      },
+      keyframes: {
+        "scale-pulse": {
+          "50%": { transform: "scale(1.1)" },
+        },
       },
     },
   },

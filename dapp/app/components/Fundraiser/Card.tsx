@@ -61,6 +61,11 @@ const Card = ({
     router.push(`${path}/${campaign_address}/${cid}`);
   };
 
+  const width = `${Math.min(
+    (parseInt(balance) / parseInt(target)) * 100,
+    100
+  )}%`;
+
   return (
     <div
       onClick={handleRoute}
@@ -98,7 +103,7 @@ const Card = ({
             <div className="w-full h-[1vw] max-h-[.25rem] bg-[#127c5548] rounded-full mb-4"></div>
             <div
               style={{
-                width: `${(parseInt(balance) / parseInt(target)) * 100}%`,
+                width: width,
               }}
               className={`h-[1vw] max-h-[.25rem] bg-[#127C56] rounded-full mb-4 top-0 absolute`}
             ></div>
