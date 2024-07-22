@@ -1,147 +1,67 @@
 <a id="readme-top"></a>
 
-# Token Giver ![product logo](./dapp/public/bx--donate-heart.png)
-
-<div align="center">
-  <h2 align="center">
-    Transform Charity with Blockchain!
-  </h2>
-    <br/>
-    <a href="https://github.com/othneildrew/Best-README-Template">
-    View Live
-    </a>
-    .
-    <a href="https://github.com/othneildrew/Best-README-Template/issues/new">Report Bug</a>
-     ·
-    <a href="https://github.com/othneildrew/Best-README-Template/issues/new">Request Feature</a>
-</div>
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#features">Features</a></li>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#contracts">Contracts</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
-
-<br/>
-<br/>
+# Token Giver: Transform Charity with Blockchain! ![product logo](./dapp/public/bx--donate-heart.png)
 
 <!-- ABOUT THE PROJECT -->
 
-## About The Project
-
-<br/>
+## INTRODUCTION
 
 ![Product screen shot](dapp/public/project-screenshot.png)
 
-<br/>
+Token Giver is a decentralized application designed to revolutionize the way we approach charity and fundraising. With Token Giver, users can create and manage campaigns by minting unique campaign NFTs which is deployed as a Token Bound Account (TBA) , enabling seamless and secure donations using STRK tokens. This project leverages the power of Next.js, StarknetJs, Starknet TBA SDK, and smart contracts written in Cairo to provide a robust and user-friendly platform..
 
-Token Giver is a decentralized application designed to revolutionize the way we approach charity and fundraising. With Token Giver, users can create and manage campaigns by minting unique campaign NFTs. Each campaign NFT automatically gets a Token Bound Account (TBA) deployed for it, enabling seamless and secure donations using STRK tokens. This project leverages the power of Next.js, Starknet React, Starknet TBA SDK, and smart contracts written in Cairo to provide a robust and user-friendly platform..
+## AUTHORS
 
-<br/>
-<br/>
+- **Stephanie Egbuonu ✨**
+- **Oshioke Salaki 🥶**
 
-## Features
+## TABLE OF CONTENTS
 
-- **Campaign Creation**: Easily create a campaign by minting a unique NFT, which automatically deploys a Token Bound Account (TBA).
-- **Integrated Dashboard**: View all your active campaigns on a centralized dashboard.
-- **Token Donations**: Share the campaign link to facilitate STRK token donations directly to the campaign's TBA.
-- **Seamless Operation**: The entire process—from campaign creation to token donations—takes place within the platform, ensuring a smooth user experience.
+1. [PROJECT OVERVIEW](#project-overview)
+2. [FEATURES](#features)
+3. [TECHNICAL DETAILS](#technical-details)
+4. [PROJECT WALKTHROUGH](#setup-and-deployment)
+5. [CONCLUSION](#conclusion)
 
-## Built With
+## PROJECT OVERVIEW
 
-- **Frontend**: Next.js, Starknet React
+### PROBLEM STATEMENT
+
+The current landscape of charitable donations is plagued by issues of transparency, inefficiency, and donor distrust. Traditional fundraising platforms often lack the mechanisms to provide real-time visibility into how donations are utilized, leading to concerns about mismanagement and misallocation of funds. This lack of transparency results in donor reluctance and hinders the potential impact of charitable initiatives. Furthermore, the existing systems are burdened with high operational costs and slow fund transfers, creating significant delays and reducing the overall effectiveness of the campaigns.
+
+### SOLUTION
+
+TokenGiver aims to address these critical issues by leveraging blockchain technology and token-bound accounts (ERC6551) to create a decentralized charity application. This platform will enable users to create and manage campaigns with full transparency, as every transaction will be recorded on the blockchain, providing an immutable and accessible record of donations and fund utilization. By allowing donors to send STRK tokens directly to the campaigns they support, TokenGiver ensures efficient and secure fund transfers, fostering greater trust and encouraging more contributions. This innovative approach will not only enhance the credibility of charitable campaigns but also maximize their impact, ultimately transforming the way charitable donations are managed and perceived.
+
+## FEATURES
+
+- **Campaign Creation**: Easily create a campaign by minting a unique NFT, which automatically deploys a Token Bound Account(TBA) to represent the campaign.
+- **Integrated Dashboard**: View all active campaigns.
+- **Token Donations**: Users can seamlessly donate to causes using STRK token.
+
+## TECHNICAL DETAILS
+
+### Tech Stack
+
+- **Frontend**: Next JS
 - **Smart Contracts**: Cairo
 
-## Getting Started
+## PROJECT WALKTHROUGH
 
-Follow these steps to set up and run the project locally.
-
-### Prerequisites
-
-Ensure you have the following installed:
-
-- Node.js (v14 or later)
-- npm or yarn
-
-### Installation
-
-1. **Get API Keys**: Register and get your API keys from [Ark Project](https://www.arkproject.dev/) and [Pinata](https://www.pinata.cloud/).
-
-2. **Clone the Repository**:
-
-```sh
-git clone https://github.com/stephanniegb/token-giver.git
-cd dapp
-```
-
-3. **Install Dependencies**:
-
-```sh
-npm install
-```
-
-4. **Set Up Environment Variables**:
-
-   Create a `.env file in` the root directory and add the necessary environment variables. Refer to the `.env.example` file for the required variables.
-
-5. **Run the Development Server**:
-
-```sh
-npm run dev
-```
-
-The app will be available at http://localhost:3000.
-
-<!-- USAGE-->
-
-## Usage
-
-1. **Start a Campaign**: Click the "Start Campaign" button on the platform.
-2. **Fill Out the Form**: Complete the form with details about your campaign.
-3. **Mint Campaign**: Click on the "Mint Campaign" button. This action will:
+1. **Access the TokenGiver Web Application**
+   - Open your preferred web browser.
+   - Navigate to the TokenGiver web application by entering the URL: [https://token-giver.onrender.com/](#).
+2. **Start a Campaign**: Click the "Start Campaign" button on the platform.
+3. **Fill Out the Form**: Complete the form with details about your campaign.
+4. **Mint Campaign**: Click on the "Mint Campaign" button. This action will:
    - Mint a unique campaign NFT.
    - Automatically deploy a Token Bound Account (TBA) for the newly minted NFT.
    - Provide you with an NFT linked to the TBA.
-4. **View Your Campaign**: The newly minted NFT will be displayed on the token giver platform.
-5. **Share and Collect Donations**:
+5. **View Your Campaign**: The newly minted NFT will be displayed on the token giver platform.
+6. **Share and Collect Donations**:
    - Share the link with others to invite them to donate STRK tokens to your campaign's TBA.
    - Donations are processed directly on the platform.
 
-## Contracts
+## CONCLUSION
 
-The smart contracts are written in Cairo and deployed on the Starknet network. You can find the contract files in the `contracts` directory.
-
-## Authors
-
-- Stephanie Egbuonu ✨
-- Oshioke Salaki 🦎
-
-<!-- ACKNOWLEDGMENTS -->
-
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-- [Pinata Documentation](https://docs.pinata.cloud/introduction)
-- [Ark projects Documentation](https://docs.arkproject.dev/)
-- [Starknet Tokenbound Documentation](https://tokenbound.gitbook.io/starknet-tokenbound)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+TokenGiver harnesses blockchain technology to revolutionize charitable donations by addressing transparency, efficiency, and trust issues. With token-bound accounts (ERC6551) for campaign management and STRK tokens for secure contributions, TokenGiver ensures transparent and efficient transactions, enhancing the credibility and impact of charitable initiatives. By fostering a deeper connection between donors and causes, TokenGiver aims to create a more trustworthy and effective charitable ecosystem. Join us in empowering charitable campaigns and making a positive difference in society. Thank you for being part of the TokenGiver community.
