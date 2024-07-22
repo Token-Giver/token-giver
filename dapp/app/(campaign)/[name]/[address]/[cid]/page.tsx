@@ -1,13 +1,12 @@
 "use client";
 
 import CampaignLoader from "@/app/components/loading/CampaignLoader";
-import { ETH_SEPOLIA, STRK_SEPOLIA } from "@/app/utils/constant";
+import { STRK_SEPOLIA } from "@/app/utils/constant";
 import { fetchContentFromIPFS } from "@/app/utils/helper";
 import CalenderIcon from "@/svgs/CalenderIcon";
 import DonateIcon from "@/svgs/DonateIcon";
 import ProfileIcon from "@/svgs/ProfileIcon";
 import ShareIcon from "@/svgs/ShareIcon";
-import { useAccount, useContractRead } from "@starknet-react/core";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";

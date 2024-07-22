@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import Card from "../components/Fundraiser/Card";
 import CardLoader from "../components/loading/CardLoader";
-import { COLLECTION_CONTRACT_ADDRESS } from "@/address";
 import { Contract, RpcProvider } from "starknet";
 import campaign_contract_abi from "../../public/abi/campaign_abi.json";
 import { CAMPAIGN_CONTRACT_ADDRESS } from "../utils/data";
