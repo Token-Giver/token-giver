@@ -2,11 +2,11 @@
 import LocationIcon from "@/svgs/LocationIcon";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Contract, RpcProvider } from "starknet";
-import token_abi from "../../../public/abi/token_abi.json";
-import { STRK_SEPOLIA } from "@/app/utils/constant";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { formatCurrency } from "@/app/utils/currency";
+import { STRK_SEPOLIA } from "@/app/utils/constant";
+import token_abi from "../../../public/abi/token_abi.json";
+import { Contract, RpcProvider } from "starknet";
 
 type CardType = {
   causeName: string;
@@ -25,14 +25,12 @@ const Card = ({
   causeName,
   imageSrc,
   location,
-  progress,
   imageAltText,
   campaign_address,
   target,
-  token_id,
 }: CardType) => {
   const router = useRouter();
-  const [balance, setBalance] = useState("0");
+  const [balance, setBalance] = useState(0);
   const provider = new RpcProvider({
     nodeUrl: "https://starknet-sepolia.public.blastapi.io",
   });
@@ -43,12 +41,16 @@ const Card = ({
     try {
       const strk = await strk_contract.balanceOf(campaign_address);
       // @ts-ignore
-      const strkBalance = formatCurrency(strk?.balance?.low.toString());
-      setBalance(strkBalance.toString() || "0");
+      const strkBalance = formatCurrency(strk.toString());
+      setBalance(strkBalance);
     } catch (err) {
       console.log(err);
     }
   }
+
+  useEffect(() => {
+    fetchBalance();
+  }, []);
 
   fetchBalance();
 
@@ -109,10 +111,10 @@ const Card = ({
             ></div>
           </div>
           <div className="flex justify-between px-2 text-[.875rem]">
-            <p>{parseFloat(balance).toFixed(2)} STRK</p>
             <p>
-              {((parseFloat(balance) / parseFloat(target)) * 100).toFixed(2)}%
+              {balance.toFixed(2)} STRK <span>of {target} STRK raised</span>
             </p>
+            <p>{((balance / parseFloat(target)) * 100).toFixed(2)}%</p>
           </div>
         </div>
       </div>

@@ -1,13 +1,12 @@
 "use client";
 
 import CampaignLoader from "@/app/components/loading/CampaignLoader";
-import { ETH_SEPOLIA, STRK_SEPOLIA } from "@/app/utils/constant";
+import { STRK_SEPOLIA } from "@/app/utils/constant";
 import { fetchContentFromIPFS } from "@/app/utils/helper";
 import CalenderIcon from "@/svgs/CalenderIcon";
 import DonateIcon from "@/svgs/DonateIcon";
 import ProfileIcon from "@/svgs/ProfileIcon";
 import ShareIcon from "@/svgs/ShareIcon";
-import { useAccount, useContractRead } from "@starknet-react/core";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -15,7 +14,7 @@ import token_abi from "../../../../../public/abi/token_abi.json";
 import campaign_abi from "../../../../../public/abi/campaign_abi.json";
 import { Contract, RpcProvider } from "starknet";
 import { formatCurrency } from "@/app/utils/currency";
-import { CAMPAIGN_CONTRACT_ADDRESS } from "@/app/utils/data";
+import { CAMPAIGN_CONTRACT_ADDRESS, campaign_contract } from "@/app/utils/data";
 
 const page = ({
   params,
@@ -25,28 +24,25 @@ const page = ({
   const router = useRouter();
   const [balance, setBalance] = useState(0);
   const [donationCount, setDonationCount] = useState(0);
+  const [isComplete, setIsComplete] = useState(true);
   const provider = new RpcProvider({
     nodeUrl: "https://starknet-sepolia.public.blastapi.io",
   });
   let strk_contract = new Contract(token_abi, STRK_SEPOLIA, provider);
-  const campaign_contract = new Contract(
-    campaign_abi,
-    CAMPAIGN_CONTRACT_ADDRESS,
-    provider
-  );
 
   async function fetchBalances() {
     try {
       const strk = await strk_contract.balanceOf(params.address);
+      console.log(strk, "vdcsx");
       // @ts-ignore
-      const strkBalance = formatCurrency(strk?.balance?.low.toString());
-      setBalance(strkBalance || 0);
+      const strkBalance = formatCurrency(strk.toString());
+      console.log(strkBalance, "seun");
+      setBalance(strkBalance);
+      console.log(strkBalance, "balanceujj");
     } catch (err) {
       console.log(err);
     }
   }
-
-  fetchBalances();
 
   const donateNow = () => {
     if (params.address && params.cid) {
@@ -67,7 +63,6 @@ const page = ({
     location: "",
     target: "",
   });
-
   useEffect(() => {
     if (params.address && params.cid) {
       const fetchNFT = async () => {
@@ -87,13 +82,22 @@ const page = ({
               name: data.name || "",
               description: data.description || "",
               image:
-                `https://ipfs.io/ipfs/${imageUrl}` || "/default-image.webp",
+                `${process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL}${imageUrl}?pinataGatewayToken=${process.env.NEXT_PUBLIC_PINATA_API_KEY}` ||
+                "/default-image.webp",
               date: formattedDate,
               organizer: data.organizer,
               beneficiary: data.beneficiary,
               location: data.location,
               target: data.target,
             });
+            console.log(balance, "balance");
+            console.log(parseInt(data.target), "target");
+            console.log(balance > parseInt(data.target));
+            if (balance > parseInt(data.target)) {
+              setIsComplete(true);
+            } else {
+              setIsComplete(false);
+            }
           }
         } catch (error) {
           console.log(error);
@@ -105,7 +109,7 @@ const page = ({
         console.log(Number(count));
         setDonationCount(Number(count));
       };
-
+      fetchBalances();
       fetchNFT();
       fetchDonationCount();
     }
@@ -157,8 +161,9 @@ const page = ({
                 </div>
                 <div className="flex flex-col gap-4 text-white md:flex-row   ">
                   <button
+                    disabled={balance >= parseInt(campaignDetails.target)}
                     onClick={donateNow}
-                    className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px] flex justify-center items-center gap-2 "
+                    className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px] disabled:cursor-not-allowed flex justify-center items-center gap-2 "
                   >
                     <span>Donate now</span>{" "}
                     <span className="text-amber-300">
@@ -179,8 +184,9 @@ const page = ({
               </div>
               <div className="flex flex-col w-full md:w-[85%] md:mx-auto md:flex-row gap-4 lg:w-full">
                 <button
+                  disabled={balance >= parseInt(campaignDetails.target)}
                   onClick={donateNow}
-                  className=" w-full md:w-1/2 border-[1px] border-solid border-theme-green p-3 rounded-[5px] font-bold"
+                  className=" w-full md:w-1/2 border-[1px] disabled:cursor-not-allowed border-solid border-theme-green p-3 rounded-[5px] font-bold"
                 >
                   Donate
                 </button>
@@ -238,7 +244,9 @@ const page = ({
                     <div
                       style={{
                         width: `${
-                          (balance / parseInt(campaignDetails.target)) * 100
+                          balance >= parseInt(campaignDetails.target)
+                            ? "100"
+                            : (balance / parseInt(campaignDetails.target)) * 100
                         }%`,
                       }}
                       className={`h-[1vw] max-h-[.25rem] bg-[#127C56] rounded-full mb-4 top-0 absolute`}
@@ -252,12 +260,24 @@ const page = ({
               <div className="flex flex-col gap-4 text-white  ">
                 <button
                   onClick={donateNow}
-                  className="w-full bg-theme-green p-2 rounded-[5px] flex justify-center items-center gap-2 "
+                  disabled={balance >= parseInt(campaignDetails.target)}
+                  className="w-full bg-theme-green p-2 rounded-[5px] flex disabled:cursor-not-allowed justify-center items-center gap-2 "
                 >
-                  <span>Donate now</span>{" "}
-                  <span className="text-amber-300">
-                    <DonateIcon />
-                  </span>
+                  {balance >= parseInt(campaignDetails.target) ? (
+                    <>
+                      <span>Funds Raised</span>{" "}
+                      <span className="text-amber-300">
+                        <DonateIcon />
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span>Donate now</span>{" "}
+                      <span className="text-amber-300">
+                        <DonateIcon />
+                      </span>
+                    </>
+                  )}
                 </button>
                 <button className="w-full bg-theme-green p-2 rounded-[5px]  flex justify-center items-center gap-2">
                   <span>Share</span>

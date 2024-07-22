@@ -3,34 +3,17 @@ import { useEffect, useState } from "react";
 import Card from "./Card";
 import CardLoader from "@/app/components/loading/CardLoader";
 import { useRouter } from "next/navigation";
-import { COLLECTION_CONTRACT_ADDRESS } from "@/address";
-import campaign_contract_abi from "../../../public/abi/campaign_abi.json";
-import token_abi from "../../../public/abi/token_abi.json";
-import { Contract, RpcProvider } from "starknet";
-import { CAMPAIGN_CONTRACT_ADDRESS } from "@/app/utils/data";
+import { campaign_contract } from "@/app/utils/data";
 import { fetchContentFromIPFS } from "@/app/utils/helper";
-import { STRK_SEPOLIA } from "@/app/utils/constant";
-import { formatCurrency } from "@/app/utils/currency";
 import Container from "../util/Container";
 
 const Fundraisers = () => {
   const router = useRouter();
   const [collections, setCollections] = useState<any[]>([]);
-  const [balance, setBalance] = useState("0");
   const [loading, setLoading] = useState(true);
   const handleRouteToCampaigns = () => {
     router.push("/campaigns");
   };
-
-  const provider = new RpcProvider({
-    nodeUrl: "https://starknet-sepolia.public.blastapi.io",
-  });
-
-  let campaign_contract = new Contract(
-    campaign_contract_abi,
-    CAMPAIGN_CONTRACT_ADDRESS,
-    provider
-  );
 
   useEffect(() => {
     const fetchCampaigns = async () => {
@@ -41,7 +24,15 @@ const Fundraisers = () => {
           fetchContentFromIPFS(cid.slice(7, -1))
         );
         const campaignData = await Promise.all(campaignPromises);
-        setCollections(campaignData.filter((data) => data !== null));
+        setCollections(
+          campaignData
+            .filter((data) => data !== null)
+            .sort((a, b) => {
+              const dateA = new Date(a.created_at).getTime();
+              const dateB = new Date(b.created_at).getTime();
+              return dateB - dateA;
+            })
+        );
         console.log(campaignData, "campaign data");
         setLoading(false);
       } catch (error) {
@@ -71,8 +62,11 @@ const Fundraisers = () => {
                     cid={data.cid}
                     causeName={data.name || "Unknown Cause"}
                     imageSrc={
-                      `https://ipfs.io/ipfs/${data.image?.slice(7, -1)}` ||
-                      "/default-image.webp"
+                      `${
+                        process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL
+                      }${data.image?.slice(7, -1)}?pinataGatewayToken=${
+                        process.env.NEXT_PUBLIC_PINATA_API_KEY
+                      }` || "/default-image.webp"
                     }
                     location={data.location}
                     progress={0}

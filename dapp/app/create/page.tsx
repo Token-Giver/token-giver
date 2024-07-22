@@ -6,15 +6,16 @@ import StepTwo from "./components/StepTwo";
 import { InputDateType } from "@/types";
 import StepThree from "./components/StepThree";
 import Logo from "@/svgs/Logo";
-import campaign_contract_abi from "../../public/abi/campaign_abi.json";
-import nft_contract_abi from "../../public/abi/nft_abi.json";
-import { CallData, Contract, RpcProvider, cairo } from "starknet";
+import { CallData } from "starknet";
+import { useRouter } from "next/navigation";
 import {
-  CAMPAIGN_CONTRACT_ADDRESS,
+  BEARER_TOKEN,
   IMPLEMENTATION_HASH,
   REGISTRY_HASH,
   TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
-  bearer,
+  campaign_contract,
+  nft_contract,
+  provider,
 } from "../utils/data";
 import Container from "../components/util/Container";
 
@@ -27,10 +28,12 @@ const Creating_Campaign = [
 const Page = () => {
   const account: any = useAccount();
   const [campaignStep, setCampaignStep] = useState(0);
+  const router = useRouter();
   const [step, setStep] = useState({
     number: 1,
     text: "First connect your wallet",
   });
+  const [creatingCampaign, setCreatingCampaign] = useState(false);
   const [inputData, setInputData] = useState<InputDateType>({
     name: "",
     description: "",
@@ -63,24 +66,9 @@ const Page = () => {
     });
   };
 
-  const provider = new RpcProvider({
-    nodeUrl: "https://starknet-sepolia.public.blastapi.io",
-  });
-
-  let campaign_contract = new Contract(
-    campaign_contract_abi,
-    CAMPAIGN_CONTRACT_ADDRESS,
-    provider
-  );
-
-  let nft_contract = new Contract(
-    nft_contract_abi,
-    TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
-    provider
-  );
-
-  async function testCreate() {
+  async function createCampaign() {
     try {
+      setCreatingCampaign(true);
       campaign_contract.connect(account.account);
       const last_minted_id = await nft_contract.get_last_minted_id();
       const salt = Math.floor(Math.random() * 9999)
@@ -104,12 +92,13 @@ const Page = () => {
       // console.log(txnDet, "txn details"); // execution_status: "SUCCEEDED"; minted campaign
       // console.log(create_campaign_res, "create campaign response");
 
-      // Upload Campaign NFT image to pinata
+      /////////////////////////////////////////
+      // UPLOAD CAMPAIGN NFT IMAGE TO PINATA
+      ////////////////////////////////////////
       if (!inputData.image) {
-        alert("No file selected");
+        alert("No Image selected");
         return;
       }
-
       const formData = new FormData();
       formData.append("file", inputData.image);
 
@@ -118,16 +107,17 @@ const Page = () => {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${bearer}`,
+            Authorization: `Bearer ${BEARER_TOKEN}`,
           },
           body: formData,
         }
       );
-
       const image_upload_resData = await image_upload_res.json();
       // console.log(image_upload_resData, "image upload response"); // IpfsHash: "QmTHJNYBspAccj5BmGUbA34eoWTLsxHTgvauFbKsggS5Tb" iploadinf info
 
-      // Create new Metadata URI JSON
+      //////////////////////////////////
+      // CREATE NEW METADATA URI JSON
+      //////////////////////////////////
       let new_metadata = JSON.stringify({
         id: Number(last_minted_id) + 1,
         image: `ipfs://${image_upload_resData.IpfsHash}/`,
@@ -142,14 +132,16 @@ const Page = () => {
         created_at: new Date(),
       });
 
-      // Upload new MetadataURI JSON to Pinata
+      ////////////////////////////////////////////
+      // UPLOAD NEW METADATA_URI JSON TO PINATA
+      ////////////////////////////////////////////
       const metadata_upload_res = await fetch(
         "https://api.pinata.cloud/pinning/pinJSONToIPFS",
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${bearer}`,
+            Authorization: `Bearer ${BEARER_TOKEN}`,
           },
           body: new_metadata,
         }
@@ -159,7 +151,9 @@ const Page = () => {
       // console.log(metadata_upload_resData, "uploaded metadata uri"); // uploading image
       metadata_upload_resData.IpfsHash && setCampaignStep(2);
 
-      // Call set_metadata_uri function
+      ///////////////////////////////////////
+      // CALL SET_METADATA_URI FUNCTION
+      //////////////////////////////////////
       campaign_contract.connect(account.account);
       const set_campaign_metadata_res =
         await campaign_contract.set_campaign_metadata_uri(
@@ -169,19 +163,12 @@ const Page = () => {
           ])
         );
 
-      // console.log(set_campaign_metadata_res, "set campaign metadata response");
-      setInputData({
-        name: "",
-        description: "",
-        image: null,
-        target: "",
-        organizer: "",
-        beneficiary: "",
-        location: "",
-      });
-      setCampaignStep(3);
+      console.log(set_campaign_metadata_res, "set campaign metadata response");
+      router.push(`/`);
     } catch (err) {
       console.log(err);
+    } finally {
+      setCreatingCampaign(false);
     }
   }
 
@@ -288,14 +275,16 @@ const Page = () => {
               <button
                 popoverTarget="creatingCampaign"
                 onClick={() => {
-                  testCreate();
+                  createCampaign();
                 }}
-                disabled={!inputData.target || !inputData.location}
+                disabled={
+                  !inputData.target || !inputData.location || creatingCampaign
+                }
                 className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
                   step.number === 3 ? "block" : "hidden"
                 } `}
               >
-                Mint a campaign
+                {creatingCampaign ? "Creating Campaign..." : "Mint Campaign"}
               </button>
             </div>
           </div>

@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 import Card from "../components/Fundraiser/Card";
 import CardLoader from "../components/loading/CardLoader";
-import { COLLECTION_CONTRACT_ADDRESS } from "@/address";
 import { Contract, RpcProvider } from "starknet";
 import campaign_contract_abi from "../../public/abi/campaign_abi.json";
 import { CAMPAIGN_CONTRACT_ADDRESS } from "../utils/data";
@@ -33,7 +32,15 @@ const page = () => {
         fetchContentFromIPFS(cid.slice(7, -1))
       );
       const campaignData = await Promise.all(campaignPromises);
-      setCollections(campaignData.filter((data) => data !== null));
+      setCollections(
+        campaignData
+          .filter((data) => data !== null)
+          .sort((a, b) => {
+            const dateA = new Date(a.created_at).getTime();
+            const dateB = new Date(b.created_at).getTime();
+            return dateB - dateA;
+          })
+      );
       console.log(campaignData, "campaign data");
       setLoading(false);
     } catch (error) {
@@ -87,8 +94,11 @@ const page = () => {
                   <Card
                     causeName={name || "Unknown Cause"}
                     imageSrc={
-                      `https://ipfs.io/ipfs/${image.slice(7, -1)}` ||
-                      "/default-image.webp"
+                      `${
+                        process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL
+                      }${image.slice(7, -1)}?pinataGatewayToken=${
+                        process.env.NEXT_PUBLIC_PINATA_API_KEY
+                      }` || "/default-image.webp"
                     }
                     location={location}
                     target={target}

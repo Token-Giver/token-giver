@@ -31,7 +31,7 @@ const StepThree = ({
           name="target"
           onChange={handleInputChange}
           value={inputData.target}
-          placeholder="USDT"
+          placeholder="STRK"
           className="w-full bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
         />
       </div>
