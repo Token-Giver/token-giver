@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { formatCurrency } from "@/app/utils/currency";
-import { STRK_SEPOLIA } from "@/app/utils/constant";
+import { STRK_SEPOLIA } from "@/app/utils/data";
 import token_abi from "../../../public/abi/token_abi.json";
 import { Contract, RpcProvider } from "starknet";
 
