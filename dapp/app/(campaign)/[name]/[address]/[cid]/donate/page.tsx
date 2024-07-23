@@ -15,7 +15,7 @@ import {
   CAMPAIGN_CONTRACT_ADDRESS,
   TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
 } from "@/app/utils/data";
-import { STRK_SEPOLIA } from "@/app/utils/constant";
+import { STRK_SEPOLIA } from "@/app/utils/data";
 
 const Donate = ({
   params,
