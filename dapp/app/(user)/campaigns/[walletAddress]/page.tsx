@@ -54,33 +54,56 @@ const page = () => {
         ) : (
           <h2>Your current campaigns</h2>
         )}
-
-        {loading && address
-          ? Array.from({ length: 12 }).map((_, idx) => <CardLoader key={idx} />)
-          : collections.map((data, idx) => {
-              return (
-                <Card
-                  cid={data.cid}
-                  causeName={data.name || "Unknown Cause"}
-                  imageSrc={
-                    `${
-                      process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL
-                    }${data.image?.slice(7, -1)}?pinataGatewayToken=${
-                      process.env.NEXT_PUBLIC_PINATA_API_KEY
-                    }` || "/default-image.webp"
-                  }
-                  location={data.location}
-                  progress={0}
-                  key={idx}
-                  token_id={data.id}
-                  campaign_address={data.campaign_address || "0x0"}
-                  target={data.target}
-                  url={`/campaign/${address}/1`}
-                />
-              );
-            })}
+        <div className="grid gap-4  md:gap-8 lg:grid-cols-3 md:max-w-[800px] lg:max-w-none md:mx-auto  md:justify-center">
+          {loading && address
+            ? Array.from({ length: 3 }).map((_, idx) => (
+                <CardLoader key={idx} />
+              ))
+            : collections.map((data, idx) => {
+                return (
+                  <>
+                    <Card
+                      cid={data.cid}
+                      causeName={data.name || "Unknown Cause"}
+                      imageSrc={
+                        `${
+                          process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL
+                        }${data.image?.slice(7, -1)}?pinataGatewayToken=${
+                          process.env.NEXT_PUBLIC_PINATA_API_KEY
+                        }` || "/default-image.webp"
+                      }
+                      location={data.location}
+                      progress={0}
+                      key={idx}
+                      token_id={data.id}
+                      campaign_address={data.campaign_address || "0x0"}
+                      target={data.target}
+                      url={`/campaign/${address}/1`}
+                    />
+                    <Card
+                      cid={data.cid}
+                      causeName={data.name || "Unknown Cause"}
+                      imageSrc={
+                        `${
+                          process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL
+                        }${data.image?.slice(7, -1)}?pinataGatewayToken=${
+                          process.env.NEXT_PUBLIC_PINATA_API_KEY
+                        }` || "/default-image.webp"
+                      }
+                      location={data.location}
+                      progress={0}
+                      key={idx}
+                      token_id={data.id}
+                      campaign_address={data.campaign_address || "0x0"}
+                      target={data.target}
+                      url={`/campaign/${address}/1`}
+                    />
+                  </>
+                );
+              })}
+        </div>
         {address && collections.length === 0 && (
-          <p className="flex items-center gap-1">
+          <p className="flex items-center  gap-1">
             <span>
               <WarningIcon />
             </span>
