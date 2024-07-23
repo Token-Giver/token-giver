@@ -26,6 +26,7 @@ const ConnectButton = ({ showButton = true }: Props) => {
           if (address) {
             disconnect();
           } else {
+            // @ts-ignore
             connectPopover.showPopover();
           }
         }}

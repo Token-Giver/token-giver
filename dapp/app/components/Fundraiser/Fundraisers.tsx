@@ -57,6 +57,13 @@ const Fundraisers = () => {
                 <CardLoader key={idx} />
               ))
             : collections.map((data, idx) => {
+                const path = data.name
+                  .replace(/[^a-zA-Z ]/g, "")
+                  .replace(/ /g, "-")
+                  .toLocaleLowerCase()
+                  .replace(/-+/g, "-");
+
+                const url = `${path}/${data.campaign_address}/${data.cid}`;
                 return (
                   <Card
                     cid={data.cid}
@@ -74,6 +81,7 @@ const Fundraisers = () => {
                     token_id={data.id}
                     campaign_address={data.campaign_address || "0x0"}
                     target={data.target}
+                    url={url}
                   />
                 );
               })}

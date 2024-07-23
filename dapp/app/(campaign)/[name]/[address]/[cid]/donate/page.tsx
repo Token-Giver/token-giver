@@ -253,7 +253,7 @@ const Donate = ({
 
             <div
               ref={divRef}
-              className="relative w-full min-h-[5.5rem] bg-transparent border-solid border-[1px] rounded-[10px] px-5 border-gray-400 grid grid-cols-10 justify-between focus:border-[#159968] focus:border-[2px]"
+              className="relative w-full min-h-[5.5rem] bg-transparent border-solid border-[1px] rounded-[10px] px-5 border-gray-300 grid grid-cols-10 justify-between focus:border-[#159968] focus:border-[2px]"
             >
               <input
                 onFocus={() => {

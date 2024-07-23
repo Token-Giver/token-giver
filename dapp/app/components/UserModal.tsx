@@ -16,7 +16,7 @@ const UserModal = ({ address, isUserMenuOpen, setUserIsMenuOpen }: Props) => {
 
   return (
     <div
-      className={`absolute bg-background w-[140%] -left-1/2 transform translate-x-[20%] top-[120%] rounded-[10px] p-4 shadow-hero-shadow ${
+      className={`absolute z-[9999] bg-background w-[140%] -left-1/2 transform translate-x-[20%] top-[120%] rounded-[10px] p-4 shadow-hero-shadow ${
         isUserMenuOpen && address ? "block" : "hidden"
       }`}
     >

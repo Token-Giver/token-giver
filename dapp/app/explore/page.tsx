@@ -89,7 +89,13 @@ const page = () => {
                   cid,
                   target,
                 } = nft || {};
-                console.log(nft);
+                const path = name
+                  .replace(/[^a-zA-Z ]/g, "")
+                  .replace(/ /g, "-")
+                  .toLocaleLowerCase()
+                  .replace(/-+/g, "-");
+
+                const url = `${path}/${campaign_address}/${cid}`;
                 return (
                   <Card
                     causeName={name || "Unknown Cause"}
@@ -107,6 +113,7 @@ const page = () => {
                     token_id={id}
                     campaign_address={campaign_address || "0x0"}
                     cid={cid}
+                    url={url}
                   />
                 );
               })}

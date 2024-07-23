@@ -28,6 +28,8 @@ const config: Config = {
       "gray-200": "#e5e7eb",
       "gray-300": "#9ca3af",
       red: "#dc2626",
+      transparent: "transparent",
+      blue: "#1d4ed8",
     },
     extend: {
       fontSize: {

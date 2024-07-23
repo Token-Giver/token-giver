@@ -11,10 +11,10 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import token_abi from "../../../../../public/abi/token_abi.json";
-import campaign_abi from "../../../../../public/abi/campaign_abi.json";
 import { Contract, RpcProvider } from "starknet";
 import { formatCurrency } from "@/app/utils/currency";
-import { CAMPAIGN_CONTRACT_ADDRESS, campaign_contract } from "@/app/utils/data";
+import { campaign_contract } from "@/app/utils/data";
+import Container from "@/app/components/util/Container";
 
 const page = ({
   params,
@@ -24,7 +24,6 @@ const page = ({
   const router = useRouter();
   const [balance, setBalance] = useState(0);
   const [donationCount, setDonationCount] = useState(0);
-  const [isComplete, setIsComplete] = useState(true);
   const provider = new RpcProvider({
     nodeUrl: "https://starknet-sepolia.public.blastapi.io",
   });
@@ -33,12 +32,9 @@ const page = ({
   async function fetchBalances() {
     try {
       const strk = await strk_contract.balanceOf(params.address);
-      console.log(strk, "vdcsx");
       // @ts-ignore
       const strkBalance = formatCurrency(strk.toString());
-      console.log(strkBalance, "seun");
       setBalance(strkBalance);
-      console.log(strkBalance, "balanceujj");
     } catch (err) {
       console.log(err);
     }
@@ -68,8 +64,6 @@ const page = ({
       const fetchNFT = async () => {
         try {
           const data = await fetchContentFromIPFS(params.cid);
-          console.log(data);
-
           if (data) {
             const timestamp = data.created_at;
             const date = new Date(timestamp);
@@ -90,14 +84,6 @@ const page = ({
               location: data.location,
               target: data.target,
             });
-            console.log(balance, "balance");
-            console.log(parseInt(data.target), "target");
-            console.log(balance > parseInt(data.target));
-            if (balance > parseInt(data.target)) {
-              setIsComplete(true);
-            } else {
-              setIsComplete(false);
-            }
           }
         } catch (error) {
           console.log(error);
@@ -106,7 +92,6 @@ const page = ({
 
       const fetchDonationCount = async () => {
         let count = await campaign_contract.get_donation_count(params.address);
-        console.log(Number(count));
         setDonationCount(Number(count));
       };
       fetchBalances();
@@ -114,180 +99,170 @@ const page = ({
       fetchDonationCount();
     }
   }, []);
-
+  const width = `${Math.min(
+    (balance / parseInt(campaignDetails.target)) * 100,
+    100
+  )}%`;
   return (
     <>
       {campaignDetails.name ? (
-        <section className=" mt-[4rem] mx-auto py-10 md:py-16 px-4 md:max-w-none md:px-10 bg-background lg:px-[10vw]">
-          <div className="lg:flex gap-8  max-w-[500px] mx-auto md:mx-0  md:max-w-none relative">
-            <div className="lg:w-[60%] mx-auto flex flex-col gap-12">
-              <h2 className="font-bold">{campaignDetails.name}</h2>
-              <div className="rounded-[10px] h-[400px] relative w-full object-contain md:w-[80%] mx-auto">
-                <Image
-                  className="rounded-[10px] h-full w-full"
-                  loader={() => campaignDetails.image}
-                  src={campaignDetails.image}
-                  unoptimized
-                  priority
-                  fill
-                  alt=""
-                />
+        <section className=" mt-[4rem]  bg-background ">
+          <Container className="mx-auto py-10 md:py-16 px-4 md:px-10">
+            <div className="lg:flex gap-8  max-w-[500px] mx-auto md:mx-0  md:max-w-none relative">
+              <div className="lg:w-[60%] mx-auto flex flex-col gap-12">
+                <h2 className="font-bold">{campaignDetails.name}</h2>
+                <div className="rounded-[10px] h-[400px] relative w-full object-contain md:w-[80%] mx-auto">
+                  <Image
+                    className="rounded-[10px] h-full w-full"
+                    loader={() => campaignDetails.image}
+                    src={campaignDetails.image}
+                    unoptimized
+                    priority
+                    fill
+                    alt=""
+                  />
+                </div>
+                <div className="flex flex-col gap-8 w-full md:w-[85%] md:mx-auto  lg:hidden">
+                  <div className="flex flex-col gap-4">
+                    <p>
+                      <span className="text-[2rem]">
+                        {balance.toFixed(2)} STRK
+                      </span>{" "}
+                      raised of {campaignDetails.target || 0}STRK target
+                    </p>
+                    <div className="">
+                      <div className="w-full h-[.25rem] mb-2 relative">
+                        <div className="w-full h-[1vw] max-h-[.25rem] bg-[#127c5548] rounded-full mb-4"></div>
+                        <div
+                          style={{
+                            width: width,
+                          }}
+                          className={`h-[1vw] max-h-[.25rem] bg-[#127C56] rounded-full mb-4 top-0 absolute`}
+                        ></div>
+                      </div>
+                      <p>
+                        {donationCount || 0} donation
+                        {donationCount === 1 ? "" : "s"}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="flex flex-col gap-4 text-white md:flex-row   ">
+                    <button
+                      onClick={donateNow}
+                      className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px] flex justify-center items-center gap-2 "
+                    >
+                      <span>Donate now</span>{" "}
+                      <span className="text-theme-yellow">
+                        <DonateIcon />
+                      </span>
+                    </button>
+                    <button className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px]  flex justify-center items-center gap-2">
+                      <span>Share</span>
+                      <span className="text-theme-yellow">
+                        <ShareIcon />
+                      </span>
+                    </button>
+                  </div>
+                </div>
+
+                <div className="w-full md:w-[85%] md:mx-auto lg:w-full">
+                  <p>{campaignDetails.description}</p>
+                </div>
+                <div className="flex flex-col w-full md:w-[85%] md:mx-auto md:flex-row gap-4 lg:w-full">
+                  <button
+                    onClick={donateNow}
+                    className=" w-full md:w-1/2 border-[1px]  border-solid border-theme-green p-3 rounded-[5px] font-bold"
+                  >
+                    Donate
+                  </button>
+                  <button className="w-full md:w-1/2 border-[1px] border-solid border-theme-green p-3 rounded-[5px] font-bold">
+                    Share
+                  </button>
+                </div>
+
+                <div>
+                  <h4>Organizer and beneficiary</h4>
+                  <div className="flex flex-col items-center  w-fit md:items-start md:w-full md:flex-row gap-8 md:gap-12 py-8">
+                    <div className="flex gap-4">
+                      <div className="bg-gray-100 h-[50px] w-[50px] rounded-full flex items-center justify-center">
+                        <ProfileIcon />
+                      </div>
+                      <div className="flex flex-col gap-2">
+                        <p className="font-bold">{campaignDetails.organizer}</p>
+                        <p>Organizer</p>
+                        <p>{campaignDetails.location}</p>
+                      </div>
+                    </div>
+                    {campaignDetails.beneficiary && (
+                      <>
+                        <p className="text-[1.5em] font-extralight hidden md:block">
+                          &rarr;
+                        </p>
+                        <div className="flex gap-4">
+                          <div className="bg-gray-100 h-[50px] w-[50px] rounded-full flex items-center justify-center">
+                            <ProfileIcon />
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <p className="font-bold">
+                              {campaignDetails.beneficiary}
+                            </p>
+                            <p>Beneficiary</p>
+                          </div>
+                        </div>{" "}
+                      </>
+                    )}
+                  </div>
+                </div>
+                <div className="border-solid border-t-[1px] border-gray-100 py-6 flex gap-4 items-center">
+                  <span className="bg-gray-100 h-[50px] w-[50px] rounded-full flex items-center justify-center">
+                    <CalenderIcon />
+                  </span>{" "}
+                  <p>{campaignDetails.date}</p>
+                </div>
               </div>
-              <div className="flex flex-col gap-8 w-full md:w-[85%] md:mx-auto  lg:hidden">
+              <div className="hidden sticky top-8 bg-background p-8  rounded-[10px] w-[35%] h-fit lg:flex flex-col gap-8 shadow-small ">
                 <div className="flex flex-col gap-4">
                   <p>
                     <span className="text-[2rem]">
                       {balance.toFixed(2)} STRK
                     </span>{" "}
-                    raised of {campaignDetails.target || 4000}STRK target
+                    raised of {campaignDetails.target || "0"} STRK target
                   </p>
                   <div className="">
                     <div className="w-full h-[.25rem] mb-2 relative">
                       <div className="w-full h-[1vw] max-h-[.25rem] bg-[#127c5548] rounded-full mb-4"></div>
                       <div
                         style={{
-                          width: `${
-                            (balance / parseInt(campaignDetails.target)) * 100
-                          }%`,
+                          width: width,
                         }}
                         className={`h-[1vw] max-h-[.25rem] bg-[#127C56] rounded-full mb-4 top-0 absolute`}
                       ></div>
                     </div>
                     <p>
-                      {donationCount || 0} donation
-                      {donationCount === 1 ? "" : "s"}
+                      {donationCount} donation{donationCount === 1 ? "" : "s"}
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col gap-4 text-white md:flex-row   ">
+                <div className="flex flex-col gap-4 text-white  ">
                   <button
-                    disabled={balance >= parseInt(campaignDetails.target)}
                     onClick={donateNow}
-                    className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px] disabled:cursor-not-allowed flex justify-center items-center gap-2 "
+                    className="w-full bg-theme-green p-2 rounded-[5px] flex  justify-center items-center gap-2 "
                   >
                     <span>Donate now</span>{" "}
-                    <span className="text-amber-300">
+                    <span className="text-theme-yellow">
                       <DonateIcon />
                     </span>
                   </button>
-                  <button className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px]  flex justify-center items-center gap-2">
+                  <button className="w-full bg-theme-green p-2 rounded-[5px]  flex justify-center items-center gap-2">
                     <span>Share</span>
-                    <span className="text-amber-300">
+                    <span className="text-theme-yellow">
                       <ShareIcon />
                     </span>
                   </button>
                 </div>
               </div>
-
-              <div className="w-full md:w-[85%] md:mx-auto lg:w-full">
-                <p>{campaignDetails.description}</p>
-              </div>
-              <div className="flex flex-col w-full md:w-[85%] md:mx-auto md:flex-row gap-4 lg:w-full">
-                <button
-                  disabled={balance >= parseInt(campaignDetails.target)}
-                  onClick={donateNow}
-                  className=" w-full md:w-1/2 border-[1px] disabled:cursor-not-allowed border-solid border-theme-green p-3 rounded-[5px] font-bold"
-                >
-                  Donate
-                </button>
-                <button className="w-full md:w-1/2 border-[1px] border-solid border-theme-green p-3 rounded-[5px] font-bold">
-                  Share
-                </button>
-              </div>
-
-              <div>
-                <h4>Organizer and beneficiary</h4>
-                <div className="flex flex-col items-center  w-fit md:items-start md:w-full md:flex-row gap-8 md:gap-12 py-8">
-                  <div className="flex gap-4">
-                    <div className="bg-gray-100 h-[50px] w-[50px] rounded-full flex items-center justify-center">
-                      <ProfileIcon />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <p className="font-bold">{campaignDetails.organizer}</p>
-                      <p>Organizer</p>
-                      <p>{campaignDetails.location}</p>
-                    </div>
-                  </div>
-                  <p className="text-[1.5em] font-extralight hidden md:block">
-                    &rarr;
-                  </p>
-                  <p className="text-[1.5em] font-extralight md:hidden  w-fit">
-                    &darr;
-                  </p>
-                  <div className="flex gap-4">
-                    <div className="bg-gray-100 h-[50px] w-[50px] rounded-full flex items-center justify-center">
-                      <ProfileIcon />
-                    </div>
-                    <div className="flex flex-col gap-2">
-                      <p className="font-bold">{campaignDetails.beneficiary}</p>
-                      <p>Beneficiary</p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="border-solid border-t-[1px] border-gray-100 py-6 flex gap-4 items-center">
-                <span className="bg-gray-100 h-[50px] w-[50px] rounded-full flex items-center justify-center">
-                  <CalenderIcon />
-                </span>{" "}
-                <p>{campaignDetails.date}</p>
-              </div>
             </div>
-            <div className="hidden sticky top-8 bg-background p-8  rounded-[10px] w-[35%] h-fit lg:flex flex-col gap-8 shadow-small ">
-              <div className="flex flex-col gap-4">
-                <p>
-                  <span className="text-[2rem]">{balance.toFixed(2)} STRK</span>{" "}
-                  raised of {campaignDetails.target || "4000"} STRK target
-                </p>
-                <div className="">
-                  <div className="w-full h-[.25rem] mb-2 relative">
-                    <div className="w-full h-[1vw] max-h-[.25rem] bg-[#127c5548] rounded-full mb-4"></div>
-                    <div
-                      style={{
-                        width: `${
-                          balance >= parseInt(campaignDetails.target)
-                            ? "100"
-                            : (balance / parseInt(campaignDetails.target)) * 100
-                        }%`,
-                      }}
-                      className={`h-[1vw] max-h-[.25rem] bg-[#127C56] rounded-full mb-4 top-0 absolute`}
-                    ></div>
-                  </div>
-                  <p>
-                    {donationCount} donation{donationCount === 1 ? "" : "s"}
-                  </p>
-                </div>
-              </div>
-              <div className="flex flex-col gap-4 text-white  ">
-                <button
-                  onClick={donateNow}
-                  disabled={balance >= parseInt(campaignDetails.target)}
-                  className="w-full bg-theme-green p-2 rounded-[5px] flex disabled:cursor-not-allowed justify-center items-center gap-2 "
-                >
-                  {balance >= parseInt(campaignDetails.target) ? (
-                    <>
-                      <span>Funds Raised</span>{" "}
-                      <span className="text-theme-yellow">
-                        <DonateIcon />
-                      </span>
-                    </>
-                  ) : (
-                    <>
-                      <span>Donate now</span>{" "}
-                      <span className="text-theme-yellow">
-                        <DonateIcon />
-                      </span>
-                    </>
-                  )}
-                </button>
-                <button className="w-full bg-theme-green p-2 rounded-[5px]  flex justify-center items-center gap-2">
-                  <span>Share</span>
-                  <span className="text-theme-yellow">
-                    <ShareIcon />
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
+          </Container>
         </section>
       ) : (
         <CampaignLoader />

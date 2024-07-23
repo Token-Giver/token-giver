@@ -18,6 +18,7 @@ type CardType = {
   token_id: string;
   cid: string;
   target: string;
+  url: string;
 };
 
 const Card = ({
@@ -28,6 +29,7 @@ const Card = ({
   imageAltText,
   campaign_address,
   target,
+  url,
 }: CardType) => {
   const router = useRouter();
   const [balance, setBalance] = useState(0);
@@ -55,12 +57,7 @@ const Card = ({
   fetchBalance();
 
   const handleRoute = () => {
-    const path = causeName
-      .replace(/[^a-zA-Z ]/g, "")
-      .replace(/ /g, "-")
-      .toLocaleLowerCase()
-      .replace(/-+/g, "-");
-    router.push(`${path}/${campaign_address}/${cid}`);
+    router.push(url);
   };
 
   const width = `${Math.min((balance / parseInt(target)) * 100, 100)}%`;

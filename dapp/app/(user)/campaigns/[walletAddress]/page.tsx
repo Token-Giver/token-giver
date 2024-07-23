@@ -40,8 +40,9 @@ const page = () => {
                 "0x0"
               }
               target={"1"}
+              url={`/campaign/${address}/1`}
             />
-            <Card
+            {/* <Card
               cid={"QmVMdQGZEic4ByfJEXkD44t8XFokiDFT2FtGrt3pZtqsiH"}
               causeName={"Stephanie need a house in Maitama" || "Unknown Cause"}
               imageSrc={
@@ -56,7 +57,7 @@ const page = () => {
                 "0x0"
               }
               target={"1"}
-            />
+            /> */}
           </div>
         )}
       </Container>
