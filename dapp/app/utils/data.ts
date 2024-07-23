@@ -2,14 +2,25 @@ import { Contract, RpcProvider } from "starknet";
 import campaign_contract_abi from "../../public/abi/campaign_abi.json";
 import nft_contract_abi from "../../public/abi/nft_abi.json";
 import token_abi from "../../public/abi/token_abi.json";
-import { STRK_SEPOLIA } from "./constant";
+
+export const STRK_SEPOLIA: string =
+  "0x4718f5a0fc34cc1af16a1cdee98ffb20c31f5cd61d6ab07201858f4287c938d";
+
+export const TBAcontractAddress_SEPOLIA: string =
+  "0x4101d3fa033024654083dd982273a300cb019b8cb96dd829267a4daf59f7b7e";
+
+export const TBAImplementationAccount_SEPOLIA: string =
+  "0x45d67b8590561c9b54e14dd309c9f38c4e2c554dd59414021f9d079811621bd";
 
 export const TOKEN_GIVER_Nft_CONTRACT_ADDRESS =
   "0x379eb5dc45e8d898b84b6ed7fa724f979d864d8126967ff7c445d17ef63c431";
+
 export const REGISTRY_HASH =
   "0x46163525551f5a50ed027548e86e1ad023c44e0eeb0733f0dab2fb1fdc31ed0";
+
 export const IMPLEMENTATION_HASH =
   "0x45d67b8590561c9b54e14dd309c9f38c4e2c554dd59414021f9d079811621bd";
+
 export const CAMPAIGN_CONTRACT_ADDRESS =
   "0x4cfe6a9c99be96db88fbfbf56f2df16d1a1eef5fe6e2dd45899c3f48763c75f";
 

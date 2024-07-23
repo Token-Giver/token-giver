@@ -1,7 +1,7 @@
 "use client";
 
 import CampaignLoader from "@/app/components/loading/CampaignLoader";
-import { STRK_SEPOLIA } from "@/app/utils/constant";
+import { STRK_SEPOLIA } from "@/app/utils/data";
 import { fetchContentFromIPFS } from "@/app/utils/helper";
 import CalenderIcon from "@/svgs/CalenderIcon";
 import DonateIcon from "@/svgs/DonateIcon";
