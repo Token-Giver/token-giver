@@ -142,7 +142,7 @@ const MobileMenu = ({
               <a href="">Contact Us</a>
             </li>
             <li>
-              <a href="">Sign in</a>
+              <Link href={"/campaigns/q"}>Sign in</Link>
             </li>
           </ul>
         </nav>

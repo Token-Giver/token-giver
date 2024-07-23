@@ -2,7 +2,11 @@
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { useMemo } from "react";
 
-const ConnectButton = () => {
+type Props = {
+  showButton?: boolean;
+};
+
+const ConnectButton = ({ showButton = true }: Props) => {
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
   const { connectors, connect } = useConnect();
@@ -25,7 +29,9 @@ const ConnectButton = () => {
             connectPopover.showPopover();
           }
         }}
-        className="border-solid border-[1px] border-theme-green text-theme-green py-2 px-6 rounded-[10px] w-fit justify-self-end self-end "
+        className={`border-solid border-[1px] border-theme-green text-theme-green py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
+          !showButton && "sr-only"
+        } `}
       >
         {address ? shortenedAddress : "connect"}
       </button>

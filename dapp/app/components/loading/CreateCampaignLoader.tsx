@@ -50,7 +50,7 @@ const CreateCampaignLoader = ({ campaignStep, percentage }: Props) => {
           {campaignStep === 3 && (
             <div className="w-fit mt-4">
               <button className=" border-solid border-[1px] border-theme-green py-2 px-6 rounded-[10px] w-full flex items-center">
-                <span>view campaign </span>
+                <span>view campaign</span>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="1.5em"

@@ -23,7 +23,7 @@ const StepThree = ({
     >
       <label htmlFor="target">Target:</label>
       <div className="relative">
-        <p className="absolute top-[-1.2rem] right-[.5em] text-red-600 text-[.7em]">
+        <p className="absolute top-[-1.2rem] right-[.5em] text-red text-[.7em]">
           Required*
         </p>
         <input
@@ -38,7 +38,7 @@ const StepThree = ({
 
       <label htmlFor="location">Location:</label>
       <div className="relative">
-        <p className="text-red-600  absolute top-[-1.2rem] right-[.5em] text-[.7em]">
+        <p className="text-red  absolute top-[-1.2rem] right-[.5em] text-[.7em]">
           Required*
         </p>
         <input

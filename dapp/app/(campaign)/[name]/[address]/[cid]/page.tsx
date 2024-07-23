@@ -225,7 +225,7 @@ const page = ({
                   </div>
                 </div>
               </div>
-              <div className="border-solid border-t-[1px] border-gray-400 py-6 flex gap-4 items-center">
+              <div className="border-solid border-t-[1px] border-gray-100 py-6 flex gap-4 items-center">
                 <span className="bg-gray-100 h-[50px] w-[50px] rounded-full flex items-center justify-center">
                   <CalenderIcon />
                 </span>{" "}
@@ -266,14 +266,14 @@ const page = ({
                   {balance >= parseInt(campaignDetails.target) ? (
                     <>
                       <span>Funds Raised</span>{" "}
-                      <span className="text-amber-300">
+                      <span className="text-theme-yellow">
                         <DonateIcon />
                       </span>
                     </>
                   ) : (
                     <>
                       <span>Donate now</span>{" "}
-                      <span className="text-amber-300">
+                      <span className="text-theme-yellow">
                         <DonateIcon />
                       </span>
                     </>
@@ -281,7 +281,7 @@ const page = ({
                 </button>
                 <button className="w-full bg-theme-green p-2 rounded-[5px]  flex justify-center items-center gap-2">
                   <span>Share</span>
-                  <span className="text-amber-300">
+                  <span className="text-theme-yellow">
                     <ShareIcon />
                   </span>
                 </button>

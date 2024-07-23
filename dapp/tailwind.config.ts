@@ -13,6 +13,10 @@ const config: Config = {
       l: ["1em", "1.21"],
       sm: ["0.875em", "1.21"],
     },
+
+    fontFamily: {
+      "Holly-Bale": ["Belanosima", "sans-serif"],
+    },
     colors: {
       "theme-green": "#127C56",
       white: "#ffffff",
@@ -20,9 +24,10 @@ const config: Config = {
       background: "#fffcf5",
       "theme-yellow": "#fbbf24",
       debug: "#ff0000",
-    },
-    fontFamily: {
-      "Holly-Bale": ["Belanosima", "sans-serif"],
+      "gray-100": "#f3f4f6",
+      "gray-200": "#e5e7eb",
+      "gray-300": "#9ca3af",
+      red: "#dc2626",
     },
     extend: {
       fontSize: {
