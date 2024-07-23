@@ -118,7 +118,7 @@ const page = ({
   return (
     <>
       {campaignDetails.name ? (
-        <section className=" mt-[4rem] mx-auto py-10 md:py-16 px-4 md:max-w-none md:px-10 bg-off-white lg:px-[10vw]">
+        <section className=" mt-[4rem] mx-auto py-10 md:py-16 px-4 md:max-w-none md:px-10 bg-background lg:px-[10vw]">
           <div className="lg:flex gap-8  max-w-[500px] mx-auto md:mx-0  md:max-w-none relative">
             <div className="lg:w-[60%] mx-auto flex flex-col gap-12">
               <h2 className="font-bold">{campaignDetails.name}</h2>
@@ -232,7 +232,7 @@ const page = ({
                 <p>{campaignDetails.date}</p>
               </div>
             </div>
-            <div className="hidden sticky top-8 bg-off-white p-8  rounded-[10px] w-[35%] h-fit lg:flex flex-col gap-8 shadow-small ">
+            <div className="hidden sticky top-8 bg-background p-8  rounded-[10px] w-[35%] h-fit lg:flex flex-col gap-8 shadow-small ">
               <div className="flex flex-col gap-4">
                 <p>
                   <span className="text-[2rem]">{balance.toFixed(2)} STRK</span>{" "}

@@ -209,7 +209,9 @@ const Page = () => {
               <Logo />
             </p>
 
-            <h2 className="text-amber-400">Start your fundraising journey!</h2>
+            <h2 className="text-theme-yellow">
+              Start your fundraising journey!
+            </h2>
             <div className="flex gap-2 items-center text-white">
               <span className="">
                 <span className="text-[1.8em] mr-2">{step.number}</span>/ 3
@@ -220,7 +222,7 @@ const Page = () => {
         </div>
       </Container>
 
-      <div className=" w-full bg-off-white md:rounded-tl-[50px] md:shadow-hero-shadow py-10 px-4 lg:py-10 lg:px-20 md:w-[60%] flex items-center ">
+      <div className=" w-full bg-background md:rounded-tl-[50px] md:shadow-hero-shadow py-10 px-4 lg:py-10 lg:px-20 md:w-[60%] flex items-center ">
         <Container className=" flex flex-col justify-between">
           <ConnectButton />
           <form className="flex flex-col gap-4  md:p-4" action="">
@@ -305,7 +307,7 @@ const Page = () => {
         percentage={loadingPercentage}
       />
 
-      <div className="bg-off-white h-[50px] p-8 w-full absolute bottom-[-64px] left-0 hidden md:block"></div>
+      <div className="bg-background h-[50px] p-8 w-full absolute bottom-[-64px] left-0 hidden md:block"></div>
     </main>
   );
 };

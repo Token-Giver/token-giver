@@ -17,7 +17,7 @@ const CreateCampaignLoader = ({ campaignStep, percentage }: Props) => {
       popover="manual"
       className="bg-transparent mx-auto my-auto"
     >
-      <div className="flex flex-col bg-off-white h-[90vh] justify-center items-center gap-4  p-4">
+      <div className="flex flex-col bg-background h-[90vh] justify-center items-center gap-4  p-4">
         <div className="">
           <div className="rounded-full w-fit h-fit bg-theme-green p-2 animate-scale-pulse">
             <span className="text-xl text-theme-yellow">

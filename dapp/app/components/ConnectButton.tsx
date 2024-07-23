@@ -33,7 +33,7 @@ const ConnectButton = () => {
       <div
         id="connect-modal"
         popover="auto"
-        className={`bg-off-white p-4 md:p-8 w-[90%] md:min-w-[25rem] md:w-[25vw] max-w-[30rem] h-fit  min-h-[200px] rounded-[10px] mx-auto my-auto`}
+        className={`bg-background p-4 md:p-8 w-[90%] md:min-w-[25rem] md:w-[25vw] max-w-[30rem] h-fit  min-h-[200px] rounded-[10px] mx-auto my-auto`}
       >
         <div className="flex flex-col justify-center gap-8">
           <h5 className="font-bold text-[1.1em]">Choose a wallet:</h5>

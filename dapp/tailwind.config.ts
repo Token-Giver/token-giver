@@ -13,19 +13,21 @@ const config: Config = {
       l: ["1em", "1.21"],
       sm: ["0.875em", "1.21"],
     },
+    colors: {
+      "theme-green": "#127C56",
+      white: "#ffffff",
+      black: "#000000",
+      background: "#fffcf5",
+      "theme-yellow": "#fbbf24",
+      debug: "#ff0000",
+    },
+    fontFamily: {
+      "Holly-Bale": ["Belanosima", "sans-serif"],
+    },
     extend: {
       fontSize: {
         clamp: "clamp(0.5rem, 5vw, 1rem)",
       },
-      colors: {
-        "theme-green": "#127C56",
-        "off-white": "#fffcf5",
-        "theme-yellow": "#fbbf24",
-      },
-      fontFamily: {
-        "Holly-Bale": ["Belanosima", "sans-serif"],
-      },
-
       boxShadow: {
         small: "rgba(0, 0, 0, 0.2) 0px -1px 0.7rem",
         "hero-shadow": "rgba(0, 0, 0, 0.5) 0px 0px 0.9rem",
