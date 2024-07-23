@@ -1,11 +1,30 @@
+"use client";
 import CampaignLoader from "@/app/components/loading/CampaignLoader";
 import Container from "@/app/components/util/Container";
 import CalenderIcon from "@/svgs/CalenderIcon";
 import ShareIcon from "@/svgs/ShareIcon";
 import WithdrawIcon from "@/svgs/WithdrawIcon";
 import Image from "next/image";
+import { ChangeEvent, useState } from "react";
+import WithdrawalForm from "./components/WithdrawalForm";
 
 const page = () => {
+  const [withdrawalFormOpen, setWithdrawalFormOpen] = useState(false);
+  const [withdrawalInputs, setWithdrawalInputs] = useState({
+    beneficiary: "",
+    amount: "",
+  });
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value, name } = e.target;
+    setWithdrawalInputs((prev) => {
+      return {
+        ...prev,
+        [name]: value,
+      };
+    });
+  };
+
   return (
     <>
       {/* {campaignDetails.name ? ( */}
@@ -52,20 +71,31 @@ const page = () => {
                     </p>
                   </div>
                 </div>
-                <div className="flex flex-col gap-4 text-white md:flex-row   ">
-                  <button className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px] disabled:cursor-not-allowed flex justify-center items-center gap-2 ">
-                    <span>withdraw</span>{" "}
-                    <span className="text-theme-yellow">
-                      <WithdrawIcon />
-                    </span>
-                  </button>
-                  <button className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px]  flex justify-center items-center gap-2">
-                    <span>Share</span>
-                    <span className="text-theme-yellow">
-                      <ShareIcon />
-                    </span>
-                  </button>
-                </div>
+                <WithdrawalForm
+                  handleChange={handleChange}
+                  withdrawalInputs={withdrawalInputs}
+                  withdrawalFormOpen={withdrawalFormOpen}
+                  setWithdrawalFormOpen={setWithdrawalFormOpen}
+                />
+                {!withdrawalFormOpen && (
+                  <div className="flex flex-col gap-4 text-white md:flex-row   ">
+                    <button
+                      onClick={() => setWithdrawalFormOpen(true)}
+                      className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px] disabled:cursor-not-allowed flex justify-center items-center gap-2 "
+                    >
+                      <span>withdraw</span>{" "}
+                      <span className="text-theme-yellow">
+                        <WithdrawIcon />
+                      </span>
+                    </button>
+                    <button className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px]  flex justify-center items-center gap-2">
+                      <span>Share</span>
+                      <span className="text-theme-yellow">
+                        <ShareIcon />
+                      </span>
+                    </button>
+                  </div>
+                )}
               </div>
 
               <div className="w-full md:w-[85%] md:mx-auto lg:w-full">
@@ -79,7 +109,10 @@ const page = () => {
                 {/* <p>{campaignDetails.description}</p> */}
               </div>
               <div className="flex flex-col w-full md:w-[85%] md:mx-auto md:flex-row gap-4 lg:w-full">
-                <button className=" w-full md:w-1/2 border-[1px] disabled:cursor-not-allowed border-solid border-theme-green p-3 rounded-[5px] font-bold">
+                <button
+                  onClick={() => setWithdrawalFormOpen(true)}
+                  className=" w-full md:w-1/2 border-[1px] disabled:cursor-not-allowed border-solid border-theme-green p-3 rounded-[5px] font-bold"
+                >
                   Withdraw
                 </button>
                 <button className="w-full md:w-1/2 border-[1px] border-solid border-theme-green p-3 rounded-[5px] font-bold">
@@ -94,7 +127,7 @@ const page = () => {
                 <p>Created 23 July 2024</p>
               </div>
             </div>
-            <div className="hidden sticky top-8 bg-background p-8  rounded-[10px] w-[35%] h-fit lg:flex flex-col gap-8 shadow-small ">
+            <div className="hidden sticky top-8 bg-background p-8  rounded-[10px] w-[35%] h-fit lg:flex flex-col gap-4 shadow-small ">
               <div className="flex flex-col gap-4">
                 <p>
                   <span className="text-[2rem]">{30} STRK</span> raised out of{" "}
@@ -106,11 +139,6 @@ const page = () => {
                     <div
                       style={{
                         width: `30%`,
-                        //   width: `${
-                        //     balance >= parseInt(campaignDetails.target)
-                        //       ? "100"
-                        //       : (balance / parseInt(campaignDetails.target)) * 100
-                        //   }%`,
                       }}
                       className={`h-[1vw] max-h-[.25rem] bg-[#127C56] rounded-full mb-4 top-0 absolute`}
                     ></div>
@@ -118,19 +146,33 @@ const page = () => {
                   <p>{2} donations</p>
                 </div>
               </div>
-              <div className="flex flex-col gap-4 text-white  ">
-                <button className="w-full bg-theme-green p-2 rounded-[5px] flex disabled:cursor-not-allowed justify-center items-center gap-2 ">
-                  <span>Withdraw</span>{" "}
-                  <span className="text-theme-yellow">
-                    <WithdrawIcon />
-                  </span>
-                </button>
-                <button className="w-full bg-theme-green p-2 rounded-[5px]  flex justify-center items-center gap-2">
-                  <span>Share</span>
-                  <span className="text-theme-yellow">
-                    <ShareIcon />
-                  </span>
-                </button>
+              <div className="flex flex-col gap-4">
+                <WithdrawalForm
+                  handleChange={handleChange}
+                  withdrawalInputs={withdrawalInputs}
+                  withdrawalFormOpen={withdrawalFormOpen}
+                  setWithdrawalFormOpen={setWithdrawalFormOpen}
+                />
+                {!withdrawalFormOpen && (
+                  <>
+                    <button
+                      onClick={() => setWithdrawalFormOpen(true)}
+                      className={`w-full bg-theme-green p-2 rounded-[5px]  disabled:cursor-not-allowed justify-center items-center text-white flex  gap-2`}
+                    >
+                      <span>Withdraw</span>{" "}
+                      <span className="text-theme-yellow">
+                        <WithdrawIcon />
+                      </span>
+                    </button>
+
+                    <button className="w-full bg-theme-green p-2 rounded-[5px]  flex justify-center items-center gap-2 text-white ">
+                      <span>Share</span>
+                      <span className="text-theme-yellow">
+                        <ShareIcon />
+                      </span>
+                    </button>
+                  </>
+                )}
               </div>
             </div>
           </div>
