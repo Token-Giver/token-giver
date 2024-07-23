@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import MobileMenu from "./MobileMenu";
 import Logo from "@/svgs/Logo";
 
@@ -49,7 +49,7 @@ const Header = () => {
             <ul className="flex gap-8">
               <li>search</li>
               <li>
-                <Link href={"/campaigns"}>Campaigns</Link>
+                <Link href={"/explore"}>Campaigns</Link>
               </li>
 
               <li>
@@ -61,6 +61,7 @@ const Header = () => {
             </ul>
           </nav>
           <div className="hidden lg:block">
+            <button className="px-6 py-2 rounded-[25px]">Sign in</button>
             <button
               onClick={createCampaign}
               className="bg-[#127C56] text-white px-6 py-2 rounded-[25px]"

@@ -121,7 +121,6 @@ select {
   /* Final state of the exit animation */
   transform: scale(0.7);
   opacity: 0;
-
   transition-property: opacity, transform, overlay, display;
   transition-duration: 0.5s;
   transition-behavior: allow-discrete;
@@ -132,8 +131,12 @@ select {
   opacity: 1;
 }
 
+#creatingCampaign::backdrop {
+  background-color: #fffcf5 !important;
+}
+
 [popover]::backdrop {
-  background-color: #0000005d;
+  background-color: #000000b4;
   backdrop-filter: blur(3px);
 }
 

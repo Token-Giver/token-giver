@@ -221,9 +221,18 @@ const Donate = ({
                 fill
               />
             </div>
-            <p className="col-span-2 text-clamp md:text-[1em]">
-              {campaignDetails.description}
-            </p>
+            <div className="col-span-2 ">
+              <p className=" text-clamp md:text-[1em]">
+                You are supporting{" "}
+                <span className="font-semibold"> {campaignDetails.name}</span>
+              </p>
+              <p className="mt-2 text-[.875em]">
+                Your donation will benefit{" "}
+                <span className="font-semibold">
+                  {campaignDetails.beneficiary}
+                </span>
+              </p>
+            </div>
           </div>
           <div className="w-fit mx-auto mt-8">
             <h5 className="font-medium">Send STRK</h5>

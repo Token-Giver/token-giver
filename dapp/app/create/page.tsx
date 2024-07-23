@@ -1,4 +1,5 @@
 "use client";
+
 import { ChangeEvent, useEffect, useState } from "react";
 import ConnectButton from "../components/ConnectButton";
 import { useAccount } from "@starknet-react/core";
@@ -7,7 +8,7 @@ import { InputDateType } from "@/types";
 import StepThree from "./components/StepThree";
 import Logo from "@/svgs/Logo";
 import { CallData } from "starknet";
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 import {
   BEARER_TOKEN,
   IMPLEMENTATION_HASH,
@@ -18,14 +19,17 @@ import {
   provider,
 } from "../utils/data";
 import Container from "../components/util/Container";
+import CreateCampaignLoader from "../components/loading/CreateCampaignLoader";
+
 const Page = () => {
   const account: any = useAccount();
-  const router = useRouter();
+  const [campaignStep, setCampaignStep] = useState(0);
+  const [creatingCampaign, setCreatingCampaign] = useState(false);
+  const [loadingPercentage, setLoadingPercentage] = useState(0);
   const [step, setStep] = useState({
     number: 1,
     text: "First connect your wallet",
   });
-  const [creatingCampaign, setCreatingCampaign] = useState(false);
   const [inputData, setInputData] = useState<InputDateType>({
     name: "",
     description: "",
@@ -59,17 +63,22 @@ const Page = () => {
   };
 
   async function createCampaign() {
+    const loadingPopover = document.querySelector(
+      "#creatingCampaign"
+    ) as HTMLElement;
+    loadingPopover.showPopover();
+    document.body.style.overflow = "hidden";
+
     try {
       setCreatingCampaign(true);
+      setLoadingPercentage(10); // Start loading
       campaign_contract.connect(account.account);
       const last_minted_id = await nft_contract.get_last_minted_id();
       const salt = Math.floor(Math.random() * 9999)
         .toString()
         .padStart(4, "0");
 
-      //////////////////////////////////////////
-      // CREATE CAMPAIGN -> CAMPAIGN ADDRESS
-      /////////////////////////////////////////
+      // CREATE CAMPAIGN -> campaign address (nft)
       const create_campaign_res = await campaign_contract.create_campaign(
         CallData.compile([
           TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
@@ -82,8 +91,10 @@ const Page = () => {
       const txnDet = await provider.waitForTransaction(
         create_campaign_res.transaction_hash
       );
-      console.log(txnDet, "txn details");
-      console.log(create_campaign_res, "create campaign response");
+      txnDet.isSuccess() && setCampaignStep(1);
+      setLoadingPercentage(40);
+      // console.log(txnDet, "txn details"); // execution_status: "SUCCEEDED"; minted campaign
+      // console.log(create_campaign_res, "create campaign response");
 
       /////////////////////////////////////////
       // UPLOAD CAMPAIGN NFT IMAGE TO PINATA
@@ -106,7 +117,8 @@ const Page = () => {
         }
       );
       const image_upload_resData = await image_upload_res.json();
-      console.log(image_upload_resData, "image upload response");
+      setLoadingPercentage(60);
+      // console.log(image_upload_resData, "image upload response"); // IpfsHash: "QmTHJNYBspAccj5BmGUbA34eoWTLsxHTgvauFbKsggS5Tb" iploadinf info
 
       //////////////////////////////////
       // CREATE NEW METADATA URI JSON
@@ -141,7 +153,9 @@ const Page = () => {
       );
 
       const metadata_upload_resData = await metadata_upload_res.json();
-      console.log(metadata_upload_resData, "uploaded metadata uri");
+      // console.log(metadata_upload_resData, "uploaded metadata uri"); // uploading image
+      metadata_upload_resData.IpfsHash && setCampaignStep(2);
+      setLoadingPercentage(80);
 
       ///////////////////////////////////////
       // CALL SET_METADATA_URI FUNCTION
@@ -156,12 +170,16 @@ const Page = () => {
         );
 
       console.log(set_campaign_metadata_res, "set campaign metadata response");
-      router.push(`/`);
+      setLoadingPercentage(100);
     } catch (err) {
-      console.log(err);
+      loadingPopover.hidePopover();
+      document.body.style.overflow = "auto";
     } finally {
       setCreatingCampaign(false);
     }
+    setTimeout(() => {
+      redirect(`/`);
+    }, 5000);
   }
 
   useEffect(() => {
@@ -264,6 +282,7 @@ const Page = () => {
                 Continue
               </button>
               <button
+                popoverTarget="creatingCampaign"
                 onClick={() => {
                   createCampaign();
                 }}
@@ -280,6 +299,11 @@ const Page = () => {
           </div>
         </Container>
       </div>
+
+      <CreateCampaignLoader
+        campaignStep={campaignStep}
+        percentage={loadingPercentage}
+      />
 
       <div className="bg-off-white h-[50px] p-8 w-full absolute bottom-[-64px] left-0 hidden md:block"></div>
     </main>

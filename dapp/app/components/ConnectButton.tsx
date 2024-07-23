@@ -16,9 +16,15 @@ const ConnectButton = () => {
     <>
       <button
         onClick={() => {
-          if (address) disconnect();
+          const connectPopover = document.querySelector(
+            "#connect-modal"
+          ) as HTMLElement;
+          if (address) {
+            disconnect();
+          } else {
+            connectPopover.showPopover();
+          }
         }}
-        popoverTarget={address ? "" : "connect-modal"}
         className="border-solid border-[1px] border-theme-green text-theme-green py-2 px-6 rounded-[10px] w-fit justify-self-end self-end "
       >
         {address ? shortenedAddress : "connect"}
@@ -27,25 +33,27 @@ const ConnectButton = () => {
       <div
         id="connect-modal"
         popover="auto"
-        className={`bg-off-white p-4 md:p-8 w-[90%] md:min-w-[25rem] md:w-[25vw] max-w-[30rem] h-fit  min-h-[200px] rounded-[10px] mx-auto flex flex-col justify-center gap-8 my-auto`}
+        className={`bg-off-white p-4 md:p-8 w-[90%] md:min-w-[25rem] md:w-[25vw] max-w-[30rem] h-fit  min-h-[200px] rounded-[10px] mx-auto my-auto`}
       >
-        <h5 className="font-bold text-[1.1em]">Choose a wallet:</h5>
-        <div className=" flex flex-col gap-4">
-          {connectors.map((connector) => {
-            return (
-              <button
-                popoverTarget="connect-modal"
-                popoverTargetAction="hide"
-                className="bg-theme-green text-white py-2 px-6 rounded-[10px] w-full  "
-                onClick={() => {
-                  connect({ connector });
-                }}
-                key={connector.id}
-              >
-                {connector.id}
-              </button>
-            );
-          })}
+        <div className="flex flex-col justify-center gap-8">
+          <h5 className="font-bold text-[1.1em]">Choose a wallet:</h5>
+          <div className=" flex flex-col gap-4">
+            {connectors.map((connector) => {
+              return (
+                <button
+                  popoverTarget="connect-modal"
+                  popoverTargetAction="hide"
+                  className="bg-theme-green text-white py-2 px-6 rounded-[10px] w-full"
+                  onClick={() => {
+                    connect({ connector });
+                  }}
+                  key={connector.id}
+                >
+                  {connector.id}
+                </button>
+              );
+            })}
+          </div>
         </div>
       </div>
     </>
