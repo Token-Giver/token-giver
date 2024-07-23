@@ -63,10 +63,7 @@ const Card = ({
     router.push(`${path}/${campaign_address}/${cid}`);
   };
 
-  const width = `${Math.min(
-    (parseInt(balance) / parseInt(target)) * 100,
-    100
-  )}%`;
+  const width = `${Math.min((balance / parseInt(target)) * 100, 100)}%`;
 
   return (
     <div
