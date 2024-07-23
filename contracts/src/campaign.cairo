@@ -142,6 +142,23 @@ mod CampaignComponent {
             campaigns
         }
 
+        fn get_user_campaigns(self: @ComponentState<TContractState>, user: ContractAddress) -> Array<ByteArray>{
+            let mut campaigns = ArrayTrait::new();
+            let count = self.count.read();
+            let mut i: u16 = 1;
+
+            while i < count
+                + 1 {
+                    let campaignAddress: ContractAddress = self.campaigns.read(i);
+                    let campaign: Campaign = self.campaign.read(campaignAddress);
+                    if campaign.campaign_owner == user {
+                        campaigns.append(campaign.metadata_URI);
+                    }
+                    i += 1;
+                };
+            campaigns
+        }
+
         fn get_donation_count(
             self: @ComponentState<TContractState>, campaign_address: ContractAddress
         ) -> u16 {

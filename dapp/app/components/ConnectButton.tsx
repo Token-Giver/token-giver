@@ -49,7 +49,8 @@ const ConnectButton = ({ showButton = true }: Props) => {
               return (
                 <button
                   popoverTarget="connect-modal"
-                  popoverTargetAction="hide"
+                  // popoverTargetAction="hide"
+                  // popover
                   className="bg-theme-green text-white py-2 px-6 rounded-[10px] w-full"
                   onClick={() => {
                     connect({ connector });
