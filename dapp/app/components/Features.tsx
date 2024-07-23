@@ -13,7 +13,7 @@ const Features = () => {
     <section
       className={`${
         isDonationPage ? "hidden" : "block"
-      } py-10 px-4 md:p-10 bg-off-white`}
+      } py-10 px-4 md:p-10 bg-background`}
     >
       <Container>
         <div className="mb-[5rem]">
@@ -24,7 +24,7 @@ const Features = () => {
           className="flex flex-col justify-center md:flex-row bg-yellow-100 rounded-[20px]"
         >
           <div className="flex flex-col gap-4 md:items-center md:justify-center p-4 md:p-8 lg:p-12">
-            <div className="bg-theme-green w-[50px] h-[50px] md:w-[80px] md:h-[80px] lg:w-[120px] lg:h-[120px] rounded-full flex items-center justify-center text-amber-400">
+            <div className="bg-theme-green w-[50px] h-[50px] md:w-[80px] md:h-[80px] lg:w-[120px] lg:h-[120px] rounded-full flex items-center justify-center text-theme-yellow">
               <LoveIcon />
             </div>
             <div className=" md:text-center">
@@ -36,7 +36,7 @@ const Features = () => {
             </div>
           </div>
           <div className="flex flex-col gap-4 md:items-center md:justify-center p-4  md:p-8  lg:p-12 ">
-            <div className="bg-theme-green w-[50px] h-[50px] md:w-[80px] md:h-[80px] lg:w-[120px] lg:h-[120px] rounded-full flex items-center justify-center text-amber-400">
+            <div className="bg-theme-green w-[50px] h-[50px] md:w-[80px] md:h-[80px] lg:w-[120px] lg:h-[120px] rounded-full flex items-center justify-center text-theme-yellow">
               <GiveIcon />
             </div>
             <div className=" md:text-center">
@@ -48,7 +48,7 @@ const Features = () => {
             </div>
           </div>
           <div className="flex flex-col gap-4 md:items-center md:justify-center p-4  md:p-8  lg:p-12">
-            <div className="bg-theme-green w-[50px] h-[50px] md:w-[80px] md:h-[80px] lg:w-[120px] lg:h-[120px] rounded-full flex items-center justify-center text-amber-400">
+            <div className="bg-theme-green w-[50px] h-[50px] md:w-[80px] md:h-[80px] lg:w-[120px] lg:h-[120px] rounded-full flex items-center justify-center text-theme-yellow">
               <GrowIcon />
             </div>
             <div className=" md:text-center">

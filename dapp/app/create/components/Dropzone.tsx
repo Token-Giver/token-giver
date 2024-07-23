@@ -55,12 +55,12 @@ const Dropzone = ({
       onDrop={handleDrop}
       onDragOver={handleDragOver}
       className={`lg:w-[70%] border-dashed border-[2px]  px-4 py-8 leading-6 rounded-[10px] flex flex-col gap-2 relative ${
-        !address ? "border-gray-200" : "border-gray-400"
+        !address ? "border-gray-200" : "border-gray-300"
       }`}
     >
       <p className="text-[#878787]">
         Drag and drop image files here (max size: 50 MB), or{" "}
-        <span className="underline text-blue-700">click</span> to select files
+        <span className="underline text-blue">click</span> to select files
       </p>
       <input
         type="file"

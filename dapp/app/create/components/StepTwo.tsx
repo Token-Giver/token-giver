@@ -29,7 +29,7 @@ const StepTwo = ({
     >
       <label htmlFor="name">Name:</label>
       <div className="relative">
-        <p className="absolute top-[-1.2rem] right-[.5em] text-red-600 text-[.7em]">
+        <p className="absolute top-[-1.2rem] right-[.5em] text-red text-[.7em]">
           Required*
         </p>
         <input
@@ -39,19 +39,19 @@ const StepTwo = ({
           value={inputData.name}
           onChange={handleInputChange}
           placeholder="Name of campaign"
-          className={`w-full bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]`}
+          className={`w-full bg-transparent border-solid border-[1px] border-gray-300 p-3 rounded-[10px]`}
           disabled={!address}
         />
       </div>
       <label htmlFor="description">Description of campaign:</label>
       <div className="relative">
-        <p className="absolute top-[-1.2rem] right-[.5em] text-red-600 text-[.7em]">
+        <p className="absolute top-[-1.2rem] right-[.5em] text-red text-[.7em]">
           Required*
         </p>
         <textarea
           required
           placeholder="Write your description here..."
-          className={`w-full bg-transparent border-solid border-[1px] border-gray-400 p-4  leading-6 rounded-[10px] resize-none overflow-y-auto no-scrollbar`}
+          className={`w-full bg-transparent border-solid border-[1px] border-gray-300 p-4  leading-6 rounded-[10px] resize-none overflow-y-auto no-scrollbar`}
           disabled={!address}
           onChange={handleInputChange}
           name="description"

@@ -2,17 +2,31 @@
 import Logo from "@/svgs/Logo";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
+import WalletIcon from "@/svgs/WalletIcon";
+import ProfileIcon from "@/svgs/ProfileIcon";
+import LogOutIcon from "@/svgs/LogOutIcon";
+import { useDisconnect } from "@starknet-react/core";
+import { useRouter } from "next/navigation";
 const MobileMenu = ({
   isMenuOpen,
   setIsMenuOpen,
   createCampaign,
   toggleMenu,
+  address,
+  connectWallet,
+  shortenedAddress,
 }: {
   isMenuOpen: boolean;
   setIsMenuOpen: Dispatch<SetStateAction<boolean>>;
   createCampaign: () => void;
   toggleMenu: () => void;
+  address: string | undefined;
+  shortenedAddress: string;
+  connectWallet: () => void;
 }) => {
+  const { disconnect } = useDisconnect();
+  const router = useRouter();
+
   const yRef = useRef(100);
   const cRef = useRef(100);
   useEffect(() => {
@@ -75,7 +89,7 @@ const MobileMenu = ({
           document.body.style.overflow = "auto";
         }, 300);
       }}
-      className={`h-screen w-screen fixed top-0 left-0  ${
+      className={`h-screen w-screen fixed top-0 left-0 z-[9999]  ${
         isMenuOpen ? "pointer-events-auto" : "pointer-events-none"
       } lg:hidden`}
     >
@@ -141,12 +155,50 @@ const MobileMenu = ({
             <li>
               <a href="">Contact Us</a>
             </li>
-            <li>
-              <a href="">Sign in</a>
-            </li>
           </ul>
         </nav>
-        <div className="w-fit mx-auto">
+        <div className="w-fit mx-auto flex flex-col gap-4">
+          {address ? (
+            <div className="flex flex-col gap-4">
+              <button
+                onClick={() => {
+                  router.push(`/campaigns/${address}`);
+                }}
+                className="flex items-center gap-4"
+              >
+                <span className="">
+                  <ProfileIcon width="1em" height="1em" />
+                </span>
+                <span className="">My Campaigns</span>
+              </button>
+              <button
+                onClick={() => {
+                  if (address) disconnect();
+                }}
+                className="flex items-center gap-4"
+              >
+                <span>
+                  <LogOutIcon />
+                </span>
+                <span>Log out</span>
+              </button>
+            </div>
+          ) : (
+            <button
+              onClick={connectWallet}
+              className="flex justify-between items-center border-solid border-[1px] border-theme-green rounded-[25px] h-full w-full"
+            >
+              <span className="px-2">
+                <WalletIcon />
+              </span>
+
+              <span className="px-2">Sign in</span>
+              <span className="bg-[#edf2ee66] rounded-full p-2">
+                <ProfileIcon width="1.2em" height="1.2em" />
+              </span>
+            </button>
+          )}
+
           <button
             onClick={createCampaign}
             className="bg-[#127C56] text-white px-6 py-2 rounded-[25px]"

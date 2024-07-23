@@ -175,7 +175,7 @@ const Donate = ({
   const divRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <section className="bg-off-white md:bg-theme-green w-screen min-h-screen   flex justify-between ">
+    <section className="bg-background md:bg-theme-green w-screen min-h-screen   flex justify-between ">
       <div className="hidden w-[40%] md:flex flex-col p-4 items-center ">
         <button
           onClick={handleRouteToCampaign}
@@ -188,13 +188,13 @@ const Donate = ({
             <Logo />
           </p>
 
-          <h2 className="text-amber-400">Every Token Counts!</h2>
+          <h2 className="text-theme-yellow">Every Token Counts!</h2>
           <div className="flex gap-2 items-center text-white">
             <p className=" mt-3 ">Empowering Change Through Generosity</p>
           </div>
         </div>
       </div>
-      <div className="bg-off-white max-w-[500px] mx-auto md:max-w-none py-10 px-4 lg:py-10 lg:px-[5vw] w-full md:w-[60%]  md:rounded-tl-[50px] md:shadow-hero-shadow flex flex-col gap-10 md:gap-20 ">
+      <div className="bg-background max-w-[500px] mx-auto md:max-w-none py-10 px-4 lg:py-10 lg:px-[5vw] w-full md:w-[60%]  md:rounded-tl-[50px] md:shadow-hero-shadow flex flex-col gap-10 md:gap-20 ">
         <div className="flex flex-wrap items-center justify-between md:justify-end">
           <button
             onClick={handleRouteToCampaign}
@@ -209,7 +209,7 @@ const Donate = ({
             <p className="font-bold text-[1.5em] text-theme-green flex items-center gap-1">
               <Logo />
             </p>
-            <h2 className="text-amber-400">Every Token Counts!</h2>
+            <h2 className="text-theme-yellow">Every Token Counts!</h2>
           </div>
           <div className="flex flex-col-reverse gap-8 md:grid md:grid-cols-3 md:gap-4 ">
             <div className="hidden md:block w-[130px] h-[90px] rounded-[5px] relative">
@@ -253,7 +253,7 @@ const Donate = ({
 
             <div
               ref={divRef}
-              className="relative w-full min-h-[5.5rem] bg-transparent border-solid border-[1px] rounded-[10px] px-5 border-gray-400 grid grid-cols-10 justify-between focus:border-[#159968] focus:border-[2px]"
+              className="relative w-full min-h-[5.5rem] bg-transparent border-solid border-[1px] rounded-[10px] px-5 border-gray-300 grid grid-cols-10 justify-between focus:border-[#159968] focus:border-[2px]"
             >
               <input
                 onFocus={() => {

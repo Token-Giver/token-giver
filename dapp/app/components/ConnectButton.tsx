@@ -2,7 +2,11 @@
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { useMemo } from "react";
 
-const ConnectButton = () => {
+type Props = {
+  showButton?: boolean;
+};
+
+const ConnectButton = ({ showButton = true }: Props) => {
   const { address } = useAccount();
   const { disconnect } = useDisconnect();
   const { connectors, connect } = useConnect();
@@ -22,10 +26,13 @@ const ConnectButton = () => {
           if (address) {
             disconnect();
           } else {
+            // @ts-ignore
             connectPopover.showPopover();
           }
         }}
-        className="border-solid border-[1px] border-theme-green text-theme-green py-2 px-6 rounded-[10px] w-fit justify-self-end self-end "
+        className={`border-solid border-[1px] border-theme-green text-theme-green py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
+          !showButton && "sr-only"
+        } `}
       >
         {address ? shortenedAddress : "connect"}
       </button>
@@ -33,7 +40,7 @@ const ConnectButton = () => {
       <div
         id="connect-modal"
         popover="auto"
-        className={`bg-off-white p-4 md:p-8 w-[90%] md:min-w-[25rem] md:w-[25vw] max-w-[30rem] h-fit  min-h-[200px] rounded-[10px] mx-auto my-auto`}
+        className={`bg-background p-4 md:p-8 w-[90%] md:min-w-[25rem] md:w-[25vw] max-w-[30rem] h-fit  min-h-[200px] rounded-[10px] mx-auto my-auto`}
       >
         <div className="flex flex-col justify-center gap-8">
           <h5 className="font-bold text-[1.1em]">Choose a wallet:</h5>

@@ -1,6 +1,13 @@
+"use client";
+
+import RightArrowIcon from "@/svgs/RightArrowIcon";
+import WarningIcon from "@/svgs/WarningIcon";
+import { useRouter } from "next/navigation";
+
 type Props = {
   campaignStep: number;
   percentage: number;
+  url: string;
 };
 
 const Creating_Campaign = [
@@ -10,14 +17,15 @@ const Creating_Campaign = [
   "Congratulations! Your campaign has been successfully minted.",
 ];
 
-const CreateCampaignLoader = ({ campaignStep, percentage }: Props) => {
+const CreateCampaignLoader = ({ campaignStep, percentage, url }: Props) => {
+  const router = useRouter();
   return (
     <div
       id="creatingCampaign"
       popover="manual"
       className="bg-transparent mx-auto my-auto"
     >
-      <div className="flex flex-col bg-off-white h-[90vh] justify-center items-center gap-4  p-4">
+      <div className="flex flex-col bg-background h-[90vh] justify-center items-center gap-4  p-4">
         <div className="">
           <div className="rounded-full w-fit h-fit bg-theme-green p-2 animate-scale-pulse">
             <span className="text-xl text-theme-yellow">
@@ -43,25 +51,26 @@ const CreateCampaignLoader = ({ campaignStep, percentage }: Props) => {
               style={{
                 width: `${percentage}%`,
               }}
-              className={`h-[.15rem] bg-theme-green rounded-full mb-4 top-0 absolute`}
+              className={`h-[.15rem] bg-theme-green rounded-full mb-4 top-0 transition-all duration-500 absolute`}
             ></div>
           </div>
           <p>{Creating_Campaign[campaignStep]}</p>
           {campaignStep === 3 && (
             <div className="w-fit mt-4">
-              <button className=" border-solid border-[1px] border-theme-green py-2 px-6 rounded-[10px] w-full flex items-center">
-                <span>view campaign </span>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="1.5em"
-                  height="1.5em"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    fill="#127C56"
-                    d="M13.47 8.53a.75.75 0 0 1 1.06-1.06l4 4a.75.75 0 0 1 0 1.06l-4 4a.75.75 0 1 1-1.06-1.06l2.72-2.72H6.5a.75.75 0 0 1 0-1.5h9.69z"
-                  />
-                </svg>
+              <button
+                onClick={() => {
+                  const loadingPopover = document.querySelector(
+                    "#creatingCampaign"
+                  ) as HTMLElement;
+                  // @ts-ignore
+                  loadingPopover.hidePopover();
+                  document.body.style.overflow = "auto";
+                  router.push(url);
+                }}
+                className="border-solid border-[1px] border-theme-green py-2 px-6 rounded-[10px] w-full flex items-center hover:bg-[#e4efe7]"
+              >
+                <span>view campaign</span>
+                <RightArrowIcon />
               </button>
             </div>
           )}
@@ -69,17 +78,7 @@ const CreateCampaignLoader = ({ campaignStep, percentage }: Props) => {
       </div>
       <p className="flex items-center gap-1">
         <span>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="1.5em"
-            height="1.5em"
-            viewBox="0 0 1024 1024"
-          >
-            <path
-              fill="currentColor"
-              d="M512 64a448 448 0 1 1 0 896a448 448 0 0 1 0-896m0 832a384 384 0 0 0 0-768a384 384 0 0 0 0 768m48-176a48 48 0 1 1-96 0a48 48 0 0 1 96 0m-48-464a32 32 0 0 1 32 32v288a32 32 0 0 1-64 0V288a32 32 0 0 1 32-32"
-            />
-          </svg>
+          <WarningIcon />
         </span>
         <span>
           Warning: Please do not refresh, close, or navigate away. Your data
