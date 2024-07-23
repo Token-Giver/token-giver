@@ -16,11 +16,11 @@ const UserModal = ({ address, isUserMenuOpen, setUserIsMenuOpen }: Props) => {
 
   return (
     <div
-      className={`absolute z-[9999] bg-background w-[140%] -left-1/2 transform translate-x-[20%] top-[120%] rounded-[10px] p-4 shadow-hero-shadow ${
+      className={`absolute bg-background w-[140%] -left-1/2 transform translate-x-[20%] top-[120%] rounded-[10px] p-4 shadow-hero-shadow ${
         isUserMenuOpen && address ? "block" : "hidden"
       }`}
     >
-      <ul className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4">
         <button
           onClick={() => {
             setUserIsMenuOpen(false);
@@ -44,7 +44,7 @@ const UserModal = ({ address, isUserMenuOpen, setUserIsMenuOpen }: Props) => {
           </span>
           <span>Log out</span>
         </button>
-      </ul>
+      </div>
     </div>
   );
 };

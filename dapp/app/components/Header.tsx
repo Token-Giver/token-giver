@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import MobileMenu from "./MobileMenu";
 import Logo from "@/svgs/Logo";
 import ProfileIcon from "@/svgs/ProfileIcon";
@@ -44,11 +44,12 @@ const Header = () => {
   };
 
   const connectWallet = () => {
-    setUserIsMenuOpen(false);
+    setUserIsMenuOpen((prev) => !prev);
     const connectPopover = document.querySelector(
       "#connect-modal"
     ) as HTMLElement;
     if (!address) {
+      // @ts-ignore
       connectPopover.showPopover();
     }
   };
@@ -81,14 +82,6 @@ const Header = () => {
           <div className="hidden lg:flex gap-4">
             <div className="relative">
               <button
-                onMouseEnter={() => {
-                  if (address) {
-                    const userPopover = document.querySelector(
-                      "#user-modal"
-                    ) as HTMLElement;
-                    setUserIsMenuOpen(true);
-                  }
-                }}
                 onClick={connectWallet}
                 className="flex items-center border-solid border-[1px] border-theme-green rounded-[25px] h-full"
               >
@@ -136,6 +129,9 @@ const Header = () => {
             isMenuOpen={isMenuOpen}
             setIsMenuOpen={setIsMenuOpen}
             toggleMenu={toggleMenu}
+            address={address}
+            connectWallet={connectWallet}
+            shortenedAddress={shortenedAddress}
           />
         </div>
       </header>

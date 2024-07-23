@@ -9,7 +9,7 @@ const page = () => {
   return (
     <>
       {/* {campaignDetails.name ? ( */}
-      <section className=" mt-[4rem]  bg-background">
+      <section className=" mt-[4rem] min-h-[100svh]  bg-background">
         <Container className="mx-auto py-10 md:py-16 px-4 md:px-10">
           <div className="lg:flex gap-8  max-w-[500px] mx-auto md:mx-0  md:max-w-none relative">
             <div className="lg:w-[60%] mx-auto flex flex-col gap-12">
