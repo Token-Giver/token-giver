@@ -77,22 +77,30 @@ const page = ({
             [name]: availableBalance.toString(),
           };
         });
-        return;
+      } else {
+        setWithdrawalInputs((prev) => {
+          return {
+            ...prev,
+            [name]: value,
+          };
+        });
       }
+    } else {
+      setWithdrawalInputs((prev) => {
+        return {
+          ...prev,
+          [name]: value,
+        };
+      });
     }
-
-    setWithdrawalInputs((prev) => {
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
   };
 
   const width = `${Math.min(
     (balance / parseInt(campaignDetails.target)) * 100,
     100
   )}%`;
+
+  console.log(withdrawalInputs);
 
   return (
     <>

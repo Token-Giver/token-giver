@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 
 export const useTokenBoundSDK = () => {
   const { account } = useAccount();
-  console.log(account, "account");
+
   const options = {
     account: account,
     registryAddress: TBAcontractAddress_SEPOLIA,
