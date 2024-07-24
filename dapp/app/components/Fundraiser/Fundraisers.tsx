@@ -4,42 +4,20 @@ import Card from "./Card";
 import CardLoader from "@/app/components/loading/CardLoader";
 import { useRouter } from "next/navigation";
 import { campaign_contract } from "@/app/utils/data";
-import { fetchContentFromIPFS } from "@/app/utils/helper";
+import { fetchCampaigns } from "@/app/utils/helper";
 import Container from "../util/Container";
 
 const Fundraisers = () => {
   const router = useRouter();
   const [collections, setCollections] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
   const handleRouteToCampaigns = () => {
     router.push("/campaigns");
   };
 
   useEffect(() => {
-    const fetchCampaigns = async () => {
-      try {
-        const campaigns: any = await campaign_contract.get_campaigns();
-        console.log(campaigns, "campdsf");
-        const campaignPromises = campaigns.map((cid: string) =>
-          fetchContentFromIPFS(cid.slice(7, -1))
-        );
-        const campaignData = await Promise.all(campaignPromises);
-        setCollections(
-          campaignData
-            .filter((data) => data !== null)
-            .sort((a, b) => {
-              const dateA = new Date(a.created_at).getTime();
-              const dateB = new Date(b.created_at).getTime();
-              return dateB - dateA;
-            })
-        );
-        console.log(campaignData, "campaign data");
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    fetchCampaigns();
+    fetchCampaigns(campaign_contract, setLoading, setCollections);
     return () => {};
   }, []);
 

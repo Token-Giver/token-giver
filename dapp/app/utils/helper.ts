@@ -1,17 +1,12 @@
-import { CallData } from "starknet";
 import {
-  IMPLEMENTATION_HASH,
-  REGISTRY_HASH,
-  TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
+  CAMPAIGN_CONTRACT_ADDRESS,
+  STRK_SEPOLIA,
   campaign_contract,
-  nft_contract,
   provider,
+  strk_contract,
 } from "./data";
-
-type CreateCampaignParams = {
-  account: any;
-  inputData: any;
-};
+import { formatCurrency } from "./currency";
+import { CallData, Uint256, cairo } from "starknet";
 
 export const fetchContentFromIPFS = async (cid: string) => {
   try {
@@ -27,99 +22,159 @@ export const fetchContentFromIPFS = async (cid: string) => {
   }
 };
 
-export const createCampaign = async ({
-  account,
-  inputData,
-}: CreateCampaignParams) => {
+export const fetchCampaigns = async (
+  campaign_contract: any,
+  setLoading: any,
+  setCollections: any
+) => {
   try {
-    campaign_contract.connect(account.account);
-    const last_minted_id = await nft_contract.get_last_minted_id();
-    const salt = Math.floor(Math.random() * 9999)
-      .toString()
-      .padStart(4, "0");
-    console.log(salt, "salt");
-
-    // CREATE CAMAPAIGN -> campaign address
-    const create_campaign_res = await campaign_contract.create_campaign(
-      CallData.compile([
-        TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
-        REGISTRY_HASH,
-        IMPLEMENTATION_HASH,
-        salt,
-        account.address,
-      ])
+    const campaigns = await campaign_contract.get_campaigns();
+    const campaignPromises = campaigns.map((cid: string) =>
+      fetchContentFromIPFS(cid.slice(7, -1))
     );
-    const txnDet = await provider.waitForTransaction(
-      create_campaign_res.transaction_hash
+    const campaignData = await Promise.all(campaignPromises);
+    setCollections(
+      campaignData
+        .filter((data) => data !== null)
+        .sort((a, b) => {
+          const dateA = new Date(a.created_at).getTime();
+          const dateB = new Date(b.created_at).getTime();
+          return dateB - dateA;
+        })
     );
-    console.log(txnDet, "txn details");
-    console.log(create_campaign_res, "create campaign response");
+    console.log(campaignData, "campaign data");
+    setLoading(false);
+  } catch (error) {
+    console.log(error);
+  }
+};
 
-    // Upload Campaign NFT image to pinata
-    if (!inputData.image) {
-      alert("No file selected");
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append("file", inputData.image);
-
-    const image_upload_res = await fetch(
-      "https://api.pinata.cloud/pinning/pinFileToIPFS",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${process.env.NEXT_PINATA_BEARER_TOKEN}`,
-        },
-        body: formData,
-      }
-    );
-
-    const image_upload_resData = await image_upload_res.json();
-    console.log(image_upload_resData, "image upload response");
-
-    // Create new Metadata URI JSON
-    let new_metadata = JSON.stringify({
-      id: Number(last_minted_id) + 1,
-      image: `ipfs://${image_upload_resData.IpfsHash}/`,
-      name: inputData.name,
-      description: inputData.description,
-      target: inputData.target,
-      organizer: inputData.organizer,
-      beneficiary: inputData.beneficiary,
-      location: inputData.location,
-      campaign_address: txnDet.isSuccess() && txnDet.events.at(1)?.from_address,
-      created_at: new Date(),
-    });
-
-    // Upload new MetadataURI JSON to Pinata
-    const metadata_upload_res = await fetch(
-      "https://api.pinata.cloud/pinning/pinJSONToIPFS",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.NEXT_PINATA_BEARER_TOKEN}`,
-        },
-        body: new_metadata,
-      }
-    );
-
-    const metadata_upload_resData = await metadata_upload_res.json();
-    console.log(metadata_upload_resData, "uploaded metadata uri");
-
-    // Call set_metadata_uri function
-    campaign_contract.connect(account.account);
-    const set_campaign_metadata_res =
-      await campaign_contract.set_campaign_metadata_uri(
-        CallData.compile([
-          txnDet.isSuccess() && txnDet.events[1].from_address,
-          `ipfs://${metadata_upload_resData.IpfsHash}/`,
-        ])
-      );
-
-    console.log(set_campaign_metadata_res, "set campaign metadata response");
+export const fetchBalance = async (address: string, setBalance: any) => {
+  try {
+    const strk = await strk_contract.balanceOf(address);
+    // @ts-ignore
+    const strkBalance = formatCurrency(strk.toString());
+    setBalance(strkBalance);
   } catch (err) {
     console.log(err);
+  }
+};
+
+export const fetchDonationCount = async (
+  address: string,
+  setDonationCount: any
+) => {
+  let count = await campaign_contract.get_donation_count(address);
+  setDonationCount(Number(count));
+};
+
+export const fetchCampaign = async (
+  cid: string,
+  setBalance: any,
+  setDonationCount: any,
+  setCampaignDetails: any
+) => {
+  try {
+    const data = await fetchContentFromIPFS(cid);
+    if (setDonationCount && setBalance) {
+      await fetchBalance(data.campaign_address, setBalance);
+      await fetchDonationCount(data.campaign_address, setDonationCount);
+    }
+    if (data) {
+      const timestamp = data.created_at;
+      const date = new Date(timestamp);
+      const day = date.getDate();
+      const month = date.toLocaleString("default", { month: "long" });
+      const year = date.getFullYear();
+      const formattedDate = `Created ${day} ${month} ${year}`;
+      const imageUrl = data.image.slice(7, -1);
+      setCampaignDetails({
+        name: data.name || "",
+        description: data.description || "",
+        image:
+          `${process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL}${imageUrl}?pinataGatewayToken=${process.env.NEXT_PUBLIC_PINATA_API_KEY}` ||
+          "/default-image.webp",
+        date: formattedDate,
+        organizer: data.organizer,
+        beneficiary: data.beneficiary,
+        location: data.location,
+        target: data.target,
+        address: data.campaign_address,
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const fetchUserCampaigns = async (
+  address: string,
+  setCollections: any,
+  setLoading: any
+) => {
+  try {
+    const campaigns: any = await campaign_contract.get_user_campaigns(address);
+    const campaignPromises = campaigns.map((cid: string) =>
+      fetchContentFromIPFS(cid.slice(7, -1))
+    );
+    const campaignData = await Promise.all(campaignPromises);
+    setCollections(
+      campaignData
+        .filter((data) => data !== null)
+        .sort((a, b) => {
+          const dateA = new Date(a.created_at).getTime();
+          const dateB = new Date(b.created_at).getTime();
+          return dateB - dateA;
+        })
+    );
+  } catch (error) {
+    console.log(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+export const handleDonate = async (
+  amount: string,
+  account: any,
+  setLoading: any,
+  campaign_address: string,
+  handleRouteToCampaign: any
+) => {
+  try {
+    if (!amount || !account) {
+      return;
+    }
+    setLoading(true);
+    strk_contract.connect(account);
+    const toTransferTk: Uint256 = cairo.uint256(Number(amount) * 1e18);
+    const multiCall = await account?.execute([
+      // Transfer Token
+      {
+        contractAddress: STRK_SEPOLIA,
+        entrypoint: "transfer",
+        calldata: CallData.compile({
+          recipient: campaign_address,
+          amount: toTransferTk,
+        }),
+      },
+      // Increase Donation Count
+      {
+        contractAddress: CAMPAIGN_CONTRACT_ADDRESS,
+        entrypoint: "set_donation_count",
+        calldata: CallData.compile({
+          campaign_address,
+        }),
+      },
+    ]);
+    if (!multiCall) {
+      return;
+    }
+    await provider.waitForTransaction(multiCall.transaction_hash);
+    handleRouteToCampaign();
+  } catch (err: any) {
+    console.log(err.message);
+  } finally {
+    setLoading(false);
   }
 };

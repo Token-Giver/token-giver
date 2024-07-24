@@ -1,21 +1,12 @@
 "use client";
 import ConnectButton from "@/app/components/ConnectButton";
-import { fetchContentFromIPFS } from "@/app/utils/helper";
+import { fetchBalance, fetchCampaign, handleDonate } from "@/app/utils/helper";
 import Logo from "@/svgs/Logo";
 import SendIcon from "@/svgs/SendIcon";
 import { useAccount } from "@starknet-react/core";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import { CallData, Contract, RpcProvider, Uint256, cairo } from "starknet";
-import token_abi from "../../../../../../public/abi/token_abi.json";
-import campaign_abi from "../../../../../../public/abi/campaign_abi.json";
-import { formatCurrency } from "@/app/utils/currency";
-import {
-  CAMPAIGN_CONTRACT_ADDRESS,
-  TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
-} from "@/app/utils/data";
-import { STRK_SEPOLIA } from "@/app/utils/data";
 
 const Donate = ({
   params,
@@ -45,105 +36,16 @@ const Donate = ({
 
   useEffect(() => {
     if (params.address && params.cid) {
-      const fetchNFT = async () => {
-        try {
-          const data = await fetchContentFromIPFS(params.cid);
-          console.log(data);
-          if (data) {
-            const timestamp = data.createdAt || "12 July 2024";
-            const date = new Date(timestamp * 1000);
-            const day = date.getDate();
-            const month = date.toLocaleString("default", { month: "long" });
-            const year = date.getFullYear();
-            const formattedDate = `Created ${day} ${month} ${year}`;
-            const imageUrl = data.image.slice(7, -1);
-            setCampaignDetails({
-              name: data.name || "",
-              description: data.description || "",
-              image:
-                `${process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL}${imageUrl}?pinataGatewayToken=${process.env.NEXT_PUBLIC_PINATA_API_KEY}` ||
-                "/default-image.webp",
-              date: formattedDate,
-              organizer: data.organizer,
-              beneficiary: data.beneficiary,
-              location: data.location,
-              target: data.target,
-              address: data.campaign_address,
-            });
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      fetchNFT();
+      fetchCampaign(params.cid, null, null, setCampaignDetails);
     }
   }, []);
 
-  const provider = new RpcProvider({
-    nodeUrl: "https://starknet-sepolia.public.blastapi.io",
-  });
-
-  let starknet_contract: any;
-  starknet_contract = new Contract(token_abi, STRK_SEPOLIA, provider);
-
-  let campaign_contract = new Contract(
-    campaign_abi,
-    CAMPAIGN_CONTRACT_ADDRESS,
-    provider
-  );
-
-  async function fetchBalances() {
-    try {
-      const strk = await starknet_contract.balanceOf(address);
-      // @ts-ignore
-      const strkBalance = formatCurrency(strk.toString());
-      setBalance(strk ? strkBalance.toFixed(2) : "0");
-    } catch (err) {
-      console.log(err);
+  useEffect(() => {
+    if (!address) {
+      return;
     }
-  }
-
-  fetchBalances();
-
-  async function handleTransfer() {
-    try {
-      if (!amount) {
-        return;
-      }
-      setLoading(true);
-      starknet_contract.connect(account);
-      const toTransferTk: Uint256 = cairo.uint256(Number(amount) * 1e18);
-      const multiCall = await account?.execute([
-        // Transfer Token
-        {
-          contractAddress: STRK_SEPOLIA,
-          entrypoint: "transfer",
-          calldata: CallData.compile({
-            recipient: campaignDetails.address,
-            amount: toTransferTk,
-          }),
-        },
-        // Increase Donation Count
-        {
-          contractAddress: CAMPAIGN_CONTRACT_ADDRESS,
-          entrypoint: "set_donation_count",
-          calldata: CallData.compile({
-            campaign_address: campaignDetails.address,
-          }),
-        },
-      ]);
-      if (!multiCall) {
-        return;
-      }
-      await provider.waitForTransaction(multiCall.transaction_hash);
-      handleRouteToCampaign();
-    } catch (err: any) {
-      console.log(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }
+    fetchBalance(address, setBalance);
+  }, [address]);
 
   const handleRouteToCampaign = () => {
     if (params.address && params.cid) {
@@ -287,7 +189,7 @@ const Donate = ({
                   <option value="STRK">STRK</option>
                 </select>
                 <p className="absolute min-w-[120px] right-0 bottom-[.5rem] text-[.75em]">
-                  Balance: {balance} STRK
+                  Balance: {parseFloat(balance).toFixed(2)} STRK
                 </p>
               </div>
             </div>
@@ -295,7 +197,13 @@ const Donate = ({
               disabled={!amount}
               onClick={async (e) => {
                 e.preventDefault();
-                await handleTransfer();
+                await handleDonate(
+                  amount,
+                  account,
+                  setLoading,
+                  campaignDetails.address,
+                  handleRouteToCampaign
+                );
               }}
               className=" bg-theme-green text-white py-3 px-6 rounded-[10px] w-full"
             >
