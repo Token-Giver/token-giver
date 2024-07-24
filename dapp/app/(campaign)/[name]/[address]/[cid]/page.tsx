@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Container from "@/app/components/util/Container";
 import { H2 } from "@/app/components/util/Headers";
+import { campaign_contract } from "@/app/utils/data";
 
 const page = ({
   params,
@@ -46,10 +47,11 @@ const page = ({
         params.cid,
         setBalance,
         setDonationCount,
-        setCampaignDetails
+        setCampaignDetails,
+        null
       );
     }
-  }, []);
+  }, [params]);
   const width = `${Math.min(
     (balance / parseInt(campaignDetails.target)) * 100,
     100

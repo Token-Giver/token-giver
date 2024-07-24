@@ -1,7 +1,7 @@
 "use client";
 import CardLoader from "@/app/components/loading/CardLoader";
 import { H3 } from "@/app/components/util/Headers";
-import { fetchBalance } from "@/app/utils/helper";
+import { fetchBalance, fetchDonationBalance } from "@/app/utils/helper";
 import Logo from "@/svgs/Logo";
 import { Campaign } from "@/types";
 import Image from "next/image";
@@ -29,7 +29,7 @@ const CampaignCard = ({
   const [balance, setBalance] = useState(0);
 
   useEffect(() => {
-    fetchBalance(campaignAddress, setBalance);
+    fetchDonationBalance(campaignAddress, setBalance);
   }, []);
   const width = `${Math.min((balance / parseInt(target)) * 100, 100)}%`;
   const image =

@@ -39,7 +39,7 @@ const Donate = ({
 
   useEffect(() => {
     if (params.address && params.cid) {
-      fetchCampaign(params.cid, null, null, setCampaignDetails);
+      fetchCampaign(params.cid, null, null, setCampaignDetails, null);
     }
   }, []);
 
