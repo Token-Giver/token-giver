@@ -67,6 +67,20 @@ const page = ({
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
+
+    if (name === "amount") {
+      const amount = parseFloat(value);
+      if (amount > availableBalance) {
+        setWithdrawalInputs((prev) => {
+          return {
+            ...prev,
+            [name]: availableBalance.toString(),
+          };
+        });
+        return;
+      }
+    }
+
     setWithdrawalInputs((prev) => {
       return {
         ...prev,
