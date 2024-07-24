@@ -146,6 +146,9 @@ export const handleDonate = async (
       return;
     }
     setLoading(true);
+    let current_withrawal = await campaign_contract.get_available_withdrawal(
+      campaign_address
+    );
     strk_contract.connect(account);
     const toTransferTk: Uint256 = cairo.uint256(Number(amount) * 1e18);
     const multiCall = await account?.execute([
@@ -164,6 +167,15 @@ export const handleDonate = async (
         entrypoint: "set_donation_count",
         calldata: CallData.compile({
           campaign_address,
+        }),
+      },
+      // Increase withdrawal Available
+      {
+        contractAddress: CAMPAIGN_CONTRACT_ADDRESS,
+        entrypoint: "set_available_withdrawal",
+        calldata: CallData.compile({
+          campaign_address,
+          amount: current_withrawal + toTransferTk,
         }),
       },
     ]);
