@@ -24,6 +24,20 @@
   },
   {
     "type": "struct",
+    "name": "core::integer::u256",
+    "members": [
+      {
+        "name": "low",
+        "type": "core::integer::u128"
+      },
+      {
+        "name": "high",
+        "type": "core::integer::u128"
+      }
+    ]
+  },
+  {
+    "type": "struct",
     "name": "tokengiver::base::types::Campaign",
     "members": [
       {
@@ -106,6 +120,22 @@
       },
       {
         "type": "function",
+        "name": "set_available_withdrawal",
+        "inputs": [
+          {
+            "name": "campaign_address",
+            "type": "core::starknet::contract_address::ContractAddress"
+          },
+          {
+            "name": "amount",
+            "type": "core::integer::u256"
+          }
+        ],
+        "outputs": [],
+        "state_mutability": "external"
+      },
+      {
+        "type": "function",
         "name": "get_campaign_metadata",
         "inputs": [
           {
@@ -178,20 +208,22 @@
           }
         ],
         "state_mutability": "view"
-      }
-    ]
-  },
-  {
-    "type": "struct",
-    "name": "core::integer::u256",
-    "members": [
-      {
-        "name": "low",
-        "type": "core::integer::u128"
       },
       {
-        "name": "high",
-        "type": "core::integer::u128"
+        "type": "function",
+        "name": "get_available_withdrawal",
+        "inputs": [
+          {
+            "name": "campaign_address",
+            "type": "core::starknet::contract_address::ContractAddress"
+          }
+        ],
+        "outputs": [
+          {
+            "type": "core::integer::u256"
+          }
+        ],
+        "state_mutability": "view"
       }
     ]
   },
