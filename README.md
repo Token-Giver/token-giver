@@ -13,7 +13,7 @@ Token Giver is a decentralized application designed to revolutionize the way we 
 ## AUTHORS
 
 - **Stephanie Egbuonu ✨**
-- **Oshioke Salaki 🥶**
+- **Oshioke Salaki 🥷🏾**
 
 ## TABLE OF CONTENTS
 
@@ -35,9 +35,10 @@ TokenGiver aims to address these critical issues by leveraging blockchain techno
 
 ## FEATURES
 
-- **Campaign Creation**: Easily create a campaign by minting a unique NFT, which automatically deploys a Token Bound Account(TBA) to represent the campaign.
+- **Campaign Creation**: Users can create campaigns. During creation, an NFT is minted to them and a token bound account is deployed from it.
 - **Integrated Dashboard**: View all active campaigns.
 - **Token Donations**: Users can seamlessly donate to causes using STRK token.
+- **Withdraw Funds**: Campaign owners can seamlessly withdraw funds gathered for their campaign.
 
 ## TECHNICAL DETAILS
 
@@ -57,10 +58,12 @@ TokenGiver aims to address these critical issues by leveraging blockchain techno
    - Mint a unique campaign NFT.
    - Automatically deploy a Token Bound Account (TBA) for the newly minted NFT.
    - Provide you with an NFT linked to the TBA.
-5. **View Your Campaign**: The newly minted NFT will be displayed on the token giver platform.
+5. **Your campaign added to the campaigns page**: The newly minted NFT will be displayed on the token giver platform’s campaigns page.
 6. **Share and Collect Donations**:
    - Share the link with others to invite them to donate STRK tokens to your campaign's TBA.
    - Donations are processed directly on the platform.
+7. **View your campaigns**: Access all campaigns created by you. Do this by connecting your wallet and clicking the “My Campaigns” button.
+8. **Withdraw campaign funds**: As a campaign owner, you can withdraw campaign funds from your campaign token bound account.
 
 ## CONCLUSION
 
