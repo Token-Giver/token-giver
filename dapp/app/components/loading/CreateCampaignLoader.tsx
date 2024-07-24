@@ -65,11 +65,11 @@ const CreateCampaignLoader = ({ campaignStep, percentage, url }: Props) => {
                   // @ts-ignore
                   loadingPopover.hidePopover();
                   document.body.style.overflow = "auto";
-                  router.push(url);
+                  router.push("/");
                 }}
                 className="border-solid border-[1px] border-theme-green py-2 px-6 rounded-[10px] w-full flex items-center hover:bg-[#e4efe7]"
               >
-                <span>view campaign</span>
+                <span>view campaigns</span>
                 <RightArrowIcon />
               </button>
             </div>

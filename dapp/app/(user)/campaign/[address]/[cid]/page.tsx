@@ -8,12 +8,17 @@ import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
 import WithdrawalForm from "./components/WithdrawalForm";
 import { fetchCampaign } from "@/app/utils/helper";
+import { useAccount } from "@starknet-react/core";
+import { redirect } from "next/navigation";
+import { H2 } from "@/app/components/util/Headers";
 
 const page = ({
   params,
 }: {
   params: { name: string; address: string; cid: string };
 }) => {
+  const { address } = useAccount();
+
   const [withdrawalFormOpen, setWithdrawalFormOpen] = useState(false);
   const [campaignDetails, setCampaignDetails] = useState({
     name: "",
@@ -44,6 +49,20 @@ const page = ({
     }
   }, []);
 
+  useEffect(() => {
+    const getCookie = (name: string) => {
+      const value = `; ${document.cookie}`;
+      const parts = value.split(`; ${name}=`);
+      if (parts.length === 2) return parts.pop()?.split(";").shift();
+    };
+
+    const walletAddress = getCookie("walletAddress");
+
+    if (!walletAddress) {
+      redirect("/");
+    }
+  }, [address]);
+
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setWithdrawalInputs((prev) => {
@@ -66,7 +85,7 @@ const page = ({
           <Container className="mx-auto py-10 md:py-16 px-4 md:px-10">
             <div className="lg:flex gap-8  max-w-[500px] mx-auto md:mx-0  md:max-w-none relative">
               <div className="lg:w-[60%] mx-auto flex flex-col gap-12">
-                <h2 className="font-bold">{campaignDetails.name}</h2>
+                <H2 style="font-bold">{campaignDetails.name}</H2>
                 <div className="rounded-[10px] h-[400px] relative w-full object-contain md:w-[80%] mx-auto">
                   <Image
                     className="rounded-[10px] h-full w-full"

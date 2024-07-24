@@ -6,30 +6,34 @@ import { fetchUserCampaigns } from "@/app/utils/helper";
 import { useAccount } from "@starknet-react/core";
 import { useEffect, useState } from "react";
 import WarningIcon from "@/svgs/WarningIcon";
+import { H2 } from "@/app/components/util/Headers";
 
 const page = () => {
   const { address } = useAccount();
   const [collections, setCollections] = useState<any[]>([]);
+  const [connected, setConnected] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (address) {
+      setConnected(true);
       fetchUserCampaigns(address, setCollections, setLoading);
+    } else {
+      setConnected(false);
+      setCollections([]);
     }
-    return () => {};
   }, [address]);
 
   return (
     <section className="min-h-[100svh] py-[5rem] px-4 lg:px-[10vw]">
       <Container className="flex flex-col gap-8">
-        {/* <ConnectButton /> */}
-        {!address ? (
-          <h2>Connect to see your campaigns</h2>
+        {!address || !connected ? (
+          <H2>Connect to see your campaigns</H2>
         ) : (
-          <h2>Your current campaigns</h2>
+          <H2>Your current campaigns</H2>
         )}
         <div className="grid gap-4  md:gap-8 lg:grid-cols-3 md:max-w-[800px] lg:max-w-none md:mx-auto  md:justify-center">
-          {loading && address
+          {loading && address && connected
             ? Array.from({ length: 3 }).map((_, idx) => (
                 <CardLoader key={idx} />
               ))
