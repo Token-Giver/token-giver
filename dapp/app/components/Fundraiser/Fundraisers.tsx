@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { campaign_contract } from "@/app/utils/data";
 import { fetchCampaigns } from "@/app/utils/helper";
 import Container from "../util/Container";
+import { H2 } from "../util/Headers";
 
 const Fundraisers = () => {
   const router = useRouter();
@@ -24,8 +25,7 @@ const Fundraisers = () => {
   return (
     <section>
       <Container>
-        <h2 className="my-[5rem]">Browse Fundraisers</h2>
-
+        <H2 style="my-[5rem]">Browse Fundraisers</H2>
         <section
           id="fundraisers"
           className="grid gap-4  md:gap-8 lg:grid-cols-3 md:max-w-[800px] lg:max-w-none md:mx-auto  md:justify-center "

@@ -1,9 +1,15 @@
-const SendIcon = () => {
+const SendIcon = ({
+  width = "1.2em",
+  height = "1.2em",
+}: {
+  width?: string;
+  height?: string;
+}) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="1em"
-      height="1em"
+      width={width}
+      height={height}
       viewBox="0 0 24 24"
     >
       <path

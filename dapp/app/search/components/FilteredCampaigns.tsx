@@ -1,10 +1,11 @@
 import Card from "@/app/components/Fundraiser/Card";
+import { H3 } from "@/app/components/util/Headers";
 import { Campaign } from "@/types";
 
 const FilteredCampaigns = ({ campaigns }: { campaigns: Campaign[] }) => {
   return (
     <section>
-      <h3 className="mb-4">Search Results</h3>
+      <H3 style="mb-4">Search Results</H3>
       <div className="grid gap-4  md:gap-8 lg:grid-cols-3 md:max-w-[800px] lg:max-w-none md:mx-auto  md:justify-center">
         {campaigns.map((campaign, idx) => {
           const path = campaign.name

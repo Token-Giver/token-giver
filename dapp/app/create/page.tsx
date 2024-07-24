@@ -18,6 +18,7 @@ import {
 } from "../utils/data";
 import Container from "../components/util/Container";
 import CreateCampaignLoader from "../components/loading/CreateCampaignLoader";
+import { H2 } from "../components/util/Headers";
 
 const Page = () => {
   const { address } = useAccount();
@@ -224,10 +225,8 @@ const Page = () => {
             <p className="font-bold text-white text-[1.5em]">
               <Logo />
             </p>
+            <H2 style="text-theme-yellow">Start your fundraising journey!</H2>
 
-            <h2 className="text-theme-yellow">
-              Start your fundraising journey!
-            </h2>
             <div className="flex gap-2 items-center text-white">
               <span className="">
                 <span className="text-[1.8em] mr-2">{step.number}</span>/ 3
@@ -283,7 +282,7 @@ const Page = () => {
             <div className="flex">
               <button
                 disabled={
-                  !inputData.name || !inputData.description || !account.address
+                  !inputData.name || !inputData.description || !inputData.image
                 }
                 onClick={() =>
                   setStep(() => {
@@ -305,7 +304,10 @@ const Page = () => {
                   createCampaign();
                 }}
                 disabled={
-                  !inputData.target || !inputData.location || creatingCampaign
+                  !inputData.target ||
+                  !inputData.location ||
+                  !inputData.organizer ||
+                  creatingCampaign
                 }
                 className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
                   step.number === 3 ? "block" : "hidden"

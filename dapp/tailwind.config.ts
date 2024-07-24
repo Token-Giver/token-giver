@@ -8,10 +8,11 @@ const config: Config = {
   ],
   theme: {
     fontSize: {
-      "2xl": ["6em", "1.06"],
-      xl: ["clamp(0.75rem, 10vw, 3.5rem)", "1.15"],
-      l: ["1em", "1.21"],
-      sm: ["0.875em", "1.21"],
+      "2xl": ["clamp(0.75em, 6vw, 3.2em)", "1.5"],
+      xl: ["clamp(0.75em, 3.5vw, 2em)", "1.5"],
+      l: ["clamp(0.75em, 2.7vw, 1.5em)", "1.5"],
+      md: ["1em", "1.5"],
+      sm: ["0.875em", "1.5"],
     },
 
     fontFamily: {

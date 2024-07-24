@@ -1,6 +1,7 @@
 "use client";
 import Card from "@/app/components/Fundraiser/Card";
 import CardLoader from "@/app/components/loading/CardLoader";
+import { H3 } from "@/app/components/util/Headers";
 import { fetchBalance } from "@/app/utils/helper";
 import Logo from "@/svgs/Logo";
 import { Campaign } from "@/types";
@@ -90,7 +91,7 @@ const LatestCampaigns = ({
 }) => {
   return (
     <section className=" max-w-[40rem]  mx-auto lg:mx-0 lg:max-w-none">
-      <h3 className="mb-4">Latest campaigns</h3>
+      <H3 style="mb-4">Latest campaigns</H3>
       {loading ? (
         <div className="grid gap-4  md:gap-8 lg:grid-cols-3 md:max-w-[800px] lg:max-w-none md:mx-auto  md:justify-center">
           {Array.from({ length: 12 }).map((_, idx) => (
