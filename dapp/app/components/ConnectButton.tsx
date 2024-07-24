@@ -1,6 +1,6 @@
 "use client";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 type Props = {
   showButton?: boolean;
@@ -14,6 +14,14 @@ const ConnectButton = ({ showButton = true }: Props) => {
   const shortenedAddress = useMemo(() => {
     if (!address) return "";
     return `${address.slice(0, 6)}...${address.slice(-4)}`;
+  }, [address]);
+
+  useEffect(() => {
+    if (address) {
+      document.cookie = `walletAddress=${address}; path=/;`;
+    } else {
+      document.cookie = `walletAddress=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;`;
+    }
   }, [address]);
 
   return (
