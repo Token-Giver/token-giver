@@ -7,6 +7,7 @@ import {
 } from "./data";
 import { formatCurrency } from "./currency";
 import { CallData, Uint256, cairo } from "starknet";
+import { Campaign } from "@/types";
 
 export const fetchContentFromIPFS = async (cid: string) => {
   try {
@@ -32,7 +33,7 @@ export const fetchCampaigns = async (
     const campaignPromises = campaigns.map((cid: string) =>
       fetchContentFromIPFS(cid.slice(7, -1))
     );
-    const campaignData = await Promise.all(campaignPromises);
+    const campaignData: Campaign[] = await Promise.all(campaignPromises);
     setCollections(
       campaignData
         .filter((data) => data !== null)
@@ -177,4 +178,19 @@ export const handleDonate = async (
   } finally {
     setLoading(false);
   }
+};
+
+/////////////
+
+export const searchCampaigns = async ({
+  campaigns,
+  search,
+}: {
+  search: string;
+  campaigns: Campaign[];
+}) => {
+  await new Promise((resolve) => setTimeout(resolve, 1000));
+  return campaigns.filter((campaign) =>
+    campaign.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+  );
 };
