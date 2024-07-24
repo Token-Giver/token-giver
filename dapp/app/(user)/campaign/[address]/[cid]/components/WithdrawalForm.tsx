@@ -35,6 +35,9 @@ const WithdrawalForm = ({
   const [tokenTransferredSuccessfully, setTokenTransferredSuccessfully] =
     useState<boolean | null>(null);
   const [disableSendBtn, setDisableSendBtn] = useState("enableButton");
+  const [withdrawState, setWithdrawState] = useState<
+    "Withdraw now" | "Processing Request..." | "Success!"
+  >("Withdraw now");
 
   useEffect(() => {
     if (!withdrawalInputs.amount || !withdrawalInputs.beneficiary) {
@@ -52,6 +55,7 @@ const WithdrawalForm = ({
   const handleWithdraw = async () => {
     try {
       setTokenTransferredSuccessfully(false);
+      setWithdrawState("Processing Request...");
       const status = await tokenbound.transferERC20({
         tbaAddress: campaignAddress,
         contractAddress: STRK_SEPOLIA,
@@ -67,9 +71,11 @@ const WithdrawalForm = ({
             (availableBalance - Number(withdrawalInputs.amount)) * 1e18
           )
         );
+        setWithdrawState("Success!");
       }
     } catch (error) {
       console.log("there was an error withdrawing");
+      setWithdrawState("Withdraw now");
     } finally {
       setTokenTransferredSuccessfully(null);
     }
@@ -107,7 +113,9 @@ const WithdrawalForm = ({
           />
         </div>
         <button
-          disabled={disableSendBtn === "disableButton"}
+          disabled={
+            disableSendBtn === "disableButton" || withdrawState === "Success!"
+          }
           onClick={() => {
             handleWithdraw();
           }}
@@ -117,10 +125,12 @@ const WithdrawalForm = ({
               : "opacity-100 !cursor-pointer"
           } justify-center items-center text-white  gap-2 flex`}
         >
-          <span>Withdraw now</span>{" "}
-          <span className="text-theme-yellow">
-            <WithdrawIcon />
-          </span>
+          <span>{withdrawState}</span>
+          {withdrawState == "Withdraw now" && (
+            <span className="text-theme-yellow">
+              <WithdrawIcon />
+            </span>
+          )}
         </button>
       </div>
     </div>

@@ -1,5 +1,4 @@
 "use client";
-import Card from "@/app/components/Fundraiser/Card";
 import CardLoader from "@/app/components/loading/CardLoader";
 import { H3 } from "@/app/components/util/Headers";
 import { fetchBalance, fetchDonationBalance } from "@/app/utils/helper";
@@ -16,6 +15,7 @@ const CampaignCard = ({
   campaignAddress,
   target,
   cid,
+  maxHeight = "max-h-[200px]",
 }: {
   src: string;
   alt: string;
@@ -23,6 +23,7 @@ const CampaignCard = ({
   causeName: string;
   campaignAddress: string;
   target: string;
+  maxHeight?: string;
 }) => {
   const router = useRouter();
   const [balance, setBalance] = useState(0);
@@ -53,9 +54,11 @@ const CampaignCard = ({
       onClick={handleRoute}
       className="flex flex-col gap-4 cursor-pointer group"
     >
-      <div className="w-full h-[300px] rounded-[10px] lg:flex-1  overflow-hidden">
+      <div
+        className={`w-full h-[300px] rounded-[10px] lg:flex-1 ${maxHeight}  overflow-hidden`}
+      >
         <Image
-          className="rounded-[10px] w-full h-full object-cover object-center group-hover:scale-105  transition-all"
+          className="rounded-[10px] w-full h-full object-cover object-center group-hover:scale-105 transition-all"
           loader={() => image}
           src={image}
           alt={alt}
@@ -63,7 +66,10 @@ const CampaignCard = ({
           height={400}
         />
       </div>
-      <p>{causeName || "Unknown Cause"}</p>
+
+      <p className="overflow-hidden capitalize line-clamp">
+        {causeName || "Unknown Cause"}
+      </p>
       <div className="">
         <div className="w-full h-[.25rem] mb-2 relative">
           <div className="w-full h-[1vw] max-h-[.25rem] bg-[#127c5548] rounded-full mb-4"></div>
@@ -90,7 +96,7 @@ const LatestCampaigns = ({
   loading: boolean;
 }) => {
   return (
-    <section className=" max-w-[40rem]  mx-auto lg:mx-0 lg:max-w-none">
+    <section className=" max-w-[40rem] mx-auto  lg:mx-0 lg:max-w-none">
       <H3 style="mb-4">Latest campaigns</H3>
       {loading ? (
         <div className="grid gap-4  md:gap-8 lg:grid-cols-3 md:max-w-[800px] lg:max-w-none md:mx-auto  md:justify-center">
@@ -100,7 +106,7 @@ const LatestCampaigns = ({
         </div>
       ) : (
         campaigns.length > 0 && (
-          <div className="lg:grid lg:grid-cols-2 gap-8 lg:h-[70svh]">
+          <div className="lg:grid  lg:grid-cols-2 gap-8">
             <CampaignCard
               alt=""
               causeName={campaigns[0].name || "Unknown Cause"}
@@ -108,6 +114,7 @@ const LatestCampaigns = ({
               src={campaigns[0].image}
               campaignAddress={campaigns[0].campaign_address || ""}
               target={campaigns[0].target}
+              maxHeight="max-h-[520px]"
             />
             {campaigns.length >= 5 ? (
               <div className="lg:grid lg:grid-cols-2 gap-4">

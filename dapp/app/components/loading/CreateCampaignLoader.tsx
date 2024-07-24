@@ -67,7 +67,7 @@ const CreateCampaignLoader = ({ campaignStep, percentage, url }: Props) => {
                   document.body.style.overflow = "auto";
                   router.push("/");
                 }}
-                className="border-solid border-[1px] border-theme-green py-2 px-6 rounded-[10px] w-full flex items-center hover:bg-[#e4efe7]"
+                className="border-solid cursor-pointer border-[1px] border-theme-green py-2 px-6 rounded-[10px] w-full flex items-center hover:bg-[#e4efe7]"
               >
                 <span>view campaigns</span>
                 <RightArrowIcon />
