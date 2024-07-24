@@ -70,7 +70,9 @@ const CreateCampaignLoader = ({ campaignStep, percentage, url }: Props) => {
                 className="border-solid cursor-pointer border-[1px] border-theme-green py-2 px-6 rounded-[10px] w-full flex items-center hover:bg-[#e4efe7]"
               >
                 <span>view campaigns</span>
-                <RightArrowIcon />
+                <span className="text-theme-green">
+                  <RightArrowIcon />
+                </span>
               </button>
             </div>
           )}

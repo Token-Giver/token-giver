@@ -68,39 +68,21 @@ const page = ({
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
 
-    if (name === "amount") {
-      const amount = parseFloat(value);
-      if (amount > availableBalance) {
-        setWithdrawalInputs((prev) => {
-          return {
-            ...prev,
-            [name]: availableBalance.toString(),
-          };
-        });
-      } else {
-        setWithdrawalInputs((prev) => {
-          return {
-            ...prev,
-            [name]: value,
-          };
-        });
-      }
-    } else {
-      setWithdrawalInputs((prev) => {
-        return {
-          ...prev,
-          [name]: value,
-        };
-      });
-    }
+    const updatedValue =
+      name === "amount" && parseFloat(value) > availableBalance
+        ? availableBalance.toString()
+        : value;
+
+    setWithdrawalInputs((prev) => ({
+      ...prev,
+      [name]: updatedValue,
+    }));
   };
 
   const width = `${Math.min(
     (balance / parseInt(campaignDetails.target)) * 100,
     100
   )}%`;
-
-  console.log(withdrawalInputs);
 
   return (
     <>

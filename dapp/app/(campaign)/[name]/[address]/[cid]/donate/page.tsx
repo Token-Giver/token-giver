@@ -3,6 +3,7 @@ import ConnectButton from "@/app/components/ConnectButton";
 import { H2 } from "@/app/components/util/Headers";
 import { fetchBalance, fetchCampaign, handleDonate } from "@/app/utils/helper";
 import Logo from "@/svgs/Logo";
+import RightArrowIcon from "@/svgs/RightArrowIcon";
 import SendIcon from "@/svgs/SendIcon";
 import { useAccount } from "@starknet-react/core";
 import Image from "next/image";
@@ -84,9 +85,12 @@ const Donate = ({
       <div className="hidden w-[40%] md:flex flex-col p-4 items-center ">
         <button
           onClick={handleRouteToCampaign}
-          className="w-fit text-[1.2em] self-start justify-self-start text-white"
+          className="w-fit text-[1.2em] self-start justify-self-start text-white flex items-center"
         >
-          &lt; campaign
+          <span className="text-white inline-block transform rotate-180">
+            <RightArrowIcon />
+          </span>
+          <span>campaign</span>
         </button>
         <div className="my-auto">
           <p className="font-bold text-white text-[1.5em]">

@@ -19,8 +19,11 @@ import {
 import Container from "../components/util/Container";
 import CreateCampaignLoader from "../components/loading/CreateCampaignLoader";
 import { H2 } from "../components/util/Headers";
+import RightArrowIcon from "@/svgs/RightArrowIcon";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
+  const router = useRouter();
   const { address } = useAccount();
   const account: any = useAccount();
   const [campaignStep, setCampaignStep] = useState(0);
@@ -219,8 +222,18 @@ const Page = () => {
 
   return (
     <main className="min-h-screen  flex justify-between bg-theme-green md:mb-10 relative">
-      <Container className="my-auto w-[40%] hidden md:flex">
-        <div className="items-center justify-center ">
+      <Container className="p-4 w-[40%] flex flex-col">
+        <button
+          onClick={() => router.push("/")}
+          className="w-fit text-[1.2em] self-start justify-self-start text-white flex items-center"
+        >
+          <span className="text-white inline-block transform rotate-180">
+            <RightArrowIcon />
+          </span>
+          <span>back</span>
+        </button>
+
+        <div className=" my-auto">
           <div className="flex flex-col gap-8 p-4">
             <p className="font-bold text-white text-[1.5em]">
               <Logo />
