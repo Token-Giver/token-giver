@@ -7,6 +7,7 @@ import { useDebounce } from "../hooks";
 import { Campaign } from "@/types";
 import FilteredCampaigns from "./components/FilteredCampaigns";
 import LatestCampaigns from "./components/LatestCampaigns";
+import { H2 } from "../components/util/Headers";
 
 const page = () => {
   const [search, setSearch] = useState("");
@@ -50,7 +51,7 @@ const page = () => {
     <section className="min-h-[100svh] py-[5rem] px-4 lg:px-[10vw]">
       <Container className="flex flex-col gap-8">
         <div className="text-center">
-          <h2>Search campaigns on Token Giver</h2>
+          <H2 style="mb-4">Search campaigns on Token Giver</H2>
           <p>Find campaigns by location, title, or organizer</p>
         </div>
         <div className="flex justify-center">

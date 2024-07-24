@@ -1,3 +1,4 @@
+import { H3 } from "@/app/components/util/Headers";
 import { useTokenBoundSDK } from "@/app/hooks";
 import { STRK_SEPOLIA } from "@/app/utils/data";
 import WithdrawIcon from "@/svgs/WithdrawIcon";
@@ -70,7 +71,7 @@ const WithdrawalForm = ({
       }`}
     >
       <div className="overflow-hidden flex flex-col gap-4 mb-4">
-        <h3 className="text-theme-green">Send STRK</h3>
+        <H3 style="text-theme-green">Send STRK</H3>
         <div>
           <label htmlFor="">Beneficiary address:</label>
           <input

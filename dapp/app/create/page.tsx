@@ -18,6 +18,7 @@ import {
 } from "../utils/data";
 import Container from "../components/util/Container";
 import CreateCampaignLoader from "../components/loading/CreateCampaignLoader";
+import { H2 } from "../components/util/Headers";
 
 const Page = () => {
   const { address } = useAccount();
@@ -224,10 +225,8 @@ const Page = () => {
             <p className="font-bold text-white text-[1.5em]">
               <Logo />
             </p>
+            <H2 style="text-theme-yellow">Start your fundraising journey!</H2>
 
-            <h2 className="text-theme-yellow">
-              Start your fundraising journey!
-            </h2>
             <div className="flex gap-2 items-center text-white">
               <span className="">
                 <span className="text-[1.8em] mr-2">{step.number}</span>/ 3

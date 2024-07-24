@@ -1,6 +1,7 @@
 "use client";
 import HeartIcon from "@/svgs/HeartIcon";
 import { useRouter } from "next/navigation";
+import { H1 } from "./util/Headers";
 
 const Hero = () => {
   const router = useRouter();
@@ -13,9 +14,7 @@ const Hero = () => {
       className="container mx-auto flex flex-col justify-between  items-center"
     >
       <div>
-        <h1 className=" font-semibold mb-4 text-center">
-          Transform Charity with Blockchain.
-        </h1>
+        <H1 style=" mb-4 text-center">Transform Charity with Blockchain.</H1>
         <p className="text-center">
           Create impactful campaigns and donate through innovative NFTs. Token
           Giver empowers every act of kindness.

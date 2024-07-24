@@ -1,12 +1,12 @@
 import Container from "../components/util/Container";
+import { H2 } from "../components/util/Headers";
 
 const page = () => {
   return (
     <section className="py-[5rem] px-4 lg:px-[10vw]">
       <Container>
-        <h2 className="text-center text-theme-green mt-16">
-          How Token Giver work
-        </h2>
+        <H2 style="text-center text-theme-green mt-16">How Token Giver work</H2>
+
         <div className="flex flex-col gap-8 md:w-[70%] mx-auto my-16 md:text-justify">
           <p>
             So you've decided to start fundraising – whether it's for yourself,

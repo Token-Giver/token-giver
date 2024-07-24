@@ -4,6 +4,7 @@ import GrowIcon from "@/svgs/GrowIcon";
 import LoveIcon from "@/svgs/LoveIcon";
 import { usePathname } from "next/navigation";
 import Container from "./util/Container";
+import { H2 } from "./util/Headers";
 
 const Features = () => {
   const pathname = usePathname();
@@ -17,7 +18,7 @@ const Features = () => {
     >
       <Container>
         <div className="mb-[5rem]">
-          <h2>Fundraising on logo. only takes a few minutes</h2>
+          <H2>Fundraising on token giver only takes a few minutes</H2>
         </div>
         <div
           id="feat-section"
