@@ -27,7 +27,7 @@ const page = () => {
 
   useEffect(() => {
     if (collections) {
-      const latestFive = collections.slice(0, 4);
+      const latestFive = collections.slice(0, 5);
       setLatestCampaigns(latestFive);
     }
   }, [collections]);

@@ -9,6 +9,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import Container from "@/app/components/util/Container";
+import { H2 } from "@/app/components/util/Headers";
 
 const page = ({
   params,
@@ -60,7 +61,7 @@ const page = ({
           <Container className="mx-auto py-10 md:py-16 px-4 md:px-10">
             <div className="lg:flex gap-8  max-w-[500px] mx-auto md:mx-0  md:max-w-none relative">
               <div className="lg:w-[60%] mx-auto flex flex-col gap-12">
-                <h2 className="font-bold">{campaignDetails.name}</h2>
+                <H2 style="font-bold">{campaignDetails.name}</H2>
                 <div className="rounded-[10px] h-[400px] relative w-full object-contain md:w-[80%] mx-auto">
                   <Image
                     className="rounded-[10px] h-full w-full"
