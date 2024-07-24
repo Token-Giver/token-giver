@@ -7,11 +7,7 @@ import WithdrawIcon from "@/svgs/WithdrawIcon";
 import Image from "next/image";
 import { ChangeEvent, useEffect, useState } from "react";
 import WithdrawalForm from "./components/WithdrawalForm";
-import { fetchContentFromIPFS } from "@/app/utils/helper";
-import { STRK_SEPOLIA, campaign_contract } from "@/app/utils/data";
-import { Contract, RpcProvider } from "starknet";
-import token_abi from "../../../../../public/abi/token_abi.json";
-import { formatCurrency } from "@/app/utils/currency";
+import { fetchCampaign } from "@/app/utils/helper";
 
 const page = ({
   params,
@@ -37,63 +33,14 @@ const page = ({
   });
   const [balance, setBalance] = useState(0);
 
-  const provider = new RpcProvider({
-    nodeUrl: "https://starknet-sepolia.public.blastapi.io",
-  });
-  let strk_contract = new Contract(token_abi, STRK_SEPOLIA, provider);
-
-  async function fetchBalances(address: string) {
-    try {
-      console.log(address);
-      const strk = await strk_contract.balanceOf(address);
-      console.log(strk);
-      // @ts-ignore
-      const strkBalance = formatCurrency(strk.toString());
-      setBalance(strkBalance);
-    } catch (err) {
-      console.log(err);
-    }
-  }
-
-  const fetchDonationCount = async (address: string) => {
-    let count = await campaign_contract.get_donation_count(address);
-    setDonationCount(Number(count));
-  };
-
   useEffect(() => {
     if (params.address && params.cid) {
-      const fetchNFT = async () => {
-        try {
-          const data = await fetchContentFromIPFS(params.cid);
-          await fetchBalances(data.campaign_address);
-          await fetchDonationCount(data.campaign_address);
-          if (data) {
-            const timestamp = data.created_at;
-            const date = new Date(timestamp);
-            const day = date.getDate();
-            const month = date.toLocaleString("default", { month: "long" });
-            const year = date.getFullYear();
-            const formattedDate = `Created ${day} ${month} ${year}`;
-            const imageUrl = data.image.slice(7, -1);
-            setCampaignDetails({
-              name: data.name || "",
-              description: data.description || "",
-              image:
-                `${process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL}${imageUrl}?pinataGatewayToken=${process.env.NEXT_PUBLIC_PINATA_API_KEY}` ||
-                "/default-image.webp",
-              date: formattedDate,
-              organizer: data.organizer,
-              beneficiary: data.beneficiary,
-              location: data.location,
-              target: data.target,
-              address: data.campaign_address,
-            });
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      };
-      fetchNFT();
+      fetchCampaign(
+        params.cid,
+        setBalance,
+        setDonationCount,
+        setCampaignDetails
+      );
     }
   }, []);
 

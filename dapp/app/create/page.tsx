@@ -7,7 +7,6 @@ import { InputDateType } from "@/types";
 import StepThree from "./components/StepThree";
 import Logo from "@/svgs/Logo";
 import { CallData } from "starknet";
-import { useRouter } from "next/navigation";
 import {
   BEARER_TOKEN,
   IMPLEMENTATION_HASH,
@@ -137,6 +136,7 @@ const Page = () => {
         created_at: new Date(),
       });
       setCampaignUrl(`/campaign/${address}/${tokenId}`);
+
       ////////////////////////////////////////////
       // UPLOAD NEW METADATA_URI JSON TO PINATA
       ////////////////////////////////////////////
