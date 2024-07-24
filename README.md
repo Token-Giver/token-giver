@@ -50,7 +50,7 @@ TokenGiver aims to address these critical issues by leveraging blockchain techno
 
 1. **Access the TokenGiver Web Application**
    - Open your preferred web browser.
-   - Navigate to the TokenGiver web application by entering the URL: [https://token-giver.onrender.com/](#).
+   - Navigate to the TokenGiver web application by entering the URL: [https://token-giver.vercel.app/](#).
 2. **Start a Campaign**: Click the "Start Campaign" button on the platform.
 3. **Fill Out the Form**: Complete the form with details about your campaign.
 4. **Mint Campaign**: Click on the "Mint Campaign" button. This action will:
