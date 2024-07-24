@@ -1,8 +1,6 @@
 "use client";
-
 import CampaignLoader from "@/app/components/loading/CampaignLoader";
-import { STRK_SEPOLIA } from "@/app/utils/data";
-import { fetchContentFromIPFS } from "@/app/utils/helper";
+import { fetchCampaign } from "@/app/utils/helper";
 import CalenderIcon from "@/svgs/CalenderIcon";
 import DonateIcon from "@/svgs/DonateIcon";
 import ProfileIcon from "@/svgs/ProfileIcon";
@@ -10,10 +8,6 @@ import ShareIcon from "@/svgs/ShareIcon";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import token_abi from "../../../../../public/abi/token_abi.json";
-import { Contract, RpcProvider } from "starknet";
-import { formatCurrency } from "@/app/utils/currency";
-import { campaign_contract } from "@/app/utils/data";
 import Container from "@/app/components/util/Container";
 
 const page = ({
@@ -24,21 +18,6 @@ const page = ({
   const router = useRouter();
   const [balance, setBalance] = useState(0);
   const [donationCount, setDonationCount] = useState(0);
-  const provider = new RpcProvider({
-    nodeUrl: "https://starknet-sepolia.public.blastapi.io",
-  });
-  let strk_contract = new Contract(token_abi, STRK_SEPOLIA, provider);
-
-  async function fetchBalances() {
-    try {
-      const strk = await strk_contract.balanceOf(params.address);
-      // @ts-ignore
-      const strkBalance = formatCurrency(strk.toString());
-      setBalance(strkBalance);
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
   const donateNow = () => {
     if (params.address && params.cid) {
@@ -58,45 +37,16 @@ const page = ({
     beneficiary: "",
     location: "",
     target: "",
+    address: "",
   });
   useEffect(() => {
     if (params.address && params.cid) {
-      const fetchNFT = async () => {
-        try {
-          const data = await fetchContentFromIPFS(params.cid);
-          if (data) {
-            const timestamp = data.created_at;
-            const date = new Date(timestamp);
-            const day = date.getDate();
-            const month = date.toLocaleString("default", { month: "long" });
-            const year = date.getFullYear();
-            const formattedDate = `Created ${day} ${month} ${year}`;
-            const imageUrl = data.image.slice(7, -1);
-            setCampaignDetails({
-              name: data.name || "",
-              description: data.description || "",
-              image:
-                `${process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL}${imageUrl}?pinataGatewayToken=${process.env.NEXT_PUBLIC_PINATA_API_KEY}` ||
-                "/default-image.webp",
-              date: formattedDate,
-              organizer: data.organizer,
-              beneficiary: data.beneficiary,
-              location: data.location,
-              target: data.target,
-            });
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      };
-
-      const fetchDonationCount = async () => {
-        let count = await campaign_contract.get_donation_count(params.address);
-        setDonationCount(Number(count));
-      };
-      fetchBalances();
-      fetchNFT();
-      fetchDonationCount();
+      fetchCampaign(
+        params.cid,
+        setBalance,
+        setDonationCount,
+        setCampaignDetails
+      );
     }
   }, []);
   const width = `${Math.min(

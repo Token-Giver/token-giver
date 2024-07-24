@@ -2,10 +2,8 @@
 import { useEffect, useState } from "react";
 import Card from "../components/Fundraiser/Card";
 import CardLoader from "../components/loading/CardLoader";
-import { Contract, RpcProvider } from "starknet";
-import campaign_contract_abi from "../../public/abi/campaign_abi.json";
-import { CAMPAIGN_CONTRACT_ADDRESS } from "../utils/data";
-import { fetchContentFromIPFS } from "../utils/helper";
+import { campaign_contract } from "../utils/data";
+import { fetchCampaigns } from "../utils/helper";
 import Container from "../components/util/Container";
 
 const page = () => {
@@ -15,41 +13,9 @@ const page = () => {
   const [cachedCollections, setCachedCollections] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const provider = new RpcProvider({
-    nodeUrl: "https://starknet-sepolia.public.blastapi.io",
-  });
-
-  let campaign_contract = new Contract(
-    campaign_contract_abi,
-    CAMPAIGN_CONTRACT_ADDRESS,
-    provider
-  );
-
-  const fetchCampaigns = async () => {
-    try {
-      const campaigns = await campaign_contract.get_campaigns();
-      const campaignPromises = campaigns.map((cid: string) =>
-        fetchContentFromIPFS(cid.slice(7, -1))
-      );
-      const campaignData = await Promise.all(campaignPromises);
-      setCollections(
-        campaignData
-          .filter((data) => data !== null)
-          .sort((a, b) => {
-            const dateA = new Date(a.created_at).getTime();
-            const dateB = new Date(b.created_at).getTime();
-            return dateB - dateA;
-          })
-      );
-      console.log(campaignData, "campaign data");
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
-  };
   useEffect(() => {
     window.scrollTo({ top: 0 });
-    fetchCampaigns();
+    fetchCampaigns(campaign_contract, setLoading, setCollections);
     return () => {};
   }, []);
 
@@ -121,7 +87,9 @@ const page = () => {
         <div className=" flex justify-center">
           <button
             disabled={reachedEnd === "end"}
-            onClick={fetchCampaigns}
+            // onClick={() => {
+            //   fetchCampaigns(campaign_contract, setLoading, setCollections);
+            // }}
             className={`px-6 py-2 border-solid border-[1px] ml-10 mt-10 h-fit border-[#127C56]  rounded-[25px] ${
               reachedEnd === "end"
                 ? "opacity-50 cursor-not-allowed"

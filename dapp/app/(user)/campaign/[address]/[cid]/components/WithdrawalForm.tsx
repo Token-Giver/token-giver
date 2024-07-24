@@ -46,8 +46,6 @@ const WithdrawalForm = ({
   const { tokenbound } = useTokenBoundSDK();
 
   const handleWithdraw = async () => {
-    console.log(campaignAddress, "campaign address");
-    console.log(withdrawalInputs);
     try {
       setTokenTransferredSuccessfully(false);
       const status = await tokenbound.transferERC20({

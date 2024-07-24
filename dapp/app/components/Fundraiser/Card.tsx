@@ -3,10 +3,7 @@ import LocationIcon from "@/svgs/LocationIcon";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { formatCurrency } from "@/app/utils/currency";
-import { STRK_SEPOLIA } from "@/app/utils/data";
-import token_abi from "../../../public/abi/token_abi.json";
-import { Contract, RpcProvider } from "starknet";
+import { fetchBalance } from "@/app/utils/helper";
 
 type CardType = {
   causeName: string;
@@ -22,7 +19,6 @@ type CardType = {
 };
 
 const Card = ({
-  cid,
   causeName,
   imageSrc,
   location,
@@ -33,28 +29,10 @@ const Card = ({
 }: CardType) => {
   const router = useRouter();
   const [balance, setBalance] = useState(0);
-  const provider = new RpcProvider({
-    nodeUrl: "https://starknet-sepolia.public.blastapi.io",
-  });
-
-  let strk_contract = new Contract(token_abi, STRK_SEPOLIA, provider);
-
-  async function fetchBalance() {
-    try {
-      const strk = await strk_contract.balanceOf(campaign_address);
-      // @ts-ignore
-      const strkBalance = formatCurrency(strk.toString());
-      setBalance(strkBalance);
-    } catch (err) {
-      console.log(err);
-    }
-  }
 
   useEffect(() => {
-    fetchBalance();
+    fetchBalance(campaign_address, setBalance);
   }, []);
-
-  fetchBalance();
 
   const handleRoute = () => {
     router.push(url);
