@@ -19,7 +19,9 @@ const Donate = ({
   const [fontSize, setFontSize] = useState(2);
   const [amount, setAmount] = useState("");
   const [token, setToken] = useState("STRK");
-  const [loading, setLoading] = useState<boolean>(false);
+  const [sendingState, setSendingState] = useState<
+    "send" | "sending..." | "sent"
+  >("send");
   const { account, address } = useAccount();
   const [balance, setBalance] = useState("0");
 
@@ -195,20 +197,20 @@ const Donate = ({
               </div>
             </div>
             <button
-              disabled={!amount}
+              disabled={!amount || sendingState === "sent"}
               onClick={async (e) => {
                 e.preventDefault();
                 await handleDonate(
                   amount,
                   account,
-                  setLoading,
+                  setSendingState,
                   campaignDetails.address,
                   handleRouteToCampaign
                 );
               }}
               className=" bg-theme-green text-white py-3 px-6 rounded-[10px] w-full"
             >
-              {loading ? "Sending..." : "Send"}
+              {sendingState}
             </button>
           </div>
         </div>

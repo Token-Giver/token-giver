@@ -120,6 +120,14 @@ const page = ({
                         {donationCount === 1 ? "" : "s"}
                       </p>
                     </div>
+                    <div>
+                      <p>
+                        <span className="font-semibold ">
+                          Available balance:
+                        </span>{" "}
+                        <span className="text-l">{4} STRK</span>
+                      </p>
+                    </div>
                   </div>
                   <WithdrawalForm
                     handleChange={handleChange}

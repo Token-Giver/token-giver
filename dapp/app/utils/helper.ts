@@ -8,6 +8,7 @@ import {
 import { formatCurrency } from "./currency";
 import { CallData, Uint256, cairo } from "starknet";
 import { Campaign } from "@/types";
+import { Dispatch, SetStateAction } from "react";
 
 export const fetchContentFromIPFS = async (cid: string) => {
   try {
@@ -138,7 +139,7 @@ export const fetchUserCampaigns = async (
 export const handleDonate = async (
   amount: string,
   account: any,
-  setLoading: any,
+  setSendingState: Dispatch<SetStateAction<"send" | "sending..." | "sent">>,
   campaign_address: string,
   handleRouteToCampaign: any
 ) => {
@@ -146,7 +147,7 @@ export const handleDonate = async (
     if (!amount || !account) {
       return;
     }
-    setLoading(true);
+    setSendingState("sending...");
     let current_withdrawal = await campaign_contract.get_available_withdrawal(
       campaign_address
     );
@@ -188,11 +189,11 @@ export const handleDonate = async (
       return;
     }
     await provider.waitForTransaction(multiCall.transaction_hash);
-    handleRouteToCampaign();
+    // handleRouteToCampaign();
   } catch (err: any) {
     console.log(err.message);
   } finally {
-    setLoading(false);
+    setSendingState("sent");
   }
 };
 
