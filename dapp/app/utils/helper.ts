@@ -62,6 +62,19 @@ export const fetchBalance = async (address: string, setBalance: any) => {
   }
 };
 
+export const fetchDonationBalance = async (
+  address: string,
+  setBalance: any
+) => {
+  try {
+    let current_donation = await campaign_contract.get_donations(address);
+    const balance = formatCurrency(current_donation.toString());
+    setBalance(balance);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export const fetchDonationCount = async (
   address: string,
   setDonationCount: any
@@ -74,13 +87,20 @@ export const fetchCampaign = async (
   cid: string,
   setBalance: any,
   setDonationCount: any,
-  setCampaignDetails: any
+  setCampaignDetails: any,
+  setAvailableBalance: any
 ) => {
   try {
     const data = await fetchContentFromIPFS(cid);
     if (setDonationCount && setBalance) {
-      await fetchBalance(data.campaign_address, setBalance);
+      await fetchDonationBalance(data.campaign_address, setBalance);
       await fetchDonationCount(data.campaign_address, setDonationCount);
+    }
+    if (setAvailableBalance) {
+      let balance = await campaign_contract.get_available_withdrawal(
+        data.campaign_address
+      );
+      setAvailableBalance(formatCurrency(balance.toString()));
     }
     if (data) {
       const timestamp = data.created_at;
@@ -151,6 +171,9 @@ export const handleDonate = async (
     let current_withdrawal = await campaign_contract.get_available_withdrawal(
       campaign_address
     );
+    let current_donation = await campaign_contract.get_donations(
+      campaign_address
+    );
     console.log(current_withdrawal);
     strk_contract.connect(account);
     const toTransferTk: Uint256 = cairo.uint256(Number(amount) * 1e18);
@@ -180,6 +203,18 @@ export const handleDonate = async (
           campaign_address,
           amount: cairo.uint256(
             (formatCurrency(current_withdrawal.toString()) + Number(amount)) *
+              1e18
+          ),
+        }),
+      },
+      // Set donation
+      {
+        contractAddress: CAMPAIGN_CONTRACT_ADDRESS,
+        entrypoint: "set_donations",
+        calldata: CallData.compile({
+          campaign_address,
+          amount: cairo.uint256(
+            (formatCurrency(current_donation.toString()) + Number(amount)) *
               1e18
           ),
         }),

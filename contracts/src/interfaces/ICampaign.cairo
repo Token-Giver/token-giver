@@ -19,6 +19,7 @@ pub trait ICampaign<TState> {
     );
     fn set_donation_count(ref self: TState, campaign_address: ContractAddress);
     fn set_available_withdrawal(ref self: TState, campaign_address: ContractAddress, amount: u256);
+    fn set_donations(ref self: TState, campaign_address: ContractAddress, amount: u256);
 
 
     // Getters
@@ -28,4 +29,5 @@ pub trait ICampaign<TState> {
     fn get_user_campaigns(self: @TState, user: ContractAddress) -> Array<ByteArray>;
     fn get_donation_count(self: @TState, campaign_address: ContractAddress) -> u16;
     fn get_available_withdrawal(self: @TState, campaign_address: ContractAddress) -> u256;
+    fn get_donations(self: @TState, campaign_address: ContractAddress) -> u256;
 }

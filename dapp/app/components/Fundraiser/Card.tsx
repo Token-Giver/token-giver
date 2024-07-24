@@ -3,7 +3,7 @@ import LocationIcon from "@/svgs/LocationIcon";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { fetchBalance } from "@/app/utils/helper";
+import { fetchBalance, fetchDonationBalance } from "@/app/utils/helper";
 
 type CardType = {
   causeName: string;
@@ -31,7 +31,7 @@ const Card = ({
   const [balance, setBalance] = useState(0);
 
   useEffect(() => {
-    fetchBalance(campaign_address, setBalance);
+    fetchDonationBalance(campaign_address, setBalance);
   }, []);
 
   const handleRoute = () => {
