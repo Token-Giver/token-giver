@@ -144,7 +144,9 @@ const MobileMenu = ({
         </div>
         <nav className="">
           <ul className="flex flex-col gap-8">
-            <li>search</li>
+            <li>
+              <Link href={"/search"}>Search</Link>
+            </li>
             <li>
               <Link href={"/explore"}>Campaigns</Link>
             </li>
