@@ -26,6 +26,7 @@ mod CampaignComponent {
     struct Storage {
         campaign: LegacyMap<ContractAddress, Campaign>,
         campaigns: LegacyMap<u16, ContractAddress>,
+        withdrawal_balance: LegacyMap<ContractAddress, u256>,
         count: u16,
         donation_count: LegacyMap<ContractAddress, u16>
     }
@@ -101,6 +102,7 @@ mod CampaignComponent {
             self.campaign.write(campaign_address, campaign);
         }
 
+
         fn set_donation_count(
             ref self: ComponentState<TContractState>, campaign_address: ContractAddress
         ) {
@@ -108,11 +110,20 @@ mod CampaignComponent {
             self.donation_count.write(campaign_address, prev_count + 1);
         }
 
+        fn set_available_withdrawal(ref self: ComponentState<TContractState>, campaign_address: ContractAddress, amount: u256){
+            self.withdrawal_balance.write(campaign_address, amount);
+        }
+
         // *************************************************************************
         //                            GETTERS
         // *************************************************************************
         // @notice returns the campaign struct of a campaign address
         // @params campaign_address the targeted campaign address
+        fn get_available_withdrawal(self: @ComponentState<TContractState>, campaign_address: ContractAddress) -> u256{
+            self.withdrawal_balance.read(campaign_address)
+        }
+
+
         fn get_campaign(
             self: @ComponentState<TContractState>, campaign_address: ContractAddress
         ) -> Campaign {
