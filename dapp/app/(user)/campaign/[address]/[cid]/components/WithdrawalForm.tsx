@@ -1,7 +1,8 @@
 import { H3 } from "@/app/components/util/Headers";
 import { useTokenBoundSDK } from "@/app/hooks";
-import { STRK_SEPOLIA } from "@/app/utils/data";
+import { STRK_SEPOLIA, campaign_contract } from "@/app/utils/data";
 import WithdrawIcon from "@/svgs/WithdrawIcon";
+import { useAccount } from "@starknet-react/core";
 import {
   ChangeEvent,
   Dispatch,
@@ -20,6 +21,7 @@ type Props = {
     amount: string;
   };
   campaignAddress: string;
+  availableBalance: number;
 };
 
 const WithdrawalForm = ({
@@ -28,6 +30,7 @@ const WithdrawalForm = ({
   withdrawalInputs,
   handleChange,
   campaignAddress,
+  availableBalance,
 }: Props) => {
   const [tokenTransferredSuccessfully, setTokenTransferredSuccessfully] =
     useState<boolean | null>(null);
@@ -45,7 +48,7 @@ const WithdrawalForm = ({
   }, [tokenTransferredSuccessfully, withdrawalInputs]);
 
   const { tokenbound } = useTokenBoundSDK();
-
+  const { account } = useAccount();
   const handleWithdraw = async () => {
     try {
       setTokenTransferredSuccessfully(false);
@@ -56,6 +59,15 @@ const WithdrawalForm = ({
         amount: cairo.uint256(Number(withdrawalInputs.amount) * 1e18),
       });
       console.log("transferStat", status);
+      if (account) {
+        campaign_contract.connect(account);
+        await campaign_contract.set_available_withdrawal(
+          campaignAddress,
+          cairo.uint256(
+            (availableBalance - Number(withdrawalInputs.amount)) * 1e18
+          )
+        );
+      }
     } catch (error) {
       console.log("there was an error withdrawing");
     } finally {

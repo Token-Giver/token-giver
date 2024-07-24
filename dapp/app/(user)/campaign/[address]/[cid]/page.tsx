@@ -37,6 +37,7 @@ const page = ({
     amount: "",
   });
   const [balance, setBalance] = useState(0);
+  const [availableBalance, setAvailableBalance] = useState(0);
 
   useEffect(() => {
     if (params.address && params.cid) {
@@ -44,7 +45,8 @@ const page = ({
         params.cid,
         setBalance,
         setDonationCount,
-        setCampaignDetails
+        setCampaignDetails,
+        setAvailableBalance
       );
     }
   }, []);
@@ -125,7 +127,9 @@ const page = ({
                         <span className="font-semibold ">
                           Available balance:
                         </span>{" "}
-                        <span className="text-l">{4} STRK</span>
+                        <span className="text-l">
+                          {availableBalance.toFixed(2)} STRK
+                        </span>
                       </p>
                     </div>
                   </div>
@@ -135,6 +139,7 @@ const page = ({
                     withdrawalFormOpen={withdrawalFormOpen}
                     setWithdrawalFormOpen={setWithdrawalFormOpen}
                     campaignAddress={campaignDetails.address}
+                    availableBalance={availableBalance}
                   />
                   {!withdrawalFormOpen && (
                     <div className="flex flex-col gap-4 text-white md:flex-row   ">
@@ -202,6 +207,14 @@ const page = ({
                       {donationCount} donation{donationCount === 1 ? "" : "s"}
                     </p>
                   </div>
+                  <div>
+                    <p>
+                      <span className="font-semibold ">Available balance:</span>{" "}
+                      <span className="text-l">
+                        {availableBalance.toFixed(2)} STRK
+                      </span>
+                    </p>
+                  </div>
                 </div>
                 <div className="flex flex-col gap-4">
                   <WithdrawalForm
@@ -210,6 +223,7 @@ const page = ({
                     withdrawalFormOpen={withdrawalFormOpen}
                     setWithdrawalFormOpen={setWithdrawalFormOpen}
                     campaignAddress={campaignDetails.address}
+                    availableBalance={availableBalance}
                   />
                   {!withdrawalFormOpen && (
                     <>
