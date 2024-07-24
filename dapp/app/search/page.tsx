@@ -17,8 +17,6 @@ const page = () => {
   const [filteredCampaigns, setFilteredCampaigns] = useState<Campaign[]>([]);
   const [latestCampaigns, setLatestCampaigns] = useState<Campaign[]>([]);
 
-  console.log(search);
-
   useEffect(() => {
     fetchCampaigns(campaign_contract, setLoading, setCollections);
 
