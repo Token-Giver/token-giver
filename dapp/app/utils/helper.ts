@@ -202,7 +202,12 @@ export const searchCampaigns = async ({
   campaigns: Campaign[];
 }) => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
-  return campaigns.filter((campaign) =>
-    campaign.name.toLocaleLowerCase().includes(search.toLocaleLowerCase())
+  const lowerCaseSearch = search.toLocaleLowerCase();
+
+  return campaigns.filter(
+    (campaign) =>
+      campaign.name.toLocaleLowerCase().includes(lowerCaseSearch) ||
+      campaign.organizer.toLocaleLowerCase().includes(lowerCaseSearch) ||
+      campaign.location.toLocaleLowerCase().includes(lowerCaseSearch)
   );
 };
