@@ -51,35 +51,40 @@ const Dropzone = ({
   }, [file]);
 
   return (
-    <div
-      onDrop={handleDrop}
-      onDragOver={handleDragOver}
-      className={`lg:w-[70%] border-dashed border-[2px]  px-4 py-8 leading-6 rounded-[10px] flex flex-col gap-2 relative ${
-        !address ? "border-gray-200" : "border-gray-300"
-      }`}
-    >
-      <p className="text-[#878787]">
-        Drag and drop image files here (max size: 50 MB), or{" "}
-        <span className="underline text-blue">click</span> to select files
+    <div className="relative">
+      <p className="absolute top-[-1.2rem] right-[.5em] lg:right-[31%] text-red text-[.7em]">
+        Required*
       </p>
-      <input
-        type="file"
-        name="image"
-        accept="image/*"
-        disabled={!address}
-        required
-        ref={fileInputRef}
-        onChange={(event) => {
-          if (event.target.files) {
-            setFile(event.target.files[0]);
-          }
-        }}
-        className="absolute top-0 left-0 w-full h-full cursor-pointer"
-        style={{
-          opacity: "0",
-        }}
-      />
-      <ul>{file && <li className="text-[0.875em]">{file.name}</li>}</ul>
+      <div
+        onDrop={handleDrop}
+        onDragOver={handleDragOver}
+        className={`lg:w-[70%] border-dashed border-[2px]  px-4 py-8 leading-6 rounded-[10px] flex flex-col gap-2 relative ${
+          !address ? "border-gray-200" : "border-gray-300"
+        }`}
+      >
+        <p className="text-[#878787]">
+          Drag and drop image files here (max size: 50 MB), or{" "}
+          <span className="underline text-blue">click</span> to select files
+        </p>
+        <input
+          type="file"
+          name="image"
+          accept="image/*"
+          disabled={!address}
+          required
+          ref={fileInputRef}
+          onChange={(event) => {
+            if (event.target.files) {
+              setFile(event.target.files[0]);
+            }
+          }}
+          className="absolute top-0 left-0 w-full h-full cursor-pointer"
+          style={{
+            opacity: "0",
+          }}
+        />
+        <ul>{file && <li className="text-[0.875em]">{file.name}</li>}</ul>
+      </div>
     </div>
   );
 };

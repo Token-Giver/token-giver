@@ -283,7 +283,7 @@ const Page = () => {
             <div className="flex">
               <button
                 disabled={
-                  !inputData.name || !inputData.description || !account.address
+                  !inputData.name || !inputData.description || !inputData.image
                 }
                 onClick={() =>
                   setStep(() => {
@@ -305,7 +305,10 @@ const Page = () => {
                   createCampaign();
                 }}
                 disabled={
-                  !inputData.target || !inputData.location || creatingCampaign
+                  !inputData.target ||
+                  !inputData.location ||
+                  !inputData.organizer ||
+                  creatingCampaign
                 }
                 className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
                   step.number === 3 ? "block" : "hidden"

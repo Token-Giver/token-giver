@@ -51,14 +51,19 @@ const StepThree = ({
         />
       </div>
       <label htmlFor="organizer">Organizer:</label>
-      <input
-        type="text"
-        name="organizer"
-        value={inputData.organizer}
-        onChange={handleInputChange}
-        placeholder="Name of organizer"
-        className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
-      />
+      <div className="relative">
+        <p className="text-red  absolute top-[-1.2rem] right-[.5em] text-[.7em]">
+          Required*
+        </p>
+        <input
+          type="text"
+          name="organizer"
+          value={inputData.organizer}
+          onChange={handleInputChange}
+          placeholder="Name of organizer"
+          className="w-full bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
+        />
+      </div>
       <label htmlFor="beneficiary">Beneficiary:</label>
       <input
         type="text"
