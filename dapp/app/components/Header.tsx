@@ -77,7 +77,7 @@ const Header = () => {
               </li>
 
               <li>
-                <a href="">How it works</a>
+                <Link href={"/learn"}>Learn more</Link>
               </li>
             </ul>
           </nav>
