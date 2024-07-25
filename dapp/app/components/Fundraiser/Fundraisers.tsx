@@ -7,15 +7,27 @@ import { campaign_contract } from "@/app/utils/data";
 import { fetchCampaigns } from "@/app/utils/helper";
 import Container from "../util/Container";
 import { H2 } from "../util/Headers";
+import { useConnect } from "@starknet-react/core";
 
 const Fundraisers = () => {
   const router = useRouter();
+  const { connectors, connect } = useConnect();
   const [collections, setCollections] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const handleRouteToCampaigns = () => {
     router.push("/campaigns");
   };
+  useEffect(() => {
+    const lastUsedConnector = localStorage.getItem("lastUsedConnector");
+    if (lastUsedConnector) {
+      connect({
+        connector: connectors.find(
+          (connector) => connector.name === lastUsedConnector
+        ),
+      });
+    }
+  }, [connectors]);
 
   useEffect(() => {
     fetchCampaigns(campaign_contract, setLoading, setCollections);

@@ -24,6 +24,17 @@ const ConnectButton = ({ showButton = true }: Props) => {
     }
   }, [address]);
 
+  useEffect(() => {
+    const lastUsedConnector = localStorage.getItem("lastUsedConnector");
+    if (lastUsedConnector) {
+      connect({
+        connector: connectors.find(
+          (connector) => connector.name === lastUsedConnector
+        ),
+      });
+    }
+  }, [connectors]);
+
   return (
     <>
       <button
@@ -33,6 +44,7 @@ const ConnectButton = ({ showButton = true }: Props) => {
           ) as HTMLElement;
           if (address) {
             disconnect();
+            localStorage.removeItem("lastUsedConnector");
           } else {
             // @ts-ignore
             connectPopover.showPopover();
@@ -60,6 +72,7 @@ const ConnectButton = ({ showButton = true }: Props) => {
                   className="bg-theme-green text-white py-2 px-6 rounded-[10px] w-full"
                   onClick={() => {
                     connect({ connector });
+                    localStorage.setItem("lastUsedConnector", connector.name);
                   }}
                   key={connector.id}
                 >

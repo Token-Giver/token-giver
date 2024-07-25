@@ -222,7 +222,7 @@ const Page = () => {
 
   return (
     <main className="min-h-screen  flex justify-between bg-theme-green md:mb-10 relative">
-      <Container className="p-4 w-[40%] flex flex-col">
+      <Container className="p-4 w-[40%] hidden md:flex md:flex-col ">
         <button
           onClick={() => router.push("/")}
           className="w-fit text-[1.2em] self-start justify-self-start text-white flex items-center"
@@ -233,7 +233,7 @@ const Page = () => {
           <span>back</span>
         </button>
 
-        <div className=" my-auto">
+        <div className="my-auto">
           <div className="flex flex-col gap-8 p-4">
             <p className="font-bold text-white text-[1.5em]">
               <Logo />
