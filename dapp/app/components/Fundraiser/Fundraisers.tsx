@@ -14,7 +14,7 @@ const Fundraisers = () => {
   const [loading, setLoading] = useState(true);
 
   const handleRouteToCampaigns = () => {
-    router.push("/campaigns");
+    router.push("/explore");
   };
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const Fundraisers = () => {
             ? Array.from({ length: 12 }).map((_, idx) => (
                 <CardLoader key={idx} />
               ))
-            : collections.map((data, idx) => {
+            : collections.slice(0, 9).map((data, idx) => {
                 const path = data.name
                   .replace(/[^a-zA-Z ]/g, "")
                   .replace(/ /g, "-")

@@ -84,21 +84,6 @@ const page = () => {
                 );
               })}
         </section>
-        <div className=" flex justify-center">
-          <button
-            disabled={reachedEnd === "end"}
-            // onClick={() => {
-            //   fetchCampaigns(campaign_contract, setLoading, setCollections);
-            // }}
-            className={`px-6 py-2 border-solid border-[1px] ml-10 mt-10 h-fit border-[#127C56]  rounded-[25px] ${
-              reachedEnd === "end"
-                ? "opacity-50 cursor-not-allowed"
-                : "opacity-100 cursor-pointer"
-            }`}
-          >
-            Show more
-          </button>
-        </div>
       </Container>
     </section>
   );
