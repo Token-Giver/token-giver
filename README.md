@@ -3,9 +3,6 @@
 # Token Giver: Transform Charity with Blockchain! ![product logo](./dapp/public/bx--donate-heart.png)
 
 <!-- ABOUT THE PROJECT -->
-
-## INTRODUCTION
-
 ![Product screen shot](dapp/public/project-screenshot.png)
 
 Token Giver is a decentralized application designed to revolutionize charity and fundraising. With Token Giver, users can create and manage campaigns by minting unique campaign NFTs, which have Token Bound Accounts (TBA) deployed on them automatically. This enables seamless and secure donations using STRK tokens. This project leverages the power of Next.js, StarknetJs, Starknet TBA SDK, and smart contracts written in Cairo to provide a robust and user-friendly platform..
