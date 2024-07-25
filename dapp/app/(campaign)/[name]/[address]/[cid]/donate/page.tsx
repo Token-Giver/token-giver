@@ -124,10 +124,10 @@ const Donate = ({
             <div className="hidden md:block w-[130px] h-[90px] rounded-[5px] relative">
               <Image
                 className="w-full h-full rounded-[5px] object-cover"
-                loader={() => campaignDetails.image}
                 src={campaignDetails.image}
                 alt=""
                 fill
+                sizes="100%"
               />
             </div>
             <div className="col-span-2 ">

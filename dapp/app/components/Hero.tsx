@@ -16,8 +16,8 @@ const Hero = () => {
       <div>
         <H1 style=" mb-4 text-center">Transform Charity with Blockchain.</H1>
         <p className="text-center">
-          Create impactful campaigns and donate through innovative NFTs. Token
-          Giver empowers every act of kindness.
+          Fussing compassion with innovation. Maximizing your contributions'
+          impact with security and transparency.
         </p>
       </div>
       <div>

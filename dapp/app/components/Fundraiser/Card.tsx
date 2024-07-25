@@ -49,7 +49,6 @@ const Card = ({
         {imageSrc ? (
           <Image
             className="rounded-t-[10px] w-full h-full group-hover:scale-105 object-cover transition-all"
-            loader={() => imageSrc}
             src={imageSrc}
             alt={imageAltText ? imageAltText : ""}
             width={400}

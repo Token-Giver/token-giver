@@ -62,7 +62,7 @@ const WithdrawalForm = ({
         recipient: withdrawalInputs.beneficiary,
         amount: cairo.uint256(Number(withdrawalInputs.amount) * 1e18),
       });
-      console.log("transferStat", status);
+
       if (account) {
         campaign_contract.connect(account);
         await campaign_contract.set_available_withdrawal(
@@ -74,7 +74,7 @@ const WithdrawalForm = ({
         setWithdrawState("Success!");
       }
     } catch (error) {
-      console.log("there was an error withdrawing");
+      console.log("there was an error withdrawing: ", error);
       setWithdrawState("Withdraw now");
     } finally {
       setTokenTransferredSuccessfully(null);

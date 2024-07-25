@@ -44,7 +44,6 @@ export const fetchCampaigns = async (
           return dateB - dateA;
         })
     );
-    console.log(campaignData, "campaign data");
     setLoading(false);
   } catch (error) {
     console.log(error);
@@ -174,7 +173,6 @@ export const handleDonate = async (
     let current_donation = await campaign_contract.get_donations(
       campaign_address
     );
-    console.log(current_withdrawal);
     strk_contract.connect(account);
     const toTransferTk: Uint256 = cairo.uint256(Number(amount) * 1e18);
     const multiCall = await account?.execute([
