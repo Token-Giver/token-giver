@@ -1,9 +1,10 @@
 <a id="readme-top"></a>
 
-# Token Giver: Transform Charity with Blockchain! ![product logo](./dapp/public/bx--donate-heart.png)
+# Token Giver: Transform Charity with Blockchain! ![product logo](./public/bx--donate-heart.png)
 
 <!-- ABOUT THE PROJECT -->
-![Product screen shot](dapp/public/project-screenshot.png)
+
+![Product screen shot](public/project-screenshot.png)
 
 Token Giver is a decentralized application designed to revolutionize charity and fundraising. With Token Giver, users can create and manage campaigns by minting unique campaign NFTs, which have Token Bound Accounts (TBA) deployed on them automatically. This enables seamless and secure donations using STRK tokens. This project leverages the power of Next.js, StarknetJs, Starknet TBA SDK, and smart contracts written in Cairo to provide a robust and user-friendly platform..
 
@@ -30,7 +31,6 @@ Traditional fundraising and charity methods often face issues such as a lack of 
 
 TokenGiver addresses critical issues in charity by leveraging blockchain technology and token-bound accounts (ERC6551) to create a decentralized charity platform. This platform allows users to create and manage campaigns with complete transparency, as every transaction is recorded on the blockchain, providing an immutable and accessible record of donations and fund usage. Donors can send STRK tokens directly to their chosen campaigns, ensuring efficient, fast, and secure fund transfers with lower transaction fees. This fosters greater trust and encourages more contributions. TokenGiver's innovative approach enhances the credibility of charitable campaigns and maximizes their impact, transforming how charitable donations are managed and perceived.
 
-
 ## FEATURES
 
 - **Campaign Creation**: Users can easily create fundraising campaigns by minting unique campaign NFTs, which have Token Bound Accounts (TBA) deployed on them for collecting donations.
@@ -46,7 +46,6 @@ TokenGiver addresses critical issues in charity by leveraging blockchain technol
 - **Smart Contracts**: Cairo
 
 ## PROJECT WALKTHROUGH
-
 
 1. **Start a Campaign**: Click the "Start Campaign" button on the platform.
 2. **Fill Out the Form**: Complete the form with details about your campaign.
