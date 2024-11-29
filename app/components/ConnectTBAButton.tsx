@@ -3,10 +3,10 @@ import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { useEffect, useMemo, useState } from "react";
 import { ConnectedStarknetWindowObject } from "get-starknet-core";
 import {
-  TokenboundConnector,
-  TokenBoundModal,
-  useTokenBoundModal,
-} from "tokenbound-connector";
+  connect,
+  disconnect,
+  TBAStarknetWindowObject,
+} from "tokenbound-connectkit";
 
 const ConnectTBAButton = () => {
   const [connection, setConnection] = useState<ConnectedStarknetWindowObject>();
