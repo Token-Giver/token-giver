@@ -1,50 +1,35 @@
 "use client";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { useEffect, useMemo, useState } from "react";
-import { ConnectedStarknetWindowObject } from "get-starknet-core";
 import {
-  TokenboundConnector,
-  TokenBoundModal,
-  useTokenBoundModal,
-} from "tokenbound-connector";
+  connect,
+  disconnect,
+  TBAStarknetWindowObject,
+} from "tokenbound-connectkit";
 
 const ConnectTBAButton = () => {
-  const [connection, setConnection] = useState<ConnectedStarknetWindowObject>();
+  // const [connection, setConnection] = useState<TBAStarknetWindowObject>();
   const [account, setAccount] = useState();
   const [address, setAddress] = useState("");
-  const {
-    isOpen,
-    openModal,
-    closeModal,
-    value,
-    selectedOption,
-    handleChange,
-    handleChangeInput,
-    resetInputValues,
-  } = useTokenBoundModal();
 
-  const tokenbound = new TokenboundConnector({
-    tokenboundAddress: value,
-    parentAccountId: selectedOption,
-  });
 
   const connectTBA = async () => {
-    const connection = await tokenbound.connect();
-    closeModal();
-    resetInputValues();
-
-    if (connection && connection.isConnected) {
-      setConnection(connection);
-      setAccount(connection.account);
-      setAddress(connection.selectedAddress);
-    }
+      try {
+        const data = await connect({
+          tokenboundOptions: {
+            chainId: "SN_SEPOLIA",
+          }
+        });
+        console.log(data)
+        setAccount(data.wallet);
+        setAddress(data.wallet.address);
+      } catch (e) {
+        console.error(e)
+      }
   };
 
   const disconnectTBA = async () => {
-    await tokenbound.disconnect();
-    setConnection(undefined);
-    setAccount(undefined);
-    setAddress("");
+    await disconnect();
   };
 
   const shortenedAddress = useMemo(() => {
@@ -54,10 +39,10 @@ const ConnectTBAButton = () => {
 
   return (
     <>
-      {!connection ? (
+      {!account ? (
         <button
           className="bg-[#127C56] text-white px-6 py-2 rounded-[25px]"
-          onClick={openModal}
+          onClick={connectTBA}
         >
           Connect Wallet
         </button>
@@ -68,17 +53,6 @@ const ConnectTBAButton = () => {
         >
           Disconnect
         </button>
-      )}
-      {isOpen && (
-        <TokenBoundModal
-          isOpen={isOpen}
-          closeModal={closeModal}
-          value={value}
-          selectedOption={selectedOption}
-          handleChange={handleChange}
-          handleChangeInput={handleChangeInput}
-          onConnect={connectTBA}
-        />
       )}
     </>
   );
