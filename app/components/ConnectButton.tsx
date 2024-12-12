@@ -24,17 +24,6 @@ const ConnectButton = ({ showButton = true }: Props) => {
     }
   }, [address]);
 
-  useEffect(() => {
-    const lastUsedConnector = localStorage.getItem("lastUsedConnector");
-    if (lastUsedConnector) {
-      connect({
-        connector: connectors.find(
-          (connector) => connector.name === lastUsedConnector
-        ),
-      });
-    }
-  }, [connectors]);
-
   return (
     <>
       <button
