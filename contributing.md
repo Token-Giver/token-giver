@@ -1,4 +1,4 @@
-# Welcome to SeamlessUI Contributing Guide
+# Welcome to Token Giver Contributing Guide
 
 Thank you for taking the time to contribute to TokenGiver! This guide provides an overview of our contribution workflow, ensuring an effective process for all contributors.
 
@@ -13,7 +13,7 @@ The project is actively under development. You can check out the open Issues, fo
 
 ## Getting started
 
-There are many ways to contribute to SeamlessUI:
+There are many ways to contribute to Token Giver:
 
 - Solve open issues
 
