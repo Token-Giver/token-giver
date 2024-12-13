@@ -249,3 +249,28 @@ export const searchCampaigns = async ({
       campaign.location.toLocaleLowerCase().includes(lowerCaseSearch)
   );
 };
+
+
+export const toUnixTimestamp = ({
+  year,
+  month,
+  day,
+  hour = 0,
+  minute = 0,
+  second = 0,
+  timezoneOffset = null,
+}: {
+  year: number;
+  month: number;
+  day: number;
+  hour?: number;
+  minute?: number;
+  second?: number;
+  timezoneOffset?: number | null;
+}): number  => {
+  const date = timezoneOffset !== null ? new Date(Date.UTC(year, month - 1, day, hour, minute, second)) : new Date(year, month - 1, day, hour, minute, second);
+
+  const adjustedTime = date.getTime() - (timezoneOffset ?? new Date().getTimezoneOffset()) * 60 * 1000;
+
+  return Math.floor(adjustedTime / 1000);
+};
