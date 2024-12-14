@@ -236,7 +236,7 @@ const Page = () => {
 				<div className="my-auto">
 					<div className="flex flex-col gap-8 p-4">
 						<p className="font-bold text-white text-[1.5em]">
-							<Logo />
+							<Logo logoVariant="white" />
 						</p>
 						<H2 style="text-theme-yellow">Start your fundraising journey!</H2>
 
