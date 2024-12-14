@@ -1,4 +1,5 @@
 "use client";
+import { useTokenBoundSDK } from "@/app/hooks";
 import { ChangeEvent, useEffect, useState } from "react";
 import ConnectButton from "../components/ConnectButton";
 import { useAccount } from "@starknet-react/core";
@@ -42,7 +43,15 @@ const Page = () => {
     organizer: "",
     beneficiary: "",
     location: "",
+      day: "",
+      hour: "0",
+      minute: "0",
+      second: "0",
+      timezone: "GMT"
+    
   });
+
+  const { tokenbound } = useTokenBoundSDK();
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -64,6 +73,16 @@ const Page = () => {
         [name]: value,
       };
     });
+  };
+
+  const convertToUnixTimestamp = () => {
+    // console.log("datetime is ---", dateTime)
+    const date = (
+      `${inputData.day} ${inputData.hour.padStart(2, "0")}:${inputData.minute.padStart(2, "0")}:${inputData.second.padStart(2, "0")} ${inputData.timezone}`
+    );
+    // console.log("date is ---", date)
+    // console.log("date parsed is ---", Date.parse(date))
+    return Date.parse(date);
   };
 
   async function createCampaign() {
@@ -97,6 +116,8 @@ const Page = () => {
         create_campaign_res.transaction_hash
       );
       txnDet.isSuccess() && setCampaignStep(1);
+      let campaignAddress : string | undefined;
+      if(txnDet.isSuccess()) campaignAddress = txnDet.events.at(1)?.from_address
       setLoadingPercentage(40);
 
       /////////////////////////////////////////
@@ -122,6 +143,9 @@ const Page = () => {
       const image_upload_resData = await image_upload_res.json();
       setLoadingPercentage(60);
 
+// GET CONVERTED DATETIME TO UNIXTIMESTAMP
+      const dateTimeToUnixTimestamp = convertToUnixTimestamp()
+      
       //////////////////////////////////
       // CREATE NEW METADATA URI JSON
       //////////////////////////////////
@@ -138,6 +162,7 @@ const Page = () => {
         campaign_address:
           txnDet.isSuccess() && txnDet.events.at(1)?.from_address,
         created_at: new Date(),
+        dateTime: dateTimeToUnixTimestamp
       });
       setCampaignUrl(`/campaign/${address}/${tokenId}`);
 
@@ -172,6 +197,11 @@ const Page = () => {
             `ipfs://${metadata_upload_resData.IpfsHash}/`,
           ])
         );
+        // also call the set LOCKTIME FUNCTION HERE
+      const set_campaign_locktime =   await tokenbound.lock({
+        tbaAddress: campaignAddress,
+        lockUntill: dateTimeToUnixTimestamp
+     });
 
       setLoadingPercentage(100);
       setCampaignStep(3);
@@ -187,6 +217,11 @@ const Page = () => {
           organizer: "",
           beneficiary: "",
           location: "",
+            day: "01 Jan 1970",
+            hour: "0",
+            minute: "0",
+            second: "0",
+            timezone: "GMT"
         });
         setStep({
           number: 2,
