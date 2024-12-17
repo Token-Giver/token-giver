@@ -197,11 +197,14 @@ const Page = () => {
             `ipfs://${metadata_upload_resData.IpfsHash}/`,
           ])
         );
-        // also call the set LOCKTIME FUNCTION HERE
-      const set_campaign_locktime =   await tokenbound.lock({
-        tbaAddress: campaignAddress,
-        lockUntill: dateTimeToUnixTimestamp
-     });
+        // also call the set LOCKTIME FUNCTION HERE if the date is set
+
+      if(dateTimeToUnixTimestamp > Date.now()){
+        await tokenbound.lock({
+          tbaAddress: campaignAddress,
+          lockUntill: dateTimeToUnixTimestamp
+       });
+      } 
 
       setLoadingPercentage(100);
       setCampaignStep(3);
