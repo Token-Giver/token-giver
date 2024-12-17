@@ -64,6 +64,99 @@ const StepTwo = ({
 
       <label htmlFor="image">Upload campaign image:</label>
       <Dropzone address={address} setInputData={setInputData} />
+
+      <div className="grid grid-cols-2 gap-3">
+        <div>
+          <label htmlFor="name">Instagram:</label>
+          <div className="relative">
+            <input
+              type="text"
+              name="name"
+              required
+              value={inputData.instagram}
+              onChange={handleInputChange}
+              placeholder="Instagram url"
+              className={`w-full bg-transparent border-solid border-[1px] border-gray-300 p-3 rounded-[10px]`}
+              disabled={!address}
+            />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="name">LinkedIn:</label>
+          <div className="relative">
+            <input
+              type="text"
+              name="name"
+              required
+              value={inputData.linkedin}
+              onChange={handleInputChange}
+              placeholder="linkedin url"
+              className={`w-full bg-transparent border-solid border-[1px] border-gray-300 p-3 rounded-[10px]`}
+              disabled={!address}
+            />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="name">X:</label>
+          <div className="relative">
+            <input
+              type="text"
+              name="name"
+              required
+              value={inputData.x}
+              onChange={handleInputChange}
+              placeholder="x url"
+              className={`w-full bg-transparent border-solid border-[1px] border-gray-300 p-3 rounded-[10px]`}
+              disabled={!address}
+            />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="name">Youtube:</label>
+          <div className="relative">
+            <input
+              type="text"
+              name="name"
+              required
+              value={inputData.youtube}
+              onChange={handleInputChange}
+              placeholder="Youtube url"
+              className={`w-full bg-transparent border-solid border-[1px] border-gray-300 p-3 rounded-[10px]`}
+              disabled={!address}
+            />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="name">Website:</label>
+          <div className="relative">
+            <input
+              type="text"
+              name="name"
+              required
+              value={inputData.website}
+              onChange={handleInputChange}
+              placeholder="Website url"
+              className={`w-full bg-transparent border-solid border-[1px] border-gray-300 p-3 rounded-[10px]`}
+              disabled={!address}
+            />
+          </div>
+        </div>
+        <div>
+          <label htmlFor="name">Github:</label>
+          <div className="relative">
+            <input
+              type="text"
+              name="name"
+              required
+              value={inputData.github}
+              onChange={handleInputChange}
+              placeholder="Github url"
+              className={`w-full bg-transparent border-solid border-[1px] border-gray-300 p-3 rounded-[10px]`}
+              disabled={!address}
+            />
+          </div>
+        </div>
+      </div>
     </fieldset>
   );
 };
