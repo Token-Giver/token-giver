@@ -6,6 +6,12 @@ export type InputDateType = {
   organizer: string;
   beneficiary: string;
   location: string;
+  instagram: string;
+  linkedin: string;
+  x: string;
+  youtube: string;
+  website: string;
+  github: string;
 };
 
 export interface Campaign {
