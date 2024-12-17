@@ -11,6 +11,12 @@ export type InputDateType = {
   minute: string,
   second: string,
   timezone: string,
+  instagram: string;
+  linkedin: string;
+  x: string;
+  youtube: string;
+  website: string;
+  github: string;
 };
 
 export interface Campaign {
