@@ -6,6 +6,17 @@ export type InputDateType = {
   organizer: string;
   beneficiary: string;
   location: string;
+  day: string,
+  hour: string,
+  minute: string,
+  second: string,
+  timezone: string,
+  instagram: string;
+  linkedin: string;
+  x: string;
+  youtube: string;
+  website: string;
+  github: string;
 };
 
 export interface Campaign {
