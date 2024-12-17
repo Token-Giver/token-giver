@@ -77,7 +77,7 @@ const StepThree = ({
         className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
       />
       <label htmlFor="lockUntilTime">Lock Until: </label>
-      <div className="p-6 bg-gray-100 rounded-md">
+      <div className="p-6 bg-transparent rounded-md">
       <div className="grid grid-cols-2 gap-4 mb-4">
         <label className="flex flex-col">
           Date
