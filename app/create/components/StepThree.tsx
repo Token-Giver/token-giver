@@ -18,7 +18,7 @@ const StepThree = ({
   address: string | undefined;
 }) => {
 
-  const timezones = ["GMT", "UTC"];
+  const timezones = ["GMT", "LocalTime"];
 
   return (
     <fieldset
@@ -86,7 +86,7 @@ const StepThree = ({
             name="day"
             value={inputData.day}
             onChange={handleInputChange}
-            className="border border-gray-300 p-2 rounded-md"
+            className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
           />
         </label>
         <label className="flex flex-col">
@@ -98,7 +98,7 @@ const StepThree = ({
             onChange={handleInputChange}
             min="0"
             max="23"
-            className="border border-gray-300 p-2 rounded-md"
+            className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
           />
         </label>
         <label className="flex flex-col">
@@ -110,7 +110,7 @@ const StepThree = ({
             onChange={handleInputChange}
             min="0"
             max="59"
-            className="border border-gray-300 p-2 rounded-md"
+            className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
           />
         </label>
         <label className="flex flex-col">
@@ -122,7 +122,7 @@ const StepThree = ({
             onChange={handleInputChange}
             min="0"
             max="59"
-            className="border border-gray-300 p-2 rounded-md"
+            className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
           />
         </label>
         <label className="flex flex-col col-span-2">
@@ -131,7 +131,7 @@ const StepThree = ({
             name="timezone"
             // value={inputData.timezone}
             // onChange={handleInputChange}
-            className="border border-gray-300 p-2 rounded-md"
+            className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
           >
             {timezones.map((tz) => (
               <option key={tz} value={tz}>

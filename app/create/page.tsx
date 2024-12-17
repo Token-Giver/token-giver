@@ -9,13 +9,13 @@ import StepThree from "./components/StepThree";
 import Logo from "@/svgs/Logo";
 import { CallData } from "starknet";
 import {
-	BEARER_TOKEN,
-	IMPLEMENTATION_HASH,
-	REGISTRY_HASH,
-	TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
-	campaign_contract,
-	nft_contract,
-	provider,
+  BEARER_TOKEN,
+  IMPLEMENTATION_HASH,
+  REGISTRY_HASH,
+  TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
+  campaign_contract,
+  nft_contract,
+  provider,
 } from "../utils/data";
 import Container from "../components/util/Container";
 import CreateCampaignLoader from "../components/loading/CreateCampaignLoader";
@@ -24,26 +24,6 @@ import RightArrowIcon from "@/svgs/RightArrowIcon";
 import { useRouter } from "next/navigation";
 
 const Page = () => {
-	const router = useRouter();
-	const { address } = useAccount();
-	const account: any = useAccount();
-	const [campaignStep, setCampaignStep] = useState(0);
-	const [creatingCampaign, setCreatingCampaign] = useState(false);
-	const [loadingPercentage, setLoadingPercentage] = useState(0);
-	const [campaignUrl, setCampaignUrl] = useState("/");
-	const [step, setStep] = useState({
-		number: 1,
-		text: "First connect your wallet",
-	});
-	const [inputData, setInputData] = useState<InputDateType>({
-		name: "",
-		description: "",
-		image: null,
-		target: "",
-		organizer: "",
-		beneficiary: "",
-		location: "",
-	});
   const router = useRouter();
   const { address } = useAccount();
   const account: any = useAccount();
@@ -73,27 +53,6 @@ const Page = () => {
 
   const { tokenbound } = useTokenBoundSDK();
 
-	const handleInputChange = (
-		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
-	) => {
-		const { name, value } = e.target;
-		setInputData((prev) => {
-			if (
-				name === "image" &&
-				e.target instanceof HTMLInputElement &&
-				e.target.files
-			) {
-				return {
-					...prev,
-					image: e.target.files[0],
-				};
-			}
-			return {
-				...prev,
-				[name]: value,
-			};
-		});
-	};
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -126,38 +85,23 @@ const Page = () => {
     return Date.parse(date);
   };
 
-	async function createCampaign() {
-		const loadingPopover = document.querySelector(
-			"#creatingCampaign",
-		) as HTMLElement;
-		// @ts-ignore
-		loadingPopover.showPopover();
-		document.body.style.overflow = "hidden";
+  async function createCampaign() {
+    const loadingPopover = document.querySelector(
+      "#creatingCampaign"
+    ) as HTMLElement;
+    // @ts-ignore
+    loadingPopover.showPopover();
+    document.body.style.overflow = "hidden";
 
-		try {
-			setCreatingCampaign(true);
-			setLoadingPercentage(10);
-			campaign_contract.connect(account.account);
-			const last_minted_id = await nft_contract.get_last_minted_id();
-			const salt = Math.floor(Math.random() * 9999)
-				.toString()
-				.padStart(4, "0");
+    try {
+      setCreatingCampaign(true);
+      setLoadingPercentage(10);
+      campaign_contract.connect(account.account);
+      const last_minted_id = await nft_contract.get_last_minted_id();
+      const salt = Math.floor(Math.random() * 9999)
+        .toString()
+        .padStart(4, "0");
 
-			// CREATE CAMPAIGN -> campaign address (nft)
-			const create_campaign_res = await campaign_contract.create_campaign(
-				CallData.compile([
-					TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
-					REGISTRY_HASH,
-					IMPLEMENTATION_HASH,
-					salt,
-					account.address,
-				]),
-			);
-			const txnDet = await provider.waitForTransaction(
-				create_campaign_res.transaction_hash,
-			);
-			txnDet.isSuccess() && setCampaignStep(1);
-			setLoadingPercentage(40);
       // CREATE CAMPAIGN -> campaign address (nft)
       const create_campaign_res = await campaign_contract.create_campaign(
         CallData.compile([
@@ -176,47 +120,16 @@ const Page = () => {
       if(txnDet.isSuccess()) campaignAddress = txnDet.events.at(1)?.from_address
       setLoadingPercentage(40);
 
-			/////////////////////////////////////////
-			// UPLOAD CAMPAIGN NFT IMAGE TO PINATA
-			////////////////////////////////////////
-			if (!inputData.image) {
-				alert("No Image selected");
-				return;
-			}
-			const formData = new FormData();
-			formData.append("file", inputData.image);
+      /////////////////////////////////////////
+      // UPLOAD CAMPAIGN NFT IMAGE TO PINATA
+      ////////////////////////////////////////
+      if (!inputData.image) {
+        alert("No Image selected");
+        return;
+      }
+      const formData = new FormData();
+      formData.append("file", inputData.image);
 
-			const image_upload_res = await fetch(
-				"https://api.pinata.cloud/pinning/pinFileToIPFS",
-				{
-					method: "POST",
-					headers: {
-						Authorization: `Bearer ${BEARER_TOKEN}`,
-					},
-					body: formData,
-				},
-			);
-			const image_upload_resData = await image_upload_res.json();
-			setLoadingPercentage(60);
-
-			//////////////////////////////////
-			// CREATE NEW METADATA URI JSON
-			//////////////////////////////////
-			let tokenId = Number(last_minted_id) + 1;
-			let new_metadata = JSON.stringify({
-				id: tokenId,
-				image: `ipfs://${image_upload_resData.IpfsHash}/`,
-				name: inputData.name,
-				description: inputData.description,
-				target: inputData.target,
-				organizer: inputData.organizer,
-				beneficiary: inputData.beneficiary,
-				location: inputData.location,
-				campaign_address:
-					txnDet.isSuccess() && txnDet.events.at(1)?.from_address,
-				created_at: new Date(),
-			});
-			setCampaignUrl(`/campaign/${address}/${tokenId}`);
       const image_upload_res = await fetch(
         "https://api.pinata.cloud/pinning/pinFileToIPFS",
         {
@@ -253,37 +166,26 @@ const Page = () => {
       });
       setCampaignUrl(`/campaign/${address}/${tokenId}`);
 
-			////////////////////////////////////////////
-			// UPLOAD NEW METADATA_URI JSON TO PINATA
-			////////////////////////////////////////////
-			const metadata_upload_res = await fetch(
-				"https://api.pinata.cloud/pinning/pinJSONToIPFS",
-				{
-					method: "POST",
-					headers: {
-						"Content-Type": "application/json",
-						Authorization: `Bearer ${BEARER_TOKEN}`,
-					},
-					body: new_metadata,
-				},
-			);
+      ////////////////////////////////////////////
+      // UPLOAD NEW METADATA_URI JSON TO PINATA
+      ////////////////////////////////////////////
+      const metadata_upload_res = await fetch(
+        "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${BEARER_TOKEN}`,
+          },
+          body: new_metadata,
+        }
+      );
 
-			const metadata_upload_resData = await metadata_upload_res.json();
+      const metadata_upload_resData = await metadata_upload_res.json();
 
-			metadata_upload_resData.IpfsHash && setCampaignStep(2);
-			setLoadingPercentage(80);
+      metadata_upload_resData.IpfsHash && setCampaignStep(2);
+      setLoadingPercentage(80);
 
-			///////////////////////////////////////
-			// CALL SET_METADATA_URI FUNCTION
-			//////////////////////////////////////
-			campaign_contract.connect(account.account);
-			const set_campaign_metadata_res =
-				await campaign_contract.set_campaign_metadata_uri(
-					CallData.compile([
-						txnDet.isSuccess() && txnDet.events[1].from_address,
-						`ipfs://${metadata_upload_resData.IpfsHash}/`,
-					]),
-				);
       ///////////////////////////////////////
       // CALL SET_METADATA_URI FUNCTION
       //////////////////////////////////////
@@ -301,34 +203,6 @@ const Page = () => {
         lockUntill: dateTimeToUnixTimestamp
      });
 
-			setLoadingPercentage(100);
-			setCampaignStep(3);
-			setTimeout(() => {
-				// @ts-ignore
-				loadingPopover.hidePopover();
-				document.body.style.overflow = "auto";
-				setInputData({
-					name: "",
-					description: "",
-					image: null,
-					target: "",
-					organizer: "",
-					beneficiary: "",
-					location: "",
-				});
-				setStep({
-					number: 2,
-					text: "Tell us about your campaign",
-				});
-			}, 10000);
-		} catch (err) {
-			// @ts-ignore
-			loadingPopover.hidePopover();
-			document.body.style.overflow = "auto";
-		} finally {
-			setCreatingCampaign(false);
-		}
-	}
       setLoadingPercentage(100);
       setCampaignStep(3);
       setTimeout(() => {
