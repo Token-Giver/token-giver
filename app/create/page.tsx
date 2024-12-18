@@ -38,6 +38,7 @@ const Page = () => {
     name: "",
     description: "",
     image: null,
+    images: [],
     target: "",
     organizer: "",
     beneficiary: "",
@@ -57,6 +58,16 @@ const Page = () => {
         return {
           ...prev,
           image: e.target.files[0],
+        };
+      }
+      if (
+        name === "images" &&
+        e.target instanceof HTMLInputElement &&
+        e.target.files
+      ) {
+        return {
+          ...prev,
+          images: Array.from(e.target.files),
         };
       }
       return {
@@ -100,26 +111,52 @@ const Page = () => {
       setLoadingPercentage(40);
 
       /////////////////////////////////////////
-      // UPLOAD CAMPAIGN NFT IMAGE TO PINATA
+      // UPLOAD CAMPAIGN IMAGES TO PINATA
       ////////////////////////////////////////
+      const imageHashes = [];
+      
+      // Upload main image
       if (!inputData.image) {
-        alert("No Image selected");
+        alert("No image selected");
         return;
       }
-      const formData = new FormData();
-      formData.append("file", inputData.image);
+      const mainImageFormData = new FormData();
+      mainImageFormData.append("file", inputData.image);
 
-      const image_upload_res = await fetch(
+      const main_image_upload_res = await fetch(
         "https://api.pinata.cloud/pinning/pinFileToIPFS",
         {
           method: "POST",
           headers: {
             Authorization: `Bearer ${BEARER_TOKEN}`,
           },
-          body: formData,
+          body: mainImageFormData,
         }
       );
-      const image_upload_resData = await image_upload_res.json();
+      const main_image_upload_resData = await main_image_upload_res.json();
+      imageHashes.push(main_image_upload_resData.IpfsHash);
+
+      // Upload additional images
+      if (inputData.images.length > 0) {
+        for (const image of inputData.images) {
+          const formData = new FormData();
+          formData.append("file", image);
+
+          const image_upload_res = await fetch(
+            "https://api.pinata.cloud/pinning/pinFileToIPFS",
+            {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${BEARER_TOKEN}`,
+              },
+              body: formData,
+            }
+          );
+          const image_upload_resData = await image_upload_res.json();
+          imageHashes.push(image_upload_resData.IpfsHash);
+        }
+      }
+
       setLoadingPercentage(60);
 
       //////////////////////////////////
@@ -128,7 +165,8 @@ const Page = () => {
       let tokenId = Number(last_minted_id) + 1;
       let new_metadata = JSON.stringify({
         id: tokenId,
-        image: `ipfs://${image_upload_resData.IpfsHash}/`,
+        image: `ipfs://${imageHashes[0]}/`, // Main image
+        additionalImages: imageHashes.slice(1).map(hash => `ipfs://${hash}/`), // Additional images
         name: inputData.name,
         description: inputData.description,
         target: inputData.target,
@@ -183,6 +221,7 @@ const Page = () => {
           name: "",
           description: "",
           image: null,
+          images: [],
           target: "",
           organizer: "",
           beneficiary: "",
