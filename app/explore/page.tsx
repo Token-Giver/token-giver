@@ -5,8 +5,14 @@ import CardLoader from "../components/loading/CardLoader";
 import { campaign_contract } from "../utils/data";
 import { fetchCampaigns } from "../utils/helper";
 import Container from "../components/util/Container";
-import { H2 } from "../components/util/Headers";
+import { H1, H2, H3 } from "../components/util/Headers";
 import Image from "next/image";
+import CategoryCard from "../components/Explore/Card";
+import NextIcon from "@/svgs/NextIcon";
+import Link from "next/link";
+import { categoryList, statusList } from "../utils/explore-data";
+import Status from "../components/Explore/Status";
+import Project from "../components/Explore/Project";
 
 const page = () => {
   const [cursor, setCursor] = useState(null);
@@ -35,31 +41,72 @@ const page = () => {
   }, [collections]);
 
   return (
-    <section className="min-h-screen">
+    <section className="min-h-screen bg-white-smoke">
       <Container className="mt-[5rem] py-10 px-4 md:px-10 lg:px-16">
-        <main>
-          <section>
-            <H2>
+        <div className="my-12">
+          <div className="px-4 flex flex-col justify-center items-center gap-4">
+            <H1 style="text-center !text-[2rem] font-semibold">
               Browse Through different categories, to give a Helping hand.
-            </H2>
+            </H1>
             {/* style="my-[5rem]" */}
-            <p>
+            <p className="text-center font-normal text-[1.125rem] leading-6">
               Merging Heart with Technology: Secure, Transparent Giving for
               Maximum Impact
             </p>
-            <button className="bg-[#127C56] text-white px-6 py-2 rounded-[25px]">
+            <button className="bg-pantone-green text-white px-6 py-3 rounded-[48px]">
               Start a Campaign
             </button>
+          </div>
 
-            <Image
-              src="/heart-pic.png"
-              alt="helping hand picture"
-              width={358}
-              height={270}
-              className="rounded-[2.5rem]"
-            />
-          </section>
-          {/* <section
+          <Image
+            src="/heart-pic.png"
+            alt="helping hand picture"
+            width={358}
+            height={270}
+            className="rounded-[2.5rem] mt-6"
+          />
+        </div>
+
+        <div>
+          <p className="text-[0.875rem] font-normal leading-4">
+            Please select any category of your choice
+          </p>
+          <div className="grid grid-cols-2 gap-x-2.5 gap-y-4 mt-3">
+            {categoryList.map(({ icon, title }) => (
+              <CategoryCard Icon={icon} categoryName={title} />
+            ))}
+          </div>
+          <div className="flex justify-end">
+            <Link href="#" className="mt-3 flex gap-2 items-center">
+              See more <NextIcon />
+            </Link>
+          </div>
+        </div>
+        <div>
+          <div className="flex items-center gap-1 overflow-x-scroll mt-8 border-b border-dark-gray pb-3">
+            {statusList.map((data) => (
+              <Status status={data} />
+            ))}
+          </div>
+          <div className="my-2 ">
+            <H2 style="font-semibold !text-[1.125rem] mb-2">Medical</H2>
+            <Project />
+          </div>
+          <div className="my-2 ">
+            <H2 style="font-semibold !text-[1.125rem] mb-2">Emergency</H2>
+            <Project />
+          </div>
+          <div className="my-2 ">
+            <H2 style="font-semibold !text-[1.125rem] mb-2">Family</H2>
+            <Project />
+          </div>
+          <div className="my-2 ">
+            <H2 style="font-semibold !text-[1.125rem] mb-2">Events</H2>
+            <Project />
+          </div>
+        </div>
+
+        {/* <section
             id="fundraisers"
             className="grid gap-4  md:gap-8 lg:grid-cols-3 md:max-w-[800px] lg:max-w-none md:mx-auto  md:justify-center "
           >
@@ -106,7 +153,6 @@ const page = () => {
                   );
                 })}
           </section> */}
-        </main>
       </Container>
     </section>
   );

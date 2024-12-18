@@ -1,4 +1,6 @@
-const MedicalIcon = () => {
+import { FC, SVGProps } from "react";
+
+const MedicalIcon: FC<SVGProps<SVGSVGElement>> = () => {
   return (
     <svg
       width="20"
