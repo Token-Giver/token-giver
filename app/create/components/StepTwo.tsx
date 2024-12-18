@@ -64,6 +64,31 @@ const StepTwo = ({
 
       <label htmlFor="image">Upload campaign image:</label>
       <Dropzone address={address} setInputData={setInputData} />
+
+      <div className="flex flex-col gap-4">
+        <div className="form-group">
+          <label htmlFor="image">Main Campaign Image</label>
+          <input
+            type="file"
+            name="image"
+            accept="image/*"
+            onChange={handleInputChange}
+            required
+          />
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="images">Additional Campaign Images</label>
+          <input
+            type="file"
+            name="images"
+            accept="image/*"
+            multiple
+            onChange={handleInputChange}
+          />
+          <small className="text-gray-500">You can select multiple images</small>
+        </div>
+      </div>
     </fieldset>
   );
 };
