@@ -2,6 +2,7 @@ export type InputDateType = {
   name: string;
   description: string;
   image: null | File;
+  additionalImages: File[];
   target: string;
   organizer: string;
   beneficiary: string;
