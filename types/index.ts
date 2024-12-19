@@ -1,11 +1,13 @@
-export type InputDateType = {
+export interface InputDateType {
   name: string;
   description: string;
-  image: null | File;
+  image: File | null;
+  images: File[];
   target: string;
   organizer: string;
   beneficiary: string;
   location: string;
+}
   day: string,
   hour: string,
   minute: string,
