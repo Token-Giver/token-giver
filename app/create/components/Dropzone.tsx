@@ -18,7 +18,7 @@ const Dropzone = ({
   setInputData: Dispatch<SetStateAction<InputDateType>>;
 }) => {
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [file, setFile] = useState<File | null>(null);
+  const [files, setFiles] = useState<File[]>([]);
   const maxSize = 50 * 1024 * 1024; // 50 MB
 
   const isImageFile = (file: File) => file.type.startsWith("image/");
@@ -26,10 +26,10 @@ const Dropzone = ({
 
   const handleDrop = useCallback((event: DragEvent<HTMLDivElement>) => {
     event.preventDefault();
-    const validFile = isImageFile(event.dataTransfer.files[0]);
-    const validSize = isValidSize(event.dataTransfer.files[0]);
-    if (validFile && validSize) {
-      setFile(event.dataTransfer.files[0]);
+    const droppedFiles = Array.from(event.dataTransfer.files);
+    const validFiles = droppedFiles.filter(file => isImageFile(file) && isValidSize(file));
+    if (validFiles.length > 0) {
+      setFiles(prev => [...prev, ...validFiles]);
     }
   }, []);
 
@@ -45,10 +45,19 @@ const Dropzone = ({
     setInputData((prev) => {
       return {
         ...prev,
-        image: file,
+        image: files[0] || null,
+        images: files.slice(1),
       };
     });
-  }, [file]);
+  }, [files, setInputData]);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files) {
+      const selectedFiles = Array.from(event.target.files);
+      const validFiles = selectedFiles.filter(file => isImageFile(file) && isValidSize(file));
+      setFiles(validFiles);
+    }
+  };
 
   return (
     <div className="relative">
@@ -72,18 +81,18 @@ const Dropzone = ({
           accept="image/*"
           disabled={!address}
           required
+          multiple
           ref={fileInputRef}
-          onChange={(event) => {
-            if (event.target.files) {
-              setFile(event.target.files[0]);
-            }
-          }}
-          className="absolute top-0 left-0 w-full h-full cursor-pointer"
-          style={{
-            opacity: "0",
-          }}
+          onChange={handleFileChange}
+          className="absolute top-0 left-0 w-full h-full cursor-pointer opacity-0"
         />
-        <ul>{file && <li className="text-[0.875em]">{file.name}</li>}</ul>
+        <ul className="mt-2">
+          {files.map((file, index) => (
+            <li key={index} className="text-[0.875em]">
+              {index === 0 ? '(Main) ' : ''}{file.name}
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );

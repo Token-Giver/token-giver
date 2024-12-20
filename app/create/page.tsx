@@ -44,12 +44,17 @@ const Page = () => {
     organizer: "",
     beneficiary: "",
     location: "",
-      day: "",
-      hour: "0",
-      minute: "0",
-      second: "0",
-      timezone: "GMT"
-    
+    day: "",
+    hour: "0",
+    minute: "0",
+    second: "0",
+    timezone: "GMT",
+    instagram: "",
+    linkedin: "",
+    x: "",
+    youtube: "",
+    website: "",
+    github: ""
   });
 
   const { tokenbound } = useTokenBoundSDK();
@@ -263,7 +268,13 @@ const Page = () => {
             hour: "0",
             minute: "0",
             second: "0",
-            timezone: "GMT"
+            timezone: "GMT",
+            instagram: "",
+            linkedin: "",
+            x: "",
+            youtube: "",
+            website: "",
+            github: ""
         });
         setStep({
           number: 2,

@@ -87,6 +87,8 @@ const StepTwo = ({
             onChange={handleInputChange}
           />
           <small className="text-gray-500">You can select multiple images</small>
+        </div>
+      </div>
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label htmlFor="name">Instagram:</label>
