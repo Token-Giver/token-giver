@@ -7,11 +7,9 @@ type CardType = {
 
 const CategoryCard = ({ Icon, categoryName }: CardType) => {
   return (
-    <div>
-      <div className="bg-frosting-cream w-44 h-[10rem] rounded-xl flex flex-col gap-3 items-center justify-center">
-        <Icon />
-        <p className="text-pantone-green text-md">{categoryName}</p>
-      </div>
+    <div className="bg-frosting-cream rounded-xl px-12 py-16 lg:py-6 lg:px-5 flex flex-col gap-3 items-center justify-center">
+      <Icon />
+      <p className="text-pantone-green text-md">{categoryName}</p>
     </div>
   );
 };
