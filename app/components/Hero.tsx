@@ -11,13 +11,15 @@ const Hero = () => {
   return (
     <section
       id="hero"
-      className="container mx-auto flex flex-col justify-between  items-center"
+      className="container mx-auto flex flex-col justify-between lg:py-[100px] items-center"
     >
       <div>
-        <H1 style=" mb-4 text-center">Transform Charity with Blockchain.</H1>
-        <p className="text-center">
-          Fussing compassion with innovation. Maximizing your contributions'
-          impact with security and transparency.
+        <h1 className="text-theme-green font-semibold text-[2.7rem]">
+          Secure and Transparent Giving with Blockchain
+        </h1>
+        <p className="text-center text-base font-medium">
+          Merging Heart with Technology: Secure, Transparent Giving for Maximum
+          Impact
         </p>
       </div>
       <div>
@@ -28,85 +30,40 @@ const Hero = () => {
           Start a Campaign
         </button>
       </div>
-      <div className="w-screen lg:min-w-[1024px] lg:w-[80%] h-[65%]">
-        <div className=" w-full h-full grid grid-cols-3 gap-1 px-4 mt-8  md:hidden">
-          <div className="h-full rounded-tl-[150px]">
+
+      <div className="w-full h-full justify-between mt-8 px-4  py-[78px] gap-4 ">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 flex-1">
+          <div className=" w-full h-[399px] md:w-[316px]">
             <img
-              className=" rounded-tl-[150px] object-cover w-full h-full group-hover:scale-105 transition-all"
+              className=" object-cover w-full h-full group-hover:scale-105 transition-all"
               src={"/4.webp"}
               alt=""
-              width={400}
-              height={400}
             />
           </div>
-
-          <div className=" w-full h-full  flex items-center  justify-center ">
-            <HeartIcon />
-          </div>
-
-          <div className=" w-full h-full rounded-r-full">
+          <div className="h-[399px] w-[316px]">
             <img
-              className="rounded-r-full object-cover w-full h-full group-hover:scale-105 transition-all"
+              className=" object-cover w-full h-full group-hover:scale-105 transition-all"
+              src={"/2.webp"}
+              alt=""
+            />
+          </div>
+          <div className="h-[399px] w-[316px]">
+            <img
+              className=" object-cover w-full h-full group-hover:scale-105 transition-all"
               src={"/3.webp"}
               alt=""
-              width={400}
-              height={400}
             />
           </div>
-        </div>
-        <div className=" w-full h-full justify-between mt-8 px-4 md:p-8 gap-4 hidden md:flex">
-          <div className="h-full w-[20%] rounded-tl-[150px] hidden md:block">
+          <div className="h-[399px] w-[316px]">
             <img
-              className=" rounded-tl-[150px] object-cover w-full h-full group-hover:scale-105 transition-all"
-              src={"/4.webp"}
-              alt=""
-              width={400}
-              height={400}
-            />
-          </div>
-          <div className="grid grid-rows-2  grid-cols-5 gap-4 flex-1">
-            <div className=" w-full h-full col-span-2 rounded-r-full">
-              <img
-                className="rounded-r-full object-cover w-full h-full group-hover:scale-105 transition-all"
-                src={"/1.webp"}
-                alt=""
-                width={400}
-                height={400}
-              />
-            </div>
-            <div className=" w-full h-full col-span-3 rounded-l-full rounded-tr-full">
-              <img
-                className="rounded-l-full rounded-tr-full object-cover w-full h-full group-hover:scale-105 transition-all"
-                src={"/2.webp"}
-                alt=""
-                width={400}
-                height={400}
-              />
-            </div>
-            <div className=" w-full h-full col-span-3 rounded-bl-[120px] rounded-tr-[120px]">
-              <img
-                className="rounded-bl-[120px] rounded-tr-[120px] object-cover w-full h-full group-hover:scale-105 transition-all"
-                src={"/3.webp"}
-                alt=""
-                width={400}
-                height={400}
-              />
-            </div>
-            <div className=" w-full h-full  flex items-center  justify-center col-span-2">
-              <HeartIcon />
-            </div>
-          </div>
-          <div className=" h-full w-[20%] rounded-full">
-            <img
-              className=" rounded-full object-cover w-full h-full group-hover:scale-105 transition-all"
+              className=" object-cover w-full h-full group-hover:scale-105 transition-all"
               src={"/0.webp"}
               alt=""
-              width={400}
-              height={400}
             />
           </div>
         </div>
       </div>
+     
     </section>
   );
 };

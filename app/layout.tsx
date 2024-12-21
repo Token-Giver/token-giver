@@ -22,7 +22,7 @@ export default function RootLayout({
         <StarknetProvider>
           <Header />
           {children}
-          <Features />
+         
           <Footer />
         </StarknetProvider>
       </body>
