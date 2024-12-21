@@ -1,8 +1,16 @@
 import type { Metadata } from "next";
 import "./globals.css";
+// import Footer from "./components/Footer2";
+import Features from "./components/Features";
 import Footer from "./components/Footer";
 import StarknetProvider from "./components/StarknetProvider";
-import Header from "./components/Header";
+import Header from "./components/Header2";
+import { Rethink_Sans } from "next/font/google";
+const rethink_sans = Rethink_Sans({
+  display: "swap",
+  subsets: ["latin"],
+  variable: "--rethink-font",
+});
 
 export const metadata: Metadata = {
 	title: "Token Giver",
@@ -20,7 +28,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="text-sm lg:text-md">
+      <body className={`${rethink_sans.variable} font-rethink-sans bg-tkg-gray-400`}>
         <StarknetProvider>
           <Header />
           {children}
