@@ -17,7 +17,9 @@ export interface Campaign {
   id: string;
   image: string;
   location: string;
+  category: string;
+  amountRaised: number;
   name: string;
   organizer: string;
-  target: string;
+  target: number;
 }

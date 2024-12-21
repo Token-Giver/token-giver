@@ -19,7 +19,7 @@ const config: Config = {
       "Holly-Bale": ["Belanosima", "sans-serif"],
     },
     colors: {
-      "theme-green": "#127C56",
+      "theme-green": "#00594C",
       white: "#ffffff",
       black: "#000000",
       background: "#fffcf5",

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Footer from "./components/Footer";
-import Features from "./components/Features";
+import Features from "./components/Why";
 import StarknetProvider from "./components/StarknetProvider";
 import Header from "./components/Header";
 

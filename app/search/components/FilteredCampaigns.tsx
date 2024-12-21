@@ -31,7 +31,7 @@ const FilteredCampaigns = ({ campaigns }: { campaigns: Campaign[] }) => {
               progress={0}
               token_id={campaign.id}
               campaign_address={campaign.campaign_address || "0x0"}
-              target={campaign.target}
+              target={campaign.target.toString()}
               url={url}
             />
           );

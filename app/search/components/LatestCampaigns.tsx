@@ -113,7 +113,7 @@ const LatestCampaigns = ({
               cid={campaigns[0].cid}
               src={campaigns[0].image}
               campaignAddress={campaigns[0].campaign_address || ""}
-              target={campaigns[0].target}
+              target={campaigns[0].target.toString()}
               maxHeight="max-h-[520px]"
             />
             {campaigns.length >= 5 ? (
@@ -124,7 +124,7 @@ const LatestCampaigns = ({
                   cid={campaigns[1].cid}
                   src={campaigns[1].image}
                   campaignAddress={campaigns[1].campaign_address || ""}
-                  target={campaigns[1].target}
+                  target={campaigns[1].target.toString()}
                 />
 
                 <CampaignCard
@@ -133,7 +133,7 @@ const LatestCampaigns = ({
                   cid={campaigns[2].cid}
                   src={campaigns[2].image}
                   campaignAddress={campaigns[2].campaign_address || ""}
-                  target={campaigns[2].target}
+                  target={campaigns[2].target.toString()}
                 />
                 <CampaignCard
                   alt=""
@@ -141,7 +141,7 @@ const LatestCampaigns = ({
                   cid={campaigns[3].cid}
                   src={campaigns[3].image}
                   campaignAddress={campaigns[3].campaign_address || ""}
-                  target={campaigns[3].target}
+                  target={campaigns[3].target.toString()}
                 />
                 <CampaignCard
                   alt=""
@@ -149,7 +149,7 @@ const LatestCampaigns = ({
                   cid={campaigns[4].cid}
                   src={campaigns[4].image}
                   campaignAddress={campaigns[4].campaign_address || ""}
-                  target={campaigns[4].target}
+                  target={campaigns[4].target.toString()}
                 />
               </div>
             ) : (

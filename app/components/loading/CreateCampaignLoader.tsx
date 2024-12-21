@@ -21,7 +21,6 @@ const CreateCampaignLoader = ({ campaignStep, percentage, url }: Props) => {
   const router = useRouter();
   return (
     <div
-      id="creatingCampaign"
       popover="manual"
       className="bg-transparent mx-auto my-auto"
     >
