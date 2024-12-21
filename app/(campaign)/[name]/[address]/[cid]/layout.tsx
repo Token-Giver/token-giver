@@ -18,5 +18,5 @@ export default function CampaignLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <main>{children}</main>;
+  return <main className="bg-tkg-gray-400">{children}</main>;
 }

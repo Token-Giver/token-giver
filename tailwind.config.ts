@@ -7,18 +7,29 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    fontSize: {
-      "2xl": ["clamp(0.75em, 6vw, 3.2em)", "1.5"],
-      xl: ["clamp(0.75em, 3.5vw, 2em)", "1.5"],
-      l: ["clamp(0.75em, 2.7vw, 1.5em)", "1.5"],
-      md: ["1em", "1.5"],
-      sm: ["0.875em", "1.5"],
-    },
+    // fontSize: {
+    //
+    // },
 
     fontFamily: {
       "Holly-Bale": ["Belanosima", "sans-serif"],
+      "rethink-sans": "var(--rethink-font)",
     },
     colors: {
+      tkg: {
+        primary: {
+          DEFAULT: "#00594C",
+        },
+        gray: {
+          100: "#F1F1F1",
+          200: "#D9D9D9",
+          300: "#C8C8C8",
+          400: "#F8F8F8",
+        },
+        tint: {
+          100: "#FFFBEE",
+        },
+      },
       "theme-green": "#127C56",
       white: "#ffffff",
       black: "#000000",
@@ -28,6 +39,7 @@ const config: Config = {
       "gray-100": "#f3f4f6",
       "gray-200": "#e5e7eb",
       "gray-300": "#9ca3af",
+      "gray-400": "#ABABAB",
       red: "#dc2626",
       transparent: "transparent",
       blue: "#1d4ed8",
@@ -35,6 +47,11 @@ const config: Config = {
     extend: {
       fontSize: {
         clamp: "clamp(0.5rem, 5vw, 1rem)",
+        "2xl": ["clamp(0.75em, 6vw, 3.2em)", "1.5"],
+        //   xl: ["clamp(0.75em, 3.5vw, 2em)", "1.5"],
+        //   l: ["clamp(0.75em, 2.7vw, 1.5em)", "1.5"],
+        //   md: ["1em", "1.5"],
+        sm: ["0.875em", "1.5"],
       },
       boxShadow: {
         small: "rgba(0, 0, 0, 0.2) 0px -1px 0.7rem",
