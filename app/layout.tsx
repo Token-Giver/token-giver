@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Footer from "./components/Footer";
-import Features from "./components/Features";
 import StarknetProvider from "./components/StarknetProvider";
 import Header from "./components/Header";
 
@@ -22,7 +21,6 @@ export default function RootLayout({
         <StarknetProvider>
           <Header />
           {children}
-          <Features />
           <Footer />
         </StarknetProvider>
       </body>

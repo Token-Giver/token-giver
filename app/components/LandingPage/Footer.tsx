@@ -4,10 +4,10 @@ import Logo from "@/svgs/Logo";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React from "react";
-import Container from "./util/Container";
 import GitHubIcon from "@/svgs/GitHubIcon";
 import TwitterIcon from "@/svgs/TwitterIcon";
 import TelegramIcon from "@/svgs/telegramIcon";
+import Container from "../util/Container";
 const Footer = () => {
   const pathname = usePathname();
   const isDonationPage = pathname?.endsWith("/donate");
