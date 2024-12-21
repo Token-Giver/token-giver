@@ -29,6 +29,8 @@ export interface Campaign {
   image: string;
   location: string;
   name: string;
+  category?: string
+  amountRaised: string;
   organizer: string;
   target: string;
 }
