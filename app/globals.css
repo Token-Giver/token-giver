@@ -28,7 +28,7 @@ body {
   font-family: "Poppins", sans-serif;
 }
 main {
-  /* background-color: #fffcf5; */
+  background-color: #F5F7F8;
 }
 #hero {
   height: calc(100vh - 10rem);
@@ -110,9 +110,25 @@ select {
   backdrop-filter: blur(3px);
 }
 
+
+.swiper-pagination-bullet {
+  background-color: white !important;
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+/* Highlight the active bullet */
+.swiper-pagination-bullet-active {
+  opacity: 1;
+  background-color: white !important;
+}
+
+
 @starting-style {
   [popover]:popover-open {
     transform: scale(0.7);
     opacity: 0;
   }
 }
+
+

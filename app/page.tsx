@@ -1,11 +1,16 @@
-import Fundraisers from "./components/Fundraiser/Fundraisers";
-import Hero from "./components/Hero";
+import Campaigns from "./components/LandingPage/Campaigns";
+import Donate from "./components/LandingPage/Donate";
+import Hero from "./components/LandingPage/Hero";
+import WhyTokenGiver from "./components/LandingPage/Why";
+
 
 export default function Home() {
   return (
-    <main className="flex flex-col gap-10 rounded-t-[50px] mt-[5rem] py-10 px-4 md:px-10 lg:px-16">
+    <main className="flex flex-col  mt-[5rem] py-10 ">
       <Hero />
-      <Fundraisers />
+      <Campaigns />
+      <WhyTokenGiver />
+      <Donate />
     </main>
   );
 }

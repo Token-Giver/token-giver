@@ -9,6 +9,7 @@ import { useAccount } from "@starknet-react/core";
 import ConnectButton from "./ConnectButton";
 import WalletIcon from "@/svgs/WalletIcon";
 import UserModal from "./UserModal";
+import SearchIcon from "@/svgs/SaercgIcon";
 
 const Header = () => {
   const { address } = useAccount();
@@ -57,8 +58,13 @@ const Header = () => {
   return (
     <>
       <ConnectButton showButton={false} />
+<<<<<<< HEAD
       {/* <div className="fixed top-0 left-0  w-screen h-[50vh] -z-50 bg-header-gradient"></div> */}
       <header id="header-container" className="flex">
+=======
+      <div className="fixed top-0 left-0  w-screen h-[50vh] -z-50 "></div>
+      <header className={`absolute top-0 left-0  w-full`}>
+>>>>>>> 97cfc5989616b5451e4bba5cdffe2d9a68d6ba4c
         <div
           className={`container mx-auto w-full  items-center justify-between h-[3.5rem] z-50 py-8 px-8 ${
             isDonationPage || isCreatePage ? "hidden" : "flex"
@@ -68,21 +74,26 @@ const Header = () => {
             <Logo />
           </Link>
           <nav className="hidden lg:block">
-            <ul className="flex gap-8">
-              <li>
+            <div className="flex items-center gap-8">
+              <div className="bg-[#F1F1F1] flex items-center gap-x-2 rounded-full w-[200px] px-4 cursor-pointer py-2">
+                <SearchIcon />
                 <Link href={"/search"}>Search</Link>
-              </li>
-              <li>
-                <Link href={"/explore"}>Campaigns</Link>
-              </li>
+              </div>
+              <div>
+                <Link href={"/explore"}>Campaign</Link>
+              </div>
 
-              <li>
-                <Link href={"/learn"}>Learn more</Link>
-              </li>
-            </ul>
+              <div>
+                <Link href={"/learn"}>About</Link>
+              </div>
+
+              <div>
+                <Link href={"/learn"}>Donate</Link>
+              </div>
+            </div>
           </nav>
           <div className="hidden lg:flex gap-4">
-            <div className="relative">
+            {/* <div className="relative">
               <button
                 onClick={connectWallet}
                 className="flex items-center border-solid border-[1px] border-theme-green rounded-[25px] h-full"
@@ -104,10 +115,15 @@ const Header = () => {
                 address={address}
                 isUserMenuOpen={isUserMenuOpen}
               />
-            </div>
+            </div> */}
+            <button
+              className="bg-transparent text-black px-6 py-2 rounded-[25px]"
+            >
+             Join Us
+            </button>
             <button
               onClick={createCampaign}
-              className="bg-[#127C56] text-white px-6 py-2 rounded-[25px]"
+              className="bg-transparent border border-[#127C56] text-theme-green px-6 py-2 rounded-[25px]"
             >
               Start a Campaign
             </button>

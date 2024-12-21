@@ -19,6 +19,7 @@
     "starknet": "^6.11.0",
     "starknet-tokenbound-sdk": "^0.3.6",
     "starknetkit": "^2.6.1",
+    "swiper": "^11.1.15",
     "tokenbound-connectkit": "^1.0.7"
   },
   "devDependencies": {

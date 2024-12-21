@@ -1,4 +1,5 @@
 "use client";
+import { useTokenBoundSDK } from "@/app/hooks";
 import { ChangeEvent, useEffect, useState } from "react";
 import ConnectButton from "../components/ConnectButton";
 import { useAccount } from "@starknet-react/core";
@@ -42,7 +43,15 @@ const Page = () => {
     organizer: "",
     beneficiary: "",
     location: "",
+      day: "",
+      hour: "0",
+      minute: "0",
+      second: "0",
+      timezone: "GMT"
+    
   });
+
+  const { tokenbound } = useTokenBoundSDK();
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -64,6 +73,16 @@ const Page = () => {
         [name]: value,
       };
     });
+  };
+
+  const convertToUnixTimestamp = () => {
+    // console.log("datetime is ---", dateTime)
+    const date = (
+      `${inputData.day} ${inputData.hour.padStart(2, "0")}:${inputData.minute.padStart(2, "0")}:${inputData.second.padStart(2, "0")} ${inputData.timezone}`
+    );
+    // console.log("date is ---", date)
+    // console.log("date parsed is ---", Date.parse(date))
+    return Date.parse(date);
   };
 
   async function createCampaign() {
@@ -97,6 +116,8 @@ const Page = () => {
         create_campaign_res.transaction_hash
       );
       txnDet.isSuccess() && setCampaignStep(1);
+      let campaignAddress : string | undefined;
+      if(txnDet.isSuccess()) campaignAddress = txnDet.events.at(1)?.from_address
       setLoadingPercentage(40);
 
       /////////////////////////////////////////
@@ -122,6 +143,9 @@ const Page = () => {
       const image_upload_resData = await image_upload_res.json();
       setLoadingPercentage(60);
 
+// GET CONVERTED DATETIME TO UNIXTIMESTAMP
+      const dateTimeToUnixTimestamp = convertToUnixTimestamp()
+      
       //////////////////////////////////
       // CREATE NEW METADATA URI JSON
       //////////////////////////////////
@@ -138,6 +162,7 @@ const Page = () => {
         campaign_address:
           txnDet.isSuccess() && txnDet.events.at(1)?.from_address,
         created_at: new Date(),
+        dateTime: dateTimeToUnixTimestamp
       });
       setCampaignUrl(`/campaign/${address}/${tokenId}`);
 
@@ -172,6 +197,14 @@ const Page = () => {
             `ipfs://${metadata_upload_resData.IpfsHash}/`,
           ])
         );
+        // also call the set LOCKTIME FUNCTION HERE if the date is set
+
+      if(dateTimeToUnixTimestamp > Date.now()){
+        await tokenbound.lock({
+          tbaAddress: campaignAddress,
+          lockUntill: dateTimeToUnixTimestamp
+       });
+      } 
 
       setLoadingPercentage(100);
       setCampaignStep(3);
@@ -187,6 +220,11 @@ const Page = () => {
           organizer: "",
           beneficiary: "",
           location: "",
+            day: "01 Jan 1970",
+            hour: "0",
+            minute: "0",
+            second: "0",
+            timezone: "GMT"
         });
         setStep({
           number: 2,
@@ -202,146 +240,146 @@ const Page = () => {
     }
   }
 
-  useEffect(() => {
-    if (account.address) {
-      setStep(() => {
-        return {
-          text: "Tell us about your campaign",
-          number: 2,
-        };
-      });
-    } else {
-      setStep(() => {
-        return {
-          text: "First connect your wallet",
-          number: 1,
-        };
-      });
-    }
-  }, [account.address]);
+	useEffect(() => {
+		if (account.address) {
+			setStep(() => {
+				return {
+					text: "Tell us about your campaign",
+					number: 2,
+				};
+			});
+		} else {
+			setStep(() => {
+				return {
+					text: "First connect your wallet",
+					number: 1,
+				};
+			});
+		}
+	}, [account.address]);
 
-  return (
-    <main className="min-h-screen  flex justify-between bg-theme-green md:mb-10 relative">
-      <Container className="p-4 w-[40%] hidden md:flex md:flex-col ">
-        <button
-          onClick={() => router.push("/")}
-          className="w-fit text-[1.2em] self-start justify-self-start text-white flex items-center"
-        >
-          <span className="text-white inline-block transform rotate-180">
-            <RightArrowIcon />
-          </span>
-          <span>back</span>
-        </button>
+	return (
+		<main className="min-h-screen  flex justify-between bg-theme-green md:mb-10 relative">
+			<Container className="p-4 w-[40%] hidden md:flex md:flex-col ">
+				<button
+					onClick={() => router.push("/")}
+					className="w-fit text-[1.2em] self-start justify-self-start text-white flex items-center"
+				>
+					<span className="text-white inline-block transform rotate-180">
+						<RightArrowIcon />
+					</span>
+					<span>back</span>
+				</button>
 
-        <div className="my-auto">
-          <div className="flex flex-col gap-8 p-4">
-            <p className="font-bold text-white text-[1.5em]">
-              <Logo />
-            </p>
-            <H2 style="text-theme-yellow">Start your fundraising journey!</H2>
+				<div className="my-auto">
+					<div className="flex flex-col gap-8 p-4">
+						<p className="font-bold text-white text-[1.5em]">
+							<Logo logoVariant="white" />
+						</p>
+						<H2 style="text-theme-yellow">Start your fundraising journey!</H2>
 
-            <div className="flex gap-2 items-center text-white">
-              <span className="">
-                <span className="text-[1.8em] mr-2">{step.number}</span>/ 3
-              </span>
-              <p className=" mt-3 ">{step.text}</p>
-            </div>
-          </div>
-        </div>
-      </Container>
+						<div className="flex gap-2 items-center text-white">
+							<span className="">
+								<span className="text-[1.8em] mr-2">{step.number}</span>/ 3
+							</span>
+							<p className=" mt-3 ">{step.text}</p>
+						</div>
+					</div>
+				</div>
+			</Container>
 
-      <div className=" w-full bg-background md:rounded-tl-[50px] md:shadow-hero-shadow py-10 px-4 lg:py-10 lg:px-20 md:w-[60%] flex items-center ">
-        <Container className=" flex flex-col justify-between">
-          <ConnectButton />
-          <form className="flex flex-col gap-4  md:p-4" action="">
-            <h2>Create your campaign</h2>
-            <StepTwo
-              inputData={inputData}
-              handleInputChange={handleInputChange}
-              address={account.address}
-              step={step}
-              setInputData={setInputData}
-            />
-            <StepThree
-              inputData={inputData}
-              handleInputChange={handleInputChange}
-              address={account.address}
-              step={step}
-            />
-          </form>
-          <div
-            className={`flex mt-4  md:p-4  ${
-              step.number === 2 || step.number === 1
-                ? "justify-end"
-                : "justify-between"
-            }`}
-          >
-            <button
-              disabled={!account.address}
-              onClick={() =>
-                setStep(() => {
-                  return {
-                    text: "Tell us about your campaign",
-                    number: 2,
-                  };
-                })
-              }
-              className={`text-theme-green text-[2em] ${
-                step.number === 2 || step.number === 1 ? "hidden" : "block"
-              } `}
-            >
-              <span>&lt;</span>
-            </button>
-            <div className="flex">
-              <button
-                disabled={
-                  !inputData.name || !inputData.description || !inputData.image
-                }
-                onClick={() =>
-                  setStep(() => {
-                    return {
-                      text: "Tell us about you and your goals",
-                      number: 3,
-                    };
-                  })
-                }
-                className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
-                  step.number === 3 ? "hidden" : "block"
-                } `}
-              >
-                Continue
-              </button>
-              <button
-                popoverTarget="creatingCampaign"
-                onClick={() => {
-                  createCampaign();
-                }}
-                disabled={
-                  !inputData.target ||
-                  !inputData.location ||
-                  !inputData.organizer ||
-                  creatingCampaign
-                }
-                className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
-                  step.number === 3 ? "block" : "hidden"
-                } `}
-              >
-                {creatingCampaign ? "Creating Campaign..." : "Mint Campaign"}
-              </button>
-            </div>
-          </div>
-        </Container>
-      </div>
+			<div className=" w-full bg-background md:rounded-tl-[50px] md:shadow-hero-shadow py-10 px-4 lg:py-10 lg:px-20 md:w-[60%] flex items-center ">
+				<Container className=" flex flex-col justify-between">
+					<ConnectButton />
+					<form className="flex flex-col gap-4  md:p-4" action="">
+						<h2>Create your campaign</h2>
+						<StepTwo
+							inputData={inputData}
+							handleInputChange={handleInputChange}
+							address={account.address}
+							step={step}
+							setInputData={setInputData}
+						/>
+						<StepThree
+							inputData={inputData}
+							handleInputChange={handleInputChange}
+							address={account.address}
+							step={step}
+						/>
+					</form>
+					<div
+						className={`flex mt-4  md:p-4  ${
+							step.number === 2 || step.number === 1
+								? "justify-end"
+								: "justify-between"
+						}`}
+					>
+						<button
+							disabled={!account.address}
+							onClick={() =>
+								setStep(() => {
+									return {
+										text: "Tell us about your campaign",
+										number: 2,
+									};
+								})
+							}
+							className={`text-theme-green text-[2em] ${
+								step.number === 2 || step.number === 1 ? "hidden" : "block"
+							} `}
+						>
+							<span>&lt;</span>
+						</button>
+						<div className="flex">
+							<button
+								disabled={
+									!inputData.name || !inputData.description || !inputData.image
+								}
+								onClick={() =>
+									setStep(() => {
+										return {
+											text: "Tell us about you and your goals",
+											number: 3,
+										};
+									})
+								}
+								className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
+									step.number === 3 ? "hidden" : "block"
+								} `}
+							>
+								Continue
+							</button>
+							<button
+								popoverTarget="creatingCampaign"
+								onClick={() => {
+									createCampaign();
+								}}
+								disabled={
+									!inputData.target ||
+									!inputData.location ||
+									!inputData.organizer ||
+									creatingCampaign
+								}
+								className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
+									step.number === 3 ? "block" : "hidden"
+								} `}
+							>
+								{creatingCampaign ? "Creating Campaign..." : "Mint Campaign"}
+							</button>
+						</div>
+					</div>
+				</Container>
+			</div>
 
-      <CreateCampaignLoader
-        campaignStep={campaignStep}
-        percentage={loadingPercentage}
-        url={campaignUrl}
-      />
+			<CreateCampaignLoader
+				campaignStep={campaignStep}
+				percentage={loadingPercentage}
+				url={campaignUrl}
+			/>
 
-      <div className="bg-background h-[50px] p-8 w-full absolute bottom-[-64px] left-0 hidden md:block"></div>
-    </main>
-  );
+			<div className="bg-background h-[50px] p-8 w-full absolute bottom-[-64px] left-0 hidden md:block"></div>
+		</main>
+	);
 };
 
 export default Page;
