@@ -24,7 +24,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${rethink_sans.variable} font-rethink-sans`}>
+      <body className={`${rethink_sans.variable} font-rethink-sans bg-tkg-gray-400`}>
         <StarknetProvider>
           <Header />
           {children}
