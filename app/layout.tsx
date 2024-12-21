@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Footer from "./components/Footer";
-import Features from "./components/Features";
 import StarknetProvider from "./components/StarknetProvider";
 import Header from "./components/Header";
 
@@ -19,16 +18,15 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-	return (
-		<html lang="en">
-			<body className="text-sm lg:text-md">
-				<StarknetProvider>
-					<Header />
-					{children}
-					<Features />
-					<Footer />
-				</StarknetProvider>
-			</body>
-		</html>
-	);
+  return (
+    <html lang="en">
+      <body className="text-sm lg:text-md">
+        <StarknetProvider>
+          <Header />
+          {children}
+          <Footer />
+        </StarknetProvider>
+      </body>
+    </html>
+  );
 }
