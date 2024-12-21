@@ -1,16 +1,22 @@
 "use client";
 import CampaignLoader from "@/app/components/loading/CampaignLoader";
-import { fetchCampaign } from "@/app/utils/helper";
+import { fetchCampaign, fetchContentFromIPFS } from "@/app/utils/helper";
 import CalenderIcon from "@/svgs/CalenderIcon";
 import DonateIcon from "@/svgs/DonateIcon";
 import ProfileIcon from "@/svgs/ProfileIcon";
 import ShareIcon from "@/svgs/ShareIcon";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Container from "@/app/components/util/Container";
 import { H2 } from "@/app/components/util/Headers";
-import { campaign_contract } from "@/app/utils/data";
+import HeroRibbon from "./components/HeroRibbon";
+import { Campaign } from "@/types";
+import Icon from "@/app/components/icons/icon";
+import moment from "moment";
+import WhyTokenGiver from "@/app/components/WhyTokenGiver";
+import DonateBanner from "@/app/components/DonateBanner";
+import { CampaignCard } from "@/app/components/CampaignCard";
 
 const page = ({
   params,
@@ -18,8 +24,8 @@ const page = ({
   params: { name: string; address: string; cid: string };
 }) => {
   const router = useRouter();
-  const [balance, setBalance] = useState(0);
-  const [donationCount, setDonationCount] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+  const [campaignDetails, setCampaignDetails] = useState<Campaign | null>(null);
 
   const donateNow = () => {
     if (params.address && params.cid) {
@@ -30,198 +36,160 @@ const page = ({
     }
   };
 
-  const [campaignDetails, setCampaignDetails] = useState({
-    name: "",
-    image: "/default-image.webp",
-    description: "",
-    date: "",
-    organizer: "",
-    beneficiary: "",
-    location: "",
-    target: "",
-    address: "",
-  });
   useEffect(() => {
     if (params.address && params.cid) {
-      fetchCampaign(
-        params.cid,
-        setBalance,
-        setDonationCount,
-        setCampaignDetails,
-        null
-      );
+      setIsLoading(true);
+      fetchContentFromIPFS(params.cid)
+        .then(
+          (campaignDetails) =>
+            campaignDetails && setCampaignDetails(campaignDetails)
+        )
+        .finally(() => setIsLoading(false));
     }
   }, [params]);
-  const width = `${Math.min(
-    (balance / parseInt(campaignDetails.target)) * 100,
-    100
-  )}%`;
-  return (
-    <>
-      {campaignDetails.name ? (
-        <section className=" mt-[4rem]  bg-background ">
-          <Container className="mx-auto py-10 md:py-16 px-4 md:px-10">
-            <div className="lg:flex gap-8  max-w-[500px] mx-auto md:mx-0  md:max-w-none relative">
-              <div className="lg:w-[60%] mx-auto flex flex-col gap-12">
-                <H2 style="font-bold">{campaignDetails.name}</H2>
-                <div className="rounded-[10px] h-[400px] relative w-full object-contain md:w-[80%] mx-auto">
-                  <Image
-                    className="rounded-[10px] h-full w-full"
-                    loader={() => campaignDetails.image}
-                    src={campaignDetails.image}
-                    unoptimized
-                    priority
-                    fill
-                    alt=""
-                  />
-                </div>
-                <div className="flex flex-col gap-8 w-full md:w-[85%] md:mx-auto  lg:hidden">
-                  <div className="flex flex-col gap-4">
-                    <p>
-                      <span className="text-[2rem]">
-                        {balance.toFixed(2)} STRK
-                      </span>{" "}
-                      raised of {campaignDetails.target || 0}STRK target
-                    </p>
-                    <div className="">
-                      <div className="w-full h-[.25rem] mb-2 relative">
-                        <div className="w-full h-[1vw] max-h-[.25rem] bg-[#127c5548] rounded-full mb-4"></div>
-                        <div
-                          style={{
-                            width: width,
-                          }}
-                          className={`h-[1vw] max-h-[.25rem] bg-[#127C56] rounded-full mb-4 top-0 absolute`}
-                        ></div>
-                      </div>
-                      <p>
-                        {donationCount || 0} donation
-                        {donationCount === 1 ? "" : "s"}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="flex flex-col gap-4 text-white md:flex-row   ">
-                    <button
-                      onClick={donateNow}
-                      className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px] flex justify-center items-center gap-2 "
-                    >
-                      <span>Donate now</span>{" "}
-                      <span className="text-theme-yellow">
-                        <DonateIcon />
-                      </span>
-                    </button>
-                    <button className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px]  flex justify-center items-center gap-2">
-                      <span>Share</span>
-                      <span className="text-theme-yellow">
-                        <ShareIcon />
-                      </span>
-                    </button>
-                  </div>
-                </div>
 
-                <div className="w-full md:w-[85%] md:mx-auto lg:w-full">
-                  <p>{campaignDetails.description}</p>
-                </div>
-                <div className="flex flex-col w-full md:w-[85%] md:mx-auto md:flex-row gap-4 lg:w-full">
-                  <button
-                    onClick={donateNow}
-                    className=" w-full md:w-1/2 border-[1px]  border-solid border-theme-green p-3 rounded-[5px] font-bold"
-                  >
-                    Donate
-                  </button>
-                  <button className="w-full md:w-1/2 border-[1px] border-solid border-theme-green p-3 rounded-[5px] font-bold">
-                    Share
-                  </button>
-                </div>
+  const campaignImage = useMemo(() => {
+    const imageUrl = campaignDetails?.image.slice(7, -1);
+    return imageUrl
+      ? `${process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL}${imageUrl}?pinataGatewayToken=${process.env.NEXT_PUBLIC_PINATA_API_KEY}`
+      : "/default-image.webp";
+  }, [campaignDetails]);
 
-                <div>
-                  <h4>Organizer and beneficiary</h4>
-                  <div className="flex flex-col items-center  w-fit md:items-start md:w-full md:flex-row gap-8 md:gap-12 py-8">
-                    <div className="flex gap-4">
-                      <div className="bg-gray-100 h-[50px] w-[50px] rounded-full flex items-center justify-center">
-                        <ProfileIcon />
-                      </div>
-                      <div className="flex flex-col gap-2">
-                        <p className="font-bold">{campaignDetails.organizer}</p>
-                        <p>Organizer</p>
-                        <p>{campaignDetails.location}</p>
-                      </div>
-                    </div>
-                    {campaignDetails.beneficiary && (
-                      <>
-                        <p className="text-[1.5em] font-extralight hidden md:block">
-                          &rarr;
-                        </p>
-                        <div className="flex gap-4">
-                          <div className="bg-gray-100 h-[50px] w-[50px] rounded-full flex items-center justify-center">
-                            <ProfileIcon />
-                          </div>
-                          <div className="flex flex-col gap-2">
-                            <p className="font-bold">
-                              {campaignDetails.beneficiary}
-                            </p>
-                            <p>Beneficiary</p>
-                          </div>
-                        </div>{" "}
-                      </>
-                    )}
+  if (isLoading) return <CampaignLoader />;
+
+  if (campaignDetails)
+    return (
+      <>
+        <div className="max-w-[1312px] mx-auto">
+          <HeroRibbon
+            campaign={campaignDetails}
+            address={params.address}
+            handleDonate={donateNow}
+          />
+          <div className="max-w-[720px] mx-auto mb-44 px-5">
+            <h1 className="text-center text-3xl font-bold mb-6">
+              {campaignDetails.name}
+            </h1>
+            <div className="rounded-lg h-[400px] relative w-full object-contain mx-auto">
+              <Image
+                className="rounded-lg h-full w-full"
+                loader={() => campaignImage}
+                src={campaignImage}
+                unoptimized
+                priority
+                fill
+                alt=""
+              />
+            </div>
+
+            <div className="flex items-center gap-4 py-6 border-b border-tkg-gray-300 mb-6">
+              <Icon name="logo_sm" />
+              <p>
+                {campaignDetails.organizer} is organizing this fundraiser on
+                behalf of {campaignDetails.beneficiary}
+              </p>
+            </div>
+
+            <div className="flex items-center gap-10 mb-7 justify-center">
+              <button
+                className="bg-tkg-primary text-white py-3 px-6 rounded-full max-h-11 leading-none"
+                onClick={donateNow}
+              >
+                Donate
+              </button>
+              <button className="border border-black py-3 px-6 rounded-full text-black max-h-11 leading-none">
+                Share
+              </button>
+            </div>
+
+            <div className="mb-10">
+              <h1 className="pb-2 border-b border-tkg-gray-300 text-[24px] font-bold leading-8 mb-4">
+                Detail
+              </h1>
+              <p className="text-sm leading-6">{campaignDetails.description}</p>
+            </div>
+            <div className="mb-10">
+              <h1 className="pb-2 border-b border-tkg-gray-300 text-[24px] font-bold leading-8 mb-7">
+                Organiser
+              </h1>
+              <div className="flex md:w-4/5 gap-x-4 justify-between">
+                <div className="flex gap-2.5">
+                  <Icon name="logo_sm" />
+                  <div>
+                    <h1 className="font-medium text-[22px] leading-7">
+                      {campaignDetails.organizer}
+                    </h1>
+                    <span className="mb-10 mt-2 block">Organiser</span>
+                    <button className="border border-black py-3 px-6 rounded-full text-black max-h-11 leading-none">
+                      Connect
+                    </button>
                   </div>
                 </div>
-                <div className="border-solid border-t-[1px] border-gray-100 py-6 flex gap-4 items-center">
-                  <span className="bg-gray-100 h-[50px] w-[50px] rounded-full flex items-center justify-center">
-                    <CalenderIcon />
-                  </span>{" "}
-                  <p>{campaignDetails.date}</p>
-                </div>
-              </div>
-              <div className="hidden sticky top-8 bg-background p-8  rounded-[10px] w-[35%] h-fit lg:flex flex-col gap-8 shadow-small ">
-                <div className="flex flex-col gap-4">
-                  <p>
-                    <span className="text-[2rem]">
-                      {balance.toFixed(2)} STRK
-                    </span>{" "}
-                    raised of {campaignDetails.target || "0"} STRK target
-                  </p>
-                  <div className="">
-                    <div className="w-full h-[.25rem] mb-2 relative">
-                      <div className="w-full h-[1vw] max-h-[.25rem] bg-[#127c5548] rounded-full mb-4"></div>
-                      <div
-                        style={{
-                          width: width,
-                        }}
-                        className={`h-[1vw] max-h-[.25rem] bg-[#127C56] rounded-full mb-4 top-0 absolute`}
-                      ></div>
-                    </div>
-                    <p>
-                      {donationCount} donation{donationCount === 1 ? "" : "s"}
-                    </p>
+                <Icon name="right_arrow_in_square" />
+                <div className="flex gap-2.5">
+                  <Icon name="logo_sm" />
+                  <div>
+                    <h1 className="font-medium text-[22px] leading-7">
+                      {campaignDetails.beneficiary}
+                    </h1>
+                    <span className="mb-10 mt-2 block">Beneficiary</span>
                   </div>
-                </div>
-                <div className="flex flex-col gap-4 text-white  ">
-                  <button
-                    onClick={donateNow}
-                    className="w-full bg-theme-green p-2 rounded-[5px] flex  justify-center items-center gap-2 "
-                  >
-                    <span>Donate now</span>{" "}
-                    <span className="text-theme-yellow">
-                      <DonateIcon />
-                    </span>
-                  </button>
-                  <button className="w-full bg-theme-green p-2 rounded-[5px]  flex justify-center items-center gap-2">
-                    <span>Share</span>
-                    <span className="text-theme-yellow">
-                      <ShareIcon />
-                    </span>
-                  </button>
                 </div>
               </div>
             </div>
-          </Container>
-        </section>
-      ) : (
-        <CampaignLoader />
-      )}
-    </>
-  );
+            <div className="mb-10">
+              <h1 className="pb-2 border-b border-tkg-gray-300 text-[24px] font-bold leading-8 mb-4">
+                Word of support
+              </h1>
+              <p className="mb-4">Please donate to share words of support.</p>
+              <p className="text-sm leading-6">
+                Even I'm am sick and suffering a lot right now I dicide to make
+                a donation to this lovely family and I wanna wish them from the
+                bottom of my heart Recovery ( I know verry well what means
+                suffering)❤️ if you can help my gofundme page too please with a
+                small Donation( I'm really suffering). Love you all and happy
+                holidays
+              </p>
+            </div>
+            <h1 className="py-2 border-y border-tkg-gray-300">
+              Created {moment(campaignDetails.created_at).fromNow()}
+            </h1>
+          </div>
+          <div className="mb-36 px-5">
+            <h1 className="text-[24px] font-bold leading-8 mb-10">
+              Browse ongoing campaigns
+            </h1>
+            <div className="mb-20 flex gap-7 items-center flex-wrap gap-y-2">
+              <button className="border border-black py-3 px-6 rounded-full text-black max-h-11 leading-none">
+                All
+              </button>
+              <button className="border border-black py-3 px-6 rounded-full text-black max-h-11 leading-none">
+                category 1
+              </button>
+              <button className="border border-black py-3 px-6 rounded-full text-black max-h-11 leading-none">
+                category 2
+              </button>
+              <button className="border border-black py-3 px-6 rounded-full text-black max-h-11 leading-none">
+                category 3
+              </button>
+              <button className="border border-black py-3 px-6 rounded-full text-black max-h-11 leading-none">
+                category 4
+              </button>
+            </div>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-x-24 gap-y-20">
+              <CampaignCard />
+              <CampaignCard />
+              <CampaignCard />
+              <CampaignCard />
+              <CampaignCard />
+              <CampaignCard />
+            </div>
+          </div>
+        </div>
+        <WhyTokenGiver />
+        <DonateBanner handleDonate={donateNow} />
+      </>
+    );
 };
 
 export default page;

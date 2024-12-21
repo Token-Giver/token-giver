@@ -28,7 +28,7 @@ body {
   font-family: "Poppins", sans-serif;
 }
 main {
-  background-color: #fffcf5;
+  /* background-color: #fffcf5; */
 }
 #hero {
   height: calc(100vh - 10rem);
