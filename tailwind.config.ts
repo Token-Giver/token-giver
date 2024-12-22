@@ -52,6 +52,9 @@ const config: Config = {
         "header-gradient":
           "linear-gradient(90deg,rgba(232, 249, 253, 1) 0%,rgba(228, 239, 231, 1) 50%,rgba(122, 178, 157, 1) 100%)",
       },
+      scale: {
+        102: "1.02",
+      },
       animation: {
         "scale-pulse": "scale-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
       },
