@@ -31,10 +31,14 @@ const config: Config = {
         },
       },
       "theme-green": "#127C56",
+      "pantone-green": "#00594C",
+      "dark-gray": "#ABABAB",
       white: "#ffffff",
       black: "#000000",
       background: "#fffcf5",
       "theme-yellow": "#fbbf24",
+      "frosting-cream": "#FFFBEE",
+      "white-smoke": "#F8F8F8",
       debug: "#ff0000",
       "gray-100": "#f3f4f6",
       "gray-200": "#e5e7eb",
@@ -64,6 +68,9 @@ const config: Config = {
         "gradient-linear": "linear-gradient(160deg, #0093E9 0%, #80D0C7 100%)",
         "header-gradient":
           "linear-gradient(90deg,rgba(232, 249, 253, 1) 0%,rgba(228, 239, 231, 1) 50%,rgba(122, 178, 157, 1) 100%)",
+      },
+      scale: {
+        102: "1.02",
       },
       animation: {
         "scale-pulse": "scale-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
