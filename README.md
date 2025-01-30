@@ -18,7 +18,7 @@ Token Giver is a decentralized application designed to revolutionize charity and
 1. [PROJECT OVERVIEW](#project-overview)
 2. [FEATURES](#features)
 3. [TECHNICAL DETAILS](#technical-details)
-4. [PROJECT WALKTHROUGH](#setup-and-deployment)
+4. [PROJECT WALKTHROUGH](#project-walkthrough)
 5. [CONCLUSION](#conclusion)
 
 ## PROJECT OVERVIEW
