@@ -54,10 +54,10 @@ const Fundraisers = () => {
   }, []);
 
   return (
-    <section>
+    <section className="max-w-[1536px]  2xl:mx-auto">
       <FeaturedCampaigns />
 
-      <div className="mt-16">
+      <div className="mt-16 ">
         <div className="relative  mx-auto mb-8">
           {/* Gradient indicators for scroll */}
           <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white to-transparent z-10"></div>
@@ -69,7 +69,7 @@ const Fundraisers = () => {
             {categories.map((category, index) => (
               <button
                 key={index}
-                className={`shrink-0  font-agrandir text-sm px-3 py-2 rounded-full transition-colors ${
+                className={`shrink-0  font-agrandir px-2 py-1 text-sm  rounded-full transition-colors ${
                   index === 0
                     ? "bg-accent-green  text-white hover:bg-[#0f6647]"
                     : " bg-[#F7F7F6] text-foreground-primary  "
@@ -80,11 +80,11 @@ const Fundraisers = () => {
             ))}
           </div>
         </div>
-        <div className="grid max-w-[1200px] gap-8 grid-cols-2">
+        <div className="grid  max-w-[1200px] gap-8 grid-cols-2 2xl:mx-auto">
           <div className="bg-blue h-[22rem] rounded-[10px] w-full">a</div>
           <div className="bg-red h-[22rem] rounded-[10px] ">a</div>
         </div>
-        <div className="mt-16 max-w-[1242px] flex flex-col items-center">
+        <div className="mt-16 max-w-[1242px] flex flex-col items-center 2xl:mx-auto">
           <div className="grid grid-cols-4  gap-4 ">
             <Card
               campaign_address=""

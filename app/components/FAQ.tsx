@@ -1,4 +1,5 @@
 "use client";
+import DownChevronIcon from "@/svgs/DownChevronIcon";
 import { useState } from "react";
 
 interface FAQItem {
@@ -43,11 +44,11 @@ const FAQ = () => {
         </p>
       </div>
 
-      <div className="space-y-4 mx-auto max-w-[800px]">
+      <div className="space-y-4 text-sm mx-auto max-w-[800px]">
         {faqData.map((item, index) => (
           <div
             key={index}
-            className="border-b-foreground-secondary border border-x-transparent border-b-solid border-t-transparent"
+            className="border-b-foreground-secondary border cursor-pointer border-x-transparent border-b-solid border-t-transparent"
           >
             <button
               className="w-full text-left p-4 focus:outline-none flex justify-between items-center"
@@ -59,7 +60,7 @@ const FAQ = () => {
                   activeIndex === index ? "rotate-180" : ""
                 }`}
               >
-                ▼
+                <DownChevronIcon />
               </span>
             </button>
             <div
@@ -70,7 +71,9 @@ const FAQ = () => {
               }`}
             >
               <div className="overflow-hidden">
-                <div className="p-4 pt-0 text-gray-600">{item.answer}</div>
+                <div className="p-4 text-foreground-secondary pt-0">
+                  {item.answer}
+                </div>
               </div>
             </div>
           </div>

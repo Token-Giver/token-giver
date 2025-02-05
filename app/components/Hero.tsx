@@ -9,7 +9,7 @@ const Hero = () => {
     router.push("/create");
   };
   return (
-    <section className="text-foreground-secondary">
+    <section className="text-foreground-secondary  w-[1100px] 2xl:mx-auto">
       <p>Explore</p>
       <H1 style="text-foreground-primary">
         Transform Charity with Blockchain.
