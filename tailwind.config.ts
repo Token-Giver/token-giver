@@ -17,6 +17,8 @@ const config: Config = {
 
     fontFamily: {
       "Holly-Bale": ["Belanosima", "sans-serif"],
+      poppins: ["Poppins", "sans-serif"],
+      agrandir: ["Agrandir", "sans-serif"],
     },
     colors: {
       "theme-green": "#127C56",
@@ -31,6 +33,9 @@ const config: Config = {
       red: "#dc2626",
       transparent: "transparent",
       blue: "#1d4ed8",
+      "accent-green": "#00594C",
+      "foreground-secondary": "#8E9BAE",
+      "foreground-primary": "#282828",
     },
     extend: {
       fontSize: {
