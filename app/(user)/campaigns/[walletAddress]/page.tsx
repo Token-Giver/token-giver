@@ -1,5 +1,4 @@
 "use client";
-import Card from "@/app/components/Fundraiser/Card";
 import CardLoader from "@/app/components/loading/CardLoader";
 import Container from "@/app/components/util/Container";
 import { fetchUserCampaigns } from "@/app/utils/helper";
@@ -7,6 +6,7 @@ import { useAccount } from "@starknet-react/core";
 import { useEffect, useState } from "react";
 import WarningIcon from "@/svgs/WarningIcon";
 import { H2 } from "@/app/components/util/Headers";
+import { Card } from "@/app/components/Fundraiser/Card";
 
 const page = () => {
   const { address } = useAccount();
