@@ -16,6 +16,7 @@ type CardType = {
   cid: string;
   target: string;
   url: string;
+  description?: string;
 };
 
 export const Card = ({
@@ -94,6 +95,7 @@ export const BigCard = ({
   campaign_address,
   target,
   url,
+  description,
 }: CardType) => {
   const router = useRouter();
   const [balance, setBalance] = useState(0);
@@ -110,7 +112,7 @@ export const BigCard = ({
   return (
     <div
       onClick={handleRoute}
-      className="flex gap-8 items-center max-w-[1200px] mx-auto"
+      className="grid grid-cols-2 gap-8 items-center max-w-[1200px] mx-auto"
     >
       <div className="overflow-clip h-[22rem] rounded-[10px] w-full">
         <Image
@@ -134,11 +136,7 @@ export const BigCard = ({
           </p>
         </div>
 
-        <p className="text-foreground-secondary">
-          We are currently organizing a fundraising to assist us in getting
-          sport equipment's and planning for the event. Supporting
-          underprivileged children with access to quality education.
-        </p>
+        <p className="text-foreground-secondary">{description}</p>
         <div className="w-full h-[.25rem] mb-2 relative">
           <div className="w-full h-[1.5vw] max-h-[.25rem] bg-[#EFEFEF] rounded-full mb-4"></div>
           <div

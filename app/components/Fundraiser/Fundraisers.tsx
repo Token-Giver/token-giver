@@ -87,6 +87,7 @@ const Fundraisers = () => {
               .replace(/-+/g, "-")}/${collections[0].campaign_address}/${
               collections[0].cid
             }`}
+            description={collections[0].description}
           />
         )}
 
