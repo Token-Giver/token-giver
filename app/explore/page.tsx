@@ -1,11 +1,11 @@
 "use client";
 import { useEffect, useState } from "react";
-import Card from "../components/Fundraiser/Card";
 import CardLoader from "../components/loading/CardLoader";
 import { campaign_contract } from "../utils/data";
 import { fetchCampaigns } from "../utils/helper";
 import Container from "../components/util/Container";
 import { H2 } from "../components/util/Headers";
+import { Card } from "../components/Fundraiser/Card";
 
 const page = () => {
   const [cursor, setCursor] = useState(null);

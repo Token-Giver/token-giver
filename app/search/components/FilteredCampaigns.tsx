@@ -1,4 +1,4 @@
-import Card from "@/app/components/Fundraiser/Card";
+import { Card } from "@/app/components/Fundraiser/Card";
 import { H3 } from "@/app/components/util/Headers";
 import { Campaign } from "@/types";
 
