@@ -1,5 +1,6 @@
 "use client";
-import { categories } from "./Fundraiser/Fundraisers";
+import { CATEGORIES } from "@/static";
+import Image from "next/image";
 
 const Categories = () => {
   return (
@@ -19,14 +20,23 @@ const Categories = () => {
       </div>
       <div>
         <div className="grid max-w-[55rem] mx-auto grid-cols-5  gap-2">
-          {categories.map((category, index) => (
+          {CATEGORIES.map((category, index) => (
             <div
-              key={category}
+              key={category.name}
               className="items-center flex flex-col  justify-center "
             >
-              <div className="w-[10em] bg-[#F7F7F6] mb-2 rounded-[10px] h-[10rem]"></div>
+              <div className="w-[10em] bg-[#F7F7F6] grid place-content-center  mb-2 rounded-[10px] h-[10rem]">
+                <div className="w-[65px]  h-[65px] ">
+                  <Image
+                    src={category.imageUrl}
+                    alt={category.name}
+                    height={100}
+                    width={100}
+                  />
+                </div>
+              </div>
               <p className="font-medium whitespace-nowrap font-poppins text-sm">
-                {category}
+                {category.name}
               </p>
             </div>
           ))}
