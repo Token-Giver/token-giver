@@ -1,5 +1,6 @@
 "use client";
-import ConnectButton from "@/app/components/ConnectButton";
+
+import Connect from "@/app/components/Connect";
 import { H2 } from "@/app/components/util/Headers";
 import { fetchBalance, fetchCampaign, handleDonate } from "@/app/utils/helper";
 import Logo from "@/svgs/Logo";
@@ -111,7 +112,7 @@ const Donate = ({
           >
             &lt; campaign
           </button>
-          <ConnectButton />
+          <Connect />
         </div>
         <div className="mx-auto flex w-full flex-col gap-4 px-4 md:my-auto lg:w-[75%] lg:min-w-[35rem] lg:px-12">
           <div className="md:hidden">

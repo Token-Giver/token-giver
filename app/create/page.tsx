@@ -1,6 +1,5 @@
 "use client";
 import { ChangeEvent, useEffect, useState } from "react";
-import ConnectButton from "../components/ConnectButton";
 import { useAccount } from "@starknet-react/core";
 import StepTwo from "./components/StepTwo";
 import { InputDateType } from "@/types";
@@ -21,6 +20,7 @@ import CreateCampaignLoader from "../components/loading/CreateCampaignLoader";
 import { H2 } from "../components/util/Headers";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
 import { useRouter } from "next/navigation";
+import Connect from "../components/Connect";
 
 const Page = () => {
   const router = useRouter();
@@ -252,7 +252,7 @@ const Page = () => {
 
       <div className="flex w-full items-center bg-background px-4 py-10 md:w-[60%] md:rounded-tl-[50px] md:shadow-hero-shadow lg:px-20 lg:py-10">
         <Container className="flex flex-col justify-between">
-          <ConnectButton />
+          <Connect />
           <form className="flex flex-col gap-4 md:p-4" action="">
             <h2>Create your campaign</h2>
             <StepTwo
