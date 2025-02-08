@@ -11,9 +11,9 @@ const Hero = () => {
   return (
     <section className="text-foreground-secondary  w-[1100px] 2xl:mx-auto">
       <p>Explore</p>
-      <H1 style="text-foreground-primary">
+      <h1 className="text-foreground-primary">
         Transform Charity with Blockchain.
-      </H1>
+      </h1>
       <p className="mb-4 text-foreground-secondary">
         Fussing compassion with innovation. Maximizing your contributions'
         impact with security and transparency.

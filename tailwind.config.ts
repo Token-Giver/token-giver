@@ -7,40 +7,33 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    fontSize: {
-      "2xl": ["clamp(0.75em, 6vw, 3.2em)", "1.5"],
-      xl: ["clamp(0.75em, 3.5vw, 2em)", "1.5"],
-      l: ["clamp(0.75em, 2.7vw, 1.5em)", "1.5"],
-      md: ["1em", "1.5"],
-      sm: ["0.875em", "1.5"],
-    },
-
-    fontFamily: {
-      "Holly-Bale": ["Belanosima", "sans-serif"],
-      poppins: ["Poppins", "sans-serif"],
-      agrandir: ["Agrandir", "sans-serif"],
-    },
-    colors: {
-      "theme-green": "#127C56",
-      white: "#ffffff",
-      black: "#000000",
-      background: "#fffcf5",
-      "theme-yellow": "#fbbf24",
-      debug: "#ff0000",
-      "gray-100": "#f3f4f6",
-      "gray-200": "#e5e7eb",
-      "gray-300": "#9ca3af",
-      red: "#dc2626",
-      transparent: "transparent",
-      blue: "#1d4ed8",
-      "accent-green": "#00594C",
-      "foreground-secondary": "#8E9BAE",
-      "foreground-primary": "#282828",
-    },
     extend: {
       fontSize: {
         clamp: "clamp(0.5rem, 5vw, 1rem)",
       },
+
+      fontFamily: {
+        "Holly-Bale": ["Belanosima", "sans-serif"],
+        poppins: ["Poppins", "sans-serif"],
+        agrandir: ["Agrandir", "sans-serif"],
+      },
+      colors: {
+        "theme-green": "#127C56",
+        black: "#000000",
+        background: "#ffffff",
+        "theme-yellow": "#fbbf24",
+        debug: "#ff0000",
+        "gray-100": "#f3f4f6",
+        "gray-200": "#e5e7eb",
+        "gray-300": "#9ca3af",
+        red: "#dc2626",
+        transparent: "transparent",
+        blue: "#1d4ed8",
+        "accent-green": "#00594C",
+        "foreground-secondary": "#8E9BAE",
+        "foreground-primary": "#282828",
+      },
+
       boxShadow: {
         small: "rgba(0, 0, 0, 0.2) 0px -1px 0.7rem",
         "hero-shadow": "rgba(0, 0, 0, 0.5) 0px 0px 0.9rem",
@@ -55,10 +48,16 @@ const config: Config = {
       },
       animation: {
         "scale-pulse": "scale-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "zoom-loading": "zoomInOut 1.5s ease-in-out infinite",
       },
       keyframes: {
         "scale-pulse": {
           "50%": { transform: "scale(1.1)" },
+        },
+        zoomInOut: {
+          "0%": { transform: "scale(1)", opacity: "1" },
+          "50%": { transform: "scale(1.1)", opacity: "0.8" },
+          "100%": { transform: "scale(1)", opacity: "1" },
         },
       },
     },

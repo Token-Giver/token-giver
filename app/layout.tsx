@@ -18,11 +18,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="text-sm lg:text-md">
+      <body>
         <StarknetProvider>
           <Header />
           {children}
-
           <Footer />
         </StarknetProvider>
       </body>

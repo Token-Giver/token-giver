@@ -127,7 +127,10 @@ const Fundraisers = () => {
                   );
                 })}
           </div>
-          <button className="ring-1 ring-[#808080] w-[7rem] mx-auto text-sm px-4 py-2 mt-8 rounded-[25px] text-foreground-primary">
+          <button
+            onClick={handleRouteToCampaigns}
+            className="ring-1 ring-[#808080] w-[7rem] mx-auto text-sm px-4 py-2 mt-8 rounded-[25px] text-foreground-primary"
+          >
             See more
           </button>
         </div>
