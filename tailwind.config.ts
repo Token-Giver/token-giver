@@ -46,10 +46,7 @@ const config: Config = {
         "header-gradient":
           "linear-gradient(90deg,rgba(232, 249, 253, 1) 0%,rgba(228, 239, 231, 1) 50%,rgba(122, 178, 157, 1) 100%)",
       },
-      animation: {
-        "scale-pulse": "scale-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
-        "zoom-loading": "zoomInOut 1.5s ease-in-out infinite",
-      },
+
       keyframes: {
         "scale-pulse": {
           "50%": { transform: "scale(1.1)" },
@@ -59,6 +56,20 @@ const config: Config = {
           "50%": { transform: "scale(1.1)", opacity: "0.8" },
           "100%": { transform: "scale(1)", opacity: "1" },
         },
+        fadeIn: {
+          from: { opacity: "0" },
+          to: { opacity: "1" },
+        },
+        fadeOut: {
+          from: { opacity: "1" },
+          to: { opacity: "0" },
+        },
+      },
+      animation: {
+        "scale-pulse": "scale-pulse 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "zoom-loading": "zoomInOut 1.5s ease-in-out infinite",
+        fadeIn: "fadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards",
+        fadeOut: "fadeOut 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards",
       },
     },
   },

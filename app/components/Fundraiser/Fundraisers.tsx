@@ -3,31 +3,19 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { campaign_contract } from "@/app/utils/data";
 import { fetchCampaigns } from "@/app/utils/helper";
-import { useConnect } from "@starknet-react/core";
 import FeaturedCampaigns from "./FeaturedCampaigns";
-import CardLoader from "../loading/CardLoader";
+import CardLoader, { BigCardLoader } from "../loading/CardLoader";
 import { BigCard, Card } from "./Card";
 import { CATEGORIES } from "@/static";
 
 const Fundraisers = () => {
   const router = useRouter();
-  const { connectors, connect } = useConnect();
   const [collections, setCollections] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const handleRouteToCampaigns = () => {
     router.push("/explore");
   };
-  useEffect(() => {
-    const lastUsedConnector = localStorage.getItem("lastUsedConnector");
-    if (lastUsedConnector) {
-      connect({
-        connector: connectors.find(
-          (connector) => connector.name === lastUsedConnector
-        ),
-      });
-    }
-  }, [connectors]);
 
   useEffect(() => {
     fetchCampaigns(campaign_contract, setLoading, setCollections);
@@ -61,9 +49,8 @@ const Fundraisers = () => {
             ))}
           </div>
         </div>
-
         {loading ? (
-          <CardLoader />
+          <BigCardLoader />
         ) : (
           <BigCard
             cid={collections[0].cid}

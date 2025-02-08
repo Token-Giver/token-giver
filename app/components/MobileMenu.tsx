@@ -177,7 +177,6 @@ const MobileMenu = ({
                 onClick={() => {
                   if (address) {
                     disconnect();
-                    localStorage.removeItem("lastUsedConnector");
                   }
                 }}
                 className="flex items-center gap-4"
