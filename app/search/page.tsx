@@ -37,7 +37,7 @@ const page = () => {
       const loadCampaigns = async () => {
         const campaigns = await searchCampaigns({
           campaigns: collections,
-          search: debouncedSearch,
+          search: debouncedSearch
         });
         setFilteredCampaigns(campaigns);
       };
@@ -46,7 +46,7 @@ const page = () => {
   }, [debouncedSearch]);
 
   return (
-    <section className="min-h-[100svh] py-[5rem] px-4 lg:px-[10vw]">
+    <section className="min-h-[100svh] px-4 py-[5rem] lg:px-[10vw]">
       <Container className="flex flex-col gap-8">
         <div className="text-center">
           <H2 style="mb-4">Search campaigns on Token Giver</H2>
@@ -54,7 +54,7 @@ const page = () => {
         </div>
         <div className="flex justify-center">
           <input
-            className="w-full max-w-[30rem] md:max-w-[40rem] bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
+            className="w-full max-w-[30rem] rounded-[10px] border-[1px] border-solid border-gray-400 bg-transparent p-3 md:max-w-[40rem]"
             type="text"
             placeholder="search"
             name="search"

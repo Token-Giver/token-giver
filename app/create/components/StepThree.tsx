@@ -5,7 +5,7 @@ const StepThree = ({
   step,
   inputData,
   handleInputChange,
-  address,
+  address
 }: {
   step: {
     number: number;
@@ -19,11 +19,11 @@ const StepThree = ({
 }) => {
   return (
     <fieldset
-      className={`flex-col gap-4  ${step.number === 3 ? "flex" : "hidden"}`}
+      className={`flex-col gap-4 ${step.number === 3 ? "flex" : "hidden"}`}
     >
       <label htmlFor="target">Target:</label>
       <div className="relative">
-        <p className="absolute top-[-1.2rem] right-[.5em] text-red text-[.7em]">
+        <p className="absolute right-[.5em] top-[-1.2rem] text-[.7em] text-red">
           Required*
         </p>
         <input
@@ -32,13 +32,13 @@ const StepThree = ({
           onChange={handleInputChange}
           value={inputData.target}
           placeholder="STRK"
-          className="w-full bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
+          className="w-full rounded-[10px] border-[1px] border-solid border-gray-400 bg-transparent p-3"
         />
       </div>
 
       <label htmlFor="location">Location:</label>
       <div className="relative">
-        <p className="text-red  absolute top-[-1.2rem] right-[.5em] text-[.7em]">
+        <p className="absolute right-[.5em] top-[-1.2rem] text-[.7em] text-red">
           Required*
         </p>
         <input
@@ -47,12 +47,12 @@ const StepThree = ({
           value={inputData.location}
           onChange={handleInputChange}
           placeholder="Name of organizer"
-          className="w-full bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
+          className="w-full rounded-[10px] border-[1px] border-solid border-gray-400 bg-transparent p-3"
         />
       </div>
       <label htmlFor="organizer">Organizer:</label>
       <div className="relative">
-        <p className="text-red  absolute top-[-1.2rem] right-[.5em] text-[.7em]">
+        <p className="absolute right-[.5em] top-[-1.2rem] text-[.7em] text-red">
           Required*
         </p>
         <input
@@ -61,7 +61,7 @@ const StepThree = ({
           value={inputData.organizer}
           onChange={handleInputChange}
           placeholder="Name of organizer"
-          className="w-full bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
+          className="w-full rounded-[10px] border-[1px] border-solid border-gray-400 bg-transparent p-3"
         />
       </div>
       <label htmlFor="beneficiary">Beneficiary:</label>
@@ -71,7 +71,7 @@ const StepThree = ({
         value={inputData.beneficiary}
         onChange={handleInputChange}
         placeholder="Name of organizer"
-        className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
+        className="rounded-[10px] border-[1px] border-solid border-gray-400 bg-transparent p-3"
       />
     </fieldset>
   );

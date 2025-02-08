@@ -14,28 +14,22 @@ const Header = () => {
   };
 
   return (
-    <header className="flex fixed top-0 bg-white w-screen z-[50] ">
-      <div className="w-full flex top-0 mx-auto justify-between  text-sm px-16 py-2 items-center  max-w-[1536px]">
+    <header className="fixed top-0 z-[50] flex w-screen bg-white">
+      <div className="top-0 mx-auto flex w-full max-w-[1536px] items-center justify-between px-16 py-2 text-sm">
         <Link href="/" className="w-[10rem]">
           <Image src={"/logo.png"} alt={"logo"} width={2000} height={1342} />
         </Link>
 
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-16">
           <nav className="text-[#8E9BAE]">
             <ul className="flex gap-8">
               <li>
                 <Link
-                  href={"/explore"}
-                  className={pathname === "/explore" ? "text-accent-green" : ""}
-                >
-                  Explore
-                </Link>
-              </li>
-              <li>
-                <Link
                   href={"/search"}
                   className={`flex items-center gap-1 ${
-                    pathname === "/search" ? "text-accent-green" : ""
+                    pathname === "/search"
+                      ? "font-medium text-accent-green"
+                      : ""
                   }`}
                 >
                   <span>
@@ -47,7 +41,9 @@ const Header = () => {
               <li>
                 <Link
                   href={"/about"}
-                  className={pathname === "/about" ? "text-accent-green" : ""}
+                  className={
+                    pathname === "/about" ? "font-medium text-accent-green" : ""
+                  }
                 >
                   About
                 </Link>
@@ -55,7 +51,9 @@ const Header = () => {
               <li>
                 <Link
                   href={"/learn"}
-                  className={pathname === "/learn" ? "text-accent-green" : ""}
+                  className={
+                    pathname === "/learn" ? "font-medium text-accent-green" : ""
+                  }
                 >
                   donate
                 </Link>
@@ -67,7 +65,7 @@ const Header = () => {
 
             <button
               onClick={createCampaign}
-              className="bg-accent-green text-white px-4 py-2 rounded-[25px]"
+              className="rounded-[25px] bg-accent-green px-4 py-2 text-white"
             >
               Start a Campaign
             </button>

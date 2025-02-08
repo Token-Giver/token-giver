@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchBalance, fetchDonationBalance } from "@/app/utils/helper";
+import { formatNumberCompact } from "@/app/utils";
 
 type CardType = {
   causeName: string;
@@ -26,7 +27,7 @@ export const Card = ({
   imageAltText,
   campaign_address,
   target,
-  url,
+  url
 }: CardType) => {
   const router = useRouter();
   const [balance, setBalance] = useState(0);
@@ -44,11 +45,11 @@ export const Card = ({
   return (
     <div
       onClick={handleRoute}
-      className="w-[18.4rem] cursor-pointer hover:bg-[#00594C]/10 transition-all rounded-[10px] flex-col flex gap-3 h-[19rem] p-4"
+      className="flex h-[19rem] w-[18.4rem] cursor-pointer flex-col gap-3 rounded-[10px] p-4 transition-all hover:bg-[#00594C]/10"
     >
-      <div className="h-[150px] rounded-[10px] overflow-clip">
+      <div className="h-[150px] overflow-clip rounded-[10px]">
         <Image
-          className="rounded-t-[10px] bg-cover w-full h-full group-hover:scale-105 object-cover transition-all"
+          className="h-full w-full rounded-t-[10px] bg-cover object-cover transition-all group-hover:scale-105"
           src={imageSrc}
           alt={imageAltText ? imageAltText : ""}
           width={400}
@@ -56,28 +57,31 @@ export const Card = ({
         />
       </div>
       <div className="flex flex-col gap-2">
-        <h4 className="text-[.9em] font-agrandir text-[#282828] overflow-hidden capitalize line-clamp">
+        <h4 className="line-clamp overflow-hidden font-agrandir text-[.9em] capitalize text-[#282828]">
           {causeName}
         </h4>
-        <p className=" flex text-foreground-secondary items-center gap-x-1">
+        <p className="flex items-center gap-x-1 text-foreground-secondary">
           <span>
             <LocationIcon />
           </span>
           <span className="text-[.8rem]">{location}.</span>
         </p>
         <div className="">
-          <div className="w-full h-[.25rem] mb-2 relative">
-            <div className="w-full h-[1.5vw] max-h-[.25rem] bg-[#EFEFEF] rounded-full mb-4"></div>
+          <div className="relative mb-2 h-[.25rem] w-full">
+            <div className="mb-4 h-[1.5vw] max-h-[.25rem] w-full rounded-full bg-[#EFEFEF]"></div>
             <div
               style={{
-                width: width,
+                width: width
               }}
-              className={`h-[1vw] max-h-[.25rem] bg-[#34AA6D] rounded-full mb-4 top-0 absolute`}
+              className={`absolute top-0 mb-4 h-[1vw] max-h-[.25rem] rounded-full bg-[#34AA6D]`}
             ></div>
           </div>
           <div className="flex justify-between px-2 text-[.875rem]">
             <p>
-              {balance.toFixed(2)} STRK <span>of {target} STRK raised</span>
+              {formatNumberCompact(balance || 0)} STRK{" "}
+              <span>
+                of {formatNumberCompact(Number(target) || 0)} STRK raised
+              </span>
             </p>
             <p>{((balance / parseFloat(target)) * 100).toFixed(2)}%</p>
           </div>
@@ -95,7 +99,7 @@ export const BigCard = ({
   campaign_address,
   target,
   url,
-  description,
+  description
 }: CardType) => {
   const router = useRouter();
   const [balance, setBalance] = useState(0);
@@ -112,23 +116,23 @@ export const BigCard = ({
   return (
     <div
       onClick={handleRoute}
-      className="grid grid-cols-2 gap-8 items-center max-w-[1200px] mx-auto"
+      className="mx-auto grid max-w-[1200px] grid-cols-2 items-center gap-8"
     >
-      <div className="overflow-clip h-[22rem] rounded-[10px] w-full">
+      <div className="h-[22rem] w-full overflow-clip rounded-[10px]">
         <Image
-          className="rounded-t-[10px] bg-cover w-full h-full group-hover:scale-105 object-cover transition-all"
+          className="h-full w-full rounded-t-[10px] bg-cover object-cover transition-all group-hover:scale-105"
           src={imageSrc}
           alt={imageAltText ? imageAltText : ""}
           width={400}
           height={400}
         />
       </div>
-      <div className="h-[22rem] flex flex-col py-2 gap-4 rounded-[10px] ">
+      <div className="flex h-[22rem] flex-col gap-4 rounded-[10px] py-2">
         <div>
-          <h4 className="text-l font-agrandir text-[#282828] overflow-hidden capitalize line-clamp">
+          <h4 className="text-l line-clamp overflow-hidden font-agrandir capitalize text-[#282828]">
             {causeName}
           </h4>
-          <p className=" flex text-foreground-secondary items-center gap-x-1">
+          <p className="flex items-center gap-x-1 text-foreground-secondary">
             <span>
               <LocationIcon />
             </span>
@@ -137,30 +141,30 @@ export const BigCard = ({
         </div>
 
         <p className="text-foreground-secondary">{description}</p>
-        <div className="w-full h-[.25rem] mb-2 relative">
-          <div className="w-full h-[1.5vw] max-h-[.25rem] bg-[#EFEFEF] rounded-full mb-4"></div>
+        <div className="relative mb-2 h-[.25rem] w-full">
+          <div className="mb-4 h-[1.5vw] max-h-[.25rem] w-full rounded-full bg-[#EFEFEF]"></div>
           <div
             style={{
-              width: width,
+              width: width
             }}
-            className={`h-[1vw] max-h-[.25rem] bg-[#34AA6D] rounded-full mb-4 top-0 absolute`}
+            className={`absolute top-0 mb-4 h-[1vw] max-h-[.25rem] rounded-full bg-[#34AA6D]`}
           ></div>
         </div>
         <div className="flex gap-6">
           <div>
-            <p className="font-semibold mb-2 text-[.9em] text-foreground-primary">
-              {balance.toFixed(2)} STRK
+            <p className="mb-2 text-[.9em] font-semibold text-foreground-primary">
+              {formatNumberCompact(balance || 0)} STRK
             </p>
             <p className="text-foreground-secondary">Total raised</p>
           </div>
           <div>
-            <p className="font-semibold mb-2 text-[.9em]  text-foreground-primary">
-              {target} STRK
+            <p className="mb-2 text-[.9em] font-semibold text-foreground-primary">
+              {formatNumberCompact(Number(target) || 0)} STRK
             </p>
             <p className="text-foreground-secondary">Target</p>
           </div>
         </div>
-        <button className="ring-1  ring-[#808080] w-[7rem]  text-sm px-4 py-2  rounded-[25px] text-foreground-primary">
+        <button className="w-[7rem] rounded-[25px] px-4 py-2 text-sm text-foreground-primary ring-1 ring-[#808080]">
           Learn more
         </button>
       </div>

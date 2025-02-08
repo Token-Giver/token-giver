@@ -50,7 +50,7 @@ const DialogContent = forwardRef<
       <DialogPrimitive.Content
         ref={ref}
         className={cn(
-          "fixed left-[50%] top-[50%] z-50 flex w-[25rem] rounded-[10px] max-w-[95vw] translate-x-[-50%] translate-y-[-50%] flex-col justify-center gap-6 overflow-y-auto bg-white shadow-lg outline-none duration-200  sm:max-w-[800px] sm:border md:w-full",
+          "fixed left-[50%] top-[50%] z-50 flex w-[25rem] max-w-[95vw] translate-x-[-50%] translate-y-[-50%] flex-col justify-center gap-6 overflow-y-auto rounded-[10px] bg-white shadow-lg outline-none duration-200 sm:max-w-[800px] sm:border md:w-full",
           "data-[state=closed]:animate-fadeOut data-[state=open]:animate-fadeIn",
           className
         )}
@@ -61,7 +61,7 @@ const DialogContent = forwardRef<
           <DialogPrimitive.Close
             onClick={onClose}
             className={cn(
-              "absolute right-3.5 top-3.5 grid h-[2rem] w-[2rem] cursor-pointer place-content-center rounded-full bg-[#E8E8E8] opacity-70 transition-opacity hover:opacity-100 focus:border-2 focus:border-action-primary focus:opacity-100 focus:outline-none disabled:pointer-events-none",
+              "focus:border-action-primary absolute right-3.5 top-3.5 grid h-[2rem] w-[2rem] cursor-pointer place-content-center rounded-full bg-[#E8E8E8] opacity-70 transition-opacity hover:opacity-100 focus:border-2 focus:opacity-100 focus:outline-none disabled:pointer-events-none",
               closeClassname
             )}
           >
@@ -136,5 +136,5 @@ export {
   DialogHeader,
   DialogFooter,
   DialogTitle,
-  DialogDescription,
+  DialogDescription
 };

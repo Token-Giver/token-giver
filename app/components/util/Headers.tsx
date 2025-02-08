@@ -6,7 +6,7 @@ type Props = {
 };
 export const H1 = ({ children, style }: Props) => {
   return (
-    <h1 className={`text-2xl font-semibold font-agrandir ${style} `}>
+    <h1 className={`font-agrandir text-2xl font-semibold ${style} `}>
       {children}
     </h1>
   );

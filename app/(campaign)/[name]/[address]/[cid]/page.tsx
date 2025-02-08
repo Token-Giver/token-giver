@@ -22,7 +22,7 @@ interface CampaignDetails {
 }
 
 const page = ({
-  params,
+  params
 }: {
   params: { name: string; address: string; cid: string };
 }) => {
@@ -48,7 +48,7 @@ const page = ({
     beneficiary: "",
     location: "",
     target: "",
-    address: "",
+    address: ""
   });
   useEffect(() => {
     if (params.address && params.cid) {
@@ -68,34 +68,34 @@ const page = ({
   return (
     <>
       {campaignDetails.name ? (
-        <section className="min-h-[40vh] max-w-[1204px] mx-auto px-16 py-8 mt-[5rem]">
-          <h2 className="text-foreground-primary mb-6 font-agrandir text-3xl">
+        <section className="mx-auto mt-[5rem] min-h-[40vh] max-w-[1204px] animate-fadeIn px-16 py-8">
+          <h2 className="mb-6 font-agrandir text-3xl text-foreground-primary">
             {campaignDetails.name}
           </h2>
           <div className="text-foreground-primary">
-            <div className="flex gap-8 items-center">
-              <div className="flex gap-2 items-center">
-                <div className="h-[40px] grid place-content-center w-[40px] rounded-full bg-[#F7F7F6]">
+            <div className="flex items-center gap-8">
+              <div className="flex items-center gap-2">
+                <div className="grid h-[40px] w-[40px] place-content-center rounded-full bg-[#F7F7F6]">
                   <ProfileIcon />
                 </div>
                 <p>{campaignDetails.organizer}</p>
               </div>
-              <div className="flex gap-2 items-center">
+              <div className="flex items-center gap-2">
                 <p className="text-foreground-secondary">category:</p>
-                <div className="px-3 font-agrandir w-fit py-2 rounded-[25px] bg-[#F7F7F6]">
+                <div className="w-fit rounded-[25px] bg-[#F7F7F6] px-3 py-2 font-agrandir">
                   <p>Education</p>
                 </div>
               </div>
-              <p className="mt-auto flex items-center gap-1 ml-auto">
+              <p className="ml-auto mt-auto flex items-center gap-1">
                 Share campaign{" "}
                 <span>
                   <ShareIcon />
                 </span>
               </p>
             </div>
-            <div className="h-[31rem] mt-3 rounded-[10px] mb-8 relative">
+            <div className="relative mb-8 mt-3 h-[31rem] rounded-[10px]">
               <Image
-                className="rounded-[10px] bg-cover h-full w-full"
+                className="h-full w-full rounded-[10px] bg-cover"
                 loader={() => campaignDetails.image}
                 src={campaignDetails.image}
                 unoptimized
@@ -122,7 +122,7 @@ const page = ({
           </div>
         </section>
       ) : (
-        <div className="min-h-[40vh]  grid place-content-center max-w-[1204px] mx-auto px-16 py-8 mt-[5rem]">
+        <div className="mx-auto mt-[5rem] grid min-h-[40vh] max-w-[1204px] place-content-center px-16 py-8">
           <Image
             alt="loading"
             src={"/logo-sm.png"}

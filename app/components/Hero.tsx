@@ -1,7 +1,5 @@
 "use client";
-import HeartIcon from "@/svgs/HeartIcon";
 import { useRouter } from "next/navigation";
-import { H1 } from "./util/Headers";
 
 const Hero = () => {
   const router = useRouter();
@@ -9,9 +7,9 @@ const Hero = () => {
     router.push("/create");
   };
   return (
-    <section className="text-foreground-secondary  w-[1100px] 2xl:mx-auto">
+    <section className="w-[1100px] text-foreground-secondary 2xl:mx-auto">
       <p>Explore</p>
-      <h1 className="text-foreground-primary">
+      <h1 className="font-agrandir text-foreground-primary">
         Transform Charity with Blockchain.
       </h1>
       <p className="mb-4 text-foreground-secondary">
@@ -20,7 +18,7 @@ const Hero = () => {
       </p>
       <button
         onClick={createCampaign}
-        className="bg-accent-green text-sm text-white px-4 py-2 rounded-[25px]"
+        className="rounded-[25px] bg-accent-green px-4 py-2 text-sm text-white"
       >
         Start a Campaign
       </button>

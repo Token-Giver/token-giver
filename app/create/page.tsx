@@ -14,7 +14,7 @@ import {
   TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
   campaign_contract,
   nft_contract,
-  provider,
+  provider
 } from "../utils/data";
 import Container from "../components/util/Container";
 import CreateCampaignLoader from "../components/loading/CreateCampaignLoader";
@@ -32,7 +32,7 @@ const Page = () => {
   const [campaignUrl, setCampaignUrl] = useState("/");
   const [step, setStep] = useState({
     number: 1,
-    text: "First connect your wallet",
+    text: "First connect your wallet"
   });
   const [inputData, setInputData] = useState<InputDateType>({
     name: "",
@@ -41,7 +41,7 @@ const Page = () => {
     target: "",
     organizer: "",
     beneficiary: "",
-    location: "",
+    location: ""
   });
 
   const handleInputChange = (
@@ -56,12 +56,12 @@ const Page = () => {
       ) {
         return {
           ...prev,
-          image: e.target.files[0],
+          image: e.target.files[0]
         };
       }
       return {
         ...prev,
-        [name]: value,
+        [name]: value
       };
     });
   };
@@ -90,7 +90,7 @@ const Page = () => {
           REGISTRY_HASH,
           IMPLEMENTATION_HASH,
           salt,
-          account.address,
+          account.address
         ])
       );
       const txnDet = await provider.waitForTransaction(
@@ -114,9 +114,9 @@ const Page = () => {
         {
           method: "POST",
           headers: {
-            Authorization: `Bearer ${BEARER_TOKEN}`,
+            Authorization: `Bearer ${BEARER_TOKEN}`
           },
-          body: formData,
+          body: formData
         }
       );
       const image_upload_resData = await image_upload_res.json();
@@ -137,7 +137,7 @@ const Page = () => {
         location: inputData.location,
         campaign_address:
           txnDet.isSuccess() && txnDet.events.at(1)?.from_address,
-        created_at: new Date(),
+        created_at: new Date()
       });
       setCampaignUrl(`/campaign/${address}/${tokenId}`);
 
@@ -150,9 +150,9 @@ const Page = () => {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${BEARER_TOKEN}`,
+            Authorization: `Bearer ${BEARER_TOKEN}`
           },
-          body: new_metadata,
+          body: new_metadata
         }
       );
 
@@ -169,7 +169,7 @@ const Page = () => {
         await campaign_contract.set_campaign_metadata_uri(
           CallData.compile([
             txnDet.isSuccess() && txnDet.events[1].from_address,
-            `ipfs://${metadata_upload_resData.IpfsHash}/`,
+            `ipfs://${metadata_upload_resData.IpfsHash}/`
           ])
         );
 
@@ -186,11 +186,11 @@ const Page = () => {
           target: "",
           organizer: "",
           beneficiary: "",
-          location: "",
+          location: ""
         });
         setStep({
           number: 2,
-          text: "Tell us about your campaign",
+          text: "Tell us about your campaign"
         });
       }, 10000);
     } catch (err) {
@@ -207,27 +207,27 @@ const Page = () => {
       setStep(() => {
         return {
           text: "Tell us about your campaign",
-          number: 2,
+          number: 2
         };
       });
     } else {
       setStep(() => {
         return {
           text: "First connect your wallet",
-          number: 1,
+          number: 1
         };
       });
     }
   }, [account.address]);
 
   return (
-    <main className="min-h-screen  flex justify-between bg-theme-green md:mb-10 relative">
-      <Container className="p-4 w-[40%] hidden md:flex md:flex-col ">
+    <main className="relative flex min-h-screen justify-between bg-theme-green md:mb-10">
+      <Container className="hidden w-[40%] p-4 md:flex md:flex-col">
         <button
           onClick={() => router.push("/")}
-          className="w-fit text-[1.2em] self-start justify-self-start text-white flex items-center"
+          className="flex w-fit items-center self-start justify-self-start text-[1.2em] text-white"
         >
-          <span className="text-white inline-block transform rotate-180">
+          <span className="inline-block rotate-180 transform text-white">
             <RightArrowIcon />
           </span>
           <span>back</span>
@@ -235,25 +235,25 @@ const Page = () => {
 
         <div className="my-auto">
           <div className="flex flex-col gap-8 p-4">
-            <p className="font-bold text-white text-[1.5em]">
+            <p className="text-[1.5em] font-bold text-white">
               <Logo />
             </p>
             <H2 style="text-theme-yellow">Start your fundraising journey!</H2>
 
-            <div className="flex gap-2 items-center text-white">
+            <div className="flex items-center gap-2 text-white">
               <span className="">
-                <span className="text-[1.8em] mr-2">{step.number}</span>/ 3
+                <span className="mr-2 text-[1.8em]">{step.number}</span>/ 3
               </span>
-              <p className=" mt-3 ">{step.text}</p>
+              <p className="mt-3">{step.text}</p>
             </div>
           </div>
         </div>
       </Container>
 
-      <div className=" w-full bg-background md:rounded-tl-[50px] md:shadow-hero-shadow py-10 px-4 lg:py-10 lg:px-20 md:w-[60%] flex items-center ">
-        <Container className=" flex flex-col justify-between">
+      <div className="flex w-full items-center bg-background px-4 py-10 md:w-[60%] md:rounded-tl-[50px] md:shadow-hero-shadow lg:px-20 lg:py-10">
+        <Container className="flex flex-col justify-between">
           <ConnectButton />
-          <form className="flex flex-col gap-4  md:p-4" action="">
+          <form className="flex flex-col gap-4 md:p-4" action="">
             <h2>Create your campaign</h2>
             <StepTwo
               inputData={inputData}
@@ -270,7 +270,7 @@ const Page = () => {
             />
           </form>
           <div
-            className={`flex mt-4  md:p-4  ${
+            className={`mt-4 flex md:p-4 ${
               step.number === 2 || step.number === 1
                 ? "justify-end"
                 : "justify-between"
@@ -282,11 +282,11 @@ const Page = () => {
                 setStep(() => {
                   return {
                     text: "Tell us about your campaign",
-                    number: 2,
+                    number: 2
                   };
                 })
               }
-              className={`text-theme-green text-[2em] ${
+              className={`text-[2em] text-theme-green ${
                 step.number === 2 || step.number === 1 ? "hidden" : "block"
               } `}
             >
@@ -301,11 +301,11 @@ const Page = () => {
                   setStep(() => {
                     return {
                       text: "Tell us about you and your goals",
-                      number: 3,
+                      number: 3
                     };
                   })
                 }
-                className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
+                className={`w-fit self-end justify-self-end rounded-[10px] bg-theme-green px-6 py-2 text-white ${
                   step.number === 3 ? "hidden" : "block"
                 } `}
               >
@@ -322,7 +322,7 @@ const Page = () => {
                   !inputData.organizer ||
                   creatingCampaign
                 }
-                className={`bg-theme-green text-white py-2 px-6 rounded-[10px] w-fit justify-self-end self-end ${
+                className={`w-fit self-end justify-self-end rounded-[10px] bg-theme-green px-6 py-2 text-white ${
                   step.number === 3 ? "block" : "hidden"
                 } `}
               >
@@ -339,7 +339,7 @@ const Page = () => {
         url={campaignUrl}
       />
 
-      <div className="bg-background h-[50px] p-8 w-full absolute bottom-[-64px] left-0 hidden md:block"></div>
+      <div className="absolute bottom-[-64px] left-0 hidden h-[50px] w-full bg-background p-8 md:block"></div>
     </main>
   );
 };

@@ -6,7 +6,7 @@ const FilteredCampaigns = ({ campaigns }: { campaigns: Campaign[] }) => {
   return (
     <section>
       <H3 style="mb-4">Search Results</H3>
-      <div className="grid gap-4  md:gap-8 lg:grid-cols-3 md:max-w-[800px] lg:max-w-none md:mx-auto  md:justify-center">
+      <div className="grid gap-4 md:mx-auto md:max-w-[800px] md:justify-center md:gap-8 lg:max-w-none lg:grid-cols-3">
         {campaigns.map((campaign, idx) => {
           const path = campaign.name
             .replace(/[^a-zA-Z ]/g, "")

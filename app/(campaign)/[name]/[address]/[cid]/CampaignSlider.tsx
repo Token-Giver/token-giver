@@ -29,19 +29,19 @@ const CampaignSlider = () => {
   const isFirstSlide = currentSlide === 0;
 
   return (
-    <div className="max-w-[1204px] mx-auto  space-y-4">
+    <div className="mx-auto max-w-[1204px] space-y-4">
       <h3 className="text-2xl text-foreground-primary">
         <span className="font-agrandir font-bold">Make a Difference.</span>{" "}
         <span className="font-normal">See Similar Campaigns</span>{" "}
         <span className="font-agrandir font-bold">like This </span>
       </h3>
-      <div className="flex justify-end items-center gap-4">
+      <div className="flex items-center justify-end gap-4">
         <button
           onClick={prevSlide}
-          className={`rotate-180 grid place-content-center h-[30px] w-[30px] rounded-full ${
+          className={`grid h-[30px] w-[30px] rotate-180 place-content-center rounded-full ${
             isFirstSlide
-              ? "text-[#0000004D] bg-gray-200"
-              : "text-white bg-accent-green"
+              ? "bg-gray-200 text-[#0000004D]"
+              : "bg-accent-green text-white"
           }`}
         >
           <RightArrowIcon />
@@ -49,16 +49,16 @@ const CampaignSlider = () => {
 
         <button
           onClick={nextSlide}
-          className={`grid place-content-center h-[30px] w-[30px] rounded-full ${
+          className={`grid h-[30px] w-[30px] place-content-center rounded-full ${
             isLastSlide
-              ? "text-[#0000004D] bg-gray-200"
-              : "text-white bg-accent-green"
+              ? "bg-gray-200 text-[#0000004D]"
+              : "bg-accent-green text-white"
           }`}
         >
           <RightArrowIcon />
         </button>
       </div>
-      <div className="flex justify-between items-center">
+      <div className="flex items-center justify-between">
         {loading
           ? Array.from({ length: 4 }).map((_, idx) => <CardLoader key={idx} />)
           : collections

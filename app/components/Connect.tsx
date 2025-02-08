@@ -2,6 +2,7 @@ import Image from "next/image";
 import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { useMemo, useState, useEffect } from "react";
+import ProfileIcon from "@/svgs/ProfileIcon";
 
 const Connect = () => {
   const { address, account } = useAccount();
@@ -30,15 +31,16 @@ const Connect = () => {
             setIsOpen(true);
           }
         }}
-        className="ring-1 ring-accent-green text-accent-green px-2 py-2 rounded-[25px]"
+        className="flex items-center rounded-[25px] px-2 py-2 text-accent-green ring-1 ring-accent-green"
       >
+        {shortenedAddress && <ProfileIcon width="1.5em" height="1.5em" />}
         <span className="px-2">
           {shortenedAddress ? shortenedAddress : "Connect Wallet"}
         </span>
       </button>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogContent className="p-2">
-          <div className="grid grid-cols-5 h-[50vh] max-h-[500px]">
+          <div className="grid h-[50vh] max-h-[500px] grid-cols-5">
             <div className="relative col-span-2 overflow-hidden">
               <Image
                 src={"/wallet-bg.png"}
@@ -49,16 +51,16 @@ const Connect = () => {
                 width={300}
               />
             </div>
-            <div className="col-span-3 flex justify-center items-center px-4">
+            <div className="col-span-3 flex items-center justify-center px-4">
               <div className="space-y-2">
-                <DialogTitle className="font-bold font-agrandir text-2xl">
+                <DialogTitle className="font-agrandir text-2xl font-bold">
                   Connect Wallet
                 </DialogTitle>
                 <p className="text-foreground-secondary">
                   Please choose a wallet you want to connect to TokenGiver.
                   There are several wallet providers.
                 </p>
-                <div className="grid grid-cols-4 thin-scrollbar overflow-y-scroll  max-h-[270px] gap-2">
+                <div className="thin-scrollbar grid max-h-[270px] grid-cols-4 gap-2 overflow-y-scroll">
                   {connectors.map((connector) => {
                     if (connector.id && connector.available()) {
                       return (
@@ -69,8 +71,8 @@ const Connect = () => {
                           }}
                           key={connector.id}
                         >
-                          <div className="bg-[#F7F6F6] grid place-content-center  w-full h-[100px] rounded-[5.3px] mb-1 ">
-                            <div className="w-[50px]  grid place-content-center h-[50px]">
+                          <div className="mb-1 grid h-[100px] w-full place-content-center rounded-[5.3px] bg-[#F7F6F6]">
+                            <div className="grid h-[50px] w-[50px] place-content-center">
                               {typeof connector.icon === "string" ? (
                                 <img
                                   src={connector.icon}
@@ -81,9 +83,9 @@ const Connect = () => {
                                   {typeof connector.icon.light === "string" ? (
                                     connector.icon.light.startsWith("<svg") ? (
                                       <div
-                                        className="dark:hidden w-full h-full"
+                                        className="h-full w-full dark:hidden"
                                         dangerouslySetInnerHTML={{
-                                          __html: connector.icon.light,
+                                          __html: connector.icon.light
                                         }}
                                       />
                                     ) : (
@@ -97,9 +99,9 @@ const Connect = () => {
                                   {typeof connector.icon.dark === "string" ? (
                                     connector.icon.dark.startsWith("<svg") ? (
                                       <div
-                                        className="hidden dark:block w-full h-full"
+                                        className="hidden h-full w-full dark:block"
                                         dangerouslySetInnerHTML={{
-                                          __html: connector.icon.dark,
+                                          __html: connector.icon.dark
                                         }}
                                       />
                                     ) : (
@@ -114,7 +116,7 @@ const Connect = () => {
                               )}
                             </div>
                           </div>
-                          <span className="inline-block text-center w-[100px] truncate">
+                          <span className="inline-block w-[100px] truncate text-center">
                             {connector.name} {connector.available()}
                           </span>
                         </button>

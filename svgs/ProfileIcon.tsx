@@ -1,14 +1,14 @@
 const ProfileIcon = ({
   width = "2em",
-  height = "2em",
+  height = "2em"
 }: {
   width?: string;
   height?: string;
 }) => {
   return (
     <svg
-      width="36"
-      height="37"
+      width={width}
+      height={height}
       viewBox="0 0 36 37"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

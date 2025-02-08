@@ -11,7 +11,7 @@ const Footer = () => {
   const isDonationPage = pathname?.endsWith("/donate");
   return (
     <div>
-      <div className="flex items-center my-16 max-w-[1100px] justify-between  mx-auto">
+      <div className="mx-auto my-16 flex max-w-[1100px] items-center justify-between">
         <div className="w-[400px]">
           <h2 className="text-l mb-6">
             <span className="font-agrandir">Stay</span> Updated{" "}
@@ -23,20 +23,20 @@ const Footer = () => {
         </div>
         <div className="flex gap-6">
           <input
-            className="w-[423px] h-[45px] px-6 bg-[#FAFAFA] ring-1 ring-[#0000000A] rounded-[10px] placeholder:text-sm"
+            className="h-[45px] w-[423px] rounded-[10px] bg-[#FAFAFA] px-6 ring-1 ring-[#0000000A] placeholder:text-sm"
             placeholder="email address"
             type="text"
             name=""
             id=""
           />
-          <button className="bg-accent-green text-white text-sm px-4 py-1 rounded-[25px]">
+          <button className="rounded-[25px] bg-accent-green px-4 py-1 text-sm text-white">
             subscribe
           </button>
         </div>
       </div>
-      <div className="flex justify-between max-w-[1100px] text-[#8E9BAE] mb-16  mx-auto">
+      <div className="mx-auto mb-16 flex max-w-[1100px] justify-between text-[#8E9BAE]">
         <div className="w-[400px]">
-          <Link href="/" className="w-[12rem] inline-block">
+          <Link href="/" className="inline-block w-[12rem]">
             <Image src={"/logo.png"} alt={"logo"} width={2000} height={1342} />
           </Link>
           <p>
@@ -46,7 +46,7 @@ const Footer = () => {
         </div>
         <div className="flex gap-8">
           <div>
-            <p className="font-medium text-foreground-primary mb-4">company</p>
+            <p className="mb-4 font-medium text-foreground-primary">company</p>
             <ul className="flex flex-col gap-4">
               <li>
                 <p>About Us</p>
@@ -63,7 +63,7 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <p className="font-medium text-foreground-primary mb-4">
+            <p className="mb-4 font-medium text-foreground-primary">
               Resources
             </p>
             <ul className="flex flex-col gap-4">
@@ -82,7 +82,7 @@ const Footer = () => {
             </ul>
           </div>
           <div>
-            <p className="font-medium text-foreground-primary mb-4">Donate</p>
+            <p className="mb-4 font-medium text-foreground-primary">Donate</p>
             <ul className="flex flex-col gap-4">
               <li>
                 <p>Documentation</p>
@@ -99,7 +99,7 @@ const Footer = () => {
       </div>
       <footer>
         <div className="bg-[#282828]">
-          <div className="max-w-[1536px] mx-auto items-center p-16 justify-between h-[69px] flex text-white">
+          <div className="mx-auto flex h-[69px] max-w-[1536px] items-center justify-between p-16 text-white">
             <div className="flex gap-3">
               <p>
                 Copyright © {new Date().getFullYear()} TokenGiver all rights

@@ -8,7 +8,7 @@ import {
   Connector,
   StarknetConfig,
   starkscan,
-  useInjectedConnectors,
+  useInjectedConnectors
 } from "@starknet-react/core";
 import { jsonRpcProvider } from "@starknet-react/core";
 import { ReactNode, useCallback } from "react";
@@ -18,12 +18,12 @@ const StarknetProvider = ({ children }: { children: ReactNode }) => {
   const chains = [mainnet, sepolia];
   const { connectors: injected } = useInjectedConnectors({
     recommended: [argent(), braavos()],
-    includeRecommended: "always",
+    includeRecommended: "always"
   });
 
   const rpc = useCallback((chain: Chain) => {
     return {
-      nodeUrl: `https://starknet-${chain.network}.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`,
+      nodeUrl: `https://starknet-${chain.network}.g.alchemy.com/v2/${process.env.NEXT_PUBLIC_ALCHEMY_API_KEY}`
     };
   }, []);
 
@@ -32,18 +32,18 @@ const StarknetProvider = ({ children }: { children: ReactNode }) => {
   const ArgentMobile = ArgentMobileConnector.init({
     options: {
       dappName: "Token bound explorer",
-      url: "https://www.tbaexplorer.com/",
+      url: "https://www.tbaexplorer.com/"
     },
-    inAppBrowserOptions: {},
+    inAppBrowserOptions: {}
   });
 
   const connectors = [
     ...injected,
     new WebWalletConnector({
-      url: "https://web.argent.xyz",
+      url: "https://web.argent.xyz"
     }) as never as Connector,
     ArgentMobile as never as Connector,
-    cartridgeInstance,
+    cartridgeInstance
   ];
 
   return (

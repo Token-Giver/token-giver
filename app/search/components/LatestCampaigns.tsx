@@ -15,7 +15,7 @@ const CampaignCard = ({
   campaignAddress,
   target,
   cid,
-  maxHeight = "max-h-[200px]",
+  maxHeight = "max-h-[200px]"
 }: {
   src: string;
   alt: string;
@@ -52,13 +52,13 @@ const CampaignCard = ({
   return (
     <div
       onClick={handleRoute}
-      className="flex flex-col gap-4 cursor-pointer group"
+      className="group flex cursor-pointer flex-col gap-4"
     >
       <div
-        className={`w-full h-[300px] rounded-[10px] lg:flex-1 ${maxHeight}  overflow-hidden`}
+        className={`h-[300px] w-full rounded-[10px] lg:flex-1 ${maxHeight} overflow-hidden`}
       >
         <Image
-          className="rounded-[10px] w-full h-full object-cover object-center group-hover:scale-105 transition-all"
+          className="h-full w-full rounded-[10px] object-cover object-center transition-all group-hover:scale-105"
           loader={() => image}
           src={image}
           alt={alt}
@@ -67,17 +67,17 @@ const CampaignCard = ({
         />
       </div>
 
-      <p className="overflow-hidden capitalize line-clamp">
+      <p className="line-clamp overflow-hidden capitalize">
         {causeName || "Unknown Cause"}
       </p>
       <div className="">
-        <div className="w-full h-[.25rem] mb-2 relative">
-          <div className="w-full h-[1vw] max-h-[.25rem] bg-[#127c5548] rounded-full mb-4"></div>
+        <div className="relative mb-2 h-[.25rem] w-full">
+          <div className="mb-4 h-[1vw] max-h-[.25rem] w-full rounded-full bg-[#127c5548]"></div>
           <div
             style={{
-              width: width,
+              width: width
             }}
-            className={`h-[1vw] max-h-[.25rem] bg-[#127C56] rounded-full mb-4 top-0 absolute`}
+            className={`absolute top-0 mb-4 h-[1vw] max-h-[.25rem] rounded-full bg-[#127C56]`}
           ></div>
         </div>
         <div className="flex justify-between px-2 text-[.875rem]">
@@ -90,23 +90,23 @@ const CampaignCard = ({
 
 const LatestCampaigns = ({
   campaigns,
-  loading,
+  loading
 }: {
   campaigns: Campaign[];
   loading: boolean;
 }) => {
   return (
-    <section className=" max-w-[40rem] mx-auto  lg:mx-0 lg:max-w-none">
+    <section className="mx-auto max-w-[40rem] lg:mx-0 lg:max-w-none">
       <H3 style="mb-4">Latest campaigns</H3>
       {loading ? (
-        <div className="grid gap-4  md:gap-8 lg:grid-cols-3 md:max-w-[800px] lg:max-w-none md:mx-auto  md:justify-center">
+        <div className="grid gap-4 md:mx-auto md:max-w-[800px] md:justify-center md:gap-8 lg:max-w-none lg:grid-cols-3">
           {Array.from({ length: 12 }).map((_, idx) => (
             <CardLoader key={idx} />
           ))}
         </div>
       ) : (
         campaigns.length > 0 && (
-          <div className="lg:grid  lg:grid-cols-2 gap-8">
+          <div className="gap-8 lg:grid lg:grid-cols-2">
             <CampaignCard
               alt=""
               causeName={campaigns[0].name || "Unknown Cause"}
@@ -117,7 +117,7 @@ const LatestCampaigns = ({
               maxHeight="max-h-[520px]"
             />
             {campaigns.length >= 5 ? (
-              <div className="lg:grid lg:grid-cols-2 gap-4">
+              <div className="gap-4 lg:grid lg:grid-cols-2">
                 <CampaignCard
                   alt=""
                   causeName={campaigns[1].name || "Unknown Cause"}
@@ -153,7 +153,7 @@ const LatestCampaigns = ({
                 />
               </div>
             ) : (
-              <div className="text-theme-green flex items-center justify-center">
+              <div className="flex items-center justify-center text-theme-green">
                 <Logo />
               </div>
             )}

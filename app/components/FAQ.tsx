@@ -10,16 +10,16 @@ interface FAQItem {
 const faqData: FAQItem[] = [
   {
     question: "What is this website about?",
-    answer: "This website is [your website description here].",
+    answer: "This website is [your website description here]."
   },
   {
     question: "How do I get started?",
-    answer: "You can get started by [your instructions here].",
+    answer: "You can get started by [your instructions here]."
   },
   {
     question: "How can I contact support?",
-    answer: "You can reach our support team at [contact information].",
-  },
+    answer: "You can reach our support team at [contact information]."
+  }
   // Add more FAQ items as needed
 ];
 
@@ -32,10 +32,10 @@ const FAQ = () => {
 
   return (
     <div className="">
-      <div className="mb-8 max-w-[700px] mx-auto">
-        <h2 className="text-center mb-2 text-l">
-          <span className=" font-agrandir ">Frequently</span> Asked{" "}
-          <span className=" font-agrandir">Questions</span>
+      <div className="mx-auto mb-8 max-w-[700px]">
+        <h2 className="text-l mb-2 text-center">
+          <span className="font-agrandir">Frequently</span> Asked{" "}
+          <span className="font-agrandir">Questions</span>
         </h2>
         <p className="text-center text-foreground-secondary">
           Find quick answers to common queries in our FAQs section, designed to
@@ -44,14 +44,14 @@ const FAQ = () => {
         </p>
       </div>
 
-      <div className="space-y-4 text-sm mx-auto max-w-[800px]">
+      <div className="mx-auto max-w-[800px] space-y-4 text-sm">
         {faqData.map((item, index) => (
           <div
             key={index}
-            className="border-b-foreground-secondary border cursor-pointer border-x-transparent border-b-solid border-t-transparent"
+            className="border-b-solid cursor-pointer border border-x-transparent border-b-foreground-secondary border-t-transparent"
           >
             <button
-              className="w-full text-left p-4 focus:outline-none flex justify-between items-center"
+              className="flex w-full items-center justify-between p-4 text-left focus:outline-none"
               onClick={() => toggleAccordion(index)}
             >
               <span className="font-medium">{item.question}</span>
@@ -71,7 +71,7 @@ const FAQ = () => {
               }`}
             >
               <div className="overflow-hidden">
-                <div className="p-4 text-foreground-secondary pt-0">
+                <div className="p-4 pt-0 text-foreground-secondary">
                   {item.answer}
                 </div>
               </div>

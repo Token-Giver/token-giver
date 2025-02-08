@@ -13,7 +13,7 @@ import { redirect } from "next/navigation";
 import { H2 } from "@/app/components/util/Headers";
 
 const page = ({
-  params,
+  params
 }: {
   params: { name: string; address: string; cid: string };
 }) => {
@@ -29,12 +29,12 @@ const page = ({
     beneficiary: "",
     location: "",
     target: "",
-    address: "",
+    address: ""
   });
   const [donationCount, setDonationCount] = useState(0);
   const [withdrawalInputs, setWithdrawalInputs] = useState({
     beneficiary: "",
-    amount: "",
+    amount: ""
   });
   const [balance, setBalance] = useState(0);
   const [availableBalance, setAvailableBalance] = useState(0);
@@ -75,7 +75,7 @@ const page = ({
 
     setWithdrawalInputs((prev) => ({
       ...prev,
-      [name]: updatedValue,
+      [name]: updatedValue
     }));
   };
 
@@ -87,14 +87,14 @@ const page = ({
   return (
     <>
       {campaignDetails.name ? (
-        <section className=" mt-[4rem] min-h-[100svh]  bg-background">
-          <Container className="mx-auto py-10 md:py-16 px-4 md:px-10">
-            <div className="lg:flex gap-8  max-w-[500px] mx-auto md:mx-0  md:max-w-none relative">
-              <div className="lg:w-[60%] mx-auto flex flex-col gap-12">
+        <section className="mt-[4rem] min-h-[100svh] bg-background">
+          <Container className="mx-auto px-4 py-10 md:px-10 md:py-16">
+            <div className="relative mx-auto max-w-[500px] gap-8 md:mx-0 md:max-w-none lg:flex">
+              <div className="mx-auto flex flex-col gap-12 lg:w-[60%]">
                 <H2 style="font-bold">{campaignDetails.name}</H2>
-                <div className="rounded-[10px] h-[400px] relative w-full object-contain md:w-[80%] mx-auto">
+                <div className="relative mx-auto h-[400px] w-full rounded-[10px] object-contain md:w-[80%]">
                   <Image
-                    className="rounded-[10px] h-full w-full"
+                    className="h-full w-full rounded-[10px]"
                     loader={() => campaignDetails.image}
                     src={campaignDetails.image}
                     unoptimized
@@ -103,7 +103,7 @@ const page = ({
                     alt=""
                   />
                 </div>
-                <div className="flex flex-col gap-8 w-full md:w-[85%] md:mx-auto  lg:hidden">
+                <div className="flex w-full flex-col gap-8 md:mx-auto md:w-[85%] lg:hidden">
                   <div className="flex flex-col gap-4">
                     <p>
                       <span className="text-[2rem]">
@@ -112,13 +112,13 @@ const page = ({
                       raised of {campaignDetails.target || 0}STRK target
                     </p>
                     <div className="">
-                      <div className="w-full h-[.25rem] mb-2 relative">
-                        <div className="w-full h-[1vw] max-h-[.25rem] bg-[#127c5548] rounded-full mb-4"></div>
+                      <div className="relative mb-2 h-[.25rem] w-full">
+                        <div className="mb-4 h-[1vw] max-h-[.25rem] w-full rounded-full bg-[#127c5548]"></div>
                         <div
                           style={{
-                            width: width,
+                            width: width
                           }}
-                          className={`h-[1vw] max-h-[.25rem] bg-[#127C56] rounded-full mb-4 top-0 absolute`}
+                          className={`absolute top-0 mb-4 h-[1vw] max-h-[.25rem] rounded-full bg-[#127C56]`}
                         ></div>
                       </div>
                       <p>
@@ -128,7 +128,7 @@ const page = ({
                     </div>
                     <div>
                       <p>
-                        <span className="font-semibold ">
+                        <span className="font-semibold">
                           Available balance:
                         </span>{" "}
                         <span className="text-l">
@@ -146,17 +146,17 @@ const page = ({
                     availableBalance={availableBalance}
                   />
                   {!withdrawalFormOpen && (
-                    <div className="flex flex-col gap-4 text-white md:flex-row   ">
+                    <div className="flex flex-col gap-4 text-white md:flex-row">
                       <button
                         onClick={() => setWithdrawalFormOpen(true)}
-                        className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px] disabled:cursor-not-allowed flex justify-center items-center gap-2 "
+                        className="flex w-full items-center justify-center gap-2 rounded-[5px] bg-theme-green p-3 disabled:cursor-not-allowed md:w-1/2"
                       >
                         <span>withdraw</span>{" "}
                         <span className="text-theme-yellow">
                           <WithdrawIcon />
                         </span>
                       </button>
-                      <button className="w-full md:w-1/2 bg-theme-green p-3 rounded-[5px]  flex justify-center items-center gap-2">
+                      <button className="flex w-full items-center justify-center gap-2 rounded-[5px] bg-theme-green p-3 md:w-1/2">
                         <span>Share</span>
                         <span className="text-theme-yellow">
                           <ShareIcon />
@@ -166,29 +166,29 @@ const page = ({
                   )}
                 </div>
 
-                <div className="w-full md:w-[85%] md:mx-auto lg:w-full">
+                <div className="w-full md:mx-auto md:w-[85%] lg:w-full">
                   <p>{campaignDetails.description}</p>
                 </div>
-                <div className="flex flex-col w-full md:w-[85%] md:mx-auto md:flex-row gap-4 lg:w-full">
+                <div className="flex w-full flex-col gap-4 md:mx-auto md:w-[85%] md:flex-row lg:w-full">
                   <button
                     onClick={() => setWithdrawalFormOpen(true)}
-                    className=" w-full md:w-1/2 border-[1px] disabled:cursor-not-allowed border-solid border-theme-green p-3 rounded-[5px] font-bold"
+                    className="w-full rounded-[5px] border-[1px] border-solid border-theme-green p-3 font-bold disabled:cursor-not-allowed md:w-1/2"
                   >
                     Withdraw
                   </button>
-                  <button className="w-full md:w-1/2 border-[1px] border-solid border-theme-green p-3 rounded-[5px] font-bold">
+                  <button className="w-full rounded-[5px] border-[1px] border-solid border-theme-green p-3 font-bold md:w-1/2">
                     Share
                   </button>
                 </div>
 
-                <div className="border-solid border-t-[1px] border-gray-100 py-6 flex gap-4 items-center">
-                  <span className="bg-gray-100 h-[50px] w-[50px] rounded-full flex items-center justify-center">
+                <div className="flex items-center gap-4 border-t-[1px] border-solid border-gray-100 py-6">
+                  <span className="flex h-[50px] w-[50px] items-center justify-center rounded-full bg-gray-100">
                     <CalenderIcon />
                   </span>{" "}
                   <p>{campaignDetails.date}</p>
                 </div>
               </div>
-              <div className="hidden sticky top-8 bg-background p-8  rounded-[10px] w-[35%] h-fit lg:flex flex-col gap-4 shadow-small ">
+              <div className="sticky top-8 hidden h-fit w-[35%] flex-col gap-4 rounded-[10px] bg-background p-8 shadow-small lg:flex">
                 <div className="flex flex-col gap-4">
                   <p>
                     <span className="text-[2rem]">
@@ -197,13 +197,13 @@ const page = ({
                     raised of {campaignDetails.target || "0"} STRK target
                   </p>
                   <div className="">
-                    <div className="w-full h-[.25rem] mb-2 relative">
-                      <div className="w-full h-[1vw] max-h-[.25rem] bg-[#127c5548] rounded-full mb-4"></div>
+                    <div className="relative mb-2 h-[.25rem] w-full">
+                      <div className="mb-4 h-[1vw] max-h-[.25rem] w-full rounded-full bg-[#127c5548]"></div>
                       <div
                         style={{
-                          width: width,
+                          width: width
                         }}
-                        className={`h-[1vw] max-h-[.25rem] bg-[#127C56] rounded-full mb-4 top-0 absolute`}
+                        className={`absolute top-0 mb-4 h-[1vw] max-h-[.25rem] rounded-full bg-[#127C56]`}
                       ></div>
                     </div>
                     <p>
@@ -213,7 +213,7 @@ const page = ({
                   </div>
                   <div>
                     <p>
-                      <span className="font-semibold ">Available balance:</span>{" "}
+                      <span className="font-semibold">Available balance:</span>{" "}
                       <span className="text-l">
                         {availableBalance.toFixed(2)} STRK
                       </span>
@@ -233,7 +233,7 @@ const page = ({
                     <>
                       <button
                         onClick={() => setWithdrawalFormOpen(true)}
-                        className={`w-full bg-theme-green p-2 rounded-[5px]  disabled:cursor-not-allowed justify-center items-center text-white flex  gap-2`}
+                        className={`flex w-full items-center justify-center gap-2 rounded-[5px] bg-theme-green p-2 text-white disabled:cursor-not-allowed`}
                       >
                         <span>Withdraw</span>{" "}
                         <span className="text-theme-yellow">
@@ -241,7 +241,7 @@ const page = ({
                         </span>
                       </button>
 
-                      <button className="w-full bg-theme-green p-2 rounded-[5px]  flex justify-center items-center gap-2 text-white ">
+                      <button className="flex w-full items-center justify-center gap-2 rounded-[5px] bg-theme-green p-2 text-white">
                         <span>Share</span>
                         <span className="text-theme-yellow">
                           <ShareIcon />

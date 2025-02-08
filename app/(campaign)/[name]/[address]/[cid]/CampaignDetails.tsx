@@ -14,48 +14,48 @@ const CampaignDetails = ({
   organizer,
   date,
   description,
-  beneficiary,
+  beneficiary
 }: CampaignProgressProps) => {
   return (
     <div className="max-w-[602px] space-y-8">
       <div className="space-y-8">
-        <h3 className="text-2xl  text-foreground-primary">
+        <h3 className="text-2xl text-foreground-primary">
           <span className="font-agrandir font-bold">Campaign </span>
           <span className="font-normal">Highlights</span>
         </h3>
-        <p className="text-foreground-secondary leading-8">{description}</p>
+        <p className="leading-8 text-foreground-secondary">{description}</p>
         <div className="flex items-center gap-4">
-          <button className="ring-1 ring-accent-green w-full text-accent-green  px-2 py-2 rounded-[25px]">
+          <button className="w-full rounded-[25px] px-2 py-2 text-accent-green ring-1 ring-accent-green">
             Donate now
           </button>
 
-          <button className="ring-1 ring-accent-green w-full text-accent-green  px-2 py-2 rounded-[25px]">
+          <button className="w-full rounded-[25px] px-2 py-2 text-accent-green ring-1 ring-accent-green">
             share now
           </button>
         </div>
         <div>
           <h3 className="mb-6">Organizer and Beneficiary</h3>
-          <div className="flex items-center mb-8 justify-between">
+          <div className="mb-8 flex items-center justify-between">
             <div className="flex items-center gap-2">
-              <div className="h-[40px] grid place-content-center w-[40px] rounded-full bg-[#F7F7F6]">
+              <div className="grid h-[40px] w-[40px] place-content-center rounded-full bg-[#F7F7F6]">
                 <ProfileIcon />
               </div>
               <div>
-                <p className="font-bold text-base">{organizer}</p>
+                <p className="text-base font-bold">{organizer}</p>
                 <p>Organizer</p>
               </div>
             </div>
             {beneficiary && (
               <>
-                <p className="text-foreground-secondary text-xl">
+                <p className="text-xl text-foreground-secondary">
                   <RightArrowIcon />
                 </p>
                 <div className="flex items-center gap-2">
-                  <div className="h-[40px] grid place-content-center w-[40px] rounded-full bg-[#F7F7F6]">
+                  <div className="grid h-[40px] w-[40px] place-content-center rounded-full bg-[#F7F7F6]">
                     <ProfileIcon />
                   </div>
                   <div>
-                    <p className="font-bold text-base">{beneficiary}</p>
+                    <p className="text-base font-bold">{beneficiary}</p>
                     <p>Beneficiary</p>
                   </div>
                 </div>
@@ -71,34 +71,34 @@ const CampaignDetails = ({
         </div>
       </div>
       <div>
-        <h4 className="text-foreground-primary/80 mb-4 font-agrandir font-bold text-base">
+        <h4 className="mb-4 font-agrandir text-base font-bold text-foreground-primary/80">
           More Images
         </h4>
         <div className="grid grid-cols-2 gap-3">
-          <div className=" w-full rounded-[5px] bg-red h-[11rem]"></div>
-          <div className=" w-full rounded-[5px] bg-red h-[11rem]"></div>
-          <div className=" w-full rounded-[5px] bg-red h-[11rem]"></div>
-          <div className=" w-full rounded-[5px] bg-red h-[11rem]"></div>
+          <div className="h-[11rem] w-full rounded-[5px] bg-red"></div>
+          <div className="h-[11rem] w-full rounded-[5px] bg-red"></div>
+          <div className="h-[11rem] w-full rounded-[5px] bg-red"></div>
+          <div className="h-[11rem] w-full rounded-[5px] bg-red"></div>
         </div>
       </div>
       <div className="space-y-4">
-        <h3 className="text-2xl   text-foreground-primary">
+        <h3 className="text-2xl text-foreground-primary">
           <span className="font-agrandir font-bold">Wall</span>{" "}
           <span className="font-normal">of</span>{" "}
           <span className="font-agrandir font-bold">Love</span> (
           <span className="text-accent-green">23</span>)
         </h3>
-        <p className="text-foreground-secondary ">
+        <p className="text-foreground-secondary">
           A little word of encouragement would go a long way
         </p>
         <div className="flex items-center gap-3">
-          <div className="h-[40px] grid place-content-center w-[40px] rounded-full bg-[#F7F7F6]">
+          <div className="grid h-[40px] w-[40px] place-content-center rounded-full bg-[#F7F7F6]">
             <ProfileIcon />
           </div>
           <input
             type="text"
             placeholder="Add a comment"
-            className="placeholder:text-sm ring-1 ring-[#A1A1A1] w-[80%] rounded-[25px] px-3 h-[35px]"
+            className="h-[35px] w-[80%] rounded-[25px] px-3 ring-1 ring-[#A1A1A1] placeholder:text-sm"
           />
         </div>
         <div className="flex flex-col gap-3">
@@ -120,7 +120,7 @@ const CampaignDetails = ({
             timeAgo="2days ago"
             message="We are rooting for you Pedro⚡"
           />
-          <button className="ring-1 ml-8 ring-[#808080] w-[7rem]  text-sm px-4 py-2 mt-8 rounded-[25px] text-foreground-primary">
+          <button className="ml-8 mt-8 w-[7rem] rounded-[25px] px-4 py-2 text-sm text-foreground-primary ring-1 ring-[#808080]">
             See more
           </button>
         </div>

@@ -35,11 +35,11 @@ const page = () => {
 
   return (
     <section className="min-h-screen">
-      <Container className="mt-[5rem] py-10 px-4 md:px-10 lg:px-16">
+      <Container className="mt-[5rem] px-4 py-10 md:px-10 lg:px-16">
         <H2 style="my-[5rem]">Browse Fundraisers</H2>
         <section
           id="fundraisers"
-          className="grid gap-4  md:gap-8 lg:grid-cols-3 md:max-w-[800px] lg:max-w-none md:mx-auto  md:justify-center "
+          className="grid gap-4 md:mx-auto md:max-w-[800px] md:justify-center md:gap-8 lg:max-w-none lg:grid-cols-3"
         >
           {loading
             ? Array.from({ length: 12 }).map((_, idx) => (
@@ -53,7 +53,7 @@ const page = () => {
                   id,
                   location,
                   cid,
-                  target,
+                  target
                 } = nft || {};
                 const path = name
                   .replace(/[^a-zA-Z ]/g, "")

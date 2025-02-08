@@ -7,7 +7,7 @@ const StepTwo = ({
   inputData,
   handleInputChange,
   address,
-  setInputData,
+  setInputData
 }: {
   step: {
     number: number;
@@ -23,13 +23,13 @@ const StepTwo = ({
   return (
     <fieldset
       id="step2Fieldset"
-      className={`flex-col gap-4  ${
+      className={`flex-col gap-4 ${
         step.number === 2 || step.number === 1 ? "flex" : "hidden"
       }`}
     >
       <label htmlFor="name">Name:</label>
       <div className="relative">
-        <p className="absolute top-[-1.2rem] right-[.5em] text-red text-[.7em]">
+        <p className="absolute right-[.5em] top-[-1.2rem] text-[.7em] text-red">
           Required*
         </p>
         <input
@@ -39,19 +39,19 @@ const StepTwo = ({
           value={inputData.name}
           onChange={handleInputChange}
           placeholder="Name of campaign"
-          className={`w-full bg-transparent border-solid border-[1px] border-gray-300 p-3 rounded-[10px]`}
+          className={`w-full rounded-[10px] border-[1px] border-solid border-gray-300 bg-transparent p-3`}
           disabled={!address}
         />
       </div>
       <label htmlFor="description">Description of campaign:</label>
       <div className="relative">
-        <p className="absolute top-[-1.2rem] right-[.5em] text-red text-[.7em]">
+        <p className="absolute right-[.5em] top-[-1.2rem] text-[.7em] text-red">
           Required*
         </p>
         <textarea
           required
           placeholder="Write your description here..."
-          className={`w-full bg-transparent border-solid border-[1px] border-gray-300 p-4  leading-6 rounded-[10px] resize-none overflow-y-auto no-scrollbar`}
+          className={`no-scrollbar w-full resize-none overflow-y-auto rounded-[10px] border-[1px] border-solid border-gray-300 bg-transparent p-4 leading-6`}
           disabled={!address}
           onChange={handleInputChange}
           name="description"

@@ -23,25 +23,25 @@ const Fundraisers = () => {
   }, []);
 
   return (
-    <section className="max-w-[1536px]  2xl:mx-auto">
+    <section className="max-w-[1536px] 2xl:mx-auto">
       <FeaturedCampaigns />
 
-      <div className="mt-16 ">
-        <div className="relative  mx-auto mb-8">
+      <div className="mt-16">
+        <div className="relative mx-auto mb-8">
           {/* Gradient indicators for scroll */}
-          <div className="absolute left-0 top-0 bottom-0 w-12 bg-gradient-to-r from-white to-transparent z-10"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-12 bg-gradient-to-l from-white to-transparent z-10"></div>
+          <div className="absolute bottom-0 left-0 top-0 z-10 w-12 bg-gradient-to-r from-white to-transparent"></div>
+          <div className="absolute bottom-0 right-0 top-0 z-10 w-12 bg-gradient-to-l from-white to-transparent"></div>
 
           {/* Scrollable container */}
-          <div className="overflow-x-auto flex gap-4 pb-4 px-4 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:'none'] [scrollbar-width:'none'] scrollbar-hide">
+          <div className="scrollbar-hide flex gap-4 overflow-x-auto px-4 pb-4 [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden">
             {/* Category buttons */}
             {CATEGORIES.map((category, index) => (
               <button
                 key={index}
-                className={`shrink-0 font-agrandir px-2 py-1 text-sm rounded-full transition-colors ${
+                className={`shrink-0 rounded-full px-2 py-1 font-agrandir text-sm transition-colors ${
                   index === 0
                     ? "bg-accent-green text-white hover:bg-[#0f6647]"
-                    : " bg-[#F7F7F6] text-foreground-primary"
+                    : "bg-[#F7F7F6] text-foreground-primary"
                 }`}
               >
                 {category.name}
@@ -78,8 +78,8 @@ const Fundraisers = () => {
           />
         )}
 
-        <div className="mt-16 max-w-[1242px] flex flex-col items-center mx-auto">
-          <div className="grid grid-cols-4  gap-4 ">
+        <div className="mx-auto mt-16 flex max-w-[1242px] flex-col items-center">
+          <div className="grid grid-cols-4 gap-4">
             {loading
               ? Array.from({ length: 12 }).map((_, idx) => (
                   <CardLoader key={idx} />
@@ -116,7 +116,7 @@ const Fundraisers = () => {
           </div>
           <button
             onClick={handleRouteToCampaigns}
-            className="ring-1 ring-[#808080] w-[7rem] mx-auto text-sm px-4 py-2 mt-8 rounded-[25px] text-foreground-primary"
+            className="mx-auto mt-8 w-[7rem] rounded-[25px] px-4 py-2 text-sm text-foreground-primary ring-1 ring-[#808080]"
           >
             See more
           </button>

@@ -11,7 +11,7 @@ import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 const Donate = ({
-  params,
+  params
 }: {
   params: { name: string; address: string; cid: string };
 }) => {
@@ -35,7 +35,7 @@ const Donate = ({
     beneficiary: "",
     location: "",
     target: "",
-    address: "",
+    address: ""
   });
 
   useEffect(() => {
@@ -81,57 +81,57 @@ const Donate = ({
   const divRef = useRef<HTMLDivElement | null>(null);
 
   return (
-    <section className="bg-background md:bg-theme-green w-screen min-h-screen   flex justify-between ">
-      <div className="hidden w-[40%] md:flex flex-col p-4 items-center ">
+    <section className="flex min-h-screen w-screen justify-between bg-background md:bg-theme-green">
+      <div className="hidden w-[40%] flex-col items-center p-4 md:flex">
         <button
           onClick={handleRouteToCampaign}
-          className="w-fit text-[1.2em] self-start justify-self-start text-white flex items-center"
+          className="flex w-fit items-center self-start justify-self-start text-[1.2em] text-white"
         >
-          <span className="text-white inline-block transform rotate-180">
+          <span className="inline-block rotate-180 transform text-white">
             <RightArrowIcon />
           </span>
           <span>campaign</span>
         </button>
         <div className="my-auto">
-          <p className="font-bold text-white text-[1.5em]">
+          <p className="text-[1.5em] font-bold text-white">
             <Logo />
           </p>
 
           <H2 style="text-theme-yellow">Every Token Counts!</H2>
-          <div className="flex gap-2 items-center text-white">
-            <p className=" mt-3 ">Empowering Change Through Generosity</p>
+          <div className="flex items-center gap-2 text-white">
+            <p className="mt-3">Empowering Change Through Generosity</p>
           </div>
         </div>
       </div>
-      <div className="bg-background max-w-[500px] mx-auto md:max-w-none py-10 px-4 lg:py-10 lg:px-[5vw] w-full md:w-[60%]  md:rounded-tl-[50px] md:shadow-hero-shadow flex flex-col gap-10 md:gap-20 ">
+      <div className="mx-auto flex w-full max-w-[500px] flex-col gap-10 bg-background px-4 py-10 md:w-[60%] md:max-w-none md:gap-20 md:rounded-tl-[50px] md:shadow-hero-shadow lg:px-[5vw] lg:py-10">
         <div className="flex flex-wrap items-center justify-between md:justify-end">
           <button
             onClick={handleRouteToCampaign}
-            className="block md:hidden w-fit text-[1em] md:text-[1.2em] self-start justify-self-start"
+            className="block w-fit self-start justify-self-start text-[1em] md:hidden md:text-[1.2em]"
           >
             &lt; campaign
           </button>
           <ConnectButton />
         </div>
-        <div className=" w-full lg:min-w-[35rem] lg:w-[75%] md:my-auto mx-auto px-4 lg:px-12 flex flex-col gap-4">
+        <div className="mx-auto flex w-full flex-col gap-4 px-4 md:my-auto lg:w-[75%] lg:min-w-[35rem] lg:px-12">
           <div className="md:hidden">
-            <p className="font-bold text-[1.5em] text-theme-green flex items-center gap-1">
+            <p className="flex items-center gap-1 text-[1.5em] font-bold text-theme-green">
               <Logo />
             </p>
             <h2 className="text-theme-yellow">Every Token Counts!</h2>
           </div>
-          <div className="flex flex-col-reverse gap-8 md:grid md:grid-cols-3 md:gap-4 ">
-            <div className="hidden md:block w-[130px] h-[90px] rounded-[5px] relative">
+          <div className="flex flex-col-reverse gap-8 md:grid md:grid-cols-3 md:gap-4">
+            <div className="relative hidden h-[90px] w-[130px] rounded-[5px] md:block">
               <Image
-                className="w-full h-full rounded-[5px] object-cover"
+                className="h-full w-full rounded-[5px] object-cover"
                 src={campaignDetails.image}
                 alt=""
                 fill
                 sizes="100%"
               />
             </div>
-            <div className="col-span-2 ">
-              <p className=" text-clamp md:text-[1em]">
+            <div className="col-span-2">
+              <p className="text-clamp md:text-[1em]">
                 You are supporting{" "}
                 <span className="font-semibold"> {campaignDetails.name}</span>
               </p>
@@ -143,15 +143,15 @@ const Donate = ({
               </p>
             </div>
           </div>
-          <div className="w-fit mx-auto mt-8">
+          <div className="mx-auto mt-8 w-fit">
             <h5 className="font-medium">Send STRK</h5>
-            <div className="h-[70px] w-[70px]  relative rounded-full mx-auto">
+            <div className="relative mx-auto h-[70px] w-[70px] rounded-full">
               <img
-                className="rounded-full h-full w-full"
+                className="h-full w-full rounded-full"
                 src={`${token === "STRK" ? "/strk.webp" : "/eth.svg"}`}
                 alt=""
               />
-              <div className="right-[-10%] top-[60%] absolute bg-theme-green h-[30px] w-[30px] flex items-center justify-center rounded-full">
+              <div className="absolute right-[-10%] top-[60%] flex h-[30px] w-[30px] items-center justify-center rounded-full bg-theme-green">
                 <SendIcon />
               </div>
             </div>
@@ -162,7 +162,7 @@ const Donate = ({
 
             <div
               ref={divRef}
-              className="relative w-full min-h-[5.5rem] bg-transparent border-solid border-[1px] rounded-[10px] px-5 border-gray-300 grid grid-cols-10 justify-between focus:border-[#159968] focus:border-[2px]"
+              className="relative grid min-h-[5.5rem] w-full grid-cols-10 justify-between rounded-[10px] border-[1px] border-solid border-gray-300 bg-transparent px-5 focus:border-[2px] focus:border-[#159968]"
             >
               <input
                 onFocus={() => {
@@ -178,24 +178,24 @@ const Donate = ({
                 disabled={!address}
                 type="text"
                 style={{
-                  fontSize: `${fontSize}em`,
+                  fontSize: `${fontSize}em`
                 }}
                 name="amount"
                 value={amount}
-                className="col-span-8  w-full py-5 bg-transparent focus:outline-none"
+                className="col-span-8 w-full bg-transparent py-5 focus:outline-none"
                 placeholder="0"
                 onChange={handleInputChange}
               />
-              <div className="col-span-2  flex flex-col gap-4 items-center mt-[1.5rem] relative">
+              <div className="relative col-span-2 mt-[1.5rem] flex flex-col items-center gap-4">
                 <select
                   disabled={!address}
                   onChange={handleTokenSelect}
-                  className=" text-[.875em] w-fit  border-solid border-[1px] border-gray-400  bg-transparent rounded-full"
+                  className="w-fit rounded-full border-[1px] border-solid border-gray-400 bg-transparent text-[.875em]"
                   name="token"
                 >
                   <option value="STRK">STRK</option>
                 </select>
-                <p className="absolute min-w-[120px] right-0 bottom-[.5rem] text-[.75em]">
+                <p className="absolute bottom-[.5rem] right-0 min-w-[120px] text-[.75em]">
                   Balance: {parseFloat(balance).toFixed(2)} STRK
                 </p>
               </div>
@@ -212,7 +212,7 @@ const Donate = ({
                   handleRouteToCampaign
                 );
               }}
-              className=" bg-theme-green text-white py-3 px-6 rounded-[10px] w-full"
+              className="w-full rounded-[10px] bg-theme-green px-6 py-3 text-white"
             >
               {sendingState}
             </button>

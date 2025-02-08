@@ -3,11 +3,11 @@ import { H2 } from "../components/util/Headers";
 
 const page = () => {
   return (
-    <section className="py-[5rem] px-4 lg:px-[10vw]">
+    <section className="px-4 py-[5rem] lg:px-[10vw]">
       <Container>
         <H2 style="text-center text-theme-green mt-16">How Token Giver work</H2>
 
-        <div className="flex flex-col gap-8 md:w-[70%] mx-auto my-16 md:text-justify">
+        <div className="mx-auto my-16 flex flex-col gap-8 md:w-[70%] md:text-justify">
           <p>
             So you've decided to start fundraising – whether it's for yourself,
             a worthy cause, a charity, or to launch that creative project you've
