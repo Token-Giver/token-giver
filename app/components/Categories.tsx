@@ -6,7 +6,7 @@ const Categories = () => {
   return (
     <div>
       <div className="mb-8">
-        <h2 className="text-l text-center">
+        <h2 className="text-l mb-4 text-center">
           <span className="font-agrandir">Browse</span> Causes{" "}
           <span className="font-agrandir">By Categories</span>
         </h2>

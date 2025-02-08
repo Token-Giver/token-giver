@@ -1,12 +1,13 @@
 import { Card } from "@/app/components/Fundraiser/Card";
-import { H3 } from "@/app/components/util/Headers";
 import { Campaign } from "@/types";
 
 const FilteredCampaigns = ({ campaigns }: { campaigns: Campaign[] }) => {
   return (
-    <section>
-      <H3 style="mb-4">Search Results</H3>
-      <div className="grid gap-4 md:mx-auto md:max-w-[800px] md:justify-center md:gap-8 lg:max-w-none lg:grid-cols-3">
+    <div className="mx-auto mb-8 mt-16 flex max-w-[1242px] animate-fadeIn flex-col">
+      <h3 className="ml-6 font-agrandir text-2xl text-foreground-primary">
+        Search Results
+      </h3>
+      <div className="grid grid-cols-4 gap-4">
         {campaigns.map((campaign, idx) => {
           const path = campaign.name
             .replace(/[^a-zA-Z ]/g, "")
@@ -37,7 +38,7 @@ const FilteredCampaigns = ({ campaigns }: { campaigns: Campaign[] }) => {
           );
         })}
       </div>
-    </section>
+    </div>
   );
 };
 

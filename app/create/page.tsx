@@ -17,7 +17,6 @@ import {
 } from "../utils/data";
 import Container from "../components/util/Container";
 import CreateCampaignLoader from "../components/loading/CreateCampaignLoader";
-import { H2 } from "../components/util/Headers";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
 import { useRouter } from "next/navigation";
 import Connect from "../components/Connect";
@@ -238,7 +237,9 @@ const Page = () => {
             <p className="text-[1.5em] font-bold text-white">
               <Logo />
             </p>
-            <H2 style="text-theme-yellow">Start your fundraising journey!</H2>
+            <h2 className="text-theme-yellow">
+              Start your fundraising journey!
+            </h2>
 
             <div className="flex items-center gap-2 text-white">
               <span className="">

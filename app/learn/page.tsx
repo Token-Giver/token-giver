@@ -1,11 +1,12 @@
 import Container from "../components/util/Container";
-import { H2 } from "../components/util/Headers";
 
 const page = () => {
   return (
     <section className="px-4 py-[5rem] lg:px-[10vw]">
       <Container>
-        <H2 style="text-center text-theme-green mt-16">How Token Giver work</H2>
+        <h2 className="mt-16 text-center text-theme-green">
+          How Token Giver work
+        </h2>
 
         <div className="mx-auto my-16 flex flex-col gap-8 md:w-[70%] md:text-justify">
           <p>

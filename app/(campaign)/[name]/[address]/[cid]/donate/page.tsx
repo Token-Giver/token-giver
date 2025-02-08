@@ -1,7 +1,7 @@
 "use client";
 
 import Connect from "@/app/components/Connect";
-import { H2 } from "@/app/components/util/Headers";
+
 import { fetchBalance, fetchCampaign, handleDonate } from "@/app/utils/helper";
 import Logo from "@/svgs/Logo";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
@@ -98,7 +98,7 @@ const Donate = ({
             <Logo />
           </p>
 
-          <H2 style="text-theme-yellow">Every Token Counts!</H2>
+          <h2 className="text-theme-yellow">Every Token Counts!</h2>
           <div className="flex items-center gap-2 text-white">
             <p className="mt-3">Empowering Change Through Generosity</p>
           </div>

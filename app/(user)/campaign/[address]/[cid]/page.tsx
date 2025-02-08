@@ -10,7 +10,6 @@ import WithdrawalForm from "./components/WithdrawalForm";
 import { fetchCampaign } from "@/app/utils/helper";
 import { useAccount } from "@starknet-react/core";
 import { redirect } from "next/navigation";
-import { H2 } from "@/app/components/util/Headers";
 
 const page = ({
   params
@@ -91,7 +90,7 @@ const page = ({
           <Container className="mx-auto px-4 py-10 md:px-10 md:py-16">
             <div className="relative mx-auto max-w-[500px] gap-8 md:mx-0 md:max-w-none lg:flex">
               <div className="mx-auto flex flex-col gap-12 lg:w-[60%]">
-                <H2 style="font-bold">{campaignDetails.name}</H2>
+                <h2 className="font-bold">{campaignDetails.name}</h2>
                 <div className="relative mx-auto h-[400px] w-full rounded-[10px] object-contain md:w-[80%]">
                   <Image
                     className="h-full w-full rounded-[10px]"

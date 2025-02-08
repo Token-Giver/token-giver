@@ -5,7 +5,7 @@ import ShareIcon from "@/svgs/ShareIcon";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import CampaignSlider from "./CampaignSlider";
+import CampaignSlider from "../../../../components/Fundraiser/CampaignSlider";
 import CampaignProgress from "./CampaignProgress";
 import CampaignDetails from "./CampaignDetails";
 
@@ -133,6 +133,13 @@ const page = ({
           />
         </div>
       )}
+      <div className="mx-auto max-w-[1204px] space-y-4">
+        <h3 className="text-2xl text-foreground-primary">
+          <span className="font-agrandir font-bold">Make a Difference.</span>{" "}
+          <span className="font-normal">See Similar Campaigns</span>{" "}
+          <span className="font-agrandir font-bold">like This </span>
+        </h3>
+      </div>
       <CampaignSlider />
     </>
   );

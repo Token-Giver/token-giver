@@ -1,13 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
-import Container from "../components/util/Container";
 import { fetchCampaigns, searchCampaigns } from "../utils/helper";
 import { campaign_contract } from "../utils/data";
 import { useDebounce } from "../hooks";
 import { Campaign } from "@/types";
 import FilteredCampaigns from "./components/FilteredCampaigns";
 import LatestCampaigns from "./components/LatestCampaigns";
-import { H2 } from "../components/util/Headers";
+import Categories from "../components/Categories";
+import FAQ from "../components/FAQ";
+import SearchIcon from "@/svgs/SearchIcon";
 
 const page = () => {
   const [search, setSearch] = useState("");
@@ -46,17 +47,29 @@ const page = () => {
   }, [debouncedSearch]);
 
   return (
-    <section className="min-h-[100svh] px-4 py-[5rem] lg:px-[10vw]">
-      <Container className="flex flex-col gap-8">
-        <div className="text-center">
-          <H2 style="mb-4">Search campaigns on Token Giver</H2>
-          <p>Find campaigns by location, title, or organizer</p>
+    <section className="mx-auto mt-[5rem] min-h-[40vh] animate-fadeIn px-16 py-8">
+      <div>
+        <div className="mx-auto max-w-[1204px] space-y-5 text-center">
+          <p className="text-foreground-secondary">
+            Search campaigns on Token Giver
+          </p>
+          <h2 className="font-agrandir text-foreground-primary">
+            Discover Causes That Matter
+          </h2>
+          <p className="mx-auto max-w-[900px] text-foreground-secondary">
+            Our advanced search tool allows you to explore causes that resonate
+            with your values. Use keywords, categories, or filters to discover
+            campaigns that align with your passions.
+          </p>
         </div>
-        <div className="flex justify-center">
+        <div className="relative mx-auto my-20 max-w-[800px]">
+          <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2">
+            <SearchIcon />
+          </span>
           <input
-            className="w-full max-w-[30rem] rounded-[10px] border-[1px] border-solid border-gray-400 bg-transparent p-3 md:max-w-[40rem]"
+            className="h-[45px] w-full rounded-[25px] px-10 ring-1 ring-gray-100 placeholder:text-sm"
             type="text"
-            placeholder="search"
+            placeholder="search Campaign"
             name="search"
             onChange={(e) => setSearch(e.target.value)}
           />
@@ -67,7 +80,11 @@ const page = () => {
         ) : (
           <LatestCampaigns campaigns={latestCampaigns} loading={loading} />
         )}
-      </Container>
+      </div>
+      <Categories />
+      <div className="mt-12">
+        <FAQ />
+      </div>
     </section>
   );
 };

@@ -30,11 +30,6 @@ const CampaignSlider = () => {
 
   return (
     <div className="mx-auto max-w-[1204px] space-y-4">
-      <h3 className="text-2xl text-foreground-primary">
-        <span className="font-agrandir font-bold">Make a Difference.</span>{" "}
-        <span className="font-normal">See Similar Campaigns</span>{" "}
-        <span className="font-agrandir font-bold">like This </span>
-      </h3>
       <div className="flex items-center justify-end gap-4">
         <button
           onClick={prevSlide}
@@ -58,12 +53,18 @@ const CampaignSlider = () => {
           <RightArrowIcon />
         </button>
       </div>
-      <div className="flex items-center justify-between">
-        {loading
-          ? Array.from({ length: 4 }).map((_, idx) => <CardLoader key={idx} />)
-          : collections
-              .slice(currentSlide, currentSlide + 4)
-              .map((data, idx) => {
+      <div className="overflow-hidden">
+        <div 
+          className="flex transition-transform duration-500 ease-in-out"
+          style={{ transform: `translateX(-${currentSlide * 25}%)` }}
+        >
+          {loading
+            ? Array.from({ length: 4 }).map((_, idx) => (
+                <div key={idx} className="w-1/4 flex-shrink-0">
+                  <CardLoader />
+                </div>
+              ))
+            : collections.map((data, idx) => {
                 const path = data.name
                   .replace(/[^a-zA-Z ]/g, "")
                   .replace(/ /g, "-")
@@ -72,26 +73,28 @@ const CampaignSlider = () => {
 
                 const url = `${path}/${data.campaign_address}/${data.cid}`;
                 return (
-                  <Card
-                    cid={data.cid}
-                    causeName={data.name || "Unknown Cause"}
-                    imageSrc={
-                      `${
-                        process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL
-                      }${data.image?.slice(7, -1)}?pinataGatewayToken=${
-                        process.env.NEXT_PUBLIC_PINATA_API_KEY
-                      }` || "/default-image.webp"
-                    }
-                    location={data.location}
-                    progress={0}
-                    key={idx}
-                    token_id={data.id}
-                    campaign_address={data.campaign_address || "0x0"}
-                    target={data.target}
-                    url={url}
-                  />
+                  <div key={idx} className="w-1/4 flex-shrink-0">
+                    <Card
+                      cid={data.cid}
+                      causeName={data.name || "Unknown Cause"}
+                      imageSrc={
+                        `${
+                          process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL
+                        }${data.image?.slice(7, -1)}?pinataGatewayToken=${
+                          process.env.NEXT_PUBLIC_PINATA_API_KEY
+                        }` || "/default-image.webp"
+                      }
+                      location={data.location}
+                      progress={0}
+                      token_id={data.id}
+                      campaign_address={data.campaign_address || "0x0"}
+                      target={data.target}
+                      url={url}
+                    />
+                  </div>
                 );
               })}
+        </div>
       </div>
     </div>
   );

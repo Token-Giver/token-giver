@@ -1,10 +1,6 @@
 "use client";
-import GiveIcon from "@/svgs/GiveIcon";
-import GrowIcon from "@/svgs/GrowIcon";
-import LoveIcon from "@/svgs/LoveIcon";
 import { usePathname } from "next/navigation";
 import Container from "./util/Container";
-import { H2 } from "./util/Headers";
 import SendIcon from "@/svgs/SendIcon";
 import WalletIcon from "@/svgs/WalletIcon";
 import CreateIcon from "@/svgs/CreateIcon";
@@ -21,7 +17,7 @@ const Features = () => {
     >
       <Container>
         <div className="mb-[5rem]">
-          <H2>Fundraising on token giver only takes a few minutes</H2>
+          <h2>Fundraising on token giver only takes a few minutes</h2>
         </div>
         <div
           id="feat-section"
