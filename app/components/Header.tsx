@@ -46,7 +46,7 @@ const Header = () => {
                 <Link
                   href={"/discover"}
                   className={
-                    pathname === "/discover"
+                    pathname?.startsWith("/discover")
                       ? "font-medium text-accent-green"
                       : ""
                   }

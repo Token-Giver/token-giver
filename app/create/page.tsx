@@ -23,6 +23,11 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Stepper from "./components/Stepper";
+import {
+  UseFormRegister,
+  FieldErrors,
+  UseFormHandleSubmit
+} from "react-hook-form";
 
 // const CreateCampaignSchema = z.object({
 //   name: z.string().min(3, "Campaign name must be at least 3 characters"),
@@ -90,13 +95,40 @@ const StepThreeSchema = z.object({
     .refine((val) => val > 0, "Target must be greater than 0"),
   location: z.string().min(2, "Location is required"),
   organiser: z.string().min(2, "Organizer name is required"),
-  beneficiary: z.string().min(2, "Beneficiary name is required")
+  beneficiary: z.string().min(2, "Beneficiary name is required"),
+  socials: z
+    .object({
+      website: z.string().url("Invalid URL").optional(),
+      twitter: z.string().url("Invalid URL").optional(),
+      instagram: z.string().url("Invalid URL").optional(),
+      youtube: z.string().url("Invalid URL").optional(),
+      github: z.string().url("Invalid URL").optional()
+    })
+    .optional()
 });
 
 const stepSchemas = [StepTwoSchema, StepThreeSchema];
 
 // Create union type of both schema types
 type FormData = z.infer<typeof StepTwoSchema> | z.infer<typeof StepThreeSchema>;
+
+// Create union type for all form fields
+export type StepTwoFields = z.infer<typeof StepTwoSchema> & {
+  additionalImages?: FileList;
+};
+export type StepThreeFields = z.infer<typeof StepThreeSchema>;
+export type AllFormFields = StepTwoFields & StepThreeFields;
+
+// Update the component props types
+type StepProps = {
+  disabled: boolean;
+  onNextStep: () => void;
+  register: UseFormRegister<StepTwoFields> | UseFormRegister<StepThreeFields>;
+  errors: FieldErrors<StepTwoFields> | FieldErrors<StepThreeFields>;
+  handleSubmit:
+    | UseFormHandleSubmit<StepTwoFields>
+    | UseFormHandleSubmit<StepThreeFields>;
+};
 
 const Page = () => {
   const router = useRouter();
@@ -129,8 +161,9 @@ const Page = () => {
     resolver: zodResolver(StepThreeSchema)
   });
 
-  // Use the appropriate form based on current step
+  // Update how currentForm is used
   const currentForm = currentStep === 2 ? stepTwoForm : stepThreeForm;
+
   const {
     register,
     handleSubmit,
@@ -337,17 +370,21 @@ const Page = () => {
               <StepTwo
                 disabled={!isWalletConnected || currentStep === 1}
                 onNextStep={handleNextStep}
-                register={register}
-                errors={errors}
-                handleSubmit={handleSubmit}
+                register={register as UseFormRegister<StepTwoFields>}
+                errors={errors as FieldErrors<StepTwoFields>}
+                handleSubmit={
+                  handleSubmit as UseFormHandleSubmit<StepTwoFields>
+                }
               />
             )}
 
             {currentStep === 3 && (
               <StepThree
-                register={register}
-                handleSubmit={handleSubmit}
-                errors={errors}
+                register={register as UseFormRegister<StepThreeFields>}
+                errors={errors as FieldErrors<StepThreeFields>}
+                handleSubmit={
+                  handleSubmit as UseFormHandleSubmit<StepThreeFields>
+                }
                 disabled={!isWalletConnected}
                 onNextStep={() => alert("hii")}
               />

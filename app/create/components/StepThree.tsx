@@ -3,22 +3,17 @@ import {
   FieldErrors,
   UseFormHandleSubmit
 } from "react-hook-form";
-// import {
-//   FaTwitter,
-//   FaYoutube,
-//   FaInstagram,
-//   FaGlobe,
-//   FaGithub
-// } from "react-icons/fa";
-import { CreateCampaignType } from "../page";
 import XIcon from "@/svgs/XIcon";
+import { StepThreeFields, StepTwoFields } from "../page";
 
 interface StepThreeProps {
   disabled: boolean;
-  register: UseFormRegister<CreateCampaignType>;
-  errors: FieldErrors<CreateCampaignType>;
-  handleSubmit: UseFormHandleSubmit<CreateCampaignType>;
   onNextStep: () => void;
+  register: UseFormRegister<StepTwoFields> | UseFormRegister<StepThreeFields>;
+  errors: FieldErrors<StepTwoFields> | FieldErrors<StepThreeFields>;
+  handleSubmit:
+    | UseFormHandleSubmit<StepTwoFields>
+    | UseFormHandleSubmit<StepThreeFields>;
 }
 
 const StepThree = ({
@@ -74,7 +69,7 @@ const StepThree = ({
             STRK
           </span>
           <input
-            {...register("target", {
+            {...(register as UseFormRegister<StepThreeFields>)("target", {
               pattern: {
                 value: /^[0-9]*$/,
                 message: "Please enter numbers only"
@@ -85,13 +80,13 @@ const StepThree = ({
             id="target"
             disabled={disabled}
             className={`w-full rounded-[7px] border pl-8 ${
-              errors.target ? "border-red" : "border-[#DAE0E6]"
+              (errors as FieldErrors<StepThreeFields>).target ? "border-red" : "border-[#DAE0E6]"
             } py-3 pl-12 pr-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
             placeholder="Enter target amount"
           />
         </div>
-        {errors.target && (
-          <p className="mt-1 text-sm text-red">{errors.target.message}</p>
+        {(errors as FieldErrors<StepThreeFields>).target && (
+          <p className="mt-1 text-sm text-red">{(errors as FieldErrors<StepThreeFields>).target?.message}</p>
         )}
       </div>
 
@@ -103,17 +98,17 @@ const StepThree = ({
           Location <span className="text-[#FF8A25]">*</span>
         </label>
         <input
-          {...register("location")}
+          {...(register as UseFormRegister<StepThreeFields>)("location")}
           type="text"
           id="location"
           disabled={disabled}
           className={`w-full rounded-[7px] border ${
-            errors.location ? "border-red" : "border-[#DAE0E6]"
+            (errors as FieldErrors<StepThreeFields>).location ? "border-red" : "border-[#DAE0E6]"
           } px-3 py-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
           placeholder="Enter campaign location"
         />
-        {errors.location && (
-          <p className="mt-1 text-sm text-red">{errors.location.message}</p>
+        {(errors as FieldErrors<StepThreeFields>).location && (
+          <p className="mt-1 text-sm text-red">{(errors as FieldErrors<StepThreeFields>).location?.message}</p>
         )}
       </div>
 
@@ -125,17 +120,17 @@ const StepThree = ({
           Organiser Details <span className="text-[#FF8A25]">*</span>
         </label>
         <input
-          {...register("organiser")}
+          {...(register as UseFormRegister<StepThreeFields>)("organiser")}
           type="text"
           id="organiser"
           disabled={disabled}
           className={`w-full rounded-[7px] border ${
-            errors.organiser ? "border-red" : "border-[#DAE0E6]"
+            (errors as FieldErrors<StepThreeFields>).organiser ? "border-red" : "border-[#DAE0E6]"
           } px-3 py-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
           placeholder="Enter organiser name or organization"
         />
-        {errors.organiser && (
-          <p className="mt-1 text-sm text-red">{errors.organiser.message}</p>
+        {(errors as FieldErrors<StepThreeFields>).organiser && (
+          <p className="mt-1 text-sm text-red">{(errors as FieldErrors<StepThreeFields>).organiser?.message}</p>
         )}
       </div>
 
@@ -147,17 +142,17 @@ const StepThree = ({
           Beneficiary <span className="text-[#FF8A25]">*</span>
         </label>
         <input
-          {...register("beneficiary")}
+          {...(register as UseFormRegister<StepThreeFields>)("beneficiary")}
           type="text"
           id="beneficiary"
           disabled={disabled}
           className={`w-full rounded-[7px] border ${
-            errors.beneficiary ? "border-red" : "border-[#DAE0E6]"
+            (errors as FieldErrors<StepThreeFields>).beneficiary ? "border-red" : "border-[#DAE0E6]"
           } px-3 py-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
           placeholder="Enter beneficiary name or organization"
         />
-        {errors.beneficiary && (
-          <p className="mt-1 text-sm text-red">{errors.beneficiary.message}</p>
+        {(errors as FieldErrors<StepThreeFields>).beneficiary && (
+          <p className="mt-1 text-sm text-red">{(errors as FieldErrors<StepThreeFields>).beneficiary?.message}</p>
         )}
       </div>
 
@@ -172,7 +167,7 @@ const StepThree = ({
                 {social.icon}
               </span>
               <input
-                {...register(
+                {...(register as UseFormRegister<StepThreeFields>)(
                   `socials.${social.name}` as
                     | "socials.website"
                     | "socials.twitter"

@@ -6,15 +6,18 @@ import {
 } from "react-hook-form";
 import Dropzone from "./Dropzone";
 import PictureIcon from "@/svgs/PictureIcon";
-import { CreateCampaignType } from "../page";
+
 import { useState } from "react";
+import { StepThreeFields, StepTwoFields } from "../page";
 
 interface StepTwoProps {
   disabled: boolean;
   onNextStep: () => void;
-  register: UseFormRegister<CreateCampaignType>;
-  errors: FieldErrors<CreateCampaignType>;
-  handleSubmit: UseFormHandleSubmit<CreateCampaignType>;
+  register: UseFormRegister<StepTwoFields> | UseFormRegister<StepThreeFields>;
+  errors: FieldErrors<StepTwoFields> | FieldErrors<StepThreeFields>;
+  handleSubmit:
+    | UseFormHandleSubmit<StepTwoFields>
+    | UseFormHandleSubmit<StepThreeFields>;
 }
 
 const StepTwo = ({
@@ -39,7 +42,7 @@ const StepTwo = ({
           value: file
         }
       };
-      register("bannerImage").onChange(event);
+      (register as UseFormRegister<StepTwoFields>)("bannerImage").onChange(event);
     }
   };
 
@@ -65,17 +68,17 @@ const StepTwo = ({
           Campaign Name <span className="text-[#FF8A25]">*</span>
         </label>
         <input
-          {...register("name")}
+          {...(register as UseFormRegister<StepTwoFields>)("name")}
           type="text"
           id="name"
           disabled={disabled}
           className={`w-full rounded-[7px] border ${
-            errors.name ? "border-red" : "border-[#DAE0E6]"
+            (errors as FieldErrors<StepTwoFields>).name ? "border-red" : "border-[#DAE0E6]"
           } px-3 py-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
           placeholder="Enter campaign name"
         />
-        {errors.name && (
-          <p className="mt-1 text-sm text-red">{errors.name.message}</p>
+        {(errors as FieldErrors<StepTwoFields>).name && (
+          <p className="mt-1 text-sm text-red">{(errors as FieldErrors<StepTwoFields>).name?.message}</p>
         )}
       </div>
       <div className="space-y-2">
@@ -86,17 +89,17 @@ const StepTwo = ({
           Description <span className="text-[#FF8A25]">*</span>
         </label>
         <textarea
-          {...register("description")}
+          {...(register as UseFormRegister<StepTwoFields>)("description")}
           id="description"
           rows={4}
           disabled={disabled}
           className={`w-full rounded-[7px] border ${
-            errors.description ? "border-red" : "border-[#DAE0E6]"
+            (errors as FieldErrors<StepTwoFields>).description ? "border-red" : "border-[#DAE0E6]"
           } px-3 py-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
           placeholder="Describe your campaign (minimum 50 characters)"
         />
-        {errors.description && (
-          <p className="mt-1 text-sm text-red">{errors.description.message}</p>
+        {(errors as FieldErrors<StepTwoFields>).description && (
+          <p className="mt-1 text-sm text-red">{(errors as FieldErrors<StepTwoFields>).description?.message}</p>
         )}
       </div>
       <div className="space-y-2">
@@ -122,7 +125,7 @@ const StepTwo = ({
               )}
             </div>
             <input
-              {...register("bannerImage")}
+              {...(register as UseFormRegister<StepTwoFields>)("bannerImage")}
               id="bannerImage"
               type="file"
               className="hidden"
@@ -132,8 +135,8 @@ const StepTwo = ({
             />
           </label>
         </div>
-        {errors.bannerImage && (
-          <p className="mt-1 text-sm text-red">{errors.bannerImage.message}</p>
+        {(errors as FieldErrors<StepTwoFields>).bannerImage && (
+          <p className="mt-1 text-sm text-red">{(errors as FieldErrors<StepTwoFields>).bannerImage?.message}</p>
         )}
       </div>
       <div className="space-y-2">
@@ -142,7 +145,7 @@ const StepTwo = ({
           <label className="cursor-pointer text-green-500 hover:text-accent-green/80">
             <span>choose files</span>
             <input
-              {...register("additionalImages")}
+              {...(register as UseFormRegister<StepTwoFields>)("additionalImages")}
               type="file"
               className="hidden"
               multiple
