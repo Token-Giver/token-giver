@@ -158,9 +158,10 @@ export const fetchUserCampaigns = async (
 export const handleDonate = async (
   amount: string,
   account: any,
-  setSendingState: Dispatch<SetStateAction<"send" | "sending..." | "sent">>,
-  campaign_address: string,
-  handleRouteToCampaign: any
+  setSendingState: Dispatch<
+    SetStateAction<"send" | "sending..." | "sent" | "failed">
+  >,
+  campaign_address: string
 ) => {
   try {
     if (!amount || !account) {
@@ -220,11 +221,14 @@ export const handleDonate = async (
       return;
     }
     await provider.waitForTransaction(multiCall.transaction_hash);
+    setSendingState("sent");
     // handleRouteToCampaign();
   } catch (err: any) {
     console.log(err.message);
-  } finally {
-    setSendingState("sent");
+    setSendingState("failed");
+    setTimeout(() => {
+      setSendingState("send");
+    }, 2000);
   }
 };
 

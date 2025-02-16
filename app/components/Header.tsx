@@ -9,6 +9,10 @@ const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
 
+  // Hide header on /create route
+  if (pathname === "/create") return null;
+  if (pathname?.endsWith("/donate")) return null;
+
   const createCampaign = () => {
     router.push("/create");
   };

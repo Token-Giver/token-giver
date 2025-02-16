@@ -40,8 +40,9 @@ const CampaignDetails = ({
               <div className="grid h-[40px] w-[40px] place-content-center rounded-full bg-[#F7F7F6]">
                 <ProfileIcon />
               </div>
-              <div>
-                <p className="text-base font-bold">{organizer}</p>
+              <div className="max-w-[180px]">
+                <p className="truncate text-base font-bold">{organizer}</p>
+
                 <p>Organizer</p>
               </div>
             </div>
@@ -54,8 +55,10 @@ const CampaignDetails = ({
                   <div className="grid h-[40px] w-[40px] place-content-center rounded-full bg-[#F7F7F6]">
                     <ProfileIcon />
                   </div>
-                  <div>
-                    <p className="text-base font-bold">{beneficiary}</p>
+                  <div className="max-w-[180px]">
+                    <p className="truncate text-base font-bold">
+                      {beneficiary}
+                    </p>
                     <p>Beneficiary</p>
                   </div>
                 </div>

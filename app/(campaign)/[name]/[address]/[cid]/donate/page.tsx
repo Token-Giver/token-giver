@@ -1,15 +1,14 @@
 "use client";
-
 import Connect from "@/app/components/Connect";
-
 import { fetchBalance, fetchCampaign, handleDonate } from "@/app/utils/helper";
-import Logo from "@/svgs/Logo";
+import DownChevronIcon from "@/svgs/DownChevronIcon";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
 import SendIcon from "@/svgs/SendIcon";
 import { useAccount } from "@starknet-react/core";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
+import DonationSuccessModal from "./DonationSuccessModal";
 
 const Donate = ({
   params
@@ -22,7 +21,7 @@ const Donate = ({
   const [amount, setAmount] = useState("");
   const [token, setToken] = useState("STRK");
   const [sendingState, setSendingState] = useState<
-    "send" | "sending..." | "sent"
+    "send" | "sending..." | "sent" | "failed"
   >("send");
   const { account, address } = useAccount();
   const [balance, setBalance] = useState("0");
@@ -38,6 +37,13 @@ const Donate = ({
     target: "",
     address: ""
   });
+
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const tokens = [
+    { symbol: "STRK", icon: "/strk.webp" },
+    { symbol: "ETH", icon: "/eth.svg" }
+  ];
 
   useEffect(() => {
     if (params.address && params.cid) {
@@ -61,10 +67,6 @@ const Donate = ({
     }
   };
 
-  const handleTokenSelect = (event: ChangeEvent<HTMLSelectElement>) => {
-    setToken(event.target.value);
-  };
-
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { scrollWidth, clientWidth, value } = event.target;
     const numericValue = Number(value);
@@ -81,48 +83,56 @@ const Donate = ({
   };
   const divRef = useRef<HTMLDivElement | null>(null);
 
-  return (
-    <section className="flex min-h-screen w-screen justify-between bg-background md:bg-theme-green">
-      <div className="hidden w-[40%] flex-col items-center p-4 md:flex">
-        <button
-          onClick={handleRouteToCampaign}
-          className="flex w-fit items-center self-start justify-self-start text-[1.2em] text-white"
-        >
-          <span className="inline-block rotate-180 transform text-white">
-            <RightArrowIcon />
-          </span>
-          <span>campaign</span>
-        </button>
-        <div className="my-auto">
-          <p className="text-[1.5em] font-bold text-white">
-            <Logo />
-          </p>
+  const handleDonateClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    await handleDonate(
+      amount,
+      account,
+      setSendingState,
+      campaignDetails.address
+    );
+  };
 
-          <h2 className="text-theme-yellow">Every Token Counts!</h2>
-          <div className="flex items-center gap-2 text-white">
-            <p className="mt-3">Empowering Change Through Generosity</p>
-          </div>
+  return (
+    <main className="grid h-screen grid-cols-2">
+      <div className="relative grid h-full place-content-center bg-accent-green">
+        <div className="relative h-[700px] w-[500px]">
+          <Image
+            src="/create-bg.png"
+            alt="Background description"
+            fill
+            className="object-cover"
+            priority
+          />
         </div>
       </div>
-      <div className="mx-auto flex w-full max-w-[500px] flex-col gap-10 bg-background px-4 py-10 md:w-[60%] md:max-w-none md:gap-20 md:rounded-tl-[50px] md:shadow-hero-shadow lg:px-[5vw] lg:py-10">
-        <div className="flex flex-wrap items-center justify-between md:justify-end">
+      <div className="h-full space-y-8 overflow-y-auto bg-white px-16 pt-8">
+        <div className="mx-auto flex max-w-4xl items-center justify-between">
           <button
-            onClick={handleRouteToCampaign}
-            className="block w-fit self-start justify-self-start text-[1em] md:hidden md:text-[1.2em]"
+            onClick={() => router.back()}
+            className="flex animate-fadeIn items-center text-accent-green"
           >
-            &lt; campaign
+            <span className="inline-block rotate-180 text-lg">
+              <RightArrowIcon />
+            </span>
+            Back
           </button>
-          <Connect />
-        </div>
-        <div className="mx-auto flex w-full flex-col gap-4 px-4 md:my-auto lg:w-[75%] lg:min-w-[35rem] lg:px-12">
-          <div className="md:hidden">
-            <p className="flex items-center gap-1 text-[1.5em] font-bold text-theme-green">
-              <Logo />
-            </p>
-            <h2 className="text-theme-yellow">Every Token Counts!</h2>
+
+          <div className="ml-auto w-fit text-sm">
+            <Connect />
           </div>
-          <div className="flex flex-col-reverse gap-8 md:grid md:grid-cols-3 md:gap-4">
-            <div className="relative hidden h-[90px] w-[130px] rounded-[5px] md:block">
+        </div>
+        <div className="mx-auto max-w-2xl">
+          <h2 className="mb-4 text-center font-agrandir font-bold text-foreground-primary">
+            Make a Difference Today
+          </h2>
+          <p className="mb-10 text-center text-foreground-secondary">
+            Your generous donation will help {campaignDetails.beneficiary}{" "}
+            achieve their goal of {campaignDetails.target} STRK. Every
+            contribution counts!
+          </p>
+          <div className="flex flex-col-reverse gap-8 md:flex md:flex-row md:gap-4">
+            <div className="relative hidden h-[130px] w-[200px] flex-shrink-0 rounded-[5px] md:block">
               <Image
                 className="h-full w-full rounded-[5px] object-cover"
                 src={campaignDetails.image}
@@ -131,39 +141,41 @@ const Donate = ({
                 sizes="100%"
               />
             </div>
-            <div className="col-span-2">
-              <p className="text-clamp md:text-[1em]">
+            <div className="col-span-2 tracking-wide text-foreground-primary">
+              <p className="line-clamp-3 text-clamp md:text-[1em]">
                 You are supporting{" "}
-                <span className="font-semibold"> {campaignDetails.name}</span>
-              </p>
-              <p className="mt-2 text-[.875em]">
-                Your donation will benefit{" "}
-                <span className="font-semibold">
-                  {campaignDetails.beneficiary}
+                <span className="font-agrandir font-semibold">
+                  {" "}
+                  {campaignDetails.name}
                 </span>
+              </p>
+              <p className="mt-6 line-clamp-2 text-[.875em]">
+                Your donation will directly help{" "}
+                <span className="font-agrandir font-semibold">
+                  {campaignDetails.beneficiary}
+                </span>{" "}
               </p>
             </div>
           </div>
           <div className="mx-auto mt-8 w-fit">
-            <h5 className="font-medium">Send STRK</h5>
+            <h5 className="mb-4 font-medium">Send STRK</h5>
             <div className="relative mx-auto h-[70px] w-[70px] rounded-full">
               <img
                 className="h-full w-full rounded-full"
                 src={`${token === "STRK" ? "/strk.webp" : "/eth.svg"}`}
                 alt=""
               />
-              <div className="absolute right-[-10%] top-[60%] flex h-[30px] w-[30px] items-center justify-center rounded-full bg-theme-green">
+              <div className="absolute right-[-5%] top-[60%] flex h-[30px] w-[30px] items-center justify-center rounded-full bg-theme-green">
                 <SendIcon />
               </div>
             </div>
           </div>
-
-          <div className="flex flex-col gap-4">
-            <label className="font-medium">Enter your donation</label>
+          <div className="mx-auto flex max-w-[500px] flex-col gap-4">
+            <label className="">Enter Amount</label>
 
             <div
               ref={divRef}
-              className="relative grid min-h-[5.5rem] w-full grid-cols-10 justify-between rounded-[10px] border-[1px] border-solid border-gray-300 bg-transparent px-5 focus:border-[2px] focus:border-[#159968]"
+              className="relative grid min-h-[7rem] w-full grid-cols-10 justify-between rounded-[10px] border-[1px] border-solid border-gray-300 bg-transparent px-5 focus:border-[2px] focus:border-[#159968]"
             >
               <input
                 onFocus={() => {
@@ -183,44 +195,80 @@ const Donate = ({
                 }}
                 name="amount"
                 value={amount}
-                className="col-span-8 w-full bg-transparent py-5 focus:outline-none"
-                placeholder="0"
+                className="col-span-8 w-full bg-transparent py-5 placeholder:text-[1.5em] placeholder:text-foreground-secondary focus:outline-none"
+                placeholder="0.00"
                 onChange={handleInputChange}
               />
+              <p className="absolute bottom-[.5rem] left-6 min-w-[120px] text-foreground-secondary">
+                Balance:{parseFloat(balance).toFixed(2)} STRK
+              </p>
               <div className="relative col-span-2 mt-[1.5rem] flex flex-col items-center gap-4">
-                <select
-                  disabled={!address}
-                  onChange={handleTokenSelect}
-                  className="w-fit rounded-full border-[1px] border-solid border-gray-400 bg-transparent text-[.875em]"
-                  name="token"
-                >
-                  <option value="STRK">STRK</option>
-                </select>
-                <p className="absolute bottom-[.5rem] right-0 min-w-[120px] text-[.75em]">
-                  Balance: {parseFloat(balance).toFixed(2)} STRK
-                </p>
+                <div className="relative w-full">
+                  <button
+                    type="button"
+                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    disabled={!address}
+                    className="flex w-[6.5rem] items-center gap-1 rounded-full border-[1px] border-solid border-gray-400 bg-transparent px-3 py-1.5 text-[.875em]"
+                  >
+                    <img
+                      src={token === "STRK" ? "/strk.webp" : "/eth.svg"}
+                      alt={token}
+                      className="h-5 w-5 rounded-full"
+                    />
+                    {token}
+                    <span
+                      className={`transition-transform duration-200 ${isDropdownOpen ? "rotate-180" : ""}`}
+                    >
+                      <DownChevronIcon />
+                    </span>
+                  </button>
+
+                  {isDropdownOpen && (
+                    <div className="absolute left-0 top-full z-10 mt-1 w-full min-w-[120px] rounded-lg border border-gray-200 bg-white shadow-lg">
+                      {tokens.map((t) => (
+                        <button
+                          key={t.symbol}
+                          onClick={() => {
+                            setToken(t.symbol);
+                            setIsDropdownOpen(false);
+                          }}
+                          className="flex w-full items-center gap-2 px-3 py-2 hover:bg-gray-100"
+                        >
+                          <img
+                            src={t.icon}
+                            alt={t.symbol}
+                            className="h-5 w-5 rounded-full"
+                          />
+                          {t.symbol}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
             <button
-              disabled={!amount || sendingState === "sent"}
-              onClick={async (e) => {
-                e.preventDefault();
-                await handleDonate(
-                  amount,
-                  account,
-                  setSendingState,
-                  campaignDetails.address,
-                  handleRouteToCampaign
-                );
-              }}
-              className="w-full rounded-[10px] bg-theme-green px-6 py-3 text-white"
+              disabled={!amount || sendingState === "sending..."}
+              onClick={handleDonateClick}
+              className={`w-full rounded-[10px] px-6 py-3 text-white ${
+                sendingState === "failed" ? "bg-red/80" : "bg-accent-green"
+              }`}
             >
               {sendingState}
             </button>
           </div>
         </div>
       </div>
-    </section>
+      <DonationSuccessModal
+        isOpen={sendingState === "sent"}
+        onClose={() => {
+          setSendingState("send");
+          handleRouteToCampaign();
+        }}
+        amount={amount}
+        campaignDetails={campaignDetails}
+      />
+    </main>
   );
 };
 

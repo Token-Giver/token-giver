@@ -1,10 +1,9 @@
 "use client";
-import { ChangeEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useAccount } from "@starknet-react/core";
 import StepTwo from "./components/StepTwo";
 import { InputDateType } from "@/types";
 import StepThree from "./components/StepThree";
-import Logo from "@/svgs/Logo";
 import { CallData } from "starknet";
 import {
   BEARER_TOKEN,
@@ -15,24 +14,102 @@ import {
   nft_contract,
   provider
 } from "../utils/data";
-import Container from "../components/util/Container";
 import CreateCampaignLoader from "../components/loading/CreateCampaignLoader";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
 import { useRouter } from "next/navigation";
 import Connect from "../components/Connect";
+import Image from "next/image";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Stepper from "./components/Stepper";
+
+// const CreateCampaignSchema = z.object({
+//   name: z.string().min(3, "Campaign name must be at least 3 characters"),
+//   description: z.string().min(50, "Description must be at least 50 characters"),
+//   bannerImage: z
+//     .instanceof(File)
+//     .refine(
+//       (file) => file.size <= 5 * 1024 * 1024,
+//       "File size must be less than 5MB"
+//     )
+//     .refine(
+//       (file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type),
+//       "Only .jpg, .png, and .webp formats are supported"
+//     ),
+//   additionalImages: z
+//     .instanceof(FileList)
+//     .refine((files) => files.length <= 5, "Maximum 5 additional images allowed")
+//     .refine(
+//       (files) =>
+//         Array.from(files).every((file) => file.size <= 5 * 1024 * 1024),
+//       "Max file size is 5MB per image"
+//     ),
+//   // New fields
+//   target: z
+//     .string()
+//     .min(1, "Target amount is required")
+//     .transform((val) => Number(val))
+//     .refine((val) => !isNaN(val), "Must be a valid number")
+//     .refine((val) => val > 0, "Target amount must be greater than 0"),
+//   location: z.string().min(2, "Location must be at least 2 characters"),
+//   organiser: z.string().min(2, "Organiser name must be at least 2 characters"),
+//   beneficiary: z
+//     .string()
+//     .min(2, "Beneficiary name must be at least 2 characters"),
+//   socials: z
+//     .object({
+//       website: z.string().url("Invalid URL").optional(),
+//       twitter: z.string().url("Invalid URL").optional(),
+//       instagram: z.string().url("Invalid URL").optional(),
+//       youtube: z.string().url("Invalid URL").optional(),
+//       github: z.string().url("Invalid URL").optional()
+//     })
+//     .optional()
+// });
+
+// Step 2 Schema
+const StepTwoSchema = z.object({
+  name: z.string().min(3, "Campaign name must be at least 3 characters"),
+  description: z.string().min(50, "Description must be at least 50 characters"),
+  bannerImage: z
+    .instanceof(File)
+    .refine((file) => file.size <= 5 * 1024 * 1024, "File size must be <5MB")
+    .refine(
+      (file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type),
+      "Invalid format"
+    )
+});
+
+// Step 3 Schema
+const StepThreeSchema = z.object({
+  target: z
+    .string()
+    .min(1, "Target amount is required")
+    .transform((val) => Number(val))
+    .refine((val) => val > 0, "Target must be greater than 0"),
+  location: z.string().min(2, "Location is required"),
+  organiser: z.string().min(2, "Organizer name is required"),
+  beneficiary: z.string().min(2, "Beneficiary name is required")
+});
+
+const stepSchemas = [StepTwoSchema, StepThreeSchema];
+
+// Create union type of both schema types
+type FormData = z.infer<typeof StepTwoSchema> | z.infer<typeof StepThreeSchema>;
 
 const Page = () => {
   const router = useRouter();
+
   const { address } = useAccount();
   const account: any = useAccount();
   const [campaignStep, setCampaignStep] = useState(0);
   const [creatingCampaign, setCreatingCampaign] = useState(false);
   const [loadingPercentage, setLoadingPercentage] = useState(0);
   const [campaignUrl, setCampaignUrl] = useState("/");
-  const [step, setStep] = useState({
-    number: 1,
-    text: "First connect your wallet"
-  });
+  const [currentStep, setCurrentStep] = useState(1);
+  const [showReview, setShowReview] = useState(false);
+
   const [inputData, setInputData] = useState<InputDateType>({
     name: "",
     description: "",
@@ -43,26 +120,26 @@ const Page = () => {
     location: ""
   });
 
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setInputData((prev) => {
-      if (
-        name === "image" &&
-        e.target instanceof HTMLInputElement &&
-        e.target.files
-      ) {
-        return {
-          ...prev,
-          image: e.target.files[0]
-        };
-      }
-      return {
-        ...prev,
-        [name]: value
-      };
-    });
+  // Create separate form instances for each step
+  const stepTwoForm = useForm<z.infer<typeof StepTwoSchema>>({
+    resolver: zodResolver(StepTwoSchema)
+  });
+
+  const stepThreeForm = useForm<z.infer<typeof StepThreeSchema>>({
+    resolver: zodResolver(StepThreeSchema)
+  });
+
+  // Use the appropriate form based on current step
+  const currentForm = currentStep === 2 ? stepTwoForm : stepThreeForm;
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch
+  } = currentForm;
+
+  const handleNextStep = () => {
+    handleSubmit(() => setCurrentStep((prev) => prev + 1))(); // Validate only for the active step
   };
 
   async function createCampaign() {
@@ -187,10 +264,6 @@ const Page = () => {
           beneficiary: "",
           location: ""
         });
-        setStep({
-          number: 2,
-          text: "Tell us about your campaign"
-        });
       }, 10000);
     } catch (err) {
       // @ts-ignore
@@ -201,147 +274,90 @@ const Page = () => {
     }
   }
 
+  const onSubmit = (data: FormData) => {
+    console.log(data);
+
+    // createCampaign()
+  };
+
+  const isWalletConnected = !!address;
+
   useEffect(() => {
-    if (account.address) {
-      setStep(() => {
-        return {
-          text: "Tell us about your campaign",
-          number: 2
-        };
-      });
-    } else {
-      setStep(() => {
-        return {
-          text: "First connect your wallet",
-          number: 1
-        };
-      });
+    if (address && currentStep === 1) {
+      setCurrentStep(2);
+    } else if (!address) {
+      setCurrentStep(1);
     }
-  }, [account.address]);
+  }, [address]);
 
   return (
-    <main className="relative flex min-h-screen justify-between bg-theme-green md:mb-10">
-      <Container className="hidden w-[40%] p-4 md:flex md:flex-col">
-        <button
-          onClick={() => router.push("/")}
-          className="flex w-fit items-center self-start justify-self-start text-[1.2em] text-white"
-        >
-          <span className="inline-block rotate-180 transform text-white">
-            <RightArrowIcon />
-          </span>
-          <span>back</span>
-        </button>
-
-        <div className="my-auto">
-          <div className="flex flex-col gap-8 p-4">
-            <p className="text-[1.5em] font-bold text-white">
-              <Logo />
-            </p>
-            <h2 className="text-theme-yellow">
-              Start your fundraising journey!
-            </h2>
-
-            <div className="flex items-center gap-2 text-white">
-              <span className="">
-                <span className="mr-2 text-[1.8em]">{step.number}</span>/ 3
-              </span>
-              <p className="mt-3">{step.text}</p>
-            </div>
+    <>
+      <main className="grid h-screen grid-cols-7">
+        <div className="relative col-span-3 grid h-full place-content-center bg-accent-green">
+          <div className="relative h-[700px] w-[500px]">
+            <Image
+              src="/create-bg.png"
+              alt="Background description"
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
         </div>
-      </Container>
-
-      <div className="flex w-full items-center bg-background px-4 py-10 md:w-[60%] md:rounded-tl-[50px] md:shadow-hero-shadow lg:px-20 lg:py-10">
-        <Container className="flex flex-col justify-between">
-          <Connect />
-          <form className="flex flex-col gap-4 md:p-4" action="">
-            <h2>Create your campaign</h2>
-            <StepTwo
-              inputData={inputData}
-              handleInputChange={handleInputChange}
-              address={account.address}
-              step={step}
-              setInputData={setInputData}
-            />
-            <StepThree
-              inputData={inputData}
-              handleInputChange={handleInputChange}
-              address={account.address}
-              step={step}
-            />
-          </form>
-          <div
-            className={`mt-4 flex md:p-4 ${
-              step.number === 2 || step.number === 1
-                ? "justify-end"
-                : "justify-between"
-            }`}
-          >
-            <button
-              disabled={!account.address}
-              onClick={() =>
-                setStep(() => {
-                  return {
-                    text: "Tell us about your campaign",
-                    number: 2
-                  };
-                })
-              }
-              className={`text-[2em] text-theme-green ${
-                step.number === 2 || step.number === 1 ? "hidden" : "block"
-              } `}
-            >
-              <span>&lt;</span>
-            </button>
-            <div className="flex">
+        <div className="col-span-4 h-full space-y-8 overflow-y-auto bg-white px-16 pt-8">
+          <div className="flex items-center justify-between">
+            {currentStep === 3 && (
               <button
-                disabled={
-                  !inputData.name || !inputData.description || !inputData.image
-                }
-                onClick={() =>
-                  setStep(() => {
-                    return {
-                      text: "Tell us about you and your goals",
-                      number: 3
-                    };
-                  })
-                }
-                className={`w-fit self-end justify-self-end rounded-[10px] bg-theme-green px-6 py-2 text-white ${
-                  step.number === 3 ? "hidden" : "block"
-                } `}
+                onClick={() => setCurrentStep(2)}
+                className="flex animate-fadeIn items-center text-accent-green"
               >
-                Continue
+                <span className="inline-block rotate-180 text-lg">
+                  <RightArrowIcon />
+                </span>
+                Back
               </button>
-              <button
-                popoverTarget="creatingCampaign"
-                onClick={() => {
-                  createCampaign();
-                }}
-                disabled={
-                  !inputData.target ||
-                  !inputData.location ||
-                  !inputData.organizer ||
-                  creatingCampaign
-                }
-                className={`w-fit self-end justify-self-end rounded-[10px] bg-theme-green px-6 py-2 text-white ${
-                  step.number === 3 ? "block" : "hidden"
-                } `}
-              >
-                {creatingCampaign ? "Creating Campaign..." : "Mint Campaign"}
-              </button>
+            )}
+            <div className="ml-auto w-fit text-sm">
+              <Connect />
             </div>
           </div>
-        </Container>
-      </div>
+          <Stepper currentStep={currentStep} />
+          <div className="mx-auto max-w-2xl">
+            <h2 className="font-agrandir font-bold text-foreground-primary">
+              Create your Campaign
+            </h2>
+            <p className="text-foreground-secondary">
+              Fill in the appropriate details for your campaign and let's get
+              started.
+            </p>
+          </div>
 
-      <CreateCampaignLoader
-        campaignStep={campaignStep}
-        percentage={loadingPercentage}
-        url={campaignUrl}
-      />
+          <form>
+            {currentStep !== 3 && (
+              <StepTwo
+                disabled={!isWalletConnected || currentStep === 1}
+                onNextStep={handleNextStep}
+                register={register}
+                errors={errors}
+                handleSubmit={handleSubmit}
+              />
+            )}
 
-      <div className="absolute bottom-[-64px] left-0 hidden h-[50px] w-full bg-background p-8 md:block"></div>
-    </main>
+            {currentStep === 3 && (
+              <StepThree
+                register={register}
+                handleSubmit={handleSubmit}
+                errors={errors}
+                disabled={!isWalletConnected}
+                onNextStep={() => alert("hii")}
+              />
+            )}
+          </form>
+        </div>
+      </main>
+
+      {/* Review Overlay */}
+    </>
   );
 };
 
