@@ -44,12 +44,14 @@ const Header = () => {
               </li>
               <li>
                 <Link
-                  href={"/about"}
+                  href={"/discover"}
                   className={
-                    pathname === "/about" ? "font-medium text-accent-green" : ""
+                    pathname === "/discover"
+                      ? "font-medium text-accent-green"
+                      : ""
                   }
                 >
-                  About
+                  discover
                 </Link>
               </li>
               <li>
@@ -59,7 +61,7 @@ const Header = () => {
                     pathname === "/learn" ? "font-medium text-accent-green" : ""
                   }
                 >
-                  donate
+                  Get started
                 </Link>
               </li>
             </ul>
