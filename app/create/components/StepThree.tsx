@@ -1,56 +1,44 @@
-import {
-  UseFormRegister,
-  FieldErrors,
-  UseFormHandleSubmit
-} from "react-hook-form";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
 import XIcon from "@/svgs/XIcon";
 import { StepThreeFields, StepTwoFields } from "../page";
+import GithubIcon from "@/svgs/GithubIcon";
+import YoutubeIcon from "@/svgs/YoutubeIcon";
+import InstagramIcon from "@/svgs/InstagramIcon";
+import GlobeIcon from "@/svgs/GlobeIcon";
 
 interface StepThreeProps {
   disabled: boolean;
-  onNextStep: () => void;
   register: UseFormRegister<StepTwoFields> | UseFormRegister<StepThreeFields>;
   errors: FieldErrors<StepTwoFields> | FieldErrors<StepThreeFields>;
-  handleSubmit:
-    | UseFormHandleSubmit<StepTwoFields>
-    | UseFormHandleSubmit<StepThreeFields>;
 }
-
-const StepThree = ({
-  disabled,
-  register,
-  errors,
-  handleSubmit,
-  onNextStep
-}: StepThreeProps) => {
-  const socialLinks = [
-    {
-      name: "website",
-      icon: <XIcon />,
-      placeholder: "https://yourwebsite.com"
-    },
-    {
-      name: "twitter",
-      icon: <XIcon />,
-      placeholder: "https://twitter.com/username"
-    },
-    {
-      name: "instagram",
-      icon: <XIcon />,
-      placeholder: "https://instagram.com/username"
-    },
-    {
-      name: "youtube",
-      icon: <XIcon />,
-      placeholder: "https://youtube.com/@channel"
-    },
-    {
-      name: "github",
-      icon: <XIcon />,
-      placeholder: "https://github.com/username"
-    }
-  ];
-
+const socialLinks = [
+  {
+    name: "website",
+    icon: <GlobeIcon />,
+    placeholder: "https://yourwebsite.com"
+  },
+  {
+    name: "twitter",
+    icon: <XIcon />,
+    placeholder: "https://twitter.com/username"
+  },
+  {
+    name: "instagram",
+    icon: <InstagramIcon />,
+    placeholder: "https://instagram.com/username"
+  },
+  {
+    name: "youtube",
+    icon: <YoutubeIcon />,
+    placeholder: "https://youtube.com/@channel"
+  },
+  {
+    name: "github",
+    icon: <GithubIcon />,
+    placeholder: "https://github.com/username"
+  }
+];
+const StepThree = ({ disabled, register, errors }: StepThreeProps) => {
   return (
     <fieldset
       className={`mx-auto h-[60vh] max-w-2xl animate-fadeIn space-y-6 overflow-y-scroll pb-8 ${
@@ -80,13 +68,17 @@ const StepThree = ({
             id="target"
             disabled={disabled}
             className={`w-full rounded-[7px] border pl-8 ${
-              (errors as FieldErrors<StepThreeFields>).target ? "border-red" : "border-[#DAE0E6]"
-            } py-3 pl-12 pr-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
+              (errors as FieldErrors<StepThreeFields>).target
+                ? "border-red"
+                : "border-[#DAE0E6]"
+            } py-3 pl-[3.3rem] pr-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
             placeholder="Enter target amount"
           />
         </div>
         {(errors as FieldErrors<StepThreeFields>).target && (
-          <p className="mt-1 text-sm text-red">{(errors as FieldErrors<StepThreeFields>).target?.message}</p>
+          <p className="mt-1 text-sm text-red">
+            {(errors as FieldErrors<StepThreeFields>).target?.message}
+          </p>
         )}
       </div>
 
@@ -103,12 +95,16 @@ const StepThree = ({
           id="location"
           disabled={disabled}
           className={`w-full rounded-[7px] border ${
-            (errors as FieldErrors<StepThreeFields>).location ? "border-red" : "border-[#DAE0E6]"
+            (errors as FieldErrors<StepThreeFields>).location
+              ? "border-red"
+              : "border-[#DAE0E6]"
           } px-3 py-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
           placeholder="Enter campaign location"
         />
         {(errors as FieldErrors<StepThreeFields>).location && (
-          <p className="mt-1 text-sm text-red">{(errors as FieldErrors<StepThreeFields>).location?.message}</p>
+          <p className="mt-1 text-sm text-red">
+            {(errors as FieldErrors<StepThreeFields>).location?.message}
+          </p>
         )}
       </div>
 
@@ -125,12 +121,16 @@ const StepThree = ({
           id="organiser"
           disabled={disabled}
           className={`w-full rounded-[7px] border ${
-            (errors as FieldErrors<StepThreeFields>).organiser ? "border-red" : "border-[#DAE0E6]"
+            (errors as FieldErrors<StepThreeFields>).organiser
+              ? "border-red"
+              : "border-[#DAE0E6]"
           } px-3 py-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
           placeholder="Enter organiser name or organization"
         />
         {(errors as FieldErrors<StepThreeFields>).organiser && (
-          <p className="mt-1 text-sm text-red">{(errors as FieldErrors<StepThreeFields>).organiser?.message}</p>
+          <p className="mt-1 text-sm text-red">
+            {(errors as FieldErrors<StepThreeFields>).organiser?.message}
+          </p>
         )}
       </div>
 
@@ -147,12 +147,16 @@ const StepThree = ({
           id="beneficiary"
           disabled={disabled}
           className={`w-full rounded-[7px] border ${
-            (errors as FieldErrors<StepThreeFields>).beneficiary ? "border-red" : "border-[#DAE0E6]"
+            (errors as FieldErrors<StepThreeFields>).beneficiary
+              ? "border-red"
+              : "border-[#DAE0E6]"
           } px-3 py-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
           placeholder="Enter beneficiary name or organization"
         />
         {(errors as FieldErrors<StepThreeFields>).beneficiary && (
-          <p className="mt-1 text-sm text-red">{(errors as FieldErrors<StepThreeFields>).beneficiary?.message}</p>
+          <p className="mt-1 text-sm text-red">
+            {(errors as FieldErrors<StepThreeFields>).beneficiary?.message}
+          </p>
         )}
       </div>
 
@@ -163,7 +167,7 @@ const StepThree = ({
         <div className="space-y-3">
           {socialLinks.map((social) => (
             <div key={social.name} className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground-secondary">
                 {social.icon}
               </span>
               <input
@@ -186,7 +190,7 @@ const StepThree = ({
       </div>
 
       <button
-        onClick={handleSubmit(onNextStep)}
+        type="submit"
         disabled={disabled}
         className={`w-full rounded-[7px] bg-accent-green px-2 py-3 text-white ${
           disabled ? "cursor-not-allowed" : ""

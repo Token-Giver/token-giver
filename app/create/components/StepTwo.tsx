@@ -1,4 +1,3 @@
-import { InputDateType } from "@/types";
 import {
   UseFormRegister,
   FieldErrors,
@@ -9,15 +8,15 @@ import PictureIcon from "@/svgs/PictureIcon";
 
 import { useState } from "react";
 import { StepThreeFields, StepTwoFields } from "../page";
+import { CATEGORIES } from "@/static";
+import DownChevronIcon from "@/svgs/DownChevronIcon";
 
 interface StepTwoProps {
   disabled: boolean;
   onNextStep: () => void;
   register: UseFormRegister<StepTwoFields> | UseFormRegister<StepThreeFields>;
   errors: FieldErrors<StepTwoFields> | FieldErrors<StepThreeFields>;
-  handleSubmit:
-    | UseFormHandleSubmit<StepTwoFields>
-    | UseFormHandleSubmit<StepThreeFields>;
+  currentValues?: StepTwoFields;
 }
 
 const StepTwo = ({
@@ -25,11 +24,15 @@ const StepTwo = ({
   onNextStep,
   register,
   errors,
-  handleSubmit
+  currentValues
 }: StepTwoProps) => {
-  const [bannerImageName, setBannerImageName] = useState<string>("");
+  const [bannerImageName, setBannerImageName] = useState<string>(
+    currentValues?.bannerImage?.name || ""
+  );
   const [additionalImageNames, setAdditionalImageNames] = useState<string[]>(
-    []
+    currentValues?.additionalImages
+      ? Array.from(currentValues.additionalImages).map((file) => file.name)
+      : []
   );
 
   const handleBannerImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -42,7 +45,9 @@ const StepTwo = ({
           value: file
         }
       };
-      (register as UseFormRegister<StepTwoFields>)("bannerImage").onChange(event);
+      (register as UseFormRegister<StepTwoFields>)("bannerImage").onChange(
+        event
+      );
     }
   };
 
@@ -51,8 +56,18 @@ const StepTwo = ({
   ) => {
     const files = Array.from(e.target.files || []);
     setAdditionalImageNames(files.map((file) => file.name));
+
+    // Update React Hook Form value
+    const event = {
+      target: {
+        name: "additionalImages",
+        value: e.target.files
+      }
+    };
+    (register as UseFormRegister<StepTwoFields>)("additionalImages").onChange(
+      event
+    );
   };
-  console.log(errors);
 
   return (
     <fieldset
@@ -73,12 +88,16 @@ const StepTwo = ({
           id="name"
           disabled={disabled}
           className={`w-full rounded-[7px] border ${
-            (errors as FieldErrors<StepTwoFields>).name ? "border-red" : "border-[#DAE0E6]"
+            (errors as FieldErrors<StepTwoFields>).name
+              ? "border-red"
+              : "border-[#DAE0E6]"
           } px-3 py-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
           placeholder="Enter campaign name"
         />
         {(errors as FieldErrors<StepTwoFields>).name && (
-          <p className="mt-1 text-sm text-red">{(errors as FieldErrors<StepTwoFields>).name?.message}</p>
+          <p className="mt-1 text-sm text-red">
+            {(errors as FieldErrors<StepTwoFields>).name?.message}
+          </p>
         )}
       </div>
       <div className="space-y-2">
@@ -94,12 +113,16 @@ const StepTwo = ({
           rows={4}
           disabled={disabled}
           className={`w-full rounded-[7px] border ${
-            (errors as FieldErrors<StepTwoFields>).description ? "border-red" : "border-[#DAE0E6]"
+            (errors as FieldErrors<StepTwoFields>).description
+              ? "border-red"
+              : "border-[#DAE0E6]"
           } px-3 py-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
           placeholder="Describe your campaign (minimum 50 characters)"
         />
         {(errors as FieldErrors<StepTwoFields>).description && (
-          <p className="mt-1 text-sm text-red">{(errors as FieldErrors<StepTwoFields>).description?.message}</p>
+          <p className="mt-1 text-sm text-red">
+            {(errors as FieldErrors<StepTwoFields>).description?.message}
+          </p>
         )}
       </div>
       <div className="space-y-2">
@@ -136,7 +159,9 @@ const StepTwo = ({
           </label>
         </div>
         {(errors as FieldErrors<StepTwoFields>).bannerImage && (
-          <p className="mt-1 text-sm text-red">{(errors as FieldErrors<StepTwoFields>).bannerImage?.message}</p>
+          <p className="mt-1 text-sm text-red">
+            {(errors as FieldErrors<StepTwoFields>).bannerImage?.message}
+          </p>
         )}
       </div>
       <div className="space-y-2">
@@ -145,7 +170,9 @@ const StepTwo = ({
           <label className="cursor-pointer text-green-500 hover:text-accent-green/80">
             <span>choose files</span>
             <input
-              {...(register as UseFormRegister<StepTwoFields>)("additionalImages")}
+              {...(register as UseFormRegister<StepTwoFields>)(
+                "additionalImages"
+              )}
               type="file"
               className="hidden"
               multiple
@@ -166,7 +193,32 @@ const StepTwo = ({
           </div>
         )}
       </div>
-
+      <div className="space-y-2">
+        <label
+          htmlFor="category"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Category
+        </label>
+        <div className="relative">
+          <select
+            {...(register as UseFormRegister<StepTwoFields>)("category")}
+            id="category"
+            disabled={disabled}
+            className="w-full appearance-none rounded-[7px] border border-[#DAE0E6] px-3 py-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green"
+          >
+            <option value="">Select a category</option>
+            {CATEGORIES.map((category) => (
+              <option key={category.name} value={category.name}>
+                {category.name}
+              </option>
+            ))}
+          </select>
+          <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <DownChevronIcon />
+          </div>
+        </div>
+      </div>
       <button
         onClick={(e) => {
           e.preventDefault();

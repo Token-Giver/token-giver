@@ -14,7 +14,6 @@ import {
   nft_contract,
   provider
 } from "../utils/data";
-import CreateCampaignLoader from "../components/loading/CreateCampaignLoader";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
 import { useRouter } from "next/navigation";
 import Connect from "../components/Connect";
@@ -23,91 +22,8 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Stepper from "./components/Stepper";
-import {
-  UseFormRegister,
-  FieldErrors,
-  UseFormHandleSubmit
-} from "react-hook-form";
-
-// const CreateCampaignSchema = z.object({
-//   name: z.string().min(3, "Campaign name must be at least 3 characters"),
-//   description: z.string().min(50, "Description must be at least 50 characters"),
-//   bannerImage: z
-//     .instanceof(File)
-//     .refine(
-//       (file) => file.size <= 5 * 1024 * 1024,
-//       "File size must be less than 5MB"
-//     )
-//     .refine(
-//       (file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type),
-//       "Only .jpg, .png, and .webp formats are supported"
-//     ),
-//   additionalImages: z
-//     .instanceof(FileList)
-//     .refine((files) => files.length <= 5, "Maximum 5 additional images allowed")
-//     .refine(
-//       (files) =>
-//         Array.from(files).every((file) => file.size <= 5 * 1024 * 1024),
-//       "Max file size is 5MB per image"
-//     ),
-//   // New fields
-//   target: z
-//     .string()
-//     .min(1, "Target amount is required")
-//     .transform((val) => Number(val))
-//     .refine((val) => !isNaN(val), "Must be a valid number")
-//     .refine((val) => val > 0, "Target amount must be greater than 0"),
-//   location: z.string().min(2, "Location must be at least 2 characters"),
-//   organiser: z.string().min(2, "Organiser name must be at least 2 characters"),
-//   beneficiary: z
-//     .string()
-//     .min(2, "Beneficiary name must be at least 2 characters"),
-//   socials: z
-//     .object({
-//       website: z.string().url("Invalid URL").optional(),
-//       twitter: z.string().url("Invalid URL").optional(),
-//       instagram: z.string().url("Invalid URL").optional(),
-//       youtube: z.string().url("Invalid URL").optional(),
-//       github: z.string().url("Invalid URL").optional()
-//     })
-//     .optional()
-// });
-
-// Step 2 Schema
-const StepTwoSchema = z.object({
-  name: z.string().min(3, "Campaign name must be at least 3 characters"),
-  description: z.string().min(50, "Description must be at least 50 characters"),
-  bannerImage: z
-    .instanceof(File)
-    .refine((file) => file.size <= 5 * 1024 * 1024, "File size must be <5MB")
-    .refine(
-      (file) => ["image/jpeg", "image/png", "image/webp"].includes(file.type),
-      "Invalid format"
-    )
-});
-
-// Step 3 Schema
-const StepThreeSchema = z.object({
-  target: z
-    .string()
-    .min(1, "Target amount is required")
-    .transform((val) => Number(val))
-    .refine((val) => val > 0, "Target must be greater than 0"),
-  location: z.string().min(2, "Location is required"),
-  organiser: z.string().min(2, "Organizer name is required"),
-  beneficiary: z.string().min(2, "Beneficiary name is required"),
-  socials: z
-    .object({
-      website: z.string().url("Invalid URL").optional(),
-      twitter: z.string().url("Invalid URL").optional(),
-      instagram: z.string().url("Invalid URL").optional(),
-      youtube: z.string().url("Invalid URL").optional(),
-      github: z.string().url("Invalid URL").optional()
-    })
-    .optional()
-});
-
-const stepSchemas = [StepTwoSchema, StepThreeSchema];
+import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { StepThreeSchema, StepTwoSchema } from "@/types/create";
 
 // Create union type of both schema types
 type FormData = z.infer<typeof StepTwoSchema> | z.infer<typeof StepThreeSchema>;
@@ -119,20 +35,7 @@ export type StepTwoFields = z.infer<typeof StepTwoSchema> & {
 export type StepThreeFields = z.infer<typeof StepThreeSchema>;
 export type AllFormFields = StepTwoFields & StepThreeFields;
 
-// Update the component props types
-type StepProps = {
-  disabled: boolean;
-  onNextStep: () => void;
-  register: UseFormRegister<StepTwoFields> | UseFormRegister<StepThreeFields>;
-  errors: FieldErrors<StepTwoFields> | FieldErrors<StepThreeFields>;
-  handleSubmit:
-    | UseFormHandleSubmit<StepTwoFields>
-    | UseFormHandleSubmit<StepThreeFields>;
-};
-
 const Page = () => {
-  const router = useRouter();
-
   const { address } = useAccount();
   const account: any = useAccount();
   const [campaignStep, setCampaignStep] = useState(0);
@@ -152,12 +55,15 @@ const Page = () => {
     location: ""
   });
 
+  // Add state to store combined form data
+  const [formData, setFormData] = useState<AllFormFields>({} as AllFormFields);
+
   // Create separate form instances for each step
-  const stepTwoForm = useForm<z.infer<typeof StepTwoSchema>>({
+  const stepTwoForm = useForm<StepTwoFields>({
     resolver: zodResolver(StepTwoSchema)
   });
 
-  const stepThreeForm = useForm<z.infer<typeof StepThreeSchema>>({
+  const stepThreeForm = useForm<StepThreeFields>({
     resolver: zodResolver(StepThreeSchema)
   });
 
@@ -171,8 +77,15 @@ const Page = () => {
     watch
   } = currentForm;
 
-  const handleNextStep = () => {
-    handleSubmit(() => setCurrentStep((prev) => prev + 1))(); // Validate only for the active step
+  const currentValues = watch();
+
+  const handleNextStep = async () => {
+    const isValid = await stepTwoForm.trigger();
+    if (isValid) {
+      const stepTwoData = stepTwoForm.getValues();
+      setFormData((prev) => ({ ...prev, ...stepTwoData }));
+      setCurrentStep(3);
+    }
   };
 
   async function createCampaign() {
@@ -307,10 +220,13 @@ const Page = () => {
     }
   }
 
-  const onSubmit = (data: FormData) => {
-    console.log(data);
-
-    // createCampaign()
+  const onSubmit = async (data: FormData) => {
+    if (currentStep === 3) {
+      const stepThreeData = data as StepThreeFields;
+      const finalFormData = { ...formData, ...stepThreeData };
+      console.log("Complete form data:", finalFormData);
+      // createCampaign()
+    }
   };
 
   const isWalletConnected = !!address;
@@ -325,7 +241,7 @@ const Page = () => {
 
   return (
     <>
-      <main className="grid h-screen grid-cols-7">
+      <main className="grid h-screen grid-cols-7 2xl:h-[calc(100vh-39.1rem)]">
         <div className="relative col-span-3 grid h-full place-content-center bg-accent-green">
           <div className="relative h-[700px] w-[500px]">
             <Image
@@ -337,8 +253,8 @@ const Page = () => {
             />
           </div>
         </div>
-        <div className="col-span-4 h-full space-y-8 overflow-y-auto bg-white px-16 pt-8">
-          <div className="flex items-center justify-between">
+        <div className="col-span-4 h-full space-y-8 overflow-y-auto px-16 pt-8">
+          <div className="mx-auto flex max-w-4xl items-center justify-between">
             {currentStep === 3 && (
               <button
                 onClick={() => setCurrentStep(2)}
@@ -354,42 +270,38 @@ const Page = () => {
               <Connect />
             </div>
           </div>
-          <Stepper currentStep={currentStep} />
-          <div className="mx-auto max-w-2xl">
-            <h2 className="font-agrandir font-bold text-foreground-primary">
-              Create your Campaign
-            </h2>
-            <p className="text-foreground-secondary">
-              Fill in the appropriate details for your campaign and let's get
-              started.
-            </p>
+          <div>
+            <Stepper currentStep={currentStep} />
+            <div className="mx-auto max-w-2xl">
+              <h2 className="font-agrandir font-bold text-foreground-primary">
+                Create your Campaign
+              </h2>
+              <p className="text-foreground-secondary">
+                Fill in the appropriate details for your campaign and let's get
+                started.
+              </p>
+            </div>
+
+            <form className="" onSubmit={handleSubmit(onSubmit)}>
+              {currentStep !== 3 && (
+                <StepTwo
+                  disabled={!isWalletConnected || currentStep === 1}
+                  onNextStep={handleNextStep}
+                  register={register as UseFormRegister<StepTwoFields>}
+                  errors={errors as FieldErrors<StepTwoFields>}
+                  currentValues={currentValues as StepTwoFields}
+                />
+              )}
+
+              {currentStep === 3 && (
+                <StepThree
+                  register={register as UseFormRegister<StepThreeFields>}
+                  errors={errors as FieldErrors<StepThreeFields>}
+                  disabled={!isWalletConnected}
+                />
+              )}
+            </form>
           </div>
-
-          <form>
-            {currentStep !== 3 && (
-              <StepTwo
-                disabled={!isWalletConnected || currentStep === 1}
-                onNextStep={handleNextStep}
-                register={register as UseFormRegister<StepTwoFields>}
-                errors={errors as FieldErrors<StepTwoFields>}
-                handleSubmit={
-                  handleSubmit as UseFormHandleSubmit<StepTwoFields>
-                }
-              />
-            )}
-
-            {currentStep === 3 && (
-              <StepThree
-                register={register as UseFormRegister<StepThreeFields>}
-                errors={errors as FieldErrors<StepThreeFields>}
-                handleSubmit={
-                  handleSubmit as UseFormHandleSubmit<StepThreeFields>
-                }
-                disabled={!isWalletConnected}
-                onNextStep={() => alert("hii")}
-              />
-            )}
-          </form>
         </div>
       </main>
 
