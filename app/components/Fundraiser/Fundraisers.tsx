@@ -6,7 +6,6 @@ import { fetchCampaigns } from "@/app/utils/helper";
 import FeaturedCampaigns from "./FeaturedCampaigns";
 import CardLoader, { BigCardLoader } from "../loading/CardLoader";
 import { BigCard, Card } from "./Card";
-import { CATEGORIES } from "@/static";
 import CategorySlider from "./CategorySlider";
 
 const Fundraisers = () => {
@@ -15,7 +14,7 @@ const Fundraisers = () => {
   const [loading, setLoading] = useState(true);
 
   const handleRouteToCampaigns = () => {
-    router.push("/explore");
+    router.push("/discover");
   };
 
   useEffect(() => {
