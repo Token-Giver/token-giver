@@ -2,6 +2,7 @@ import ProfileIcon from "@/svgs/ProfileIcon";
 import Comment from "./Comment";
 import CalenderIcon from "@/svgs/CalenderIcon";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
+import Image from "next/image";
 
 interface CampaignProgressProps {
   organizer: string;
@@ -78,10 +79,38 @@ const CampaignDetails = ({
           More Images
         </h4>
         <div className="grid grid-cols-2 gap-3">
-          <div className="h-[11rem] w-full rounded-[5px] bg-red"></div>
-          <div className="h-[11rem] w-full rounded-[5px] bg-red"></div>
-          <div className="h-[11rem] w-full rounded-[5px] bg-red"></div>
-          <div className="h-[11rem] w-full rounded-[5px] bg-red"></div>
+          <div className="relative h-[11rem] w-full overflow-clip rounded-[5px]">
+            <Image
+              src={"/default-image.webp"}
+              alt="temp"
+              fill
+              className="object-cover"
+            />
+          </div>
+          <div className="relative h-[11rem] w-full overflow-clip rounded-[5px]">
+            <Image
+              src={"/default-image.webp"}
+              alt="temp"
+              fill
+              className="object-cover"
+            />
+          </div>
+          <div className="relative h-[11rem] w-full overflow-clip rounded-[5px]">
+            <Image
+              src={"/default-image.webp"}
+              alt="temp"
+              fill
+              className="object-cover"
+            />
+          </div>
+          <div className="relative h-[11rem] w-full overflow-clip rounded-[5px]">
+            <Image
+              src={"/default-image.webp"}
+              alt="temp"
+              fill
+              className="object-cover"
+            />
+          </div>
         </div>
       </div>
       <div className="space-y-4">
