@@ -1,4 +1,5 @@
 "use client";
+import { faqs } from "@/static/learn";
 import DownChevronIcon from "@/svgs/DownChevronIcon";
 import { useState } from "react";
 
@@ -6,22 +7,6 @@ interface FAQItem {
   question: string;
   answer: string;
 }
-
-const faqData: FAQItem[] = [
-  {
-    question: "What is this website about?",
-    answer: "This website is [your website description here]."
-  },
-  {
-    question: "How do I get started?",
-    answer: "You can get started by [your instructions here]."
-  },
-  {
-    question: "How can I contact support?",
-    answer: "You can reach our support team at [contact information]."
-  }
-  // Add more FAQ items as needed
-];
 
 const FAQ = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
@@ -45,7 +30,7 @@ const FAQ = () => {
       </div>
 
       <div className="mx-auto max-w-[800px] space-y-4 text-sm">
-        {faqData.map((item, index) => (
+        {faqs.map((item, index) => (
           <div
             key={index}
             className="border-b-solid cursor-pointer border border-x-transparent border-b-foreground-secondary border-t-transparent"
