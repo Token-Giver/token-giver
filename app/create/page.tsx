@@ -24,14 +24,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Stepper from "./components/Stepper";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { StepThreeSchema, StepTwoSchema } from "@/types/create";
+import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
+import ReviewCampaign from "../(campaign)/[name]/[address]/[cid]/ReviewCampaign";
 
 // Create union type of both schema types
 type FormData = z.infer<typeof StepTwoSchema> | z.infer<typeof StepThreeSchema>;
 
 // Create union type for all form fields
-export type StepTwoFields = z.infer<typeof StepTwoSchema> & {
-  additionalImages?: FileList;
-};
+export type StepTwoFields = z.infer<typeof StepTwoSchema>;
 export type StepThreeFields = z.infer<typeof StepThreeSchema>;
 export type AllFormFields = StepTwoFields & StepThreeFields;
 
@@ -74,7 +74,8 @@ const Page = () => {
     register,
     handleSubmit,
     formState: { errors },
-    watch
+    watch,
+    setValue
   } = currentForm;
 
   const currentValues = watch();
@@ -83,7 +84,15 @@ const Page = () => {
     const isValid = await stepTwoForm.trigger();
     if (isValid) {
       const stepTwoData = stepTwoForm.getValues();
-      setFormData((prev) => ({ ...prev, ...stepTwoData }));
+      // Update formData with Step Two values
+      setFormData((prev) => ({
+        ...prev,
+        name: stepTwoData.name,
+        description: stepTwoData.description,
+        bannerImage: stepTwoData.bannerImage,
+        additionalImages: stepTwoData.additionalImages,
+        category: stepTwoData.category
+      }));
       setCurrentStep(3);
     }
   };
@@ -220,14 +229,43 @@ const Page = () => {
     }
   }
 
+  const transformLinks = (formData: z.infer<typeof StepThreeSchema>) => {
+    const links: { name: string; url: string }[] = [];
+
+    // Add predefined socials
+    if (formData.socials) {
+      Object.entries(formData.socials).forEach(([name, url]) => {
+        if (url) {
+          links.push({ name, url });
+        }
+      });
+    }
+
+    // Add custom links
+    if (formData.customLinks) {
+      formData.customLinks.forEach(({ url }) => {
+        if (url) {
+          links.push({ name: "website", url });
+        }
+      });
+    }
+
+    return links;
+  };
+
   const onSubmit = async (data: FormData) => {
     if (currentStep === 3) {
       const stepThreeData = data as StepThreeFields;
       const finalFormData = { ...formData, ...stepThreeData };
+      const links = transformLinks(finalFormData);
       console.log("Complete form data:", finalFormData);
+      console.log(links);
+
       // createCampaign()
     }
   };
+
+  const handleCreation = handleSubmit(onSubmit);
 
   const isWalletConnected = !!address;
 
@@ -239,6 +277,30 @@ const Page = () => {
     }
   }, [address]);
 
+  const handleReview = async () => {
+    const isValid = await stepThreeForm.trigger();
+    if (isValid) {
+      const stepThreeData = stepThreeForm.getValues();
+      // Preserve all existing data and only update Step 3 fields
+      setFormData((prev) => {
+        const updatedData = {
+          ...prev, // Keep all previous data (including Step 2)
+          target: stepThreeData.target,
+          location: stepThreeData.location,
+          organiser: stepThreeData.organiser,
+          beneficiary: stepThreeData.beneficiary,
+          socials: stepThreeData.socials,
+          customLinks: stepThreeData.customLinks
+        };
+        console.log("Updated form data in review:", updatedData);
+        return updatedData;
+      });
+      setShowReview(true);
+    }
+  };
+  useEffect(() => {
+    console.log("formData updated:", formData);
+  }, [formData]);
   return (
     <>
       <main className="grid h-screen grid-cols-7 2xl:h-[calc(100vh-39.1rem)]">
@@ -282,7 +344,7 @@ const Page = () => {
               </p>
             </div>
 
-            <form className="" onSubmit={handleSubmit(onSubmit)}>
+            <form className="">
               {currentStep !== 3 && (
                 <StepTwo
                   disabled={!isWalletConnected || currentStep === 1}
@@ -290,6 +352,7 @@ const Page = () => {
                   register={register as UseFormRegister<StepTwoFields>}
                   errors={errors as FieldErrors<StepTwoFields>}
                   currentValues={currentValues as StepTwoFields}
+                  setValue={stepTwoForm.setValue}
                 />
               )}
 
@@ -298,6 +361,7 @@ const Page = () => {
                   register={register as UseFormRegister<StepThreeFields>}
                   errors={errors as FieldErrors<StepThreeFields>}
                   disabled={!isWalletConnected}
+                  onReview={handleReview}
                 />
               )}
             </form>
@@ -305,7 +369,12 @@ const Page = () => {
         </div>
       </main>
 
-      {/* Review Overlay */}
+      <ReviewCampaign
+        setShowReview={setShowReview}
+        showReview={showReview}
+        createCampaign={handleCreation}
+        formData={formData}
+      />
     </>
   );
 };

@@ -2,10 +2,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import OnlydustIcon from "@/svgs/OnlydustIcon";
-import TelegramIcon from "@/svgs/TelegramIcon";
-import GithubIcon from "@/svgs/GithubIcon";
-import XIcon from "@/svgs/XIcon";
+import {
+  OnlydustIcon,
+  GithubIcon,
+  TelegramIcon,
+  XIcon
+} from "@/svgs/social.icons";
 const Footer = () => {
   const pathname = usePathname();
   const isDonationPage = pathname?.endsWith("/donate");

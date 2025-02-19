@@ -1,7 +1,8 @@
 import {
   UseFormRegister,
   FieldErrors,
-  UseFormHandleSubmit
+  UseFormHandleSubmit,
+  UseFormSetValue
 } from "react-hook-form";
 import Dropzone from "./Dropzone";
 import PictureIcon from "@/svgs/PictureIcon";
@@ -17,6 +18,7 @@ interface StepTwoProps {
   register: UseFormRegister<StepTwoFields> | UseFormRegister<StepThreeFields>;
   errors: FieldErrors<StepTwoFields> | FieldErrors<StepThreeFields>;
   currentValues?: StepTwoFields;
+  setValue: UseFormSetValue<StepTwoFields>;
 }
 
 const StepTwo = ({
@@ -24,7 +26,8 @@ const StepTwo = ({
   onNextStep,
   register,
   errors,
-  currentValues
+  currentValues,
+  setValue
 }: StepTwoProps) => {
   const [bannerImageName, setBannerImageName] = useState<string>(
     currentValues?.bannerImage?.name || ""
@@ -51,22 +54,10 @@ const StepTwo = ({
     }
   };
 
-  const handleAdditionalImagesChange = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleAdditionalImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
-    setAdditionalImageNames(files.map((file) => file.name));
-
-    // Update React Hook Form value
-    const event = {
-      target: {
-        name: "additionalImages",
-        value: e.target.files
-      }
-    };
-    (register as UseFormRegister<StepTwoFields>)("additionalImages").onChange(
-      event
-    );
+    setAdditionalImageNames(files.map(file => file.name));
+    setValue("additionalImages", files);
   };
 
   return (

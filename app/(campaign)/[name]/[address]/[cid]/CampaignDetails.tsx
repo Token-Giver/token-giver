@@ -3,20 +3,35 @@ import Comment from "./Comment";
 import CalenderIcon from "@/svgs/CalenderIcon";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
 import Image from "next/image";
+import { Dialog, DialogContent, DialogTitle } from "@/app/ui/dialog";
+import { useState, useEffect, useRef } from "react";
 
 interface CampaignProgressProps {
   organizer: string;
   description: string;
   beneficiary: string;
   date: string;
+  images: string[];
 }
 
 const CampaignDetails = ({
   organizer,
   date,
   description,
-  beneficiary
+  beneficiary,
+  images
 }: CampaignProgressProps) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [isTruncated, setIsTruncated] = useState(false);
+  const descriptionRef = useRef<HTMLParagraphElement>(null);
+
+  useEffect(() => {
+    const element = descriptionRef.current;
+    if (element) {
+      setIsTruncated(element.scrollHeight > element.clientHeight);
+    }
+  }, [description]);
+
   return (
     <div className="max-w-[602px] space-y-8">
       <div className="space-y-8">
@@ -24,7 +39,36 @@ const CampaignDetails = ({
           <span className="font-agrandir font-bold">Campaign </span>
           <span className="font-normal">Highlights</span>
         </h3>
-        <p className="leading-8 text-foreground-secondary">{description}</p>
+        <div>
+          <p
+            ref={descriptionRef}
+            className="line-clamp-[20] leading-8 text-foreground-secondary"
+          >
+            {description}
+          </p>
+          {isTruncated && (
+            <button
+              onClick={() => setIsOpen(true)}
+              className="mt-2 text-sm text-accent-green hover:underline"
+            >
+              Read More
+            </button>
+          )}
+        </div>
+
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <DialogContent className="max-h-[80vh] p-6">
+            <DialogTitle className="font-agrandir text-2xl font-bold">
+              Campaign Description
+            </DialogTitle>
+            <div className="max-h-[70vh] overflow-y-auto">
+              <p className="leading-8 text-foreground-secondary">
+                {description}
+              </p>
+            </div>
+          </DialogContent>
+        </Dialog>
+
         <div className="flex items-center gap-4">
           <button className="w-full rounded-[25px] px-2 py-2 text-accent-green ring-1 ring-accent-green">
             Donate now
@@ -79,38 +123,26 @@ const CampaignDetails = ({
           More Images
         </h4>
         <div className="grid grid-cols-2 gap-3">
-          <div className="relative h-[11rem] w-full overflow-clip rounded-[5px]">
-            <Image
-              src={"/default-image.webp"}
-              alt="temp"
-              fill
-              className="object-cover"
-            />
-          </div>
-          <div className="relative h-[11rem] w-full overflow-clip rounded-[5px]">
-            <Image
-              src={"/default-image.webp"}
-              alt="temp"
-              fill
-              className="object-cover"
-            />
-          </div>
-          <div className="relative h-[11rem] w-full overflow-clip rounded-[5px]">
-            <Image
-              src={"/default-image.webp"}
-              alt="temp"
-              fill
-              className="object-cover"
-            />
-          </div>
-          <div className="relative h-[11rem] w-full overflow-clip rounded-[5px]">
-            <Image
-              src={"/default-image.webp"}
-              alt="temp"
-              fill
-              className="object-cover"
-            />
-          </div>
+          {images.slice(0, 4).map((imageUrl, index) => (
+            <div
+              key={index}
+              className="relative h-[11rem] w-full overflow-clip rounded-[5px]"
+            >
+              <Image
+                src={imageUrl}
+                alt={`campaign image ${index + 1}`}
+                fill
+                className="object-cover"
+              />
+              {index === 3 && images.length > 4 && (
+                <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                  <span className="font-agrandir text-2xl text-white">
+                    +{images.length - 4}
+                  </span>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
       <div className="space-y-4">

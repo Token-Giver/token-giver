@@ -111,6 +111,13 @@ const page = ({
               organizer={campaignDetails.organizer}
               beneficiary={campaignDetails.beneficiary}
               date={campaignDetails.date}
+              images={[
+                "/default-image.webp",
+                "/default-image.webp",
+                "/default-image.webp",
+                "/default-image.webp",
+                "/default-image.webp"
+              ]}
             />
             <CampaignProgress
               balance={balance}

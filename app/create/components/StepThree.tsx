@@ -1,26 +1,35 @@
 import { UseFormRegister, FieldErrors } from "react-hook-form";
-import XIcon from "@/svgs/XIcon";
 import { StepThreeFields, StepTwoFields } from "../page";
-import GithubIcon from "@/svgs/GithubIcon";
-import YoutubeIcon from "@/svgs/YoutubeIcon";
-import InstagramIcon from "@/svgs/InstagramIcon";
-import GlobeIcon from "@/svgs/GlobeIcon";
+import {
+  LinkedinIcon,
+  InstagramIcon,
+  YoutubeIcon,
+  DiscordIcon,
+  FacebookIcon,
+  GithubIcon,
+  GlobeIcon,
+  TelegramIcon,
+  MediumIcon,
+  XIcon
+} from "@/svgs/social.icons";
 
 interface StepThreeProps {
   disabled: boolean;
   register: UseFormRegister<StepTwoFields> | UseFormRegister<StepThreeFields>;
   errors: FieldErrors<StepTwoFields> | FieldErrors<StepThreeFields>;
+  onReview: () => Promise<void>;
 }
-const socialLinks = [
-  {
-    name: "website",
-    icon: <GlobeIcon />,
-    placeholder: "https://yourwebsite.com"
-  },
+
+const predefinedSocialLinks = [
   {
     name: "twitter",
     icon: <XIcon />,
     placeholder: "https://twitter.com/username"
+  },
+  {
+    name: "linkedin",
+    icon: <LinkedinIcon />,
+    placeholder: "https://linkedin.com/in/username"
   },
   {
     name: "instagram",
@@ -33,12 +42,38 @@ const socialLinks = [
     placeholder: "https://youtube.com/@channel"
   },
   {
+    name: "discord",
+    icon: <DiscordIcon />,
+    placeholder: "https://discord.gg/invite"
+  },
+  {
+    name: "facebook",
+    icon: <FacebookIcon />,
+    placeholder: "https://facebook.com/username"
+  },
+  {
     name: "github",
     icon: <GithubIcon />,
     placeholder: "https://github.com/username"
+  },
+  {
+    name: "telegram",
+    icon: <TelegramIcon />,
+    placeholder: "https://t.me/username"
+  },
+  {
+    name: "medium",
+    icon: <MediumIcon />,
+    placeholder: "https://medium.com/@username"
   }
 ];
-const StepThree = ({ disabled, register, errors }: StepThreeProps) => {
+
+const StepThree = ({
+  disabled,
+  register,
+  errors,
+  onReview
+}: StepThreeProps) => {
   return (
     <fieldset
       className={`mx-auto h-[60vh] max-w-2xl animate-fadeIn space-y-6 overflow-y-scroll pb-8 ${
@@ -165,19 +200,14 @@ const StepThree = ({ disabled, register, errors }: StepThreeProps) => {
           Social Links
         </label>
         <div className="space-y-3">
-          {socialLinks.map((social) => (
+          {predefinedSocialLinks.map((social) => (
             <div key={social.name} className="relative">
               <span className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground-secondary">
                 {social.icon}
               </span>
               <input
                 {...(register as UseFormRegister<StepThreeFields>)(
-                  `socials.${social.name}` as
-                    | "socials.website"
-                    | "socials.twitter"
-                    | "socials.instagram"
-                    | "socials.youtube"
-                    | "socials.github"
+                  `socials.${social.name}` as keyof StepThreeFields
                 )}
                 type="url"
                 className="w-full rounded-[7px] border border-[#DAE0E6] px-3 py-3 pl-10 placeholder:text-sm focus:ring-1 focus:ring-accent-green"
@@ -186,11 +216,35 @@ const StepThree = ({ disabled, register, errors }: StepThreeProps) => {
               />
             </div>
           ))}
+
+          {/* Custom links section */}
+          <div className="space-y-3">
+            <label className="block text-sm font-medium text-gray-700">
+              Additional Links
+            </label>
+            {[0, 1, 2].map((index) => (
+              <div key={`custom-${index}`} className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground-secondary">
+                  <GlobeIcon />
+                </span>
+                <input
+                  {...(register as UseFormRegister<StepThreeFields>)(
+                    `customLinks.${index}.url`
+                  )}
+                  type="url"
+                  className="w-full rounded-[7px] border border-[#DAE0E6] px-3 py-3 pl-10 placeholder:text-sm focus:ring-1 focus:ring-accent-green"
+                  placeholder="https://example.com"
+                  disabled={disabled}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
       <button
-        type="submit"
+        onClick={onReview}
+        type="button"
         disabled={disabled}
         className={`w-full rounded-[7px] bg-accent-green px-2 py-3 text-white ${
           disabled ? "cursor-not-allowed" : ""
