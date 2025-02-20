@@ -101,6 +101,7 @@ export const fetchCampaign = async (
       );
       setAvailableBalance(formatCurrency(balance.toString()));
     }
+
     if (data) {
       const timestamp = data.created_at;
       const date = new Date(timestamp);
@@ -252,6 +253,7 @@ export const searchCampaigns = async ({
   );
 };
 
+<<<<<<< HEAD
 export const toUnixTimestamp = ({
   year,
   month,
@@ -280,3 +282,22 @@ export const toUnixTimestamp = ({
 
   return Math.floor(adjustedTime / 1000);
 };
+=======
+export function toUnixTimestamp(
+  year: number,
+  month: number,
+  day: number,
+  hour: number = 0,
+  minute: number = 0,
+  second: number = 0,
+  useLocalTimezone: boolean = false
+): number {
+  const timezoneOffset = useLocalTimezone ? new Date().getTimezoneOffset() : 0;
+
+  const date = new Date(Date.UTC(year, month - 1, day, hour, minute, second));
+
+  const adjustedTime = date.getTime() - timezoneOffset * 60 * 1000;
+
+  return Math.floor(adjustedTime / 1000);
+}
+>>>>>>> develop
