@@ -45,46 +45,43 @@ export const Card = ({
   return (
     <div
       onClick={handleRoute}
-      className="flex h-[19rem] w-[18.4rem] cursor-pointer flex-col gap-3 rounded-[10px] p-4 transition-all hover:bg-[#00594C]/10"
+      className="flex w-full max-w-[28rem] sm:max-w-[20rem] cursor-pointer flex-col gap-3 rounded-[10px] px-3 py-4 transition-all hover:bg-[#00594C]/10 mx-auto"
     >
-      <div className="h-[150px] overflow-clip rounded-[10px]">
+      {/* Image */}
+      <div className=" overflow-hidden rounded-[10px]">
         <Image
-          className="h-full w-full rounded-t-[10px] bg-cover object-cover transition-all group-hover:scale-105"
+          className="h-full w-full rounded-t-[10px] object-cover transition-all hover:scale-105"
           src={imageSrc}
           alt={imageAltText ? imageAltText : ""}
-          width={400}
+          width={900}
           height={400}
         />
       </div>
+
+      {/* Details */}
       <div className="flex flex-col gap-2">
         <h4 className="line-clamp overflow-hidden font-agrandir text-[.9em] capitalize text-[#282828]">
           {causeName}
         </h4>
-        <p className="flex items-center gap-x-1 text-foreground-secondary">
-          <span>
-            <LocationIcon />
-          </span>
-          <span className="text-[.8rem]">{location}.</span>
+        <p className="flex items-center gap-x-1 text-foreground-secondary text-sm">
+          <LocationIcon />
+          <span>{location}.</span>
         </p>
-        <div className="">
-          <div className="relative mb-2 h-[.25rem] w-full">
-            <div className="mb-4 h-[1.5vw] max-h-[.25rem] w-full rounded-full bg-[#EFEFEF]"></div>
-            <div
-              style={{
-                width: width
-              }}
-              className={`absolute top-0 mb-4 h-[1vw] max-h-[.25rem] rounded-full bg-[#34AA6D]`}
-            ></div>
-          </div>
-          <div className="flex justify-between px-2 text-[.875rem]">
-            <p>
-              {formatNumberCompact(balance || 0)} STRK{" "}
-              <span>
-                of {formatNumberCompact(Number(target) || 0)} STRK raised
-              </span>
-            </p>
-            <p>{((balance / parseFloat(target)) * 100).toFixed(2)}%</p>
-          </div>
+
+        {/* Progress Bar */}
+        <div className="relative mb-2 h-[5px] w-full bg-[#EFEFEF] rounded-full">
+          <div
+            style={{ width: width }}
+            className="absolute top-0 h-full bg-[#34AA6D] rounded-full"
+          ></div>
+        </div>
+
+        <div className="flex justify-between text-[.875rem]">
+          <p>
+            {formatNumberCompact(balance || 0)} STRK{" "}
+            <span>of {formatNumberCompact(Number(target) || 0)} STRK raised</span>
+          </p>
+          <p>{((balance / parseFloat(target)) * 100).toFixed(2)}%</p>
         </div>
       </div>
     </div>
@@ -116,7 +113,7 @@ export const BigCard = ({
   return (
     <div
       onClick={handleRoute}
-      className="mx-auto grid max-w-[1200px] animate-fadeIn grid-cols-2 items-center gap-8"
+      className="mx-auto grid max-w-[1200px] animate-fadeIn grid-cols-2 items-center gap-8 px-4"
     >
       <div className="h-[22rem] w-full overflow-clip rounded-[10px]">
         <Image
