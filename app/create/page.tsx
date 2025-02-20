@@ -44,16 +44,6 @@ const Page = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [showReview, setShowReview] = useState(false);
 
-  const [inputData, setInputData] = useState<InputDateType>({
-    name: "",
-    description: "",
-    image: null,
-    target: "",
-    organizer: "",
-    beneficiary: "",
-    location: ""
-  });
-
   // Add state to store combined form data
   const [formData, setFormData] = useState<AllFormFields>({} as AllFormFields);
 
@@ -96,7 +86,22 @@ const Page = () => {
     }
   };
 
-  async function createCampaign() {
+  async function createCampaign({
+    image,
+    name,
+    description,
+    beneficiary,
+    organizer,
+    target
+  }: {
+    name: string;
+    description: string;
+    image: null | File;
+    target: string;
+    organizer: string;
+    beneficiary: string;
+    location: string;
+  }) {
     const loadingPopover = document.querySelector(
       "#creatingCampaign"
     ) as HTMLElement;
@@ -127,20 +132,19 @@ const Page = () => {
         create_campaign_res.transaction_hash
       );
       txnDet.isSuccess() && setCampaignStep(1);
-      let campaignAddress: string | undefined;
-      if (txnDet.isSuccess())
-        campaignAddress = txnDet.events.at(1)?.from_address;
       setLoadingPercentage(40);
 
       /////////////////////////////////////////
       // UPLOAD CAMPAIGN NFT IMAGE TO PINATA
       ////////////////////////////////////////
-      if (!inputData.image) {
+      if (image) {
         alert("No Image selected");
         return;
       }
       const formData = new FormData();
-      formData.append("file", inputData.image);
+      if (image) {
+        formData.append("file", image);
+      }
 
       const image_upload_res = await fetch(
         "https://api.pinata.cloud/pinning/pinFileToIPFS",
@@ -155,9 +159,6 @@ const Page = () => {
       const image_upload_resData = await image_upload_res.json();
       setLoadingPercentage(60);
 
-      // GET CONVERTED DATETIME TO UNIXTIMESTAMP
-      const dateTimeToUnixTimestamp = convertToUnixTimestamp();
-
       //////////////////////////////////
       // CREATE NEW METADATA URI JSON
       //////////////////////////////////
@@ -165,12 +166,12 @@ const Page = () => {
       let new_metadata = JSON.stringify({
         id: tokenId,
         image: `ipfs://${image_upload_resData.IpfsHash}/`,
-        name: inputData.name,
-        description: inputData.description,
-        target: inputData.target,
-        organizer: inputData.organizer,
-        beneficiary: inputData.beneficiary,
-        location: inputData.location,
+        name: name,
+        description: description,
+        target: target,
+        organizer: organizer,
+        beneficiary: beneficiary,
+        location: location,
         campaign_address:
           txnDet.isSuccess() && txnDet.events.at(1)?.from_address,
         created_at: new Date()
@@ -208,14 +209,6 @@ const Page = () => {
             `ipfs://${metadata_upload_resData.IpfsHash}/`
           ])
         );
-      // also call the set LOCKTIME FUNCTION HERE if the date is set
-
-      if (dateTimeToUnixTimestamp > Date.now()) {
-        await tokenbound.lock({
-          tbaAddress: campaignAddress,
-          lockUntill: dateTimeToUnixTimestamp
-        });
-      }
 
       setLoadingPercentage(100);
       setCampaignStep(3);
@@ -223,15 +216,7 @@ const Page = () => {
         // @ts-ignore
         loadingPopover.hidePopover();
         document.body.style.overflow = "auto";
-        setInputData({
-          name: "",
-          description: "",
-          image: null,
-          target: "",
-          organizer: "",
-          beneficiary: "",
-          location: ""
-        });
+        // rest form
       }, 10000);
     } catch (err) {
       // @ts-ignore
