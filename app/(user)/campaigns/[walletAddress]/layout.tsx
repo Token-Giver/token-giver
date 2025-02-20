@@ -2,11 +2,11 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Campaign | Token Giver",
-  description: "",
+  description: ""
 };
 
 export default function UserRootLayout({
-  children,
+  children
 }: {
   children: React.ReactNode;
 }) {

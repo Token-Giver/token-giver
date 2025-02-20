@@ -1,4 +1,3 @@
-import { H3 } from "@/app/components/util/Headers";
 import { useTokenBoundSDK } from "@/app/hooks";
 import { STRK_SEPOLIA, campaign_contract } from "@/app/utils/data";
 import WithdrawIcon from "@/svgs/WithdrawIcon";
@@ -8,7 +7,7 @@ import {
   Dispatch,
   SetStateAction,
   useEffect,
-  useState,
+  useState
 } from "react";
 import { cairo } from "starknet";
 
@@ -30,7 +29,7 @@ const WithdrawalForm = ({
   withdrawalInputs,
   handleChange,
   campaignAddress,
-  availableBalance,
+  availableBalance
 }: Props) => {
   const [tokenTransferredSuccessfully, setTokenTransferredSuccessfully] =
     useState<boolean | null>(null);
@@ -60,7 +59,7 @@ const WithdrawalForm = ({
         tbaAddress: campaignAddress,
         contractAddress: STRK_SEPOLIA,
         recipient: withdrawalInputs.beneficiary,
-        amount: cairo.uint256(Number(withdrawalInputs.amount) * 1e18),
+        amount: cairo.uint256(Number(withdrawalInputs.amount) * 1e18)
       });
 
       if (account) {
@@ -82,19 +81,19 @@ const WithdrawalForm = ({
   };
   return (
     <div
-      className={`grid  overflow-hidden ${
+      className={`grid overflow-hidden ${
         withdrawalFormOpen
           ? "grid-rows-[1fr] transition-all duration-300"
           : "grid-rows-[0fr]"
       }`}
     >
-      <div className="overflow-hidden flex flex-col gap-4 mb-4">
-        <H3 style="text-theme-green">Send STRK</H3>
+      <div className="mb-4 flex flex-col gap-4 overflow-hidden">
+        <h3 className="text-theme-green">Send STRK</h3>
         <div>
           <label htmlFor="">Beneficiary address:</label>
           <input
             onChange={handleChange}
-            className="w-full bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px] mt-2"
+            className="mt-2 w-full rounded-[10px] border-[1px] border-solid border-gray-400 bg-transparent p-3"
             type="text"
             placeholder="Enter wallet address"
             value={withdrawalInputs.beneficiary}
@@ -105,7 +104,7 @@ const WithdrawalForm = ({
           <label htmlFor="">Amount:</label>
           <input
             onChange={handleChange}
-            className="w-full bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px] mt-2"
+            className="mt-2 w-full rounded-[10px] border-[1px] border-solid border-gray-400 bg-transparent p-3"
             type="text"
             placeholder="Enter amount"
             value={withdrawalInputs.amount}
@@ -119,11 +118,11 @@ const WithdrawalForm = ({
           onClick={() => {
             handleWithdraw();
           }}
-          className={`w-full bg-theme-green p-2 rounded-[5px]  ${
+          className={`w-full rounded-[5px] bg-theme-green p-2 ${
             disableSendBtn === "disableButton"
-              ? "opacity-50 !cursor-not-allowed"
-              : "opacity-100 !cursor-pointer"
-          } justify-center items-center text-white  gap-2 flex`}
+              ? "!cursor-not-allowed opacity-50"
+              : "!cursor-pointer opacity-100"
+          } flex items-center justify-center gap-2 text-white`}
         >
           <span>{withdrawState}</span>
           {withdrawState == "Withdraw now" && (

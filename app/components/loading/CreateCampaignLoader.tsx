@@ -5,112 +5,90 @@ import WarningIcon from "@/svgs/WarningIcon";
 import { useRouter } from "next/navigation";
 
 type Props = {
-	campaignStep: number;
-	percentage: number;
-	url: string;
+  campaignStep: number;
+  percentage: number;
+  url: string;
 };
 
 const Creating_Campaign = [
-	"Hang tight! Your campaign is being minted. This may take a few moments.",
-	"Almost there! We're processing your campaign and will have it ready soon.",
-	"Just a bit more patience! We're working hard to mint your campaign.",
-	"Congratulations! Your campaign has been successfully minted.",
+  "Hang tight! Your campaign is being minted. This may take a few moments.",
+  "Almost there! We're processing your campaign and will have it ready soon.",
+  "Just a bit more patience! We're working hard to mint your campaign.",
+  "Congratulations! Your campaign has been successfully minted."
 ];
 
 const CreateCampaignLoader = ({ campaignStep, percentage, url }: Props) => {
-	const router = useRouter();
-	return (
-		<div
-			id="creatingCampaign"
-			popover="manual"
-			className="bg-transparent mx-auto my-auto"
-		>
-			<div className="flex flex-col bg-background h-[90vh] justify-center items-center gap-4  p-4">
-				<div className="">
-					<div className="rounded-full w-fit h-fit p-2 animate-scale-pulse">
-						<span className="text-xl text-theme-yellow">
-							<svg
-								xmlns="http://www.w3.org/2000/svg"
-								viewBox="300 300 800 700" /* Adjusted ViewBox */
-								width="200"
-								height="100"
-								role="img"
-								aria-label="TokenGiver Logo"
-							>
-								{/* Background Circle */}
-								<path
-									fill="#00594c"
-									d="M447.56,655.58c0-45.65,9.4-84.75,28.2-117.29,18.8-32.55,45-57.54,78.62-74.97,33.61-17.44,72.6-26.15,116.96-26.15,44.35,0,83.34,8.72,116.96,26.15,33.61,17.44,59.82,42.43,78.62,74.97,18.8,32.54,28.2,71.64,28.2,117.29,0,45.65-9.4,84.8-28.2,117.45-18.8,32.65-45.01,57.7-78.62,75.13-33.62,17.44-72.61,26.15-116.96,26.15-44.36,0-83.35-8.72-116.96-26.15-33.62-17.44-59.83-42.48-78.62-75.13-18.8-32.65-28.2-71.8-28.2-117.45Z"
-								/>
-								{/* Left Eye */}
-								<path
-									fill="#ffffff"
-									d="M682.18,577.02c12.03-4.48,51.46-19.16,95.68,.61,30.32,13.56,74.14,48.35,71.09,86.15-1.41,17.52-12.37,29.17-14.25,31.11-19.15,19.73-48.08,11.64-60.8,8.09-20.63-5.77-33.23-17.81-44.9-28.96-5.86-5.6-17.47-16.69-15.24-22.43,1.98-5.12,14.05-3.61,16.77-3.27,9.92,1.24,14.93,5.26,24.46,10.25,14.88,7.78,32.44,16.95,43.63,8.82,.88-.64,5.63-4.09,7.02-10.28,3.54-15.83-17.91-36.23-34.4-45.75-24.39-14.07-49.05-10.77-60.13-9.13-30.62,4.55-57.27,21.45-73.68,11.8-1.38-.81-2.92-1.95-3.27-3.78-1.79-9.22,28.39-25.92,48.02-33.22Z"
-								/>
-								{/* Right Eye */}
-								<path
-									fill="#ffffff"
-									d="M660.51,734.45c-12.03,4.48-51.46,19.16-95.68-.61-30.32-13.56-74.14-48.35-71.09-86.15,1.41-17.52,12.37-29.17,14.25-31.11,19.15-19.73,48.08-11.64,60.8-8.09,20.63,5.77,33.23,17.81,44.9,28.96,5.86,5.6,17.47,16.69,15.24,22.43-1.98,5.12-14.05,3.61-16.77,3.27-9.92-1.24-14.93-5.26-24.46-10.25-14.88-7.78-32.44-16.95-43.63-8.82-.88,.64-5.63,4.09-7.02,10.28-3.54,15.83,17.91,36.23,34.4,45.75,24.39,14.07,49.05,10.77,60.13,9.13,30.62-4.55,57.27-21.45,73.68-11.8,1.38,.81,2.92,1.95,3.27,3.78,1.79,9.22-28.39,25.92-48.02,33.22Z"
-								/>
-								{/* Yellow Circle */}
-								<ellipse
-									fill="#fde05d"
-									cx="671.29"
-									cy="655.82"
-									rx="36.94"
-									ry="17.24"
-									transform="rotate(-28.9 671.29 655.82)"
-								/>
-							</svg>
-						</span>
-					</div>
-				</div>
-				<div className="text-center flex flex-col gap-4 items-center">
-					<h2 className="font-semibold">Minting your campaign</h2>
-					<div className="w-full h-[.15rem] mb-2 relative">
-						<div className="w-full h-[.15rem] bg-[#127c5548] rounded-full mb-4"></div>
-						<div
-							style={{
-								width: `${percentage}%`,
-							}}
-							className={`h-[.15rem] bg-theme-green rounded-full mb-4 top-0 transition-all duration-500 absolute`}
-						></div>
-					</div>
-					<p>{Creating_Campaign[campaignStep]}</p>
-					{campaignStep === 3 && (
-						<div className="w-fit mt-4">
-							<button
-								onClick={() => {
-									const loadingPopover = document.querySelector(
-										"#creatingCampaign",
-									) as HTMLElement;
-									// @ts-ignore
-									loadingPopover.hidePopover();
-									document.body.style.overflow = "auto";
-									router.push("/");
-								}}
-								className="border-solid cursor-pointer border-[1px] border-theme-green py-2 px-6 rounded-[10px] w-full flex items-center hover:bg-[#e4efe7]"
-							>
-								<span>view campaigns</span>
-								<span className="text-theme-green">
-									<RightArrowIcon />
-								</span>
-							</button>
-						</div>
-					)}
-				</div>
-			</div>
-			<p className="flex items-center gap-1">
-				<span>
-					<WarningIcon />
-				</span>
-				<span>
-					Warning: Please do not refresh, close, or navigate away. Your data
-					might be lost.
-				</span>
-			</p>
-		</div>
-	);
+  const router = useRouter();
+  return (
+    <div
+      id="creatingCampaign"
+      popover="manual"
+      className="mx-auto my-auto bg-transparent"
+    >
+      <div className="flex h-[90vh] flex-col items-center justify-center gap-4 bg-background p-4">
+        <div className="">
+          <div className="h-fit w-fit animate-scale-pulse rounded-full bg-theme-green p-2">
+            <span className="text-xl text-theme-yellow">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="1em"
+                height="1em"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill={"currentColor"}
+                  d="M4 21h9.62a3.995 3.995 0 0 0 3.037-1.397l5.102-5.952a1 1 0 0 0-.442-1.6l-1.968-.656a3.043 3.043 0 0 0-2.823.503l-3.185 2.547l-.617-1.235A3.98 3.98 0 0 0 9.146 11H4c-1.103 0-2 .897-2 2v6c0 1.103.897 2 2 2m0-8h5.146c.763 0 1.448.423 1.789 1.105l.447.895H7v2h6.014a.996.996 0 0 0 .442-.11l.003-.001l.004-.002h.003l.002-.001h.004l.001-.001c.009.003.003-.001.003-.001c.01 0 .002-.001.002-.001h.001l.002-.001l.003-.001l.002-.001l.002-.001l.003-.001l.002-.001c.003 0 .001-.001.002-.001l.003-.002l.002-.001l.002-.001l.003-.001l.002-.001h.001l.002-.001h.001l.002-.001l.002-.001c.009-.001.003-.001.003-.001l.002-.001a.915.915 0 0 0 .11-.078l4.146-3.317c.262-.208.623-.273.94-.167l.557.186l-4.133 4.823a2.029 2.029 0 0 1-1.52.688H4zM16 2h-.017c-.163.002-1.006.039-1.983.705c-.951-.648-1.774-.7-1.968-.704L12.002 2h-.004c-.801 0-1.555.313-2.119.878C9.313 3.445 9 4.198 9 5s.313 1.555.861 2.104l3.414 3.586a1.006 1.006 0 0 0 1.45-.001l3.396-3.568C18.688 6.555 19 5.802 19 5s-.313-1.555-.878-2.121A2.978 2.978 0 0 0 16.002 2zm1 3c0 .267-.104.518-.311.725L14 8.55l-2.707-2.843C11.104 5.518 11 5.267 11 5s.104-.518.294-.708A.977.977 0 0 1 11.979 4c.025.001.502.032 1.067.485c.081.065.163.139.247.222l.707.707l.707-.707c.084-.083.166-.157.247-.222c.529-.425.976-.478 1.052-.484a.987.987 0 0 1 .701.292c.189.189.293.44.293.707"
+                />
+              </svg>
+            </span>
+          </div>
+        </div>
+        <div className="flex flex-col items-center gap-4 text-center">
+          <h2 className="font-semibold">Minting your campaign</h2>
+          <div className="relative mb-2 h-[.15rem] w-full">
+            <div className="mb-4 h-[.15rem] w-full rounded-full bg-[#127c5548]"></div>
+            <div
+              style={{
+                width: `${percentage}%`
+              }}
+              className={`absolute top-0 mb-4 h-[.15rem] rounded-full bg-theme-green transition-all duration-500`}
+            ></div>
+          </div>
+          <p>{Creating_Campaign[campaignStep]}</p>
+          {campaignStep === 3 && (
+            <div className="mt-4 w-fit">
+              <button
+                onClick={() => {
+                  const loadingPopover = document.querySelector(
+                    "#creatingCampaign"
+                  ) as HTMLElement;
+                  // @ts-ignore
+                  loadingPopover.hidePopover();
+                  document.body.style.overflow = "auto";
+                  router.push("/");
+                }}
+                className="flex w-full cursor-pointer items-center rounded-[10px] border-[1px] border-solid border-theme-green px-6 py-2 hover:bg-[#e4efe7]"
+              >
+                <span>view campaigns</span>
+                <span className="text-theme-green">
+                  <RightArrowIcon />
+                </span>
+              </button>
+            </div>
+          )}
+        </div>
+      </div>
+      <p className="flex items-center gap-1">
+        <span>
+          <WarningIcon />
+        </span>
+        <span>
+          Warning: Please do not refresh, close, or navigate away. Your data
+          might be lost.
+        </span>
+      </p>
+    </div>
+  );
 };
 
 export default CreateCampaignLoader;
