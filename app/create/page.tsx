@@ -24,7 +24,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Stepper from "./components/Stepper";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { StepThreeSchema, StepTwoSchema } from "@/types/create";
-import { Dialog, DialogContent, DialogTitle } from "../ui/dialog";
 import ReviewCampaign from "../(campaign)/[name]/[address]/[cid]/ReviewCampaign";
 
 // Create union type of both schema types

@@ -57,7 +57,7 @@ const StepTwo = ({
   const handleAdditionalImagesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     setAdditionalImageNames(files.map(file => file.name));
-    setValue("additionalImages", files);
+    setValue("additionalImages", files as any);
   };
 
   return (

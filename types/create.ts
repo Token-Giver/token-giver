@@ -11,19 +11,22 @@ export const StepTwoSchema = z.object({
       "Invalid format"
     ),
   additionalImages: z
-    .array(
-      z.instanceof(File).refine(
-        (file) => {
-          return (
-            file.size <= 5 * 1024 * 1024 &&
-            ["image/jpeg", "image/png", "image/webp"].includes(file.type)
-          );
-        },
-        { message: "Each file must be <5MB and in JPG, PNG, or WebP format" }
+    .custom<File[] | FileList>()
+    .transform((val) => (val ? Array.from(val as any) : []))
+    .pipe(
+      z.array(
+        z.instanceof(File).refine(
+          (file) => {
+            return (
+              file.size <= 5 * 1024 * 1024 &&
+              ["image/jpeg", "image/png", "image/webp"].includes(file.type)
+            );
+          },
+          { message: "Each file must be <5MB and in JPG, PNG, or WebP format" }
+        )
       )
-    )
-    .max(5, "Maximum 5 images allowed")
-    .optional(),
+      .max(5, "Maximum 5 images allowed")
+    ),
   category: z.string().optional()
 });
 
