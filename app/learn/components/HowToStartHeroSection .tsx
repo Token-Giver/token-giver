@@ -1,10 +1,10 @@
 function HowToStartHeroSection() {
   return (
     <div className="flex flex-col items-center px-[100px] pt-[180px] text-center">
-      <h4 className="font-AgrandirRegular text-ash mb-[14px] text-base">
+      <h4 className="font-AgrandirRegular mb-[14px] text-base text-foreground-secondary">
         How to Start TokenGiver
       </h4>
-      <h1 className="font-AgrandirBold text-raisin-black mb-10 text-5xl leading-[70px]">
+      <h1 className="text-raisin-black mb-10 font-agrandir text-5xl leading-[70px]">
         Start Fundraising with
         <br />
         <span className="text-primary">TokenGiver Today</span>
@@ -16,7 +16,7 @@ function HowToStartHeroSection() {
           alt=""
         />
         <div className="absolute left-[66px] top-[106px] max-w-[515px] text-left">
-          <h3 className="font-AgrandirBold text-raisin-black mb-4 text-3xl">
+          <h3 className="text-raisin-black mb-4 font-agrandir text-3xl">
             Start Your
             <span className="font-AgrandirRegular">
               {" "}
@@ -32,7 +32,7 @@ function HowToStartHeroSection() {
         </div>
       </div>
       <div className="px-[57px] pt-[42px]">
-        <p className="text-ash mb-[30px] text-base leading-[35px]">
+        <p className="mb-[30px] text-base leading-[35px] text-foreground-secondary">
           At TokenGiver, our mission is to revolutionize the world of
           fundraising by merging the best of blockchain technology with the
           spirit of giving. We aim to create a world where every donation is not

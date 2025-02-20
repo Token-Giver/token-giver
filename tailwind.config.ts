@@ -15,7 +15,9 @@ const config: Config = {
       fontFamily: {
         "Holly-Bale": ["Belanosima", "sans-serif"],
         poppins: ["Poppins", "sans-serif"],
-        agrandir: ["Agrandir", "sans-serif"]
+        agrandir: ["Agrandir", "sans-serif"],
+        montserrat: ["Montserrat", "sans-serif"],
+        AgrandirRegular: ["AgrandirRegular", "sans-serif"]
       },
       colors: {
         "theme-green": "#127C56",

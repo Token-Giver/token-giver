@@ -15,7 +15,7 @@ function StepBlock({ step }: { step: Step }) {
         step.id % 2 ? "flex-row-reverse" : "flex-row"
       } items-center justify-between pt-5`}
     >
-      <div className="font-AgrandirBold relative text-lg leading-8 text-black">
+      <div className="relative font-agrandir text-lg leading-8 text-black">
         <img src={step.illus} className="h-[555px] w-[547px]" alt="" />
         <div
           className={`absolute -top-[15px] flex items-center gap-x-[10px] ${
@@ -30,8 +30,8 @@ function StepBlock({ step }: { step: Step }) {
           <div>Step</div>
         </div>
       </div>
-      <div className="text-ash max-w-[600px] font-medium">
-        <h2 className="font-AgrandirBold text-raisin-black mb-4 text-xl">
+      <div className="max-w-[600px] font-medium text-foreground-secondary">
+        <h2 className="text-raisin-black mb-4 font-agrandir text-xl">
           {step.title}
         </h2>
         <p>{step.subtext}</p>

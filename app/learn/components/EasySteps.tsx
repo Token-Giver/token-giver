@@ -16,11 +16,11 @@ function EasySteps() {
   return (
     <div className="px-[100px] py-[90px]">
       <div className="mx-auto max-w-[925px]">
-        <h3 className="font-AgrandirBold text-raisin-black mb-4 text-center text-3xl">
+        <h3 className="text-raisin-black mb-4 text-center font-agrandir text-3xl">
           Easy <span className="font-AgrandirRegular">Steps</span> You Can't
           Miss
         </h3>
-        <p className="text-ash mb-[30px] text-center text-base leading-8">
+        <p className="mb-[30px] text-center text-base leading-8 text-foreground-secondary">
           TokenGiver makes fundraising and donating a seamless experience with
           cutting-edge blockchain technology.
         </p>
@@ -58,7 +58,7 @@ function EasySteps() {
       </div>
 
       <div className="mt-[38px]">
-        <h2 className="font-AgrandirRegular text-ash mb-[14px] text-xl">
+        <h2 className="font-AgrandirRegular mb-[14px] text-xl text-foreground-secondary">
           {currentTab === "donations" ? "For Donors" : "For Fundraisers"}
         </h2>
 
