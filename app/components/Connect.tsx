@@ -21,29 +21,28 @@ const Connect = () => {
 
   return (
     <>
-      <button
-        onClick={() => address ? disconnect() : setIsOpen(true)}
-        className="flex items-center rounded-[25px] px-2 py-2 text-accent-green ring-1 ring-accent-green"
-      >
-        {shortenedAddress && <ProfileIcon width="1.5em" height="1.5em" />}
-        <span className="px-2">
-          {shortenedAddress || "Connect Wallet"}
+    <button
+    onClick={() => address ? disconnect() : setIsOpen(true)}
+    className="flex items-center rounded-[25px] px-2 py-2 text-accent-green ring-1 ring-accent-green"
+    >
+      {shortenedAddress && <ProfileIcon width="1.5em" height="1.5em" />}
+      <span className="px-2 truncate">
+        {shortenedAddress || "Connect Wallet"}
         </span>
-      </button>
-
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="min-w-full sm:min-w-[32rem] h-screen sm:h-auto rounded-none sm:rounded-lg">
-          <div className="grid h-full grid-cols-1 md:grid-cols-5">
-            {/* Image Section - Hidden on mobile */}
-            <div className="hidden md:block relative col-span-2 overflow-hidden">
-              <Image
+        </button>
+        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+          <DialogContent className="min-w-full p-3 sm:min-w-[32rem]  h-screen sm:h-auto rounded-none sm:rounded-lg">
+            <div className="grid h-full grid-cols-1 md:grid-cols-5">
+              {/* Image Section - Hidden on mobile */}
+              <div className="hidden md:block relative col-span-2 overflow-hidden">
+                <Image
                 src={"/wallet-bg.png"}
                 alt=""
                 role="presentation"
                 className="bg-contain"
                 height={300}
                 width={300}
-              />
+                />
             </div>
 
             {/* Content Section */}
@@ -57,20 +56,20 @@ const Connect = () => {
                   There are several wallet providers.
                 </p>
 
-                <div className="thin-scrollbar grid grid-cols-2 gap-2 md:grid-cols-4 md:max-h-[270px] overflow-y-auto">
+                <div className=" grid grid-cols-2 gap-3 md:gap-2 md:grid-cols-4 md:max-h-[270px] overflow-y-auto p-1">
                   {connectors.map((connector) => {
                     if (!connector.id || !connector.available()) return null;
-                    
                     return (
-                      <button
-                        key={connector.id}
-                        onClick={() => connect({ connector })}
-                        className="text-xs md:text-sm"
-                      >
-                        <div className="mb-1 grid h-16 md:h-[100px] w-full place-content-center rounded-[5.3px] bg-[#F7F6F6]">
-                          <div className="grid h-8 w-8 md:h-[50px] md:w-[50px] place-content-center">
-                            {typeof connector.icon === "string" ? (
-                              <img
+                    <button
+                    key={connector.id}
+                    onClick={() => connect({ connector })}
+                    className="text-xs md:text-sm transition-all hover:scale-105"
+                    >
+                    <div className="mb-1 grid w-[120px] h-[120px] md:h-[100px] md:w-[100px] mx-auto place-content-center rounded-md bg-[#F7F6F6] hover:ring-1 hover:ring-accent-green">
+                      <div className="grid h-[60px] w-[60px] md:h-[50px] md:w-[50px] place-content-center">
+                      {typeof connector.icon === "string" ? (
+                              <img 
+                                className="w-[50px]"
                                 src={connector.icon}
                                 alt={`${connector.name} icon`}
                               />
@@ -102,14 +101,14 @@ const Connect = () => {
                                 )}
                               </>
                             )}
-                          </div>
-                        </div>
-                        <span className="inline-block w-full truncate text-center">
-                          {connector.name}
-                        </span>
-                      </button>
+                      </div>
+                      </div>
+                          <span className="inline-block w-full truncate text-[16px] pt-2 pb-2 text-center font-medium">
+                            {connector.name}
+                            </span>
+                       </button>
                     );
-                  })}
+                    })}
                 </div>
               </div>
             </div>
