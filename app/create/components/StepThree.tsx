@@ -76,7 +76,7 @@ const StepThree = ({
 }: StepThreeProps) => {
   return (
     <fieldset
-      className={`mx-auto h-[60vh] max-w-2xl animate-fadeIn space-y-6 overflow-y-scroll pb-8 ${
+      className={`mx-auto h-auto md:h-[60vh] max-w-2xl animate-fadeIn space-y-6 md:overflow-y-scroll pb-8 ${
         disabled ? "opacity-70" : "opacity-100"
       }`}
     >

@@ -301,9 +301,9 @@ const Page = () => {
   }, [formData]);
   return (
     <>
-      <main className="grid h-screen grid-cols-7 2xl:h-[calc(100vh-39.1rem)]">
-        <div className="relative col-span-3 grid h-full place-content-center bg-accent-green">
-          <div className="relative h-[700px] w-[500px]">
+      <main className="lg:grid flex flex-col h-screen grid-cols-4 lg:grid-cols-7 2xl:h-[calc(100vh-39.1rem)]">
+        <div className="relative col-span-3 lg:grid h-full place-content-center bg-accent-green hidden">
+          <div className="relative h-[700px] w-[500px] hidden lg:block">
             <Image
               src="/create-bg.png"
               alt="Background description"
@@ -313,7 +313,7 @@ const Page = () => {
             />
           </div>
         </div>
-        <div className="col-span-4 h-full space-y-8 overflow-y-auto px-16 pt-8">
+        <div className="col-span-4 h-full space-y-8 overflow-y-auto px-7 md:px-16 pt-8">
           <div className="mx-auto flex max-w-4xl items-center justify-between">
             {currentStep === 3 && (
               <button
@@ -332,17 +332,17 @@ const Page = () => {
           </div>
           <div>
             <Stepper currentStep={currentStep} />
-            <div className="mx-auto max-w-2xl">
-              <h2 className="font-agrandir font-bold text-foreground-primary">
+            <div className="mx-auto max-w-2xl flex flex-col gap-3">
+              <h2 className="font-agrandir font-bold text-foreground-primary md:text-4xl text-3xl">
                 Create your Campaign
               </h2>
-              <p className="text-foreground-secondary">
+              <p className="text-foreground-secondary leading-6">
                 Fill in the appropriate details for your campaign and let's get
                 started.
               </p>
             </div>
 
-            <form className="">
+            <form className="mt-6">
               {currentStep !== 3 && (
                 <StepTwo
                   disabled={!isWalletConnected || currentStep === 1}
