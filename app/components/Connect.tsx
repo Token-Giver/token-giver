@@ -32,11 +32,11 @@ const Connect = () => {
       </button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="w-screen h-screen p-2 sm:max-w-2xl sm:h-[50vh] sm:max-h-[500px] rounded-none sm:rounded-lg">
+        <DialogContent className="min-w-full sm:min-w-[32rem] h-screen sm:h-auto rounded-none sm:rounded-lg">
           <div className="grid h-full grid-cols-1 md:grid-cols-5">
             {/* Image Section - Hidden on mobile */}
             <div className="hidden md:block relative col-span-2 overflow-hidden">
-            <Image
+              <Image
                 src={"/wallet-bg.png"}
                 alt=""
                 role="presentation"
