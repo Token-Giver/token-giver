@@ -36,11 +36,13 @@ const Connect = () => {
           <div className="grid h-full grid-cols-1 md:grid-cols-5">
             {/* Image Section - Hidden on mobile */}
             <div className="hidden md:block relative col-span-2 overflow-hidden">
-              <Image
-                src="/wallet-bg.png"
-                alt="Wallet Background"
-                fill
-                className="object-contain"
+            <Image
+                src={"/wallet-bg.png"}
+                alt=""
+                role="presentation"
+                className="bg-contain"
+                height={300}
+                width={300}
               />
             </div>
 
