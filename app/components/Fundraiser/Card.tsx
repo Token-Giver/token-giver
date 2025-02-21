@@ -48,7 +48,7 @@ export const Card = ({
       className="flex w-full max-w-[28rem] sm:max-w-[20rem] cursor-pointer flex-col gap-3 rounded-[10px] px-3 py-4 transition-all hover:bg-[#00594C]/10 mx-auto"
     >
       {/* Image */}
-      <div className=" overflow-hidden rounded-[10px]">
+      <div className="h-[150px] overflow-hidden rounded-[10px]">
         <Image
           className="h-full w-full rounded-t-[10px] object-cover transition-all hover:scale-105"
           src={imageSrc}
