@@ -46,7 +46,6 @@ const ReviewCampaign = ({
       setImageUrls(getImageArray());
     }
 
-    // Cleanup URLs when component unmounts
     return () => {
       imageUrls.forEach((url) => URL.revokeObjectURL(url));
     };
@@ -54,24 +53,24 @@ const ReviewCampaign = ({
 
   return (
     <Dialog open={showReview} onOpenChange={setShowReview}>
-      <DialogContent className="max-h-[90vh] max-w-[95vw] p-6 md:max-w-[80vw] lg:max-w-[65vw]">
+      <DialogContent className="max-h-[90vh] w-[95vw] p-4 sm:p-6 md:w-[85vw] lg:w-[75vw] xl:w-[65vw] 2xl:max-w-[1200px]">
         <div className="space-y-6">
-          <div className="flex items-center justify-between">
-            <DialogTitle className="font-agrandir text-2xl font-bold">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:pr-8">
+            <DialogTitle className="mt-8 pr-8 font-agrandir text-xl font-bold sm:mt-1 sm:text-2xl">
               Campaign Preview
             </DialogTitle>
             <button
               onClick={createCampaign}
-              className="rounded-[8px] bg-accent-green px-4 py-2 text-sm text-white"
+              className="rounded-[8px] bg-accent-green px-4 py-2 text-sm text-white sm:w-auto"
             >
               Mint Campaign
             </button>
           </div>
 
           <div className="max-h-[75vh] overflow-y-auto">
-            <div className="mx-auto max-w-[602px] space-y-8">
+            <div className="mx-auto max-w-[800px] space-y-8">
               {imageUrls.length > 0 && (
-                <div className="relative h-48 w-full overflow-hidden rounded-lg">
+                <div className="relative h-48 w-full overflow-hidden rounded-lg sm:h-64">
                   <Image
                     src={imageUrls[0]}
                     alt="Campaign banner"
@@ -82,7 +81,7 @@ const ReviewCampaign = ({
               )}
 
               <div className="space-y-8">
-                <h3 className="text-2xl text-foreground-primary">
+                <h3 className="text-xl text-foreground-primary sm:text-2xl">
                   <span className="font-agrandir font-bold">Campaign </span>
                   <span className="font-normal">Highlights</span>
                 </h3>
@@ -115,7 +114,7 @@ const ReviewCampaign = ({
 
                 <div>
                   <h3 className="mb-6">Organizer and Beneficiary</h3>
-                  <div className="mb-8 flex items-center justify-between">
+                  <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                     <div className="flex items-center gap-2">
                       <div className="grid h-[40px] w-[40px] place-content-center rounded-full bg-[#F7F7F6]">
                         <ProfileIcon />
@@ -129,7 +128,7 @@ const ReviewCampaign = ({
                     </div>
                     {formData.beneficiary && (
                       <>
-                        <p className="text-xl text-foreground-secondary">
+                        <p className="hidden text-xl text-foreground-secondary sm:block">
                           <RightArrowIcon />
                         </p>
                         <div className="flex items-center gap-2">
@@ -154,7 +153,6 @@ const ReviewCampaign = ({
                   </p>
                 </div>
 
-                {/* Location */}
                 {formData.location && (
                   <div className="rounded-lg bg-[#F7F7F6] p-4">
                     <h4 className="mb-2 font-agrandir text-base font-bold">
@@ -179,7 +177,7 @@ const ReviewCampaign = ({
                               <p className="text-sm capitalize text-foreground-secondary">
                                 {name}
                               </p>
-                              <p className="font-medium">{url}</p>
+                              <p className="break-all font-medium">{url}</p>
                             </div>
                           )
                       )}
@@ -196,7 +194,9 @@ const ReviewCampaign = ({
                                   <p className="text-sm text-foreground-secondary">
                                     Website {index + 1}
                                   </p>
-                                  <p className="font-medium">{link.url}</p>
+                                  <p className="break-all font-medium">
+                                    {link.url}
+                                  </p>
                                 </div>
                               )
                           )}
@@ -206,14 +206,13 @@ const ReviewCampaign = ({
                 </div>
               )}
 
-              {/* Additional Images */}
               {imageUrls.length > 1 && (
                 <div>
                   <h4 className="mb-4 font-agrandir text-base font-bold text-foreground-primary/80">
                     More Images
                   </h4>
-                  <div className="grid grid-cols-2 gap-3">
-                    {imageUrls.slice(1, 5).map((imageUrl, index) => (
+                  <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                    {imageUrls.slice(1).map((imageUrl, index) => (
                       <div
                         key={index}
                         className="relative h-[11rem] w-full overflow-clip rounded-[5px]"
@@ -224,13 +223,6 @@ const ReviewCampaign = ({
                           fill
                           className="object-cover"
                         />
-                        {index === 3 && imageUrls.length > 5 && (
-                          <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                            <span className="font-agrandir text-2xl text-white">
-                              +{imageUrls.length - 5}
-                            </span>
-                          </div>
-                        )}
                       </div>
                     ))}
                   </div>
