@@ -11,22 +11,23 @@ const page = () => {
   const categoryName = String(params?.category ?? "All").replace(/-/g, " ");
 
   return (
-    <section className="mx-auto mt-[5rem] min-h-[40vh] animate-fadeIn px-6 sm:px-8 md:px-12 lg:px-16 py-8">
-      <div className="mx-auto mb-16 grid max-w-[1242px] px-4 lg:grid-cols-2 gap-10">
+    <section className="mx-auto mt-[5rem] min-h-[40vh] animate-fadeIn px-3 sm:px-8 md:px-12 lg:px-16 py-8">
+      <div className="mx-auto mb-16 grid max-w-[1242px] px-3 lg:grid-cols-2 gap-10">
         <div className="space-y-6 text-center lg:text-left">
-          <p className="mb-4 text-foreground-secondary text-sm sm:text-base">
+          <p className="mb-4 text-foreground-secondary text-sm sm:text-base text-left">
             Category
           </p>
-          <h2 className="font-agrandir text-2xl sm:text-3xl md:text-4xl capitalize leading-tight">
+          <h2 className="font-agrandir text-[32px] text-left sm:text-3xl md:text-4xl capitalize leading-tight">
             <span className="text-accent-green">{categoryName}</span> Fundraising with TokenGiver
           </h2>
-          <p className="text-sm leading-relaxed text-foreground-secondary sm:text-base">
+          <p className="text-sm leading-relaxed text-foreground-secondary sm:text-base text-justify">
             Empowering the future through causes has never been easier with
             TokenGiver. Join us in transforming lives.
           </p>
           <Link
             href={"/create"}
-            className="inline-block rounded-full bg-accent-green px-6 py-3 text-sm text-white transition hover:bg-accent-green/90 sm:text-base"
+            className="block  items-start w-full sm:inline-block sm:w-auto rounded-[25px] bg-accent-green px-4 py-2 text-sm text-white"
+           // "rounded-[25px] bg-accent-green px-4 py-2 text-sm text-white"
           >
             Start a Campaign
           </Link>
@@ -80,8 +81,9 @@ const page = () => {
             ))}
         </div>
 
+          {/* //mx-auto mt-8 block w-fit rounded-[25px] px-4 py-2 text-sm text-foreground-primary ring-1 ring-[#808080] */}
         <div className="mt-8 flex justify-center">
-          <button className="rounded-full px-6 py-3 text-sm text-foreground-primary ring-1 ring-gray-400 transition hover:bg-gray-100 sm:text-base">
+          <button className="rounded-[25px] px-4 py-2 text-sm text-foreground-primary ring-1 ring-[#808080]">
             See More
           </button>
         </div>

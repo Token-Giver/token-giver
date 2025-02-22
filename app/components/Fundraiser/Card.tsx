@@ -45,15 +45,15 @@ export const Card = ({
   return (
     <div
       onClick={handleRoute}
-      className="flex w-full max-w-[28rem] sm:max-w-[20rem] cursor-pointer flex-col gap-3 rounded-[10px] px-3 py-4 transition-all hover:bg-[#00594C]/10 mx-auto"
+      className="flex  min-w-[15rem] sm:max-w-[20rem] cursor-pointer flex-col gap-3 rounded-[10px] px-3 py-4 transition-all hover:bg-[#00594C]/10 mx-auto"
     >
       {/* Image */}
       <div className="h-[150px] overflow-hidden rounded-[10px]">
         <Image
-          className="h-full w-full rounded-t-[10px] object-cover transition-all hover:scale-105"
+          className="h-full lg:w-[267px] w-[303px] rounded-t-[10px] object-cover transition-all hover:scale-105"
           src={imageSrc}
           alt={imageAltText ? imageAltText : ""}
-          width={900}
+          width={400}
           height={400}
         />
       </div>
@@ -113,7 +113,7 @@ export const BigCard = ({
   return (
     <div
       onClick={handleRoute}
-      className="mx-auto grid max-w-[1200px] animate-fadeIn grid-cols-2 items-center gap-8 px-4"
+      className="mx-auto grid max-w-[1200px] animate-fadeIn grid-cols-2 items-center gap-6 md:gap-8 px-4"
     >
       <div className="h-[22rem] w-full overflow-clip rounded-[10px]">
         <Image
