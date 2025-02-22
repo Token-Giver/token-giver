@@ -13,8 +13,8 @@ const page = () => {
   return (
     <section className="mx-auto mt-[5rem] min-h-[40vh] animate-fadeIn px-3 sm:px-8 md:px-12 lg:px-16 py-8">
       <div className="mx-auto mb-16 grid max-w-[1242px] px-3 lg:grid-cols-2 gap-10">
-        <div className="space-y-6 text-center lg:text-left">
-          <p className="mb-4 text-foreground-secondary text-sm sm:text-base text-left">
+        <div className="space-y-4 text-center lg:text-left">
+          <p className="mb-2 text-foreground-secondary text-sm sm:text-base text-left">
             Category
           </p>
           <h2 className="font-agrandir text-[32px] text-left sm:text-3xl md:text-4xl capitalize leading-tight">
