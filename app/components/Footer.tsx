@@ -13,45 +13,52 @@ const Footer = () => {
   const isDonationPage = pathname?.endsWith("/donate");
   return (
     <div>
-      <div className="mx-auto my-16 flex max-w-[1100px] items-center justify-between">
-        <div className="w-[400px]">
-          <h2 className="text-l mb-6">
-            <span className="font-agrandir">Stay</span> Updated{" "}
-          </h2>
-          <p className="text-foreground-secondary">
-            Join our community and stay informed about the latest campaigns,
-            success stories, and blockchain innovations in fundraising.
-          </p>
+      <div className="my-16 flex max-w-[1100px] flex-col items-start justify-start space-y-6 p-4 md:mx-auto md:flex-row md:items-center md:justify-between md:space-y-0">
+        <div className="w-full md:w-1/2">
+          <div className="flex w-full max-w-[400px] flex-col items-start justify-start space-y-4">
+            <h2 className="text-l">
+              <span className="font-agrandir">Stay</span> Updated{" "}
+            </h2>
+            <p className="w-full text-foreground-secondary md:max-w-[80%]">
+              Join our community and stay informed about the latest campaigns,
+              success stories, and blockchain innovations in fundraising.
+            </p>
+          </div>
         </div>
-        <div className="flex gap-6">
+        <div className="flex w-full flex-col items-start justify-start space-x-0 space-y-6 md:w-1/2 md:flex-row md:items-center md:justify-end md:space-x-4 md:space-y-0">
           <input
-            className="h-[45px] w-[423px] rounded-[10px] bg-[#FAFAFA] px-6 ring-1 ring-[#0000000A] placeholder:text-sm"
+            className="w-full rounded-[10px] bg-[#FAFAFA] px-6 py-3 ring-1 ring-[#0000000A] placeholder:text-sm"
             placeholder="email address"
             type="text"
             name=""
             id=""
           />
-          <button className="rounded-[25px] bg-accent-green px-4 py-1 text-sm text-white">
-            subscribe
+          <button className="w-full rounded-[25px] bg-accent-green px-8 py-3 text-sm font-semibold text-white md:w-auto">
+            Subscribe
           </button>
         </div>
       </div>
-      <div className="mx-auto mb-16 flex max-w-[1100px] justify-between text-[#8E9BAE]">
-        <div className="w-[400px]">
+      <div className="mx-auto mb-16 flex max-w-[1100px] flex-col items-start justify-start text-[#8E9BAE] md:flex-row md:justify-between">
+        <div className="mb-6 w-full md:mb-0 md:max-w-[480px]">
           <Link href="/" className="inline-block w-[12rem]">
             <Image src={"/logo.png"} alt={"logo"} width={2000} height={1342} />
           </Link>
-          <p>
+          <p className="w-full px-4 sm:max-w-[80%]">
             Token Giver welcomes you to a platform built on trust, transparency,
             and impact. Let's give smarter, together.
           </p>
         </div>
-        <div className="flex gap-8">
-          <div>
-            <p className="mb-4 font-medium text-foreground-primary">company</p>
+        <div className="grid w-full grid-cols-2 gap-8 p-4 sm:grid-cols-3 md:p-0">
+          <div className="col-span-1 w-full">
+            <p className="text-md mb-4 font-semibold text-foreground-primary">
+              Company
+            </p>
             <ul className="flex flex-col gap-4">
               <li>
                 <p>About Us</p>
+              </li>
+              <li>
+                <p>Career</p>
               </li>
               <li>
                 <p>Contact Us</p>
@@ -64,16 +71,19 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-          <div>
-            <p className="mb-4 font-medium text-foreground-primary">
+          <div className="col-span-1 w-full">
+            <p className="text-md mb-4 font-semibold text-foreground-primary">
               Resources
             </p>
             <ul className="flex flex-col gap-4">
               <li>
-                <p>FAQ</p>
+                <p>Blog</p>
               </li>
               <li>
-                <p>Blog</p>
+                <p>Brand</p>
+              </li>
+              <li>
+                <p>FAQ</p>
               </li>
               <li>
                 <p>Help and support</p>
@@ -83,49 +93,58 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-          <div>
-            <p className="mb-4 font-medium text-foreground-primary">Donate</p>
+          <div className="col-span-1 w-full">
+            <p className="text-md mb-4 font-semibold text-foreground-primary">
+              Donate
+            </p>
             <ul className="flex flex-col gap-4">
               <li>
                 <p>Documentation</p>
               </li>
               <li>
-                <p>How to get started on token giver</p>
+                <p>How to start TokenGiver</p>
               </li>
               <li>
                 <p>Categories</p>
+              </li>
+              <li>
+                <p>Token Bounty</p>
+              </li>
+              <li>
+                <p>Security</p>
               </li>
             </ul>
           </div>
         </div>
       </div>
       <footer>
-        <div className="bg-[#282828]">
-          <div className="mx-auto flex h-[69px] max-w-[1536px] items-center justify-between p-16 text-white">
-            <div className="flex gap-3">
+        <div className="w-full bg-[#282828] px-4 py-12 text-white">
+          <div className="grid w-full grid-cols-12 gap-4">
+            <div className="col-span-12 flex w-full flex-col space-y-3 space-x-0 sm:space-y-0 sm:space-x-3 items-start justify-start sm:flex-row sm:items-center sm:justify-between lg:col-span-6">
               <p>
                 Copyright © {new Date().getFullYear()} TokenGiver all rights
                 reserved{" "}
               </p>
-              <p>Terms & Condition</p>
-              <p>Privacy Policy</p>
+              <div className="flex gap-3">
+                <p>Terms & Condition</p>
+                <p>Privacy Policy</p>
+              </div>
             </div>
-            <div className="flex items-center gap-2">
-              <a href="http://" target="_blank" rel="noopener noreferrer">
-                <XIcon />
-              </a>
-              <a href="http://" target="_blank" rel="noopener noreferrer">
-                <GithubIcon />
-              </a>
-              <a href="http://" target="_blank" rel="noopener noreferrer">
-                <TelegramIcon />
-              </a>
-
-              <a href="http://" target="_blank" rel="noopener noreferrer">
-                <OnlydustIcon />
-              </a>
-            </div>
-            <div className="flex items-center">
+            <div className="col-span-12 flex w-full flex-col space-y-3 space-x-0 sm:space-y-0 sm:space-x-3 items-start justify-start sm:flex-row sm:items-center sm:justify-between lg:col-span-6">
+              <div className="flex w-full items-center justify-start lg:justify-center gap-2">
+                <a href="http://" target="_blank" rel="noopener noreferrer">
+                  <XIcon />
+                </a>
+                <a href="http://" target="_blank" rel="noopener noreferrer">
+                  <GithubIcon />
+                </a>
+                <a href="http://" target="_blank" rel="noopener noreferrer">
+                  <TelegramIcon />
+                </a>
+                <a href="http://" target="_blank" rel="noopener noreferrer">
+                  <OnlydustIcon />
+                </a>
+              </div>
               <p>support@tokengiver.com</p>
             </div>
           </div>

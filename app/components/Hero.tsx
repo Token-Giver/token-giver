@@ -7,18 +7,17 @@ const Hero = () => {
     router.push("/create");
   };
   return (
-    <section className="w-[1100px] text-foreground-secondary 2xl:mx-auto">
-      <p>Explore</p>
-      <h1 className="font-agrandir text-foreground-primary">
-        Transform Charity with Blockchain.
+    <section className="mx-auto w-full max-w-[1100px] flex flex-col items-center justify-center sm:items-start sm:justify-start space-y-8 text-foreground-secondary">
+      <p className="text-xs sm:text-sm">Explore</p>
+      <h1 className="block text-center sm:text-left lg:flex font-agrandir lg:flex-col">
+        <span className="text-foreground-primary">
+          Connect with Verified & Impactful{" "}
+        </span>
+        <span className="text-accent-green">Projects Around The Globe.</span>
       </h1>
-      <p className="mb-4 text-foreground-secondary">
-        Fussing compassion with innovation. Maximizing your contributions'
-        impact with security and transparency.
-      </p>
       <button
         onClick={createCampaign}
-        className="rounded-[25px] bg-accent-green px-4 py-2 text-sm text-white"
+        className="w-fit rounded-[18px] bg-accent-green px-4 py-3 text-xs font-semibold text-white sm:rounded-[25px] sm:px-8 sm:py-4 sm:text-sm"
       >
         Start a Campaign
       </button>
