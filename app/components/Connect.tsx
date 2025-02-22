@@ -63,13 +63,13 @@ const Connect = () => {
                     <button
                     key={connector.id}
                     onClick={() => connect({ connector })}
-                    className="text-xs md:text-sm transition-all hover:scale-105"
+                    className="text-xs md:text-sm"
                     >
-                    <div className="mb-1 grid w-[120px] h-[120px] md:h-[100px] md:w-[100px] mx-auto place-content-center rounded-md bg-[#F7F6F6] hover:ring-1 hover:ring-accent-green">
-                      <div className="grid h-[60px] w-[60px] md:h-[50px] md:w-[50px] place-content-center">
+                    <div className="mb-1 grid w-[160px] h-[160px] md:h-[100px] md:w-[100px] place-content-center rounded-md bg-[#F7F6F6]">
+                      <div className="grid h-[50px] w-[50px] md:h-[50px] md:w-[50px] place-content-center">
                       {typeof connector.icon === "string" ? (
                               <img 
-                                className="w-[50px]"
+                                className="w-[70px]"
                                 src={connector.icon}
                                 alt={`${connector.name} icon`}
                               />
@@ -103,7 +103,7 @@ const Connect = () => {
                             )}
                       </div>
                       </div>
-                          <span className="inline-block w-full truncate text-[16px] pt-2 pb-2 text-center font-medium">
+                          <span className="inline-block w-[100px] truncate pt-2 pb-2 text-center">
                             {connector.name}
                             </span>
                        </button>
