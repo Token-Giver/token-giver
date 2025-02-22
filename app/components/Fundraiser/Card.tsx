@@ -45,12 +45,12 @@ export const Card = ({
   return (
     <div
       onClick={handleRoute}
-      className="flex  min-w-[15rem] sm:max-w-[20rem] cursor-pointer flex-col gap-3 rounded-[10px] px-3 py-4 transition-all hover:bg-[#00594C]/10 mx-auto"
+      className="mx-auto flex min-w-[15rem] cursor-pointer flex-col gap-3 rounded-[10px] px-3 py-4 transition-all hover:bg-[#00594C]/10 sm:max-w-[20rem]"
     >
       {/* Image */}
       <div className="h-[150px] overflow-hidden rounded-[10px]">
         <Image
-          className="h-full lg:w-[267px] w-[303px] rounded-t-[10px] object-cover transition-all hover:scale-105"
+          className="h-full w-[303px] rounded-t-[10px] object-cover transition-all hover:scale-105 lg:w-[267px]"
           src={imageSrc}
           alt={imageAltText ? imageAltText : ""}
           width={400}
@@ -63,23 +63,27 @@ export const Card = ({
         <h4 className="line-clamp overflow-hidden font-agrandir text-[.9em] capitalize text-[#282828]">
           {causeName}
         </h4>
-        <p className="flex items-center gap-x-1 text-foreground-secondary text-sm">
+        <p className="flex items-center gap-x-1 text-sm text-foreground-secondary">
           <LocationIcon />
           <span>{location}.</span>
         </p>
 
         {/* Progress Bar */}
-        <div className="relative mb-2 h-[5px] w-full bg-[#EFEFEF] rounded-full">
-          <div
-            style={{ width: width }}
-            className="absolute top-0 h-full bg-[#34AA6D] rounded-full"
-          ></div>
+        <div className="w-full max-w-[19rem]">
+          <div className="relative mb-2 h-[5px] w-full overflow-hidden rounded-full bg-[#EFEFEF]">
+            <div
+              style={{ width: width }}
+              className="absolute left-0 top-0 h-full rounded-full bg-[#34AA6D]"
+            ></div>
+          </div>
         </div>
 
-        <div className="flex justify-between text-[.875rem]">
+        <div className="flex justify-between text-[.875rem] max-w-[19rem]">
           <p>
             {formatNumberCompact(balance || 0)} STRK{" "}
-            <span>of {formatNumberCompact(Number(target) || 0)} STRK raised</span>
+            <span>
+              of {formatNumberCompact(Number(target) || 0)} STRK raised
+            </span>
           </p>
           <p>{((balance / parseFloat(target)) * 100).toFixed(2)}%</p>
         </div>
@@ -113,7 +117,7 @@ export const BigCard = ({
   return (
     <div
       onClick={handleRoute}
-      className="mx-auto grid max-w-[1200px] animate-fadeIn grid-cols-2 items-center gap-6 md:gap-8 px-4"
+      className="mx-auto grid max-w-[1200px] animate-fadeIn grid-cols-2 items-center gap-6 px-4 md:gap-8"
     >
       <div className="h-[22rem] w-full overflow-clip rounded-[10px]">
         <Image
@@ -138,7 +142,7 @@ export const BigCard = ({
         </div>
 
         <p className="text-foreground-secondary">{description}</p>
-        <div className="relative mb-2 h-[.25rem] w-full">
+        <div className="relative mb-2 h-[.25rem] lg:w-full">
           <div className="mb-4 h-[1.5vw] max-h-[.25rem] w-full rounded-full bg-[#EFEFEF]"></div>
           <div
             style={{
