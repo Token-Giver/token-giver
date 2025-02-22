@@ -14,7 +14,7 @@ const Creating_Campaign = [
   "Hang tight! Your campaign is being minted. This may take a few moments.",
   "Almost there! We're processing your campaign and will have it ready soon.",
   "Just a bit more patience! We're working hard to mint your campaign.",
-  "Congratulations! Your campaign has been successfully minted.",
+  "Congratulations! Your campaign has been successfully minted."
 ];
 
 const CreateCampaignLoader = ({ campaignStep, percentage, url }: Props) => {
@@ -23,11 +23,11 @@ const CreateCampaignLoader = ({ campaignStep, percentage, url }: Props) => {
     <div
       id="creatingCampaign"
       popover="manual"
-      className="bg-transparent mx-auto my-auto"
+      className="mx-auto my-auto bg-transparent"
     >
-      <div className="flex flex-col bg-background h-[90vh] justify-center items-center gap-4  p-4">
+      <div className="flex h-[90vh] flex-col items-center justify-center gap-4 bg-background p-4">
         <div className="">
-          <div className="rounded-full w-fit h-fit bg-theme-green p-2 animate-scale-pulse">
+          <div className="h-fit w-fit animate-scale-pulse rounded-full bg-theme-green p-2">
             <span className="text-xl text-theme-yellow">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -43,20 +43,20 @@ const CreateCampaignLoader = ({ campaignStep, percentage, url }: Props) => {
             </span>
           </div>
         </div>
-        <div className="text-center flex flex-col gap-4 items-center">
+        <div className="flex flex-col items-center gap-4 text-center">
           <h2 className="font-semibold">Minting your campaign</h2>
-          <div className="w-full h-[.15rem] mb-2 relative">
-            <div className="w-full h-[.15rem] bg-[#127c5548] rounded-full mb-4"></div>
+          <div className="relative mb-2 h-[.15rem] w-full">
+            <div className="mb-4 h-[.15rem] w-full rounded-full bg-[#127c5548]"></div>
             <div
               style={{
-                width: `${percentage}%`,
+                width: `${percentage}%`
               }}
-              className={`h-[.15rem] bg-theme-green rounded-full mb-4 top-0 transition-all duration-500 absolute`}
+              className={`absolute top-0 mb-4 h-[.15rem] rounded-full bg-theme-green transition-all duration-500`}
             ></div>
           </div>
           <p>{Creating_Campaign[campaignStep]}</p>
           {campaignStep === 3 && (
-            <div className="w-fit mt-4">
+            <div className="mt-4 w-fit">
               <button
                 onClick={() => {
                   const loadingPopover = document.querySelector(
@@ -67,7 +67,7 @@ const CreateCampaignLoader = ({ campaignStep, percentage, url }: Props) => {
                   document.body.style.overflow = "auto";
                   router.push("/");
                 }}
-                className="border-solid cursor-pointer border-[1px] border-theme-green py-2 px-6 rounded-[10px] w-full flex items-center hover:bg-[#e4efe7]"
+                className="flex w-full cursor-pointer items-center rounded-[10px] border-[1px] border-solid border-theme-green px-6 py-2 hover:bg-[#e4efe7]"
               >
                 <span>view campaigns</span>
                 <span className="text-theme-green">

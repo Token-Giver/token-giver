@@ -1,33 +1,21 @@
 "use client";
 import { useEffect, useState } from "react";
-import Card from "./Card";
-import CardLoader from "@/app/components/loading/CardLoader";
 import { useRouter } from "next/navigation";
 import { campaign_contract } from "@/app/utils/data";
 import { fetchCampaigns } from "@/app/utils/helper";
-import Container from "../util/Container";
-import { H2 } from "../util/Headers";
-import { useConnect } from "@starknet-react/core";
+import FeaturedCampaigns from "./FeaturedCampaigns";
+import CardLoader, { BigCardLoader } from "../loading/CardLoader";
+import { BigCard, Card } from "./Card";
+import CategorySlider from "./CategorySlider";
 
 const Fundraisers = () => {
   const router = useRouter();
-  const { connectors, connect } = useConnect();
   const [collections, setCollections] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
 
   const handleRouteToCampaigns = () => {
-    router.push("/explore");
+    router.push("/discover");
   };
-  useEffect(() => {
-    const lastUsedConnector = localStorage.getItem("lastUsedConnector");
-    if (lastUsedConnector) {
-      connect({
-        connector: connectors.find(
-          (connector) => connector.name === lastUsedConnector
-        ),
-      });
-    }
-  }, [connectors]);
 
   useEffect(() => {
     fetchCampaigns(campaign_contract, setLoading, setCollections);
@@ -35,56 +23,84 @@ const Fundraisers = () => {
   }, []);
 
   return (
-    <section>
-      <Container>
-        <H2 style="my-[5rem]">Browse Fundraisers</H2>
-        <section
-          id="fundraisers"
-          className="grid gap-4  md:gap-8 lg:grid-cols-3 md:max-w-[800px] lg:max-w-none md:mx-auto  md:justify-center "
-        >
-          {loading
-            ? Array.from({ length: 12 }).map((_, idx) => (
-                <CardLoader key={idx} />
-              ))
-            : collections.slice(0, 9).map((data, idx) => {
-                const path = data.name
-                  .replace(/[^a-zA-Z ]/g, "")
-                  .replace(/ /g, "-")
-                  .toLocaleLowerCase()
-                  .replace(/-+/g, "-");
+    <section className="max-w-[1536px] 2xl:mx-auto">
+      <FeaturedCampaigns />
 
-                const url = `${path}/${data.campaign_address}/${data.cid}`;
-                return (
-                  <Card
-                    cid={data.cid}
-                    causeName={data.name || "Unknown Cause"}
-                    imageSrc={
-                      `${
-                        process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL
-                      }${data.image?.slice(7, -1)}?pinataGatewayToken=${
-                        process.env.NEXT_PUBLIC_PINATA_API_KEY
-                      }` || "/default-image.webp"
-                    }
-                    location={data.location}
-                    progress={0}
-                    key={idx}
-                    token_id={data.id}
-                    campaign_address={data.campaign_address || "0x0"}
-                    target={data.target}
-                    url={url}
-                  />
-                );
-              })}
-        </section>
-        <div className=" flex justify-center">
+      <div className="mt-16">
+        <CategorySlider />
+        {loading ? (
+          <BigCardLoader />
+        ) : (
+          <BigCard
+            cid={collections[0]?.cid}
+            causeName={collections[0]?.name || "Unknown Cause"}
+            imageSrc={
+              `${
+                process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL
+              }${collections[0]?.image?.slice(7, -1)}?pinataGatewayToken=${
+                process.env.NEXT_PUBLIC_PINATA_API_KEY
+              }` || "/default-image.webp"
+            }
+            location={collections[0]?.location}
+            progress={0}
+            token_id={collections[0]?.id}
+            campaign_address={collections[0]?.campaign_address || "0x0"}
+            target={collections[0].target}
+            url={`${collections[0].name
+              .replace(/[^a-zA-Z ]/g, "")
+              .replace(/ /g, "-")
+              .toLocaleLowerCase()
+              .replace(/-+/g, "-")}/${collections[0]?.campaign_address}/${
+              collections[0].cid
+            }`}
+            description={collections[0]?.description}
+          />
+        )}
+
+        <div className="mx-auto mt-16 flex max-w-[1242px] flex-col items-center">
+          <div className="grid grid-cols-4 gap-4">
+            {loading
+              ? Array.from({ length: 12 }).map((_, idx) => (
+                  <CardLoader key={idx} />
+                ))
+              : collections.slice(1, 9).map((data, idx) => {
+                  const path = data.name
+                    .replace(/[^a-zA-Z ]/g, "")
+                    .replace(/ /g, "-")
+                    .toLocaleLowerCase()
+                    .replace(/-+/g, "-");
+
+                  const url = `${path}/${data.campaign_address}/${data.cid}`;
+                  return (
+                    <Card
+                      cid={data.cid}
+                      causeName={data.name || "Unknown Cause"}
+                      imageSrc={
+                        `${
+                          process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL
+                        }${data.image?.slice(7, -1)}?pinataGatewayToken=${
+                          process.env.NEXT_PUBLIC_PINATA_API_KEY
+                        }` || "/default-image.webp"
+                      }
+                      location={data.location}
+                      progress={0}
+                      key={idx}
+                      token_id={data.id}
+                      campaign_address={data.campaign_address || "0x0"}
+                      target={data.target}
+                      url={url}
+                    />
+                  );
+                })}
+          </div>
           <button
             onClick={handleRouteToCampaigns}
-            className="px-6 py-2 border-solid border-[1px] ml-10 mt-10 h-fit border-[#127C56] rounded-[25px]"
+            className="mx-auto mt-8 w-[7rem] rounded-[25px] px-4 py-2 text-sm text-foreground-primary ring-1 ring-[#808080]"
           >
-            Show more
+            See more
           </button>
         </div>
-      </Container>
+      </div>
     </section>
   );
 };

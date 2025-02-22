@@ -1,6 +1,6 @@
 const Logo = ({ fill = "currentColor" }: { fill?: string }) => {
   return (
-    <span className="flex gap-[.15rem] items-center">
+    <span className="flex items-center gap-[.15rem]">
       <span>token giver</span>
       <span>
         <svg

@@ -4,7 +4,7 @@
 
 <!-- ABOUT THE PROJECT -->
 
-![Product screen shot](public/project-screenshot.png)
+![Product screen shot](app/opengraph-image.png)
 
 Token Giver is a decentralized application designed to revolutionize charity and fundraising. With Token Giver, users can create and manage campaigns by minting unique campaign NFTs, which have Token Bound Accounts (TBA) deployed on them automatically. This enables seamless and secure donations using STRK tokens. This project leverages the power of Next.js, StarknetJs, Starknet TBA SDK, and smart contracts written in Cairo to provide a robust and user-friendly platform..
 

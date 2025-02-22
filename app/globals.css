@@ -1,8 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
-@import url("https://fonts.cdnfonts.com/css/belanosima");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@font-face {
+  font-family: "Agrandir";
+  src: url("/fonts/Agrandir-TextBold.otf") format("opentype");
+  font-weight: bold;
+  font-style: normal;
+  font-display: swap;
+}
 
 *,
 *::after,
@@ -28,8 +36,18 @@ body {
   font-family: "Poppins", sans-serif;
 }
 main {
-  background-color: #fffcf5;
+  background-color: white;
 }
+
+h1 {
+  font-size: clamp(0.75em, 6vw, 3.2em);
+  line-height: 1.5;
+}
+h2 {
+  font-size: clamp(0.75em, 3.5vw, 2em);
+  line-height: 1.5;
+}
+
 #hero {
   height: calc(100vh - 10rem);
   height: calc(100svh - 10rem);
@@ -115,4 +133,36 @@ select {
     transform: scale(0.7);
     opacity: 0;
   }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.thin-scrollbar::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 10px;
+}
+
+.thin-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.thin-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: #888 #f1f1f1;
 }

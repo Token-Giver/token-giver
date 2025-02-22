@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchBalance, fetchDonationBalance } from "@/app/utils/helper";
+import { formatNumberCompact } from "@/app/utils";
 
 type CardType = {
   causeName: string;
@@ -16,16 +17,17 @@ type CardType = {
   cid: string;
   target: string;
   url: string;
+  description?: string;
 };
 
-const Card = ({
+export const Card = ({
   causeName,
   imageSrc,
   location,
   imageAltText,
   campaign_address,
   target,
-  url,
+  url
 }: CardType) => {
   const router = useRouter();
   const [balance, setBalance] = useState(0);
@@ -43,47 +45,43 @@ const Card = ({
   return (
     <div
       onClick={handleRoute}
-      className=" grid grid-cols-6 items-center lg:flex lg:flex-col lg:justify-between  rounded-[10px] lg:h-[26.25rem]  w-full lg:max-w-[22.8rem] cursor-pointer group justify-self-center hover:bg-[#e4efe7] p-2 transition-all card"
+      className="flex h-[19rem] w-[18.4rem] cursor-pointer flex-col gap-3 rounded-[10px] p-4 transition-all hover:bg-[#00594C]/10"
     >
-      <div className="w-[30vw] h-[30vw] max-w-[15.6rem] max-h-[15.6rem] lg:w-full lg:h-full lg:max-w-[21.8rem] lg:max-h-[21.8rem] bg-gray-100  rounded-[10px] col-span-2 overflow-hidden">
-        {imageSrc ? (
-          <Image
-            className="rounded-t-[10px] w-full h-full group-hover:scale-105 object-cover transition-all"
-            src={imageSrc}
-            alt={imageAltText ? imageAltText : ""}
-            width={400}
-            height={400}
-          />
-        ) : (
-          <div className="w-[30vw] h-[30vw] max-w-[15.6rem] max-h-[15.6rem] lg:w-full lg:h-full lg:max-w-[21.8rem] lg:max-h-[21.8rem] bg-gradient-linear  group-hover:scale-105 transition-all"></div>
-        )}
+      <div className="h-[150px] overflow-clip rounded-[10px]">
+        <Image
+          className="h-full w-full rounded-t-[10px] bg-cover object-cover transition-all group-hover:scale-105"
+          src={imageSrc}
+          alt={imageAltText ? imageAltText : ""}
+          width={400}
+          height={400}
+        />
       </div>
-      <div className="col-span-4 py-8 px-4 lg:py-4 lg:w-full">
-        <div className=" h-[100px] flex flex-col gap-4 overflow-hidden ">
-          <h4 className="text-[.9em] overflow-hidden capitalize line-clamp">
-            {causeName}
-          </h4>
-          <p className=" flex items-center gap-x-1">
-            <span>
-              <LocationIcon />
-            </span>
-            <span className="text-[.8rem]">{location}.</span>
-          </p>
-        </div>
-
+      <div className="flex flex-col gap-2">
+        <h4 className="line-clamp overflow-hidden font-agrandir text-[.9em] capitalize text-[#282828]">
+          {causeName}
+        </h4>
+        <p className="flex items-center gap-x-1 text-foreground-secondary">
+          <span>
+            <LocationIcon />
+          </span>
+          <span className="text-[.8rem]">{location}.</span>
+        </p>
         <div className="">
-          <div className="w-full h-[.25rem] mb-2 relative">
-            <div className="w-full h-[1vw] max-h-[.25rem] bg-[#127c5548] rounded-full mb-4"></div>
+          <div className="relative mb-2 h-[.25rem] w-full">
+            <div className="mb-4 h-[1.5vw] max-h-[.25rem] w-full rounded-full bg-[#EFEFEF]"></div>
             <div
               style={{
-                width: width,
+                width: width
               }}
-              className={`h-[1vw] max-h-[.25rem] bg-[#127C56] rounded-full mb-4 top-0 absolute`}
+              className={`absolute top-0 mb-4 h-[1vw] max-h-[.25rem] rounded-full bg-[#34AA6D]`}
             ></div>
           </div>
           <div className="flex justify-between px-2 text-[.875rem]">
             <p>
-              {balance.toFixed(2)} STRK <span>of {target} STRK raised</span>
+              {formatNumberCompact(balance || 0)} STRK{" "}
+              <span>
+                of {formatNumberCompact(Number(target) || 0)} STRK raised
+              </span>
             </p>
             <p>{((balance / parseFloat(target)) * 100).toFixed(2)}%</p>
           </div>
@@ -93,4 +91,83 @@ const Card = ({
   );
 };
 
-export default Card;
+export const BigCard = ({
+  causeName,
+  imageSrc,
+  location,
+  imageAltText,
+  campaign_address,
+  target,
+  url,
+  description
+}: CardType) => {
+  const router = useRouter();
+  const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    fetchDonationBalance(campaign_address, setBalance);
+  }, []);
+
+  const handleRoute = () => {
+    router.push(url);
+  };
+
+  const width = `${Math.min((balance / parseInt(target)) * 100, 100)}%`;
+  return (
+    <div
+      onClick={handleRoute}
+      className="mx-auto grid max-w-[1200px] animate-fadeIn grid-cols-2 items-center gap-8"
+    >
+      <div className="h-[22rem] w-full overflow-clip rounded-[10px]">
+        <Image
+          className="h-full w-full rounded-t-[10px] bg-cover object-cover transition-all group-hover:scale-105"
+          src={imageSrc}
+          alt={imageAltText ? imageAltText : ""}
+          width={400}
+          height={400}
+        />
+      </div>
+      <div className="flex h-[22rem] flex-col gap-4 rounded-[10px] py-2">
+        <div>
+          <h4 className="text-l line-clamp overflow-hidden font-agrandir capitalize text-[#282828]">
+            {causeName}
+          </h4>
+          <p className="flex items-center gap-x-1 text-foreground-secondary">
+            <span>
+              <LocationIcon />
+            </span>
+            <span className="text-[.8rem]">{location}.</span>
+          </p>
+        </div>
+
+        <p className="text-foreground-secondary">{description}</p>
+        <div className="relative mb-2 h-[.25rem] w-full">
+          <div className="mb-4 h-[1.5vw] max-h-[.25rem] w-full rounded-full bg-[#EFEFEF]"></div>
+          <div
+            style={{
+              width: width
+            }}
+            className={`absolute top-0 mb-4 h-[1vw] max-h-[.25rem] rounded-full bg-[#34AA6D]`}
+          ></div>
+        </div>
+        <div className="flex gap-6">
+          <div>
+            <p className="mb-2 text-[.9em] font-semibold text-foreground-primary">
+              {formatNumberCompact(balance || 0)} STRK
+            </p>
+            <p className="text-foreground-secondary">Total raised</p>
+          </div>
+          <div>
+            <p className="mb-2 text-[.9em] font-semibold text-foreground-primary">
+              {formatNumberCompact(Number(target) || 0)} STRK
+            </p>
+            <p className="text-foreground-secondary">Target</p>
+          </div>
+        </div>
+        <button className="w-[7rem] rounded-[25px] px-4 py-2 text-sm text-foreground-primary ring-1 ring-[#808080]">
+          Learn more
+        </button>
+      </div>
+    </div>
+  );
+};

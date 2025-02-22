@@ -7,12 +7,12 @@ import {
   DragEvent,
   useEffect,
   Dispatch,
-  SetStateAction,
+  SetStateAction
 } from "react";
 
 const Dropzone = ({
   address,
-  setInputData,
+  setInputData
 }: {
   address: string | undefined;
   setInputData: Dispatch<SetStateAction<InputDateType>>;
@@ -45,26 +45,26 @@ const Dropzone = ({
     setInputData((prev) => {
       return {
         ...prev,
-        image: file,
+        image: file
       };
     });
   }, [file]);
 
   return (
     <div className="relative">
-      <p className="absolute top-[-1.2rem] right-[.5em] lg:right-[31%] text-red text-[.7em]">
+      <p className="absolute right-[.5em] top-[-1.2rem] text-[.7em] text-red lg:right-[31%]">
         Required*
       </p>
       <div
         onDrop={handleDrop}
         onDragOver={handleDragOver}
-        className={`lg:w-[70%] border-dashed border-[2px]  px-4 py-8 leading-6 rounded-[10px] flex flex-col gap-2 relative ${
+        className={`relative flex flex-col gap-2 rounded-[10px] border-[2px] border-dashed px-4 py-8 leading-6 lg:w-[70%] ${
           !address ? "border-gray-200" : "border-gray-300"
         }`}
       >
         <p className="text-[#878787]">
           Drag and drop image files here (max size: 50 MB), or{" "}
-          <span className="underline text-blue">click</span> to select files
+          <span className="text-blue underline">click</span> to select files
         </p>
         <input
           type="file"
@@ -78,9 +78,9 @@ const Dropzone = ({
               setFile(event.target.files[0]);
             }
           }}
-          className="absolute top-0 left-0 w-full h-full cursor-pointer"
+          className="absolute left-0 top-0 h-full w-full cursor-pointer"
           style={{
-            opacity: "0",
+            opacity: "0"
           }}
         />
         <ul>{file && <li className="text-[0.875em]">{file.name}</li>}</ul>
