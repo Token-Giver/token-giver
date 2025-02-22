@@ -113,7 +113,7 @@ const page = ({params}: {params: {name: string; address: string; cid: string}}) 
                            </span>
                            <p>{campaignDetails.date}</p>{" "}
                         </div>
-                        <div className="flex flex-col gap-2 mt-10 w-full md:w-[70%] lg:w-[80%] border">
+                        {/* <div className="flex flex-col gap-2 mt-10 w-full md:w-[70%] lg:w-[80%] border">
                            <h2 className="font-[700] text-[24px] text-[#55534e] h-[60px]">More Images</h2>
                            <div className="grid-cols-1 sm:grid-cols-2 grid gap-4 w-[100%] border">
                               <div className="border h-[232px] md:h-[342px] rounded-[5px]"></div>
@@ -122,8 +122,11 @@ const page = ({params}: {params: {name: string; address: string; cid: string}}) 
                                  <div className="border h-[162px] rounded-[5px]"></div>
                               </div>
                            </div>
+                        </div> */}
+                        <div className="border w-full">
+                           hi
                         </div>
-                        <div className="mt-12">{/* <WallofLove /> */}</div>
+                        <div className="mt-12"><WallofLove /></div>
                      </div>
 
                      {/*  */}
