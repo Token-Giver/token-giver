@@ -117,21 +117,21 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <footer>
-        <div className="w-full bg-[#282828] px-4 py-12 text-white">
-          <div className="grid w-full grid-cols-12 gap-4">
-            <div className="col-span-12 flex w-full flex-col space-y-3 space-x-0 sm:space-y-0 sm:space-x-3 items-start justify-start sm:flex-row sm:items-center sm:justify-between lg:col-span-6">
-              <p>
+      <footer className="w-full bg-[#282828]">
+        <div className="mx-auto w-full xl:max-w-[1340px] px-4 py-12 text-white">
+          <div className="grid w-full grid-cols-2 gap-2">
+            <div className="col-span-2 flex flex-col items-start justify-start space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 sm:space-x-3 lg:col-span-1">
+              <span className="text-sm">
                 Copyright © {new Date().getFullYear()} TokenGiver all rights
                 reserved{" "}
-              </p>
-              <div className="flex gap-3">
-                <p>Terms & Condition</p>
-                <p>Privacy Policy</p>
+              </span>
+              <div className="flex space-x-3 text-sm">
+                <a href="/">Terms & Condition</a>
+                <a href="/">Privacy Policy</a>
               </div>
             </div>
-            <div className="col-span-12 flex w-full flex-col space-y-3 space-x-0 sm:space-y-0 sm:space-x-3 items-start justify-start sm:flex-row sm:items-center sm:justify-between lg:col-span-6">
-              <div className="flex w-full items-center justify-start lg:justify-center gap-2">
+            <div className="col-span-2 flex flex-col items-start justify-start space-y-3 sm:flex-row sm:items-center sm:justify-between sm:space-y-0 lg:col-span-1">
+              <div className="flex w-full items-center justify-start gap-2 lg:justify-center">
                 <a href="http://" target="_blank" rel="noopener noreferrer">
                   <XIcon />
                 </a>
@@ -145,7 +145,7 @@ const Footer = () => {
                   <OnlydustIcon />
                 </a>
               </div>
-              <p>support@tokengiver.com</p>
+              <span className="text-sm">support@tokengiver.com</span>
             </div>
           </div>
         </div>

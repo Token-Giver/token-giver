@@ -116,7 +116,7 @@ export const BigCard = ({
   return (
     <div
       onClick={handleRoute}
-      className="mx-auto grid max-w-[1200px] animate-fadeIn grid-cols-2 items-center gap-8"
+      className="mx-auto grid max-w-[1200px] animate-fadeIn grid-cols-1 sm:grid-cols-2 items-center gap-8"
     >
       <div className="h-[22rem] w-full overflow-clip rounded-[10px]">
         <Image
