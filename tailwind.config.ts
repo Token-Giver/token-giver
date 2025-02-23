@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '300px', 
+      },
       fontSize: {
         clamp: "clamp(0.5rem, 5vw, 1rem)"
       },

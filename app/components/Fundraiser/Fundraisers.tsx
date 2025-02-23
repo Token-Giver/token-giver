@@ -45,13 +45,13 @@ const Fundraisers = () => {
             progress={0}
             token_id={collections[0]?.id}
             campaign_address={collections[0]?.campaign_address || "0x0"}
-            target={collections[0].target}
-            url={`${collections[0].name
+            target={collections[0]?.target}
+            url={`${collections[0]?.name
               .replace(/[^a-zA-Z ]/g, "")
               .replace(/ /g, "-")
               .toLocaleLowerCase()
               .replace(/-+/g, "-")}/${collections[0]?.campaign_address}/${
-              collections[0].cid
+              collections[0]?.cid
             }`}
             description={collections[0]?.description}
           />
