@@ -31,7 +31,7 @@ const Connect = () => {
             setIsOpen(true);
           }
         }}
-        className="flex items-center rounded-[25px] px-2 py-2 text-accent-green ring-1 ring-accent-green"
+        className="flex items-center rounded-[25px] px-2 py-2 text-white md:text-accent-green ring-1 ring-accent-green"
       >
         {shortenedAddress && <ProfileIcon width="1.5em" height="1.5em" />}
         <span className="px-2">
