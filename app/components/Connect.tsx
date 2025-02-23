@@ -31,7 +31,7 @@ const Connect = () => {
         </span>
         </button>
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
-          <DialogContent className="min-w-full p-3 sm:min-w-[32rem]  h-screen sm:h-auto rounded-none sm:rounded-lg">
+          <DialogContent className=" p-3 sm:min-w-[32rem]  h-screen sm:h-auto rounded-none sm:rounded-lg">
             <div className="grid h-full grid-cols-1 md:grid-cols-5">
               {/* Image Section - Hidden on mobile */}
               <div className="hidden md:block relative col-span-2 overflow-hidden">
@@ -56,7 +56,7 @@ const Connect = () => {
                   There are several wallet providers.
                 </p>
 
-                <div className=" grid grid-cols-2 gap-3 md:gap-2 md:grid-cols-4 md:max-h-[270px] overflow-y-auto p-1">
+                <div className=" grid grid-cols-1 xs:grid-cols-2 md:gap-2 lg:w-[100%]  md:w-[100%] w-[70%] gap-2 mx-auto md:grid-cols-4 md:max-h-[270px] overflow-y-auto p-1">
                   {connectors.map((connector) => {
                     if (!connector.id || !connector.available()) return null;
                     return (
@@ -65,11 +65,11 @@ const Connect = () => {
                     onClick={() => connect({ connector })}
                     className="text-xs md:text-sm"
                     >
-                    <div className="mb-1 grid w-[160px] h-[160px] md:h-[100px] md:w-[100px] place-content-center rounded-md bg-[#F7F6F6]">
-                      <div className="grid h-[50px] w-[50px] md:h-[50px] md:w-[50px] place-content-center">
+                    <div className="mb-1 grid w-[120px] h-[120px] md:h-[100px] md:w-[100px] mx-auto place-content-center rounded-[5.3px] bg-[#F7F6F6]">
+                      <div className="grid h-[60px] w-[60px] md:h-[50px] md:w-[50px] place-content-center">
                       {typeof connector.icon === "string" ? (
                               <img 
-                                className="w-[70px]"
+                                className="w-[50px]"
                                 src={connector.icon}
                                 alt={`${connector.name} icon`}
                               />
@@ -103,7 +103,7 @@ const Connect = () => {
                             )}
                       </div>
                       </div>
-                          <span className="inline-block w-[100px] truncate pt-2 pb-2 text-center">
+                          <span className="inline-block w-full truncate text-[16px] pt-2 pb-2 text-center font-medium">
                             {connector.name}
                             </span>
                        </button>
