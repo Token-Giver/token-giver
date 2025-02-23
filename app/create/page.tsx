@@ -301,9 +301,9 @@ const Page = () => {
   }, [formData]);
   return (
     <>
-      <main className="lg:grid flex flex-col h-screen grid-cols-4 lg:grid-cols-7 2xl:h-[calc(100vh-39.1rem)]">
-        <div className="relative col-span-3 lg:grid h-full place-content-center bg-accent-green hidden">
-          <div className="relative h-[700px] w-[500px] hidden lg:block">
+      <main className="xl:grid flex flex-col h-screen grid-cols-4 xl:grid-cols-7 2xl:h-[calc(100vh-39.1rem)]">
+        <div className="relative col-span-3 xl:grid h-full place-content-center bg-accent-green hidden">
+          <div className="relative h-[700px] w-[500px] hidden xl:block">
             <Image
               src="/create-bg.png"
               alt="Background description"
@@ -313,56 +313,58 @@ const Page = () => {
             />
           </div>
         </div>
-        <div className="col-span-4 h-full space-y-8 overflow-y-auto px-7 md:px-16 pt-8">
-          <div className="mx-auto flex max-w-4xl items-center justify-between">
-            {currentStep === 3 && (
-              <button
-                onClick={() => setCurrentStep(2)}
-                className="flex animate-fadeIn items-center text-accent-green"
-              >
-                <span className="inline-block rotate-180 text-lg">
-                  <RightArrowIcon />
-                </span>
-                Back
-              </button>
-            )}
-            <div className="ml-auto w-fit text-sm">
-              <Connect />
-            </div>
-          </div>
-          <div>
-            <Stepper currentStep={currentStep} />
-            <div className="mx-auto max-w-2xl flex flex-col gap-3">
-              <h2 className="font-agrandir font-bold text-foreground-primary md:text-4xl text-3xl">
-                Create your Campaign
-              </h2>
-              <p className="text-foreground-secondary leading-6">
-                Fill in the appropriate details for your campaign and let's get
-                started.
-              </p>
-            </div>
-
-            <form className="mt-6">
-              {currentStep !== 3 && (
-                <StepTwo
-                  disabled={!isWalletConnected || currentStep === 1}
-                  onNextStep={handleNextStep}
-                  register={register as UseFormRegister<StepTwoFields>}
-                  errors={errors as FieldErrors<StepTwoFields>}
-                  currentValues={currentValues as StepTwoFields}
-                  setValue={stepTwoForm.setValue}
-                />
-              )}
-
+        <div className="col-span-4 h-full overflow-y-auto px-3 sm:px-7 md:px-16 pt-8 2xl:grid items-center">
+          <div className="space-y-8">
+            <div className="mx-auto flex max-w-4xl items-center justify-between">
               {currentStep === 3 && (
-                <StepThree
-                  register={register as UseFormRegister<StepThreeFields>}
-                  errors={errors as FieldErrors<StepThreeFields>}
-                  disabled={!isWalletConnected}
-                  onReview={handleReview}
-                />
+                <button
+                  onClick={() => setCurrentStep(2)}
+                  className="flex animate-fadeIn items-center text-accent-green"
+                >
+                  <span className="inline-block rotate-180 text-lg">
+                    <RightArrowIcon />
+                  </span>
+                  Back
+                </button>
               )}
-            </form>
+              <div className="ml-auto w-fit text-sm">
+                <Connect />
+              </div>
+            </div>
+            <div>
+              <Stepper currentStep={currentStep} />
+              <div className="mx-auto max-w-2xl flex flex-col gap-3">
+                <h2 className="font-agrandir font-bold text-foreground-primary md:text-4xl text-3xl">
+                  Create your Campaign
+                </h2>
+                <p className="text-foreground-secondary leading-6">
+                  Fill in the appropriate details for your campaign and let's get
+                  started.
+                </p>
+              </div>
+
+              <form className="mt-6">
+                {currentStep !== 3 && (
+                  <StepTwo
+                    disabled={!isWalletConnected || currentStep === 1}
+                    onNextStep={handleNextStep}
+                    register={register as UseFormRegister<StepTwoFields>}
+                    errors={errors as FieldErrors<StepTwoFields>}
+                    currentValues={currentValues as StepTwoFields}
+                    setValue={stepTwoForm.setValue}
+                  />
+                )}
+
+                {currentStep === 3 && (
+                  <StepThree
+                    register={register as UseFormRegister<StepThreeFields>}
+                    errors={errors as FieldErrors<StepThreeFields>}
+                    disabled={!isWalletConnected}
+                    onReview={handleReview}
+                  />
+                )}
+              </form>
+            </div>
           </div>
         </div>
       </main>
