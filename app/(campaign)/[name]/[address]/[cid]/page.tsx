@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 import CampaignSlider from "../../../../components/Fundraiser/CampaignSlider";
 import CampaignProgress from "./CampaignProgress";
 import CampaignDetails from "./CampaignDetails";
+import ViewModalImage from "@/app/components/viewImageModal";
 
 interface CampaignDetails {
   name: string;
@@ -126,6 +127,7 @@ const page = ({
               donationCount={donationCount}
               onDonate={donateNow}
             />
+            <ViewModalImage />
           </div>
         </section>
       ) : (
