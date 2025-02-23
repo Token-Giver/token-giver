@@ -32,7 +32,6 @@ const Fundraisers = () => {
           <BigCardLoader />
         ) : (
           <BigCard
-          // .cid
             cid={collections[0].cid}
             causeName={collections[0].name || "Unknown Cause"}
             imageSrc={
