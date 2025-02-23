@@ -6,10 +6,10 @@ const nextConfig = {
         protocol: "https",
         hostname: "bronze-patient-capybara-360.mypinata.cloud",
         port: "",
-        pathname: "/ipfs/**",
-      },
-    ],
-  },
+        pathname: "/ipfs/**"
+      }
+    ]
+  }
 };
 
 export default nextConfig;

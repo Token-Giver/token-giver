@@ -1,20 +1,25 @@
 const CardLoader = () => {
   return (
-    <div className=" grid grid-cols-6 items-center lg:flex lg:flex-col lg:justify-between  rounded-[10px] lg:h-[26.25rem] gap-8  w-full lg:max-w-[22.8rem] cursor-wait animate-pulse group justify-self-center p-2 card">
-      <div className="w-[30vw] h-[30vw] max-w-[15.6rem] max-h-[15.6rem] lg:w-full lg:h-full lg:max-w-[21.8rem] lg:max-h-[21.8rem] bg-gray-200 animate-pulse rounded-[10px] col-span-2 overflow-hidden"></div>
-      <div className="col-span-4 py-8 lg:w-full">
-        <div className=" flex flex-col gap-4 overflow-hidden ">
-          <div className="w-full h-3 rounded-full bg-gray-200"></div>
-          <div className="w-1/2 h-3 rounded-full bg-gray-200"></div>
-          <div className="w-full h-3 rounded-full bg-gray-200"></div>
-          <div className="flex justify-between">
-            <div className="w-[20%] h-3 rounded-full bg-gray-200"></div>
-            <div className="w-[20%] h-3 rounded-full bg-gray-200"></div>
-          </div>
-        </div>
+    <div className="animate-pulse space-y-3">
+      <div className="col-span-2 h-[150px] w-[16.4rem] overflow-hidden rounded-[10px] bg-gray-200" />
+      <div className="w-[16.4rem] space-y-3">
+        <div className="h-3 w-full rounded-full bg-gray-200" />
+        <div className="h-3 w-full rounded-full bg-gray-200" />
       </div>
     </div>
   );
 };
 
 export default CardLoader;
+
+export const BigCardLoader = () => {
+  return (
+    <div className="mx-auto grid max-w-[1200px] animate-pulse grid-cols-2 gap-8">
+      <div className="h-[22rem] w-full overflow-clip rounded-[10px] bg-gray-200"></div>
+      <div className="space-y-3">
+        <div className="h-6 w-full rounded-[5px] bg-gray-200" />
+        <div className="h-[5rem] w-full rounded-[10px] bg-gray-200" />
+      </div>
+    </div>
+  );
+};

@@ -1,112 +1,137 @@
 "use client";
-
-import Logo from "@/svgs/Logo";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
-import Container from "./util/Container";
+import Image from "next/image";
+import {
+  OnlydustIcon,
+  GithubIcon,
+  TelegramIcon,
+  XIcon
+} from "@/svgs/social.icons";
 const Footer = () => {
   const pathname = usePathname();
   const isDonationPage = pathname?.endsWith("/donate");
   return (
-    <footer className={` bg-[#F5F7F8]`}>
-      <Container className={` ${isDonationPage ? "hidden" : "block"} `}>
-        <div className="flex flex-col gap-8 md:flex-row md:justify-between px-8 pb-8 md:pb-0 md:items-center  lg:px-12 flex-1">
-          <div className="mt-8 md:mb-32">
-            <Link
-              href="/"
-              className="font-bold text-[#127C56] text-[1.3em] self-start justify-self-start"
-            >
-              <Logo />
-            </Link>
-          </div>
-          <div className="flex flex-col md:flex-row  gap-4">
-            <span>Overview</span>
-            <span>Features</span>
-            <span>Help</span>
-            <span>Privacy</span>
-          </div>
-
-          <div className="flex flex-wrap gap-4 items-center">
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1.2em"
-                height="1.2em"
-                viewBox="0 0 16 16"
-              >
-                <path
-                  fill="currentColor"
-                  d="M9.294 6.928L14.357 1h-1.2L8.762 6.147L5.25 1H1.2l5.31 7.784L1.2 15h1.2l4.642-5.436L10.751 15h4.05zM7.651 8.852l-.538-.775L2.832 1.91h1.843l3.454 4.977l.538.775l4.491 6.47h-1.843z"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1.2em"
-                height="1.2em"
-                viewBox="0 0 15 15"
-              >
-                <path
-                  fill="none"
-                  stroke="currentColor"
-                  d="M7.5 14.5a7 7 0 1 1 0-14a7 7 0 0 1 0 14Zm0 0v-8a2 2 0 0 1 2-2h.5m-5 4h5"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1.5em"
-                height="1.5em"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="currentColor"
-                  d="M12.001 9.55c.917-.937 2.111-1.55 3.5-1.55a5.5 5.5 0 0 1 5.5 5.5V21h-2v-7.5a3.5 3.5 0 1 0-7 0V21h-2V8.5h2zm-7-3.05a1.5 1.5 0 1 1 0-3a1.5 1.5 0 0 1 0 3m-1 2h2V21h-2z"
-                />
-              </svg>
-            </span>
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="1.5em"
-                height="1.5em"
-                viewBox="0 0 24 24"
-              >
-                <g
-                  fill="none"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.5"
-                  color="currentColor"
-                >
-                  <path d="M2.5 12c0-4.478 0-6.718 1.391-8.109S7.521 2.5 12 2.5c4.478 0 6.718 0 8.109 1.391S21.5 7.521 21.5 12c0 4.478 0 6.718-1.391 8.109S16.479 21.5 12 21.5c-4.478 0-6.718 0-8.109-1.391S2.5 16.479 2.5 12" />
-                  <path d="M16.5 12a4.5 4.5 0 1 1-9 0a4.5 4.5 0 0 1 9 0m1.008-5.5h-.01" />
-                </g>
-              </svg>
-            </span>
-          </div>
+    <div>
+      <div className="mx-auto my-16 flex max-w-[1100px] items-center justify-between">
+        <div className="w-[400px]">
+          <h2 className="text-l mb-6">
+            <span className="font-agrandir">Stay</span> Updated{" "}
+          </h2>
+          <p className="text-foreground-secondary">
+            Join our community and stay informed about the latest campaigns,
+            success stories, and blockchain innovations in fundraising.
+          </p>
         </div>
-
-        <div className=" flex flex-wrap gap-4  justify-between border-solid border-t-[1px] pb-12 pt-8 border-gray-400">
-          <div className="flex  gap-2 items-center">
-            <p>
-              <span>&copy;</span>
-              <span>2024 Token Giver.</span>
+        <div className="flex gap-6">
+          <input
+            className="h-[45px] w-[423px] rounded-[10px] bg-[#FAFAFA] px-6 ring-1 ring-[#0000000A] placeholder:text-sm"
+            placeholder="email address"
+            type="text"
+            name=""
+            id=""
+          />
+          <button className="rounded-[25px] bg-accent-green px-4 py-1 text-sm text-white">
+            subscribe
+          </button>
+        </div>
+      </div>
+      <div className="mx-auto mb-16 flex max-w-[1100px] justify-between text-[#8E9BAE]">
+        <div className="w-[400px]">
+          <Link href="/" className="inline-block w-[12rem]">
+            <Image src={"/logo.png"} alt={"logo"} width={2000} height={1342} />
+          </Link>
+          <p>
+            Token Giver welcomes you to a platform built on trust, transparency,
+            and impact. Let's give smarter, together.
+          </p>
+        </div>
+        <div className="flex gap-8">
+          <div>
+            <p className="mb-4 font-medium text-foreground-primary">company</p>
+            <ul className="flex flex-col gap-4">
+              <li>
+                <p>About Us</p>
+              </li>
+              <li>
+                <p>Contact Us</p>
+              </li>
+              <li>
+                <p>Privacy Policy</p>
+              </li>
+              <li>
+                <p>Terms of Use</p>
+              </li>
+            </ul>
+          </div>
+          <div>
+            <p className="mb-4 font-medium text-foreground-primary">
+              Resources
             </p>
-            <span>All rights reserved</span>
+            <ul className="flex flex-col gap-4">
+              <li>
+                <p>FAQ</p>
+              </li>
+              <li>
+                <p>Blog</p>
+              </li>
+              <li>
+                <p>Help and support</p>
+              </li>
+              <li>
+                <p>Terms of Use</p>
+              </li>
+            </ul>
           </div>
-          <div className="flex  flex-wrap gap-4">
-            <span>Terms</span>
-            <span>Privacy</span>
-            <span>Cookies</span>
+          <div>
+            <p className="mb-4 font-medium text-foreground-primary">Donate</p>
+            <ul className="flex flex-col gap-4">
+              <li>
+                <p>Documentation</p>
+              </li>
+              <li>
+                <p>How to get started on token giver</p>
+              </li>
+              <li>
+                <p>Categories</p>
+              </li>
+            </ul>
           </div>
         </div>
-      </Container>
-    </footer>
+      </div>
+      <footer>
+        <div className="bg-[#282828]">
+          <div className="mx-auto flex h-[69px] max-w-[1536px] items-center justify-between p-16 text-white">
+            <div className="flex gap-3">
+              <p>
+                Copyright © {new Date().getFullYear()} TokenGiver all rights
+                reserved{" "}
+              </p>
+              <p>Terms & Condition</p>
+              <p>Privacy Policy</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <a href="http://" target="_blank" rel="noopener noreferrer">
+                <XIcon />
+              </a>
+              <a href="http://" target="_blank" rel="noopener noreferrer">
+                <GithubIcon />
+              </a>
+              <a href="http://" target="_blank" rel="noopener noreferrer">
+                <TelegramIcon />
+              </a>
+
+              <a href="http://" target="_blank" rel="noopener noreferrer">
+                <OnlydustIcon />
+              </a>
+            </div>
+            <div className="flex items-center">
+              <p>support@tokengiver.com</p>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 };
 

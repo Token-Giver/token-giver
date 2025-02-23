@@ -1,12 +1,12 @@
 const CampaignLoader = () => {
   return (
-    <div className="h-screen w-screen max-w-[550px] mx-auto bg-background  mt-[4rem] py-10 md:py-16 px-4md:px-10 lg:px-40 lg:max-w-full flex  cursor-wait animate-pulse">
-      <div className="max-w-[780px]  lg:max-w-full flex-1 flex flex-col  gap-8 mx-auto">
-        <div className="rounded-[10px] bg-gray-200 h-6 w-[80%] lg:w-[80%] mx-10 lg:mx-0"></div>
-        <div className="rounded-[10px] bg-gray-200 h-[60%] w-[80%] mx-auto self-center lg:mx-0"></div>
-        <div className="rounded-[10px] bg-gray-200 h-12 w-[80%] lg:w-[80%] self-center mx-10 lg:mx-0"></div>
+    <div className="px-4md:px-10 mx-auto mt-[4rem] flex h-screen w-screen max-w-[550px] animate-pulse cursor-wait py-10 md:py-16 lg:max-w-full lg:px-40">
+      <div className="mx-auto flex max-w-[780px] flex-1 flex-col gap-8 lg:max-w-full">
+        <div className="mx-10 h-6 w-[80%] rounded-[10px] bg-gray-200 lg:mx-0 lg:w-[80%]"></div>
+        <div className="mx-auto h-[60%] w-[80%] self-center rounded-[10px] bg-gray-200 lg:mx-0"></div>
+        <div className="mx-10 h-12 w-[80%] self-center rounded-[10px] bg-gray-200 lg:mx-0 lg:w-[80%]"></div>
       </div>
-      <div className="p-8 hidden  rounded-[10px] w-[35%] h-[35%] bg-gray-200 lg:block"></div>
+      <div className="hidden h-[35%] w-[35%] rounded-[10px] bg-gray-200 p-8 lg:block"></div>
     </div>
   );
 };

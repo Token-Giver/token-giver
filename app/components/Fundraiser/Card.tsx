@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { fetchBalance, fetchDonationBalance } from "@/app/utils/helper";
+import { formatNumberCompact } from "@/app/utils";
 
 type CardType = {
   causeName: string;
@@ -16,18 +17,17 @@ type CardType = {
   cid: string;
   target: string;
   url: string;
-  isLastCard?: boolean;
+  description?: string;
 };
 
-const Card = ({
+export const Card = ({
   causeName,
   imageSrc,
   location,
   imageAltText,
   campaign_address,
   target,
-  url,
-  isLastCard,
+  url
 }: CardType) => {
   const router = useRouter();
   const [balance, setBalance] = useState(0);
@@ -48,72 +48,133 @@ const Card = ({
   return (
     <div
       onClick={handleRoute}
-      className={`p-6 lg:p-0 ${
-        !isLastCard ? "border-b border-dark-gray lg:border-b-0" : ""
-      } lg:bg-white lg:rounded-lg cursor-pointer lg:max-w-[23.5rem]`}
+      className="mx-auto flex min-w-[15rem] cursor-pointer flex-col gap-3 rounded-[10px] px-3 py-4 transition-all hover:bg-[#00594C]/10 sm:max-w-[20rem]"
     >
-      <div className="flex items-start justify-between mb-6 lg:flex-col lg:gap-6 ">
-        <button className="lg:mx-6 px-6 py-2.5 border border-dark-gray rounded-[3rem] text-center lg:order-2">
-          Category
-        </button>
-        {imageSrc ? (
-          <Image
-            className="rounded-[0.25rem] lg:rounded-b-none object-cover lg:rounded-t-lg lg:order-1 lg:w-[377px] lg:h-[253px]"
-            src={imageSrc}
-            alt={imageAltText ? imageAltText : ""}
-            width={125}
-            height={84}
-          />
-        ) : (
-          <div className="w-[125px] h-[84px] lg:w-[377px] lg:h-[253px] bg-gradient-linear"></div>
-        )}
+      {/* Image */}
+      <div className="h-[150px] overflow-hidden rounded-[10px]">
+        <Image
+          className="h-full w-[303px] rounded-t-[10px] object-cover transition-all hover:scale-105 lg:w-[267px]"
+          src={imageSrc}
+          alt={imageAltText ? imageAltText : ""}
+          width={400}
+          height={400}
+        />
       </div>
-      <div className="lg:mx-6 lg:pb-6">
-        <p className="font-medium text-md leading-5">{causeName}</p>
-        <div className="my-6">
-          <p className="text-center mb-2.5 font-normal text-md">
-            {width} there
-          </p>
-          <div className="w-full bg-[#D9D9D9] rounded-full h-[6px]">
+
+      {/* Details */}
+      <div className="flex flex-col gap-2">
+        <h4 className="line-clamp overflow-hidden font-agrandir text-[.9em] capitalize text-[#282828]">
+          {causeName}
+        </h4>
+        <p className="flex items-center gap-x-1 text-sm text-foreground-secondary">
+          <LocationIcon />
+          <span>{location}.</span>
+        </p>
+
+        {/* Progress Bar */}
+        <div className="w-full max-w-[19rem]">
+          <div className="relative mb-2 h-[5px] w-full overflow-hidden rounded-full bg-[#EFEFEF]">
             <div
-              className="bg-pantone-green h-[6px] rounded-full"
-              style={{
-                width: width,
-              }}
+              style={{ width: width }}
+              className="absolute left-0 top-0 h-full rounded-full bg-[#34AA6D]"
             ></div>
           </div>
         </div>
-        <div className="flex justify-between mt-2.5 mb-6">
-          <p className="text-md leading-5  font-bold">
-            {balance.toFixed(2)}{" "}
-            <span className="font-normal">STRK raised</span>
-          </p>
 
-          <p className="text-md leading-5 font-normal">
-            Target <span className="font-bold">{target}</span> STRK
+        <div className="flex justify-between text-[.875rem] max-w-[19rem]">
+          <p>
+            {formatNumberCompact(balance || 0)} STRK{" "}
+            <span>
+              of {formatNumberCompact(Number(target) || 0)} STRK raised
+            </span>
           </p>
-        </div>
-        <div className="flex items-center justify-between">
-          <div className="flex -space-x-4 rtl:space-x-reverse">
-            {[...Array(4)].map((_, index) => (
-              <div
-                key={index}
-                className={`w-8 h-8 rounded-full`}
-                style={{
-                  backgroundColor: ["#A16262", "#B8D04F", "#76BAD4", "#B62FB6"][
-                    index
-                  ],
-                }}
-              ></div>
-            ))}
-          </div>
-          <p className="text-md leading-5 font-normal">
-            Be part of the 200+ Donors
-          </p>
+          <p>{((balance / parseFloat(target)) * 100).toFixed(2)}%</p>
         </div>
       </div>
     </div>
   );
 };
 
-export default Card;
+export const BigCard = ({
+  causeName,
+  imageSrc,
+  location,
+  imageAltText,
+  campaign_address,
+  target,
+  url,
+  description
+}: CardType) => {
+  const router = useRouter();
+  const [balance, setBalance] = useState(0);
+
+  useEffect(() => {
+    fetchDonationBalance(campaign_address, setBalance);
+  }, []);
+
+  const handleRoute = () => {
+    router.push(url);
+  };
+
+  const width = `${Math.min((balance / parseInt(target)) * 100, 100)}%`;
+  return (
+    <div
+      onClick={handleRoute}
+      className="mx-auto grid max-w-[1200px] animate-fadeIn grid-cols-2 items-center gap-6 px-4 md:gap-8"
+    >
+      <div className="h-[22rem] w-full overflow-clip rounded-[10px]">
+        <Image
+          className="h-full w-full rounded-t-[10px] bg-cover object-cover transition-all group-hover:scale-105"
+          src={imageSrc}
+          alt={imageAltText ? imageAltText : ""}
+          width={400}
+          height={400}
+        />
+      </div>
+      <div className="flex h-[22rem] flex-col gap-4 rounded-[10px] py-2">
+        <div>
+          <h4 className="text-l line-clamp overflow-hidden font-agrandir capitalize text-[#282828]">
+            {causeName}
+          </h4>
+          <p className="flex items-center gap-x-1 text-foreground-secondary">
+            <span>
+              <LocationIcon />
+            </span>
+            <span className="text-[.8rem]">{location}.</span>
+          </p>
+        </div>
+
+        <p className="text-foreground-secondary">{description}</p>
+        <div className="relative mb-2 h-[.25rem] lg:w-full">
+          <div className="mb-4 h-[1.5vw] max-h-[.25rem] w-full rounded-full bg-[#EFEFEF]"></div>
+          <div
+            style={{
+              width: width
+            }}
+            className={`absolute top-0 mb-4 h-[1vw] max-h-[.25rem] rounded-full bg-[#34AA6D]`}
+          ></div>
+        </div>
+        <div className="flex gap-6">
+          <div>
+            <p className="mb-2 text-[.9em] font-semibold text-foreground-primary">
+              {formatNumberCompact(balance || 0)} STRK
+            </p>
+            <p className="text-foreground-secondary">Total raised</p>
+          </div>
+          <div>
+            <p className="mb-2 text-[.9em] font-semibold text-foreground-primary">
+              {formatNumberCompact(Number(target) || 0)} STRK
+            </p>
+            <p className="text-foreground-secondary">Target</p>
+          </div>
+          <p className="text-md leading-5 font-normal">
+            Be part of the 200+ Donors
+          </p>
+        </div>
+        <button className="w-[7rem] rounded-[25px] px-4 py-2 text-sm text-foreground-primary ring-1 ring-[#808080]">
+          Learn more
+        </button>
+      </div>
+    </div>
+  );
+};

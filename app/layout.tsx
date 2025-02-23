@@ -6,29 +6,25 @@ import StarknetProvider from "./components/StarknetProvider";
 import Header from "./components/Header";
 
 export const metadata: Metadata = {
-	title: "Token Giver",
-	description:
-		"Token Giver: Revolutionizing Fundraising with NFT and Token-Bound Accounts. Empower your campaigns with secure, innovative blockchain technology. Join us to transform donations into digital assets.",
-	icons: {
-		icon: "/icon_Full_Color.png",
-	},
+  title: "Token Giver",
+  description:
+    "Token Giver: Revolutionizing Fundraising with NFT and Token-Bound Accounts. Empower your campaigns with secure, innovative blockchain technology. Join us to transform donations into digital assets."
 };
 
 export default function RootLayout({
-	children,
+  children
 }: Readonly<{
-	children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-	return (
-		<html lang="en">
-			<body className="text-sm lg:text-md">
-				<StarknetProvider>
-					<Header />
-					{children}
-					<Features />
-					<Footer />
-				</StarknetProvider>
-			</body>
-		</html>
-	);
+  return (
+    <html lang="en">
+      <body className="flex flex-col min-h-screen">
+        <StarknetProvider>
+          <Header />
+          <main className="flex-1">{children}</main>
+          <Footer />
+        </StarknetProvider>
+      </body>
+    </html>
+  );
 }

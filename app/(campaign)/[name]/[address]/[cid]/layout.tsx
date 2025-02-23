@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 
 export const generateMetadata = async ({
-  params,
+  params
 }: {
   params: { name: string; address: string; cid: string };
 }): Promise<Metadata> => {
@@ -9,12 +9,12 @@ export const generateMetadata = async ({
 
   return {
     title: `${campaignName} Campaign - Support Now`,
-    description: `Join the ${campaignName} campaign. Contribute to our cause and make a difference. Support now and be a part of positive change!`,
+    description: `Join the ${campaignName} campaign. Contribute to our cause and make a difference. Support now and be a part of positive change!`
   };
 };
 
 export default function CampaignLayout({
-  children,
+  children
 }: Readonly<{
   children: React.ReactNode;
 }>) {

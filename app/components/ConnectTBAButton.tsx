@@ -4,7 +4,7 @@ import { useEffect, useMemo, useState } from "react";
 import {
   connect,
   disconnect,
-  TBAStarknetWindowObject,
+  TBAStarknetWindowObject
 } from "tokenbound-connectkit";
 
 const ConnectTBAButton = () => {
@@ -12,20 +12,19 @@ const ConnectTBAButton = () => {
   const [account, setAccount] = useState();
   const [address, setAddress] = useState("");
 
-
   const connectTBA = async () => {
-      try {
-        const data = await connect({
-          tokenboundOptions: {
-            chainId: "SN_SEPOLIA",
-          }
-        });
-        console.log(data)
-        setAccount(data.wallet);
-        setAddress(data.wallet.address);
-      } catch (e) {
-        console.error(e)
-      }
+    try {
+      const data = await connect({
+        tokenboundOptions: {
+          chainId: "SN_SEPOLIA"
+        }
+      });
+      console.log(data);
+      setAccount(data.wallet);
+      setAddress(data.wallet.address);
+    } catch (e) {
+      console.error(e);
+    }
   };
 
   const disconnectTBA = async () => {
@@ -41,14 +40,14 @@ const ConnectTBAButton = () => {
     <>
       {!account ? (
         <button
-          className="bg-[#127C56] text-white px-6 py-2 rounded-[25px]"
+          className="rounded-[25px] bg-[#127C56] px-6 py-2 text-white"
           onClick={connectTBA}
         >
           Connect Wallet
         </button>
       ) : (
         <button
-          className="bg-[#127C56] text-white px-6 py-2 rounded-[25px]"
+          className="rounded-[25px] bg-[#127C56] px-6 py-2 text-white"
           onClick={disconnectTBA}
         >
           Disconnect

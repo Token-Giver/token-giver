@@ -1,150 +1,257 @@
-import { InputDateType } from "@/types";
-import { ChangeEvent } from "react";
+import { UseFormRegister, FieldErrors } from "react-hook-form";
+import { StepThreeFields, StepTwoFields } from "../page";
+import {
+  LinkedinIcon,
+  InstagramIcon,
+  YoutubeIcon,
+  DiscordIcon,
+  FacebookIcon,
+  GithubIcon,
+  GlobeIcon,
+  TelegramIcon,
+  MediumIcon,
+  XIcon
+} from "@/svgs/social.icons";
+
+interface StepThreeProps {
+  disabled: boolean;
+  register: UseFormRegister<StepTwoFields> | UseFormRegister<StepThreeFields>;
+  errors: FieldErrors<StepTwoFields> | FieldErrors<StepThreeFields>;
+  onReview: () => Promise<void>;
+}
+
+const predefinedSocialLinks = [
+  {
+    name: "twitter",
+    icon: <XIcon />,
+    placeholder: "https://twitter.com/username"
+  },
+  {
+    name: "linkedin",
+    icon: <LinkedinIcon />,
+    placeholder: "https://linkedin.com/in/username"
+  },
+  {
+    name: "instagram",
+    icon: <InstagramIcon />,
+    placeholder: "https://instagram.com/username"
+  },
+  {
+    name: "youtube",
+    icon: <YoutubeIcon />,
+    placeholder: "https://youtube.com/@channel"
+  },
+  {
+    name: "discord",
+    icon: <DiscordIcon />,
+    placeholder: "https://discord.gg/invite"
+  },
+  {
+    name: "facebook",
+    icon: <FacebookIcon />,
+    placeholder: "https://facebook.com/username"
+  },
+  {
+    name: "github",
+    icon: <GithubIcon />,
+    placeholder: "https://github.com/username"
+  },
+  {
+    name: "telegram",
+    icon: <TelegramIcon />,
+    placeholder: "https://t.me/username"
+  },
+  {
+    name: "medium",
+    icon: <MediumIcon />,
+    placeholder: "https://medium.com/@username"
+  }
+];
 
 const StepThree = ({
-  step,
-  inputData,
-  handleInputChange,
-  address,
-}: {
-  step: {
-    number: number;
-    text: string;
-  };
-  inputData: InputDateType;
-  handleInputChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => void;
-  address: string | undefined;
-}) => {
-
-  const timezones = ["GMT", "LocalTime"];
-
+  disabled,
+  register,
+  errors,
+  onReview
+}: StepThreeProps) => {
   return (
     <fieldset
-      className={`flex-col gap-4  ${step.number === 3 ? "flex" : "hidden"}`}
+      className={`mx-auto h-[60vh] max-w-2xl animate-fadeIn space-y-6 overflow-y-scroll pb-8 ${
+        disabled ? "opacity-70" : "opacity-100"
+      }`}
     >
-      <label htmlFor="target">Target:</label>
-      <div className="relative">
-        <p className="absolute top-[-1.2rem] right-[.5em] text-red text-[.7em]">
-          Required*
-        </p>
-        <input
-          type="text"
-          name="target"
-          onChange={handleInputChange}
-          value={inputData.target}
-          placeholder="STRK"
-          className="w-full bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
-        />
+      <div className="space-y-2">
+        <label
+          htmlFor="target"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Fundraising Target <span className="text-[#FF8A25]">*</span>
+        </label>
+        <div className="relative">
+          <span className="absolute left-2 top-1/2 -translate-y-1/2 text-sm text-gray-500">
+            STRK
+          </span>
+          <input
+            {...(register as UseFormRegister<StepThreeFields>)("target", {
+              pattern: {
+                value: /^[0-9]*$/,
+                message: "Please enter numbers only"
+              }
+            })}
+            type="text"
+            inputMode="numeric"
+            id="target"
+            disabled={disabled}
+            className={`w-full rounded-[7px] border pl-8 ${
+              (errors as FieldErrors<StepThreeFields>).target
+                ? "border-red"
+                : "border-[#DAE0E6]"
+            } py-3 pl-[3.3rem] pr-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
+            placeholder="Enter target amount"
+          />
+        </div>
+        {(errors as FieldErrors<StepThreeFields>).target && (
+          <p className="mt-1 text-sm text-red">
+            {(errors as FieldErrors<StepThreeFields>).target?.message}
+          </p>
+        )}
       </div>
 
-      <label htmlFor="location">Location:</label>
-      <div className="relative">
-        <p className="text-red  absolute top-[-1.2rem] right-[.5em] text-[.7em]">
-          Required*
-        </p>
+      <div className="space-y-2">
+        <label
+          htmlFor="location"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Location <span className="text-[#FF8A25]">*</span>
+        </label>
         <input
+          {...(register as UseFormRegister<StepThreeFields>)("location")}
           type="text"
-          name="location"
-          value={inputData.location}
-          onChange={handleInputChange}
-          placeholder="Name of organizer"
-          className="w-full bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
+          id="location"
+          disabled={disabled}
+          className={`w-full rounded-[7px] border ${
+            (errors as FieldErrors<StepThreeFields>).location
+              ? "border-red"
+              : "border-[#DAE0E6]"
+          } px-3 py-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
+          placeholder="Enter campaign location"
         />
+        {(errors as FieldErrors<StepThreeFields>).location && (
+          <p className="mt-1 text-sm text-red">
+            {(errors as FieldErrors<StepThreeFields>).location?.message}
+          </p>
+        )}
       </div>
-      <label htmlFor="organizer">Organizer:</label>
-      <div className="relative">
-        <p className="text-red  absolute top-[-1.2rem] right-[.5em] text-[.7em]">
-          Required*
-        </p>
+
+      <div className="space-y-2">
+        <label
+          htmlFor="organiser"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Organiser Details <span className="text-[#FF8A25]">*</span>
+        </label>
         <input
+          {...(register as UseFormRegister<StepThreeFields>)("organiser")}
           type="text"
-          name="organizer"
-          value={inputData.organizer}
-          onChange={handleInputChange}
-          placeholder="Name of organizer"
-          className="w-full bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
+          id="organiser"
+          disabled={disabled}
+          className={`w-full rounded-[7px] border ${
+            (errors as FieldErrors<StepThreeFields>).organiser
+              ? "border-red"
+              : "border-[#DAE0E6]"
+          } px-3 py-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
+          placeholder="Enter organiser name or organization"
         />
+        {(errors as FieldErrors<StepThreeFields>).organiser && (
+          <p className="mt-1 text-sm text-red">
+            {(errors as FieldErrors<StepThreeFields>).organiser?.message}
+          </p>
+        )}
       </div>
-      <label htmlFor="beneficiary">Beneficiary:</label>
-      <input
-        type="text"
-        name="beneficiary"
-        value={inputData.beneficiary}
-        onChange={handleInputChange}
-        placeholder="Name of organizer"
-        className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
-      />
-      <label htmlFor="lockUntilTime">Lock Until: </label>
-      <div className="p-6 bg-transparent rounded-md">
-      <div className="grid grid-cols-2 gap-4 mb-4">
-        <label className="flex flex-col">
-          Date
-          <input
-            type="date"
-            name="day"
-            value={inputData.day}
-            onChange={handleInputChange}
-            className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
-          />
+
+      <div className="space-y-2">
+        <label
+          htmlFor="beneficiary"
+          className="block text-sm font-medium text-gray-700"
+        >
+          Beneficiary <span className="text-[#FF8A25]">*</span>
         </label>
-        <label className="flex flex-col">
-          Hour (Optional)
-          <input
-            type="number"
-            name="hour"
-            value={inputData.hour}
-            onChange={handleInputChange}
-            min="0"
-            max="23"
-            className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
-          />
+        <input
+          {...(register as UseFormRegister<StepThreeFields>)("beneficiary")}
+          type="text"
+          id="beneficiary"
+          disabled={disabled}
+          className={`w-full rounded-[7px] border ${
+            (errors as FieldErrors<StepThreeFields>).beneficiary
+              ? "border-red"
+              : "border-[#DAE0E6]"
+          } px-3 py-3 placeholder:text-sm focus:ring-1 focus:ring-accent-green`}
+          placeholder="Enter beneficiary name or organization"
+        />
+        {(errors as FieldErrors<StepThreeFields>).beneficiary && (
+          <p className="mt-1 text-sm text-red">
+            {(errors as FieldErrors<StepThreeFields>).beneficiary?.message}
+          </p>
+        )}
+      </div>
+
+      <div className="space-y-4">
+        <label className="block text-sm font-medium text-gray-700">
+          Social Links
         </label>
-        <label className="flex flex-col">
-          Minute (Optional)
-          <input
-            type="number"
-            name="minute"
-            value={inputData.minute}
-            onChange={handleInputChange}
-            min="0"
-            max="59"
-            className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
-          />
-        </label>
-        <label className="flex flex-col">
-          Second (Optional)
-          <input
-            type="number"
-            name="second"
-            value={inputData.second}
-            onChange={handleInputChange}
-            min="0"
-            max="59"
-            className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
-          />
-        </label>
-        <label className="flex flex-col col-span-2">
-          Timezone
-          <select
-            name="timezone"
-            // value={inputData.timezone}
-            // onChange={handleInputChange}
-            className="bg-transparent border-solid border-[1px] border-gray-400 p-3 rounded-[10px]"
-          >
-            {timezones.map((tz) => (
-              <option key={tz} value={tz}>
-                {tz}
-              </option>
+        <div className="space-y-3">
+          {predefinedSocialLinks.map((social) => (
+            <div key={social.name} className="relative">
+              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground-secondary">
+                {social.icon}
+              </span>
+              <input
+                {...(register as UseFormRegister<StepThreeFields>)(
+                  `socials.${social.name}` as keyof StepThreeFields
+                )}
+                type="url"
+                className="w-full rounded-[7px] border border-[#DAE0E6] px-3 py-3 pl-10 placeholder:text-sm focus:ring-1 focus:ring-accent-green"
+                placeholder={social.placeholder}
+                disabled={disabled}
+              />
+            </div>
+          ))}
+
+          {/* Custom links section */}
+          <div className="space-y-3">
+            <label className="block text-sm font-medium text-gray-700">
+              Additional Links
+            </label>
+            {[0, 1, 2].map((index) => (
+              <div key={`custom-${index}`} className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground-secondary">
+                  <GlobeIcon />
+                </span>
+                <input
+                  {...(register as UseFormRegister<StepThreeFields>)(
+                    `customLinks.${index}.url`
+                  )}
+                  type="url"
+                  className="w-full rounded-[7px] border border-[#DAE0E6] px-3 py-3 pl-10 placeholder:text-sm focus:ring-1 focus:ring-accent-green"
+                  placeholder="https://example.com"
+                  disabled={disabled}
+                />
+              </div>
             ))}
-          </select>
-        </label>
+          </div>
+        </div>
       </div>
-      {/* <div className="mt-4">
-        <p className="text-gray-700">Unix Timestamp: {unixTimestamp}</p>
-      </div> */}
-    </div>
+
+      <button
+        onClick={onReview}
+        type="button"
+        disabled={disabled}
+        className={`w-full rounded-[7px] bg-accent-green px-2 py-3 text-white ${
+          disabled ? "cursor-not-allowed" : ""
+        }`}
+      >
+        Continue
+      </button>
     </fieldset>
   );
 };
