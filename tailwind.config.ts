@@ -9,7 +9,9 @@ const config: Config = {
   theme: {
     extend: {
       screens: {
-        'xs': '300px', 
+        xs: "300px",
+        mobile: "480px",
+        lgMobile: "580px"
       },
       fontSize: {
         clamp: "clamp(0.5rem, 5vw, 1rem)"
