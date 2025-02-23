@@ -313,8 +313,7 @@ const Page = () => {
             />
           </div>
         </div>
-        <div className="col-span-4 h-full overflow-y-auto px-3 sm:px-7 md:px-16 pt-8 2xl:grid items-center">
-          <div className="space-y-8">
+        <div className="col-span-4 h-full overflow-y-auto px-3 sm:px-7 md:px-16 pt-8 space-y-8">
             <div className="mx-auto flex max-w-4xl items-center justify-between">
               {currentStep === 3 && (
                 <button
@@ -366,7 +365,6 @@ const Page = () => {
               </form>
             </div>
           </div>
-        </div>
       </main>
 
       <ReviewCampaign
