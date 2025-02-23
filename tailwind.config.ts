@@ -9,7 +9,7 @@ const config: Config = {
   theme: {
     extend: {
       screens: {
-        'xs': '300px', // Custom breakpoint for screens 300px and below
+        'xs': '300px', 
       },
       fontSize: {
         clamp: "clamp(0.5rem, 5vw, 1rem)"
