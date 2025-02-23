@@ -33,7 +33,6 @@ const Connect = () => {
         <Dialog open={isOpen} onOpenChange={setIsOpen}>
           <DialogContent className=" p-3 sm:min-w-[32rem]  h-screen sm:h-auto rounded-none sm:rounded-lg">
             <div className="grid h-full grid-cols-1 md:grid-cols-5">
-              {/* Image Section - Hidden on mobile */}
               <div className="hidden md:block relative col-span-2 overflow-hidden">
                 <Image
                 src={"/wallet-bg.png"}
@@ -44,8 +43,6 @@ const Connect = () => {
                 width={300}
                 />
             </div>
-
-            {/* Content Section */}
             <div className="col-span-1 md:col-span-3 flex items-center justify-center px-4 overflow-y-auto">
               <div className="w-full space-y-4">
                 <DialogTitle className="font-agrandir text-xl md:text-2xl font-bold">
