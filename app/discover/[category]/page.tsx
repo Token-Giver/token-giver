@@ -11,8 +11,8 @@ const page = () => {
   const categoryName = String(params?.category ?? "All").replace(/-/g, " ");
 
   return (
-    <section className="mx-auto mt-[5rem] min-h-[40vh] animate-fadeIn px-16 py-8">
-      <div className="mx-auto mb-16 grid max-w-[1242px] grid-cols-2 px-4">
+    <section className="mx-auto mt-[5rem] min-h-[40vh] animate-fadeIn px-3 sm:px-8 md:px-12 lg:px-16  py-8">
+      <div className="mx-auto mb-16 grid max-w-[1242px] px-3 lg:grid-cols-2 gap-10">
         <div>
           <p className="mb-12 text-foreground-secondary">Category</p>
           <h2 className="mb-4 font-agrandir text-4xl capitalize">
@@ -32,8 +32,8 @@ const page = () => {
             </Link>
           </div>
         </div>
-        <div className="">
-          <div className="relative ml-auto h-[531px] w-[491px] rounded-[10px]">
+        <div className="flex justify-center">
+          <div className="relative top-5 max-w-[400px] sm:max-w-[450px] md:max-w-[500px] rounded-[10px] lg:top-0">
             <Image
               src={"/404.png"}
               width={521}
@@ -42,7 +42,7 @@ const page = () => {
               role="presentation"
               className="object-cover"
             />
-            <div className="absolute -left-[3rem] w-[280px] rounded-[5px] bg-white p-6 leading-6 tracking-wider shadow-md">
+            <div className="absolute -left-[3rem] w-[280px] rounded-[5px] bg-white p-6 leading-6 tracking-wider shadow-md hidden lg:block">
               <div className="absolute left-[-20px] top-[-10px] grid h-[40px] w-[40px] place-content-center rounded-full bg-accent-green font-agrandir text-white">
                 <QuotesIcon />
               </div>
@@ -56,15 +56,15 @@ const page = () => {
         </div>
       </div>
       <div className="mx-auto max-w-[1242px]">
-        <h3 className="mb-8 ml-4 text-2xl font-medium capitalize">
+        <h3 className="mb-8 ml-4 text-2xl font-medium capitalize lg:mt-56 mt-24">
           See {categoryName} Fundraisers
         </h3>
 
-        <div className="grid grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-auto">
           {Array(12)
             .fill(null)
             .map((_, index) => (
-              <div key={index} className="w-1/4 flex-shrink-0">
+              <div key={index} className="mx-auto">
                 <Card
                   cid={"123"}
                   causeName={"Unknown Cause"}
