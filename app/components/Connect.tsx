@@ -65,7 +65,7 @@ const Connect = () => {
                     onClick={() => connect({ connector })}
                     className="text-xs md:text-sm"
                     >
-                    <div className="mb-1 grid w-[120px] h-[120px] md:h-[100px] md:w-[100px] mx-auto place-content-center rounded-[5.3px] bg-[#F7F6F6]">
+                    <div className="mb-1 grid lg:w-[100px] lg:h-[100px] h-[100px] md:h-[100px]  md:w-[100px] mx-auto place-content-center rounded-[5.3px] bg-[#F7F6F6]">
                       <div className="grid h-[60px] w-[60px] md:h-[50px] md:w-[50px] place-content-center">
                       {typeof connector.icon === "string" ? (
                               <img 
