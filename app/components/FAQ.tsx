@@ -18,7 +18,7 @@ const FAQ = () => {
   return (
     <div className="">
       <div className="mx-auto mb-8 max-w-[700px]">
-        <h2 className="text-l mb-2 text-center">
+        <h2 className="text-l max-lgMobile:text-xl mb-2 text-center">
           <span className="font-agrandir">Frequently</span> Asked{" "}
           <span className="font-agrandir">Questions</span>
         </h2>
@@ -36,7 +36,7 @@ const FAQ = () => {
             className="border-b-solid cursor-pointer border border-x-transparent border-b-foreground-secondary border-t-transparent"
           >
             <button
-              className="flex w-full items-center justify-between p-4 text-left focus:outline-none"
+              className="mobile:p-4 flex w-full items-center justify-between p-2.5 text-left focus:outline-none"
               onClick={() => toggleAccordion(index)}
             >
               <span className="font-medium">{item.question}</span>
