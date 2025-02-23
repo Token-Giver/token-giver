@@ -55,7 +55,7 @@ const ReviewCampaign = ({
     <Dialog open={showReview} onOpenChange={setShowReview}>
       <DialogContent className="max-h-[90vh] w-[95vw] p-4 sm:p-6 md:w-[85vw] lg:w-[75vw] xl:w-[65vw] 2xl:max-w-[1200px]">
         <div className="space-y-6">
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:pr-8">
+          <div className="mx-auto flex max-w-[800px] flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:pr-8">
             <DialogTitle className="mt-8 pr-8 font-agrandir text-xl font-bold sm:mt-1 sm:text-2xl">
               Campaign Preview
             </DialogTitle>
