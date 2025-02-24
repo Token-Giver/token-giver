@@ -10,5 +10,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/campaigns/:walletAddress*", "/campaign/:address*"],
+  matcher: ["/campaigns/:walletAddress*", "/campaign/:address*"]
 };

@@ -14,7 +14,7 @@ const MobileMenu = ({
   toggleMenu,
   address,
   connectWallet,
-  shortenedAddress,
+  shortenedAddress
 }: {
   isMenuOpen: boolean;
   setIsMenuOpen: Dispatch<SetStateAction<boolean>>;
@@ -89,7 +89,7 @@ const MobileMenu = ({
           document.body.style.overflow = "auto";
         }, 300);
       }}
-      className={`h-screen w-screen fixed top-0 left-0 z-[9999]  ${
+      className={`fixed left-0 top-0 z-[9999] h-screen w-screen ${
         isMenuOpen ? "pointer-events-auto" : "pointer-events-none"
       } lg:hidden`}
     >
@@ -114,12 +114,12 @@ const MobileMenu = ({
         </animateMotion>
       </svg>
       <div
-        className={`flex flex-col p-8 gap-8 max-w-[700px]  mx-auto relative  mobile-nav`}
+        className={`mobile-nav relative mx-auto flex max-w-[700px] flex-col gap-8 p-8`}
       >
         <button
           title="toggle menu"
           onClick={toggleMenu}
-          className=" absolute  right-[2rem] flex flex-col text-theme-green justify-center items-center gap-2 lg:hidden"
+          className="absolute right-[2rem] flex flex-col items-center justify-center gap-2 text-theme-green lg:hidden"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -138,7 +138,7 @@ const MobileMenu = ({
           </svg>
         </button>
         <div className="mt-8">
-          <Link href="/" className="font-bold text-[#127C56]  text-[4vw]">
+          <Link href="/" className="text-[4vw] font-bold text-[#127C56]">
             <Logo />
           </Link>
         </div>
@@ -159,7 +159,7 @@ const MobileMenu = ({
             </li>
           </ul>
         </nav>
-        <div className="w-fit mx-auto flex flex-col gap-4">
+        <div className="mx-auto flex w-fit flex-col gap-4">
           {address ? (
             <div className="flex flex-col gap-4">
               <button
@@ -177,7 +177,6 @@ const MobileMenu = ({
                 onClick={() => {
                   if (address) {
                     disconnect();
-                    localStorage.removeItem("lastUsedConnector");
                   }
                 }}
                 className="flex items-center gap-4"
@@ -191,14 +190,14 @@ const MobileMenu = ({
           ) : (
             <button
               onClick={connectWallet}
-              className="flex justify-between items-center border-solid border-[1px] border-theme-green rounded-[25px] h-full w-full"
+              className="flex h-full w-full items-center justify-between rounded-[25px] border-[1px] border-solid border-theme-green"
             >
               <span className="px-2">
                 <WalletIcon />
               </span>
 
               <span className="px-2">Sign in</span>
-              <span className="bg-[#edf2ee66] rounded-full p-2">
+              <span className="rounded-full bg-[#edf2ee66] p-2">
                 <ProfileIcon width="1.2em" height="1.2em" />
               </span>
             </button>
@@ -206,7 +205,7 @@ const MobileMenu = ({
 
           <button
             onClick={createCampaign}
-            className="bg-[#127C56] text-white px-6 py-2 rounded-[25px]"
+            className="rounded-[25px] bg-[#127C56] px-6 py-2 text-white"
           >
             Start a Campaign
           </button>

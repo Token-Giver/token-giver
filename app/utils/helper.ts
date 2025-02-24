@@ -3,7 +3,7 @@ import {
   STRK_SEPOLIA,
   campaign_contract,
   provider,
-  strk_contract,
+  strk_contract
 } from "./data";
 import { formatCurrency } from "./currency";
 import { CallData, Uint256, cairo } from "starknet";
@@ -120,7 +120,7 @@ export const fetchCampaign = async (
         beneficiary: data.beneficiary,
         location: data.location,
         target: data.target,
-        address: data.campaign_address,
+        address: data.campaign_address
       });
     }
   } catch (error) {
@@ -158,21 +158,20 @@ export const fetchUserCampaigns = async (
 export const handleDonate = async (
   amount: string,
   account: any,
-  setSendingState: Dispatch<SetStateAction<"send" | "sending..." | "sent">>,
-  campaign_address: string,
-  handleRouteToCampaign: any
+  setSendingState: Dispatch<
+    SetStateAction<"send" | "sending..." | "sent" | "failed">
+  >,
+  campaign_address: string
 ) => {
   try {
     if (!amount || !account) {
       return;
     }
     setSendingState("sending...");
-    let current_withdrawal = await campaign_contract.get_available_withdrawal(
-      campaign_address
-    );
-    let current_donation = await campaign_contract.get_donations(
-      campaign_address
-    );
+    let current_withdrawal =
+      await campaign_contract.get_available_withdrawal(campaign_address);
+    let current_donation =
+      await campaign_contract.get_donations(campaign_address);
     strk_contract.connect(account);
     const toTransferTk: Uint256 = cairo.uint256(Number(amount) * 1e18);
     const multiCall = await account?.execute([
@@ -182,16 +181,16 @@ export const handleDonate = async (
         entrypoint: "transfer",
         calldata: CallData.compile({
           recipient: campaign_address,
-          amount: toTransferTk,
-        }),
+          amount: toTransferTk
+        })
       },
       // Increase Donation Count
       {
         contractAddress: CAMPAIGN_CONTRACT_ADDRESS,
         entrypoint: "set_donation_count",
         calldata: CallData.compile({
-          campaign_address,
-        }),
+          campaign_address
+        })
       },
       // Increase withdrawal Available
       {
@@ -202,8 +201,8 @@ export const handleDonate = async (
           amount: cairo.uint256(
             (formatCurrency(current_withdrawal.toString()) + Number(amount)) *
               1e18
-          ),
-        }),
+          )
+        })
       },
       // Set donation
       {
@@ -214,19 +213,22 @@ export const handleDonate = async (
           amount: cairo.uint256(
             (formatCurrency(current_donation.toString()) + Number(amount)) *
               1e18
-          ),
-        }),
-      },
+          )
+        })
+      }
     ]);
     if (!multiCall) {
       return;
     }
     await provider.waitForTransaction(multiCall.transaction_hash);
+    setSendingState("sent");
     // handleRouteToCampaign();
   } catch (err: any) {
     console.log(err.message);
-  } finally {
-    setSendingState("sent");
+    setSendingState("failed");
+    setTimeout(() => {
+      setSendingState("send");
+    }, 2000);
   }
 };
 
@@ -234,7 +236,7 @@ export const handleDonate = async (
 
 export const searchCampaigns = async ({
   campaigns,
-  search,
+  search
 }: {
   search: string;
   campaigns: Campaign[];
@@ -250,7 +252,6 @@ export const searchCampaigns = async ({
   );
 };
 
-
 export const toUnixTimestamp = ({
   year,
   month,
@@ -258,7 +259,7 @@ export const toUnixTimestamp = ({
   hour = 0,
   minute = 0,
   second = 0,
-  timezoneOffset = null,
+  timezoneOffset = null
 }: {
   year: number;
   month: number;
@@ -267,10 +268,15 @@ export const toUnixTimestamp = ({
   minute?: number;
   second?: number;
   timezoneOffset?: number | null;
-}): number  => {
-  const date = timezoneOffset !== null ? new Date(Date.UTC(year, month - 1, day, hour, minute, second)) : new Date(year, month - 1, day, hour, minute, second);
+}): number => {
+  const date =
+    timezoneOffset !== null
+      ? new Date(Date.UTC(year, month - 1, day, hour, minute, second))
+      : new Date(year, month - 1, day, hour, minute, second);
 
-  const adjustedTime = date.getTime() - (timezoneOffset ?? new Date().getTimezoneOffset()) * 60 * 1000;
+  const adjustedTime =
+    date.getTime() -
+    (timezoneOffset ?? new Date().getTimezoneOffset()) * 60 * 1000;
 
   return Math.floor(adjustedTime / 1000);
 };

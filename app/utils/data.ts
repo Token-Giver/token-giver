@@ -22,7 +22,7 @@ export const BEARER_TOKEN =
 
 // RPC PROVIDER
 export const provider = new RpcProvider({
-  nodeUrl: "https://starknet-sepolia.public.blastapi.io",
+  nodeUrl: "https://starknet-sepolia.public.blastapi.io"
 });
 
 // TOKEN GIVER CAMPAIGN CONTRACT
