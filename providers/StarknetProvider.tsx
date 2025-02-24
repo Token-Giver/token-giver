@@ -12,7 +12,7 @@ import {
 } from "@starknet-react/core";
 import { jsonRpcProvider } from "@starknet-react/core";
 import { ReactNode, useCallback } from "react";
-import { cartridgeInstance } from "../utils/controller";
+import { cartridgeInstance } from "../app/utils/controller";
 
 const StarknetProvider = ({ children }: { children: ReactNode }) => {
   const chains = [mainnet, sepolia];
