@@ -45,20 +45,20 @@ const Fundraisers = () => {
             progress={0}
             token_id={collections[0]?.id}
             campaign_address={collections[0]?.campaign_address || "0x0"}
-            target={collections[0].target}
-            url={`${collections[0].name
+            target={collections[0]?.target}
+            url={`${collections[0]?.name
               .replace(/[^a-zA-Z ]/g, "")
               .replace(/ /g, "-")
               .toLocaleLowerCase()
               .replace(/-+/g, "-")}/${collections[0]?.campaign_address}/${
-              collections[0].cid
+              collections[0]?.cid
             }`}
             description={collections[0]?.description}
           />
         )}
 
-        <div className="mx-auto mt-16 flex max-w-[1242px] flex-col items-center">
-          <div className="grid grid-cols-4 gap-4">
+        <div className="mx-auto mt-12 flex max-w-[1242px] flex-col items-center md:mt-16">
+          <div className="grid w-full grid-cols-4 gap-4 max-[1120px]:grid-cols-3 max-[825px]:grid-cols-2 max-[510px]:grid-cols-1">
             {loading
               ? Array.from({ length: 12 }).map((_, idx) => (
                   <CardLoader key={idx} />

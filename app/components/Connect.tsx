@@ -4,44 +4,36 @@ import { useAccount, useConnect, useDisconnect } from "@starknet-react/core";
 import { useMemo, useState, useEffect } from "react";
 import ProfileIcon from "@/svgs/ProfileIcon";
 
-const Connect = () => {
-  const { address, account } = useAccount();
+const Connect = ({ className }: { className?: string }) => {
+  const { address } = useAccount();
   const { disconnect } = useDisconnect();
   const { connectors, connect } = useConnect();
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    if (address) {
-      setIsOpen(false);
-    }
+    if (address) setIsOpen(false);
   }, [address]);
 
-  const shortenedAddress = useMemo(() => {
-    if (!address) return "";
-    return `${address.slice(0, 6)}...${address.slice(-4)}`;
-  }, [address]);
+  const shortenedAddress = useMemo(
+    () => (address ? `${address.slice(0, 6)}...${address.slice(-4)}` : ""),
+    [address]
+  );
 
   return (
     <>
       <button
-        onClick={() => {
-          if (address) {
-            disconnect();
-          } else {
-            setIsOpen(true);
-          }
-        }}
-        className="flex items-center rounded-[25px] px-2 py-2 text-accent-green ring-1 ring-accent-green"
+        onClick={() => (address ? disconnect() : setIsOpen(true))}
+        className={`flex items-center rounded-[25px] px-2 py-2 text-accent-green ring-1 ring-accent-green ${className}`}
       >
         {shortenedAddress && <ProfileIcon width="1.5em" height="1.5em" />}
-        <span className="px-2">
-          {shortenedAddress ? shortenedAddress : "Connect Wallet"}
+        <span className="truncate px-2">
+          {shortenedAddress || "Connect Wallet"}
         </span>
       </button>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="p-2">
-          <div className="grid h-[50vh] max-h-[500px] grid-cols-5">
-            <div className="relative col-span-2 overflow-hidden">
+        <DialogContent className="h-screen rounded-none p-3 sm:h-auto sm:min-w-[32rem] sm:rounded-lg">
+          <div className="grid h-full grid-cols-1 md:grid-cols-5">
+            <div className="relative col-span-2 hidden overflow-hidden md:block">
               <Image
                 src={"/wallet-bg.png"}
                 alt=""
@@ -51,39 +43,39 @@ const Connect = () => {
                 width={300}
               />
             </div>
-            <div className="col-span-3 flex items-center justify-center px-4">
-              <div className="space-y-2">
-                <DialogTitle className="font-agrandir text-2xl font-bold">
+            <div className="col-span-1 flex items-center justify-center overflow-y-auto px-4 md:col-span-3">
+              <div className="w-full space-y-4">
+                <DialogTitle className="font-agrandir text-xl font-bold md:text-2xl">
                   Connect Wallet
                 </DialogTitle>
-                <p className="text-foreground-secondary">
+                <p className="text-sm text-foreground-secondary md:text-base">
                   Please choose a wallet you want to connect to TokenGiver.
                   There are several wallet providers.
                 </p>
-                <div className="thin-scrollbar grid max-h-[270px] grid-cols-4 gap-2 overflow-y-scroll">
+
+                <div className="mx-auto grid w-[70%] grid-cols-1 gap-2 overflow-y-auto p-1 xs:grid-cols-2 md:max-h-[270px] md:w-[100%] md:grid-cols-4 md:gap-2 lg:w-[100%]">
                   {connectors.map((connector) => {
-                    if (connector.id && connector.available()) {
-                      return (
-                        <button
-                          className="text-sm"
-                          onClick={() => {
-                            connect({ connector });
-                          }}
-                          key={connector.id}
-                        >
-                          <div className="mb-1 grid h-[100px] w-full place-content-center rounded-[5.3px] bg-[#F7F6F6]">
-                            <div className="grid h-[50px] w-[50px] place-content-center">
-                              {typeof connector.icon === "string" ? (
-                                <img
-                                  src={connector.icon}
-                                  alt={`${connector.name} icon`}
-                                />
-                              ) : (
-                                <>
-                                  {typeof connector.icon.light === "string" ? (
-                                    connector.icon.light.startsWith("<svg") ? (
+                    if (!connector.id || !connector.available()) return null;
+                    return (
+                      <button
+                        key={connector.id}
+                        onClick={() => connect({ connector })}
+                        className="text-xs md:text-sm"
+                      >
+                        <div className="mx-auto mb-1 grid h-[100px] place-content-center rounded-[5.3px] bg-[#F7F6F6] md:h-[100px] md:w-[100px] lg:h-[100px] lg:w-[100px]">
+                          <div className="grid h-[60px] w-[60px] place-content-center md:h-[50px] md:w-[50px]">
+                            {typeof connector.icon === "string" ? (
+                              <img
+                                className="w-[50px]"
+                                src={connector.icon}
+                                alt={`${connector.name} icon`}
+                              />
+                            ) : (
+                              <>
+                                {connector.icon.light && (
+                                  <div className="h-full w-full dark:hidden">
+                                    {connector.icon.light.startsWith("<svg") ? (
                                       <div
-                                        className="h-full w-full dark:hidden"
                                         dangerouslySetInnerHTML={{
                                           __html: connector.icon.light
                                         }}
@@ -92,14 +84,14 @@ const Connect = () => {
                                       <img
                                         src={connector.icon.light}
                                         alt={`${connector.name} light icon`}
-                                        className="dark:hidden"
                                       />
-                                    )
-                                  ) : null}
-                                  {typeof connector.icon.dark === "string" ? (
-                                    connector.icon.dark.startsWith("<svg") ? (
+                                    )}
+                                  </div>
+                                )}
+                                {connector.icon.dark && (
+                                  <div className="hidden h-full w-full dark:block">
+                                    {connector.icon.dark.startsWith("<svg") ? (
                                       <div
-                                        className="hidden h-full w-full dark:block"
                                         dangerouslySetInnerHTML={{
                                           __html: connector.icon.dark
                                         }}
@@ -108,20 +100,19 @@ const Connect = () => {
                                       <img
                                         src={connector.icon.dark}
                                         alt={`${connector.name} dark icon`}
-                                        className="hidden dark:block"
                                       />
-                                    )
-                                  ) : null}
-                                </>
-                              )}
-                            </div>
+                                    )}
+                                  </div>
+                                )}
+                              </>
+                            )}
                           </div>
-                          <span className="inline-block w-[100px] truncate text-center">
-                            {connector.name} {connector.available()}
-                          </span>
-                        </button>
-                      );
-                    }
+                        </div>
+                        <span className="inline-block w-full truncate pb-2 pt-2 text-center text-[16px] font-medium">
+                          {connector.name}
+                        </span>
+                      </button>
+                    );
                   })}
                 </div>
               </div>

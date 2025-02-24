@@ -4,10 +4,14 @@ import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import SearchIcon from "@/svgs/SearchIcon";
 import Connect from "./Connect";
+import HamburgerMenuIcon from "@/svgs/HamburgerMenuIcon";
+import { useState } from "react";
+import MobileMenu from "./MobileMenu";
 
 const Header = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   // Hide header on /create route
   if (pathname === "/create") return null;
@@ -17,16 +21,22 @@ const Header = () => {
     router.push("/create");
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
     <header className="fixed top-0 z-[50] flex w-screen bg-white">
-      <div className="top-0 mx-auto flex w-full max-w-[1536px] items-center justify-between px-16 py-2 text-sm">
-        <Link href="/" className="w-[10rem]">
-          <Image src={"/logo.png"} alt={"logo"} width={2000} height={1342} />
+      <div className="top-0 mx-auto flex w-full max-w-[1536px] items-center justify-between px-4 py-2 text-sm md:px-10 lg:px-16">
+        <Link href="/">
+          <div className="xTablet:w-[10rem] w-[8rem] max-[800px]:w-[10rem]">
+            <Image src={"/logo.png"} alt={"logo"} width={2000} height={1342} />
+          </div>
         </Link>
 
-        <div className="flex items-center gap-16">
-          <nav className="text-[#8E9BAE]">
-            <ul className="flex gap-8">
+        <div className="xTablet:gap-16 flex items-center gap-8 max-[800px]:hidden">
+          <nav className="max-xTablet:text-xs text-[#8E9BAE]">
+            <ul className="flex gap-8 max-[850px]:gap-4">
               <li>
                 <Link
                   href={"/search"}
@@ -51,7 +61,7 @@ const Header = () => {
                       : ""
                   }
                 >
-                  discover
+                  Discover
                 </Link>
               </li>
               <li>
@@ -77,7 +87,21 @@ const Header = () => {
             </button>
           </div>
         </div>
+
+        <div onClick={toggleMobileMenu} className="hidden max-[800px]:block">
+          <HamburgerMenuIcon />
+        </div>
       </div>
+
+      <MobileMenu
+        isMenuOpen={isMobileMenuOpen}
+        setIsMenuOpen={setIsMobileMenuOpen}
+        createCampaign={createCampaign}
+        toggleMenu={toggleMobileMenu}
+        address={undefined}
+        shortenedAddress={""}
+        connectWallet={() => {}}
+      />
     </header>
   );
 };
