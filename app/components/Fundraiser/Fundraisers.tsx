@@ -32,8 +32,8 @@ const Fundraisers = () => {
           <BigCardLoader />
         ) : (
           <BigCard
-            cid={collections[0].cid}
-            causeName={collections[0].name || "Unknown Cause"}
+            cid={collections[0]?.cid}
+            causeName={collections[0]?.name || "Unknown Cause"}
             imageSrc={
               `${
                 process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL

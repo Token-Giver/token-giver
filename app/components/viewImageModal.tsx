@@ -1,6 +1,8 @@
-
+"use client"
 import React, { useState, useEffect, useCallback } from 'react';
-import { ChevronLeft, ChevronRight, X } from 'lucide-react';
+import { MoveLeft, MoveRight, X } from 'lucide-react';
+import RightArrowIcon from '@/svgs/RightArrowIcon';
+import RightModalArrowIcon from '@/svgs/rightModalArrowIcon';
 
 interface ImageType {
   id: number;
@@ -10,10 +12,10 @@ interface ImageType {
 
 const ViewModalImage = () => {
   const [images] = useState<ImageType[]>([
-    { id: 1, url: ".../../../../a-o-GfQEdpIkkuw-unsplash.png", alt: "Forest canopy view" },
-    { id: 2, url: "../../../henrik-donnestad-t2Sai-AqIpI-unsplash.png", alt: "Yellow abstract pattern" },
-    { id: 3, url: "../../../jene-stephaniuk-esRJtEsvJhU-unsplash.png", alt: "Ocean waves" },
-    { id: 4, url: "../../../jene-stephaniuk-wsVOc34cQ_Q-unsplash.png", alt: "Colorful abstract art" },
+    { id: 1, url: "../../../casey-horner-4rDCa5hBlCs-unsplash.png", alt: "Forest canopy view" },
+    { id: 2, url: "../../../casey-horner-4rDCa5hBlCs-unsplash.png", alt: "Yellow abstract pattern" },
+    { id: 3, url: "../../../casey-horner-4rDCa5hBlCs-unsplash.png", alt: "Ocean waves" },
+    { id: 4, url: "../../../casey-horner-4rDCa5hBlCs-unsplash.png", alt: "Colorful abstract art" },
     { id: 5, url: "../../../casey-horner-4rDCa5hBlCs-unsplash.png", alt: "Portrait artwork" }
   ]);
 
@@ -67,92 +69,121 @@ const ViewModalImage = () => {
   }, [handleKeyPress]);
 
   return (
-    <main className="bg-white min-h-screen">
+    <main className="min-h-screen bg-white">
       <div className="container mx-auto px-4 py-4 sm:py-6">
         {/* Thumbnail grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-2 sm:gap-4">
-          {images.map((image) => (
+       <div className='flex-col flex md:flex-row gap-2 h-[200px] md:w-1/2'>
             <div
-              key={image.id}
-              className="aspect-square relative rounded-lg overflow-hidden cursor-pointer transform transition-all duration-300 hover:scale-105"
-              onClick={() => openModal(image.id)}
+              className="w-1/2 relative aspect-square transform cursor-pointer overflow-hidden rounded-lg transition-all duration-300"
+              onClick={() => openModal(images[0].id)}
             >
               <img
-                src={image.url}
-                alt={image.alt}
-                className="w-full h-full object-cover"
+                src={images[0].url}
+                alt={images[0].alt}
+                className="h-full w-full object-cover hover:scale-105"
               />
-            </div>
-          ))}
         </div>
+        <div className='flex md:flex-col w-1/2 gap-2'>
+        <div
+              className="relative aspect-square transform cursor-pointer overflow-hidden rounded-lg transition-all duration-300"
+              onClick={() => openModal(images[1].id)}
+            >
+              <img
+                src={images[1].url}
+                alt={images[1].alt}
+                className="h-full w-full object-cover hover:scale-105"
+              />
+        </div>
+        <div
+              className="relative aspect-square transform cursor-pointer overflow-hidden rounded-lg transition-all duration-300"
+              onClick={() => openModal(images[2].id)}
+            >
+              {images.length < 3 && <img
+                src={images[2].url}
+                alt={images[2].alt}
+                className="h-full w-full object-cover hover:scale-105"
+              />}
+            {images.length > 3 &&   <div onClick={() => openModal(images[2].id)} className='bg-black opacity-30 w-full h-full grid place-content-center'>
+                <h1 className='text-3xl text-white font-semibold'>+1</h1>
+              </div>}
+        </div>
+        </div>
+
+       </div>
 
         {/* Modal */}
         {isModalOpen && selectedImageId && (
-          <div className="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center transition-opacity duration-300">
-            <div className="relative w-full max-w-7xl mx-4">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 transition-opacity duration-300">
+            <div className="relative mx-4 flex md:h-[500px] w-full max-w-3xl flex-col gap-4 rounded-[10px] bg-[#FFFFFF] p-4 md:p-8">
               {/* Modal header */}
-              <div className="absolute top-0 left-0 right-0 flex justify-between items-center p-4 z-10">
-                <h4 className="font-bold text-lg sm:text-xl text-white">More Images</h4>
-                <div className="flex items-center gap-4">
+              <div className="flex items-center justify-between">
+                <h4 className="font-agrandir text-lg font-bold text-[#282828] sm:text-xl">
+                  More Images
+                </h4>
+                <div className="absolute -top-12 right-0 flex items-center gap-4">
                   <button
                     onClick={closeModal}
-                    className="bg-white/20 hover:bg-white/30 p-2 rounded-full transition-colors duration-200"
+                    className="rounded-full bg-white/20 p-2 transition-colors duration-200 hover:bg-white/30"
                     aria-label="Close modal"
                   >
-                    <X className="w-6 h-6 text-white" />
+                    <X className="h-6 w-6 text-white" />
                   </button>
+                </div>
+                <div className="flex gap-2 font-poppins">
+                  <h5 className="text-[#55534E]">Share Campaign</h5>
+                  <RightModalArrowIcon />
                 </div>
               </div>
 
               {/* Main image container */}
-              <div className="relative group">
-                <div className="w-full h-[80vh] relative rounded-lg overflow-hidden">
+              <div className="group relative h-4/5 max-h-[482px] overflow-hidden">
+                <div className="relative h-full w-full overflow-hidden rounded-lg">
                   <img
-                    src={images.find(img => img.id === selectedImageId)?.url}
-                    alt={images.find(img => img.id === selectedImageId)?.alt}
-                    className={`w-full h-full object-contain transition-opacity duration-300 ${
-                      isNavigating ? 'opacity-80' : 'opacity-100'
+                    src={images.find((img) => img.id === selectedImageId)?.url}
+                    alt={images.find((img) => img.id === selectedImageId)?.alt}
+                    className={`h-full w-full object-contain transition-opacity duration-300 ${
+                      isNavigating ? "opacity-80" : "opacity-100"
                     }`}
                   />
                 </div>
 
                 {/* Navigation arrows */}
                 <button
-                  onClick={() => navigateImage('prev')}
-                  className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  onClick={() => navigateImage("prev")}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 opacity-0 shadow-lg transition-opacity duration-300 hover:bg-white group-hover:opacity-100"
                   aria-label="Previous image"
                 >
-                  <ChevronLeft className="w-6 h-6" />
+                  <MoveLeft className="h-6 w-6 text-black/30" />
                 </button>
                 <button
-                  onClick={() => navigateImage('next')}
-                  className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white p-2 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  onClick={() => navigateImage("next")}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 rounded-full bg-white/80 p-2 opacity-0 shadow-lg transition-opacity duration-300 hover:bg-white group-hover:opacity-100"
                   aria-label="Next image"
                 >
-                  <ChevronRight className="w-6 h-6" />
+                  <MoveRight className="h-6 w-6 text-black/30" />
                 </button>
               </div>
 
               {/* Thumbnail strip */}
-              <div className="absolute bottom-4 left-0 right-0">
-                <div className="flex justify-center gap-2 px-4">
+                <div className="flex w-full justify-between gap-2">
                   {images.map((image) => (
                     <div
                       key={image.id}
-                      className={`w-16 h-16 rounded-lg overflow-hidden cursor-pointer transition-all duration-300 ${
-                        selectedImageId === image.id ? 'ring-2 ring-white scale-110' : 'opacity-70 hover:opacity-100'
+                      className={`h-16 cursor-pointer overflow-hidden rounded-lg transition-all duration-300 ${
+                        selectedImageId === image.id
+                          ? "ring-2 ring-white"
+                          : "opacity-70 hover:opacity-100 border"
                       }`}
                       onClick={() => setSelectedImageId(image.id)}
                     >
                       <img
                         src={image.url}
                         alt={image.alt}
-                        className="w-full h-full object-cover"
+                        className="h-full w-full object-cover"
                       />
                     </div>
                   ))}
                 </div>
-              </div>
             </div>
           </div>
         )}
