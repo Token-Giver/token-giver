@@ -32,6 +32,7 @@ const CampaignDetails = ({
     setSelectedImageId(id);
     setIsModalOpen(true);
    document.getElementsByTagName("header")[0].style.zIndex = "0"
+   document.body.style.overflow = 'hidden';
   };
   useEffect(() => {
     const element = descriptionRef.current;

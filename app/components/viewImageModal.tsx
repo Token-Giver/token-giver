@@ -57,6 +57,7 @@ const ViewModalImage = ({
   const closeModal = () => {
     setIsModalOpen(false);
     document.getElementsByTagName("header")[0].style.zIndex = "55"
+    document.body.style.overflow = 'unset';
   };
 
   const navigateImage = useCallback(
