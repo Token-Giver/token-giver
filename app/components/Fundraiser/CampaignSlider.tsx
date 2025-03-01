@@ -3,7 +3,7 @@ import { campaign_contract } from "@/app/utils/data";
 import { fetchCampaigns } from "@/app/utils/helper";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
 import { useEffect, useState } from "react";
-import { CardLoader } from "../loading/CardLoader";
+import CardLoader from "../loading/CardLoader";
 
 const CampaignSlider = () => {
   const [collections, setCollections] = useState<any[]>([]);
