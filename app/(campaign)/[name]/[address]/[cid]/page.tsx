@@ -95,7 +95,7 @@ const page = ({
                 </p>
               </div>
             </div>
-            <div className="relative mb-8 mt-3 h-[389px] md:h-[31rem] md:rounded-[10px] max-w-[1204] md:mx-[16px] lg:mx-0 ">
+            <div className="relative mb-8 mt-3 h-[389px] md:h-[31rem] md:rounded-[10px] max-w-[1204px] md:mx-[16px] lg:mx-0">
               <Image
                 className="h-full w-full md:rounded-[10px] bg-cover"
                 loader={() => campaignDetails.image}

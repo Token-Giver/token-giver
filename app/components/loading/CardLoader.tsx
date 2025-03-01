@@ -1,4 +1,4 @@
-const CardLoader = () => {
+export const CardLoader = () => {
   return (
     <div className="animate-pulse space-y-3">
       <div className=" h-[150px] w-[16.4rem] overflow-hidden rounded-[10px] bg-gray-200" />
@@ -11,7 +11,6 @@ const CardLoader = () => {
   );
 };
 
-export default CardLoader;
 
 export const BigCardLoader = () => {
   return (
