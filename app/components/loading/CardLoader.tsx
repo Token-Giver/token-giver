@@ -1,11 +1,12 @@
 const CardLoader = () => {
   return (
     <div className="animate-pulse space-y-3">
-      <div className="col-span-2 h-[150px] w-[16.4rem] overflow-hidden rounded-[10px] bg-gray-200" />
+      <div className=" h-[150px] w-[16.4rem] overflow-hidden rounded-[10px] bg-gray-200" />
       <div className="w-[16.4rem] space-y-3">
         <div className="h-3 w-full rounded-full bg-gray-200" />
         <div className="h-3 w-full rounded-full bg-gray-200" />
       </div>
+      <br />
     </div>
   );
 };

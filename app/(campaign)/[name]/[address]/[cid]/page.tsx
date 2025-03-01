@@ -68,34 +68,36 @@ const page = ({
   return (
     <>
       {campaignDetails.name ? (
-        <section className="mx-auto mt-[5rem] min-h-[40vh] max-w-[1204px] animate-fadeIn px-16 py-8">
-          <h2 className="mb-6 font-agrandir text-3xl text-foreground-primary">
+        <section className="mx-auto mt-[5rem] min-h-[40vh] w-full animate-fadeIn lg:px-16 py-8">
+          <h2 className="mb-6 font-agrandir whitespace-nowrap text-2xl md:text-3xl text-foreground-primary px-[16px]">
             {campaignDetails.name}
           </h2>
           <div className="text-foreground-primary">
-            <div className="flex items-center gap-8">
-              <div className="flex items-center gap-2">
-                <div className="grid h-[40px] w-[40px] place-content-center rounded-full bg-[#F7F7F6]">
+            <div className="flex flex-col md:flex-row justify-start md:justify-between lg:items-center gap-4 px-[16px]">
+              <div className="flex items-center whitespace-nowrap gap-2 w-auto">
+                <div className="grid min-h-[40px] min-w-[40px] place-content-center rounded-full bg-[#F7F7F6]">
                   <ProfileIcon />
                 </div>
-                <p>{campaignDetails.organizer}</p>
+                <p className="whitespace-nowrap">{campaignDetails.organizer}</p>
               </div>
-              <div className="flex items-center gap-2">
-                <p className="text-foreground-secondary">category:</p>
-                <div className="w-fit rounded-[25px] bg-[#F7F7F6] px-3 py-2 font-agrandir">
-                  <p>Education</p>
+              <div className=" w-full flex flex-col xs:flex-row xs:items-center justify-between flex-wrap">
+                <div className="flex items-center gap-2">
+                  <p className="text-foreground-secondary">category:</p>
+                  <div className="w-fit rounded-[25px] bg-[#F7F7F6] px-3 py-2 font-agrandir">
+                    <p>Education</p>
+                  </div>
                 </div>
+                <p className="ml-auto flex items-center gap-1">
+                  Share campaign{" "}
+                  <span>
+                    <ShareIcon />
+                  </span>
+                </p>
               </div>
-              <p className="ml-auto mt-auto flex items-center gap-1">
-                Share campaign{" "}
-                <span>
-                  <ShareIcon />
-                </span>
-              </p>
             </div>
-            <div className="relative mb-8 mt-3 h-[31rem] rounded-[10px]">
+            <div className="relative mb-8 mt-3 h-[389px] md:h-[31rem] md:rounded-[10px] max-w-[1204] md:mx-[16px] lg:mx-0 ">
               <Image
-                className="h-full w-full rounded-[10px] bg-cover"
+                className="h-full w-full md:rounded-[10px] bg-cover"
                 loader={() => campaignDetails.image}
                 src={campaignDetails.image}
                 unoptimized
@@ -105,7 +107,7 @@ const page = ({
               />
             </div>
           </div>
-          <div className="grid grid-cols-2 gap-4">
+          <div className="flex flex-col-reverse lg:flex-row gap-4 px-[16px]">
             <CampaignDetails
               description={campaignDetails.description}
               organizer={campaignDetails.organizer}
@@ -129,7 +131,7 @@ const page = ({
           </div>
         </section>
       ) : (
-        <div className="mx-auto mt-[5rem] grid min-h-[40vh] max-w-[1204px] place-content-center px-16 py-8">
+        <div className="mx-auto mt-[5rem] grid min-h-[40vh] max-w-[1204px] place-content-center py-8">
           <Image
             alt="loading"
             src={"/logo-sm.png"}
@@ -140,8 +142,8 @@ const page = ({
           />
         </div>
       )}
-      <div className="mx-auto max-w-[1204px] space-y-4">
-        <h3 className="text-2xl text-foreground-primary">
+      <div className="mx-auto max-w-[1204px] space-y-4 px-[20px]">
+        <h3 className="text-2xl text-foreground-primary px-[16px]">
           <span className="font-agrandir font-bold">Make a Difference.</span>{" "}
           <span className="font-normal">See Similar Campaigns</span>{" "}
           <span className="font-agrandir font-bold">like This </span>
