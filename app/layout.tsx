@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="flex flex-col min-h-screen">
+      <body className="flex min-h-screen flex-col">
         <StarknetProvider>
           <Header />
           <main className="flex-1">{children}</main>

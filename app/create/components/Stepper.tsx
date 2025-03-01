@@ -22,7 +22,7 @@ const Stepper = ({ currentStep }: { currentStep: number }) => {
         >
           1
         </div>
-        <p className="text-foreground-secondary">Connect Wallet</p>
+        <p className="text-foreground-secondary hidden sm:block">Connect Wallet</p>
       </div>
 
       <div className="z-10 flex flex-col items-center justify-center">
@@ -31,7 +31,7 @@ const Stepper = ({ currentStep }: { currentStep: number }) => {
         >
           2
         </div>
-        <p className="text-foreground-secondary">Campaign Details</p>
+        <p className="text-foreground-secondary hidden sm:block">Campaign Details</p>
       </div>
 
       <div className="z-10 flex flex-col items-center justify-center">
@@ -40,7 +40,7 @@ const Stepper = ({ currentStep }: { currentStep: number }) => {
         >
           3
         </div>
-        <p className="text-foreground-secondary">Creator Details</p>
+        <p className="text-foreground-secondary hidden sm:block">Creator Details</p>
       </div>
     </div>
   );

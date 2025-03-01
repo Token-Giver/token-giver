@@ -5,6 +5,7 @@ import RightArrowIcon from "@/svgs/RightArrowIcon";
 import Image from "next/image";
 import { Dialog, DialogContent, DialogTitle } from "@/app/ui/dialog";
 import { useState, useEffect, useRef } from "react";
+import ViewModalImage from "@/app/components/viewImageModal";
 import MoreInfo from "./donate/MoreInfo";
 
 interface CampaignProgressProps {
@@ -25,7 +26,15 @@ const CampaignDetails = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isTruncated, setIsTruncated] = useState(false);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const [selectedImageId, setSelectedImageId] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const openModal = (id: number) => {
+    setSelectedImageId(id);
+    setIsModalOpen(true);
+   document.getElementsByTagName("header")[0].style.zIndex = "0"
+   document.body.style.overflow = 'hidden';
+  };
   useEffect(() => {
     const element = descriptionRef.current;
     if (element) {
@@ -133,12 +142,16 @@ const CampaignDetails = ({
             >
               <Image
                 src={imageUrl}
+                onClick={() => openModal(index+1)}
                 alt={`campaign image ${index + 1}`}
                 fill
                 className="object-cover"
               />
               {index === 3 && images.length > 4 && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                <div
+                  className="absolute inset-0 flex items-center justify-center bg-black/50"
+                  onClick={() => openModal(4)}
+                >
                   <span className="font-agrandir text-2xl text-white">
                     +{images.length - 4}
                   </span>
@@ -146,6 +159,12 @@ const CampaignDetails = ({
               )}
             </div>
           ))}
+        <ViewModalImage
+            selectedImageId={selectedImageId}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            setSelectedImageId={setSelectedImageId}
+          />
         </div>
       </div>
       <div className="space-y-4">
