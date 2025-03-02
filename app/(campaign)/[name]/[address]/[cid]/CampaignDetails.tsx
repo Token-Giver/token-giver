@@ -6,6 +6,7 @@ import Image from "next/image";
 import { Dialog, DialogContent, DialogTitle } from "@/app/ui/dialog";
 import { useState, useEffect, useRef } from "react";
 import ViewModalImage from "@/app/components/viewImageModal";
+import MoreInfo from "./donate/MoreInfo";
 
 interface CampaignProgressProps {
   organizer: string;
@@ -77,7 +78,9 @@ const CampaignDetails = ({
             </div>
           </DialogContent>
         </Dialog>
-
+        <div className="lg:hidden">
+          <MoreInfo />
+        </div>
         <div className="flex items-center gap-4">
           <button className="w-full rounded-[25px] px-2 py-2 text-accent-green ring-1 ring-accent-green">
             Donate now
@@ -89,7 +92,7 @@ const CampaignDetails = ({
         </div>
         <div>
           <h3 className="mb-6">Organizer and Beneficiary</h3>
-          <div className="mb-8 flex items-center justify-between">
+          <div className="mb-8 flex flex-col lg:flex-row items-start lg:items-center space-y-[10px] lg:space-y-0 justify-between">
             <div className="flex items-center gap-2">
               <div className="grid h-[40px] w-[40px] place-content-center rounded-full bg-[#F7F7F6]">
                 <ProfileIcon />
@@ -102,7 +105,7 @@ const CampaignDetails = ({
             </div>
             {beneficiary && (
               <>
-                <p className="text-xl text-foreground-secondary">
+                <p className="text-xl text-foreground-secondary rotate-90 lg:rotate-0 ml-[7rem] lg:ml-0">
                   <RightArrowIcon />
                 </p>
                 <div className="flex items-center gap-2">

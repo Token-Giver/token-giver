@@ -4,9 +4,9 @@ import { useRouter } from "next/navigation";
 import { campaign_contract } from "@/app/utils/data";
 import { fetchCampaigns } from "@/app/utils/helper";
 import FeaturedCampaigns from "./FeaturedCampaigns";
-import CardLoader, { BigCardLoader } from "../loading/CardLoader";
 import { BigCard, Card } from "./Card";
 import CategorySlider from "./CategorySlider";
+import CardLoader, { BigCardLoader } from "../loading/CardLoader";
 
 const Fundraisers = () => {
   const router = useRouter();

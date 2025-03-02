@@ -29,7 +29,6 @@ const DonationSuccessModal = ({
                 alt="donation sent"
                 width={900}
                 height={288}
-                className=""
               />
             </div>
             <div className="space-y-8 p-8">
