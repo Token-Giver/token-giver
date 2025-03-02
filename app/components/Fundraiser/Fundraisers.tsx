@@ -6,7 +6,7 @@ import { fetchCampaigns } from "@/app/utils/helper";
 import FeaturedCampaigns from "./FeaturedCampaigns";
 import { BigCard, Card } from "./Card";
 import CategorySlider from "./CategorySlider";
-import { BigCardLoader, CardLoader } from "../loading/CardLoader";
+import CardLoader, { BigCardLoader } from "../loading/CardLoader";
 
 const Fundraisers = () => {
   const router = useRouter();

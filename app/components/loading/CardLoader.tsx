@@ -1,5 +1,5 @@
 
-export const CardLoader = () => {
+const CardLoader = () => {
   return (
     <div className="max-xMobile:min-w-full mx-auto w-full min-w-[15rem] animate-pulse space-y-3 max-[510px]:min-w-[22rem] sm:max-w-[20rem]">
       <div className="col-span-2 h-[150px] w-full overflow-hidden rounded-[10px] bg-gray-200" />
@@ -10,7 +10,7 @@ export const CardLoader = () => {
     </div>
   );
 };
-
+export default CardLoader;
 
 export const BigCardLoader = () => {
   return (
