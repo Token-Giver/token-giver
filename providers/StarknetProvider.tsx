@@ -12,7 +12,6 @@ import {
 } from "@starknet-react/core";
 import { jsonRpcProvider } from "@starknet-react/core";
 import { ReactNode, useCallback } from "react";
-import { cartridgeInstance } from "../app/utils/controller";
 
 const StarknetProvider = ({ children }: { children: ReactNode }) => {
   const chains = [mainnet, sepolia];
@@ -42,8 +41,7 @@ const StarknetProvider = ({ children }: { children: ReactNode }) => {
     new WebWalletConnector({
       url: "https://web.argent.xyz"
     }) as never as Connector,
-    ArgentMobile as never as Connector,
-    cartridgeInstance
+    ArgentMobile as never as Connector
   ];
 
   return (

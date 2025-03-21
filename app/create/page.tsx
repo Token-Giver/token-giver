@@ -117,13 +117,6 @@ const Page = () => {
     location: string;
     socials: { [key: string]: string };
   }) {
-    // const loadingPopover = document.querySelector(
-    //   "#creatingCampaign"
-    // ) as HTMLElement;
-    // // @ts-ignore
-    // loadingPopover.showPopover();
-    // document.body.style.overflow = "hidden";
-
     try {
       if (!createCampaignContract) {
         throw new Error("Campaign contract not initialized");
@@ -145,11 +138,9 @@ const Page = () => {
             campaign_description: description,
             cover_photo: "https://picsum.photos/500/300",
             social_links: socials,
-            target_amount: Number(target),
-            totalDonations: 0,
+            target_amount: target,
             organizer: organizer,
-            beneficiary: beneficiary,
-            category_id: 1
+            beneficiary: beneficiary
           }
         }
       });
@@ -163,13 +154,21 @@ const Page = () => {
 
       console.log("Campaign created successfully in DB:", data);
 
-      const createCampaignCall: Call = createCampaignContract.populate(
-        "create_campaign",
-        [REGISTRY_HASH, IMPLEMENTATION_HASH, salt, account.address, campaignId]
-      );
-      const result = await account.execute(createCampaignCall);
-      if (!result) {
-        throw new Error("Failed to execute campaign creation transaction");
+      if (campaignId) {
+        const createCampaignCall: Call = createCampaignContract.populate(
+          "create_campaign",
+          [
+            TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
+            REGISTRY_HASH,
+            IMPLEMENTATION_HASH,
+            salt,
+            account.address
+          ]
+        );
+        const result = await account.execute(createCampaignCall);
+        if (!result) {
+          throw new Error("Failed to execute campaign creation transaction");
+        }
       }
     } catch (error) {
       console.log(error);
@@ -336,7 +335,7 @@ const Page = () => {
         organizer: finalFormData.organiser,
         beneficiary: finalFormData.beneficiary,
         location: finalFormData.location,
-        socials: Object.fromEntries(links.map(link => [link.name, link.url]))
+        socials: Object.fromEntries(links.map((link) => [link.name, link.url]))
       });
     }
   };

@@ -1,34 +1,22 @@
 import { gql } from "@apollo/client";
 
 export const GET_ALL_CAMPAIGNS = gql`
-  query GetAllCampaigns {
-    getAllCampaigns {
-      campaign_id
-      token_id
-      campaign_address
-      campaign_owner
-      nft_token_uri
-      token_giver_nft_contract_address
-      campaign_name
-      campaign_description
-      cover_photo
-      social_links
-      target_amount
-      total_donations
-      organizer
-      beneficiary
-      category_id
-      updated_at
-      created_at
-      category {
-        id
-        name
-      }
-      campaign_images {
-        id
-        url
-        campaign_id
+  query getAllCampaigns($cursor: String, $limit: Int) {
+    getAllCampaigns(cursor: $cursor, limit: $limit) {
+      hasNextPage
+      endCursor
+      items {
+        campaign_name
         created_at
+        campaign_id
+        cover_photo
+        campaign_owner
+        campaign_description
+        target_amount
+        total_donations
+        beneficiary
+        organizer
+        social_links
       }
     }
   }
