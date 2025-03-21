@@ -49,12 +49,17 @@ export const Card = ({
     >
       {/* Image */}
       <div className="h-[150px] overflow-hidden rounded-[10px]">
-        <Image
+        {/* <Image
           className="h-full w-[303px] rounded-t-[10px] object-cover transition-all hover:scale-105 lg:w-[267px]"
           src={imageSrc}
           alt={imageAltText ? imageAltText : ""}
           width={400}
           height={400}
+        /> */}
+        <img
+          src={imageSrc}
+          alt=""
+          className="h-full w-[303px] rounded-t-[10px] object-cover transition-all hover:scale-105 lg:w-[267px]"
         />
       </div>
 
@@ -78,7 +83,7 @@ export const Card = ({
           </div>
         </div>
 
-        <div className="flex justify-between text-[.875rem] max-w-[19rem]">
+        <div className="flex max-w-[19rem] justify-between text-[.875rem]">
           <p>
             {formatNumberCompact(balance || 0)} STRK{" "}
             <span>
@@ -120,12 +125,17 @@ export const BigCard = ({
       className="mx-auto grid max-w-[1200px] animate-fadeIn grid-cols-2 items-center gap-6 px-4 md:gap-8"
     >
       <div className="h-[22rem] w-full overflow-clip rounded-[10px]">
-        <Image
+        {/* <Image
           className="h-full w-full rounded-t-[10px] bg-cover object-cover transition-all group-hover:scale-105"
           src={imageSrc}
           alt={imageAltText ? imageAltText : ""}
           width={400}
           height={400}
+        /> */}
+        <img
+          src={imageSrc}
+          alt=""
+          className="h-full w-full rounded-t-[10px] bg-cover object-cover transition-all group-hover:scale-105"
         />
       </div>
       <div className="flex h-[22rem] flex-col gap-4 rounded-[10px] py-2">

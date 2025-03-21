@@ -10,12 +10,14 @@ const ReviewCampaign = ({
   setShowReview,
   showReview,
   formData,
-  createCampaign
+  createCampaign,
+  creatingCampaign
 }: {
   setShowReview: (value: React.SetStateAction<boolean>) => void;
   showReview: boolean;
   formData: AllFormFields;
   createCampaign: () => void;
+  creatingCampaign: boolean;
 }) => {
   const currentDate = new Date().toLocaleDateString("en-US", {
     year: "numeric",
@@ -60,10 +62,15 @@ const ReviewCampaign = ({
               Campaign Preview
             </DialogTitle>
             <button
+              disabled={creatingCampaign}
               onClick={createCampaign}
-              className="rounded-[8px] bg-accent-green px-4 py-2 text-sm text-white sm:w-auto"
+              className="flex items-center justify-center rounded-[8px] bg-accent-green px-4 py-2 text-sm text-white transition-all duration-200 sm:w-auto"
             >
-              Mint Campaign
+              {creatingCampaign ? (
+                <div className="h-5 w-5 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              ) : (
+                "Mint Campaign"
+              )}
             </button>
           </div>
 

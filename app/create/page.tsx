@@ -118,6 +118,9 @@ const Page = () => {
     socials: { [key: string]: string };
   }) {
     try {
+      setCreatingCampaign(true);
+      setLoadingPercentage(10);
+
       if (!createCampaignContract) {
         throw new Error("Campaign contract not initialized");
       }
@@ -128,8 +131,8 @@ const Page = () => {
 
       const campaignId = generateRandomInt(6);
       const salt = generateRandomInt(4);
-      setCreatingCampaign(true);
 
+      setLoadingPercentage(30);
       const { data, errors } = await createCampaign({
         variables: {
           campaignData: {
@@ -144,6 +147,7 @@ const Page = () => {
           }
         }
       });
+
       if (errors?.length) {
         throw new Error(`Database error: ${errors[0].message}`);
       }
@@ -152,147 +156,40 @@ const Page = () => {
         throw new Error("Failed to create campaign in database");
       }
 
-      console.log("Campaign created successfully in DB:", data);
+      setLoadingPercentage(60);
 
-      if (campaignId) {
-        const createCampaignCall: Call = createCampaignContract.populate(
-          "create_campaign",
-          [
-            TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
-            REGISTRY_HASH,
-            IMPLEMENTATION_HASH,
-            salt,
-            account.address
-          ]
-        );
-        const result = await account.execute(createCampaignCall);
-        if (!result) {
-          throw new Error("Failed to execute campaign creation transaction");
-        }
+      const createCampaignCall: Call = createCampaignContract.populate(
+        "create_campaign",
+        [
+          TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
+          REGISTRY_HASH,
+          IMPLEMENTATION_HASH,
+          salt,
+          account.address
+        ]
+      );
+
+      setLoadingPercentage(80);
+      const result = await account.execute(createCampaignCall);
+
+      if (!result) {
+        throw new Error("Failed to execute campaign creation transaction");
       }
+
+      setLoadingPercentage(100);
+      return { success: true, campaignId };
     } catch (error) {
-      console.log(error);
+      setLoadingPercentage(0);
+      if (error instanceof Error) {
+        throw error;
+      } else {
+        throw new Error(
+          "An unexpected error occurred while creating the campaign"
+        );
+      }
     } finally {
       setCreatingCampaign(false);
     }
-
-    // try {
-    //   setCreatingCampaign(true);
-    //   setLoadingPercentage(10);
-    //   campaign_contract.connect(account.account);
-    //   const last_minted_id = await nft_contract.get_last_minted_id();
-    //   const salt = Math.floor(Math.random() * 9999)
-    //     .toString()
-    //     .padStart(4, "0");
-
-    //   // CREATE CAMPAIGN -> campaign address (nft)
-    //   const create_campaign_res = await campaign_contract.create_campaign(
-    //     CallData.compile([
-    //       TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
-    //       REGISTRY_HASH,
-    //       IMPLEMENTATION_HASH,
-    //       salt,
-    //       account.address
-    //     ])
-    //   );
-    //   const txnDet = await provider.waitForTransaction(
-    //     create_campaign_res.transaction_hash
-    //   );
-    //   txnDet.isSuccess() && setCampaignStep(1);
-    //   setLoadingPercentage(40);
-
-    //   /////////////////////////////////////////
-    //   // UPLOAD CAMPAIGN NFT IMAGE TO PINATA
-    //   ////////////////////////////////////////
-    //   if (image) {
-    //     alert("No Image selected");
-    //     return;
-    //   }
-    //   const formData = new FormData();
-    //   if (image) {
-    //     formData.append("file", image);
-    //   }
-
-    //   const image_upload_res = await fetch(
-    //     "https://api.pinata.cloud/pinning/pinFileToIPFS",
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         Authorization: `Bearer ${BEARER_TOKEN}`
-    //       },
-    //       body: formData
-    //     }
-    //   );
-    //   const image_upload_resData = await image_upload_res.json();
-    //   setLoadingPercentage(60);
-
-    //   //////////////////////////////////
-    //   // CREATE NEW METADATA URI JSON
-    //   //////////////////////////////////
-    //   let tokenId = Number(last_minted_id) + 1;
-    //   let new_metadata = JSON.stringify({
-    //     id: tokenId,
-    //     image: `ipfs://${image_upload_resData.IpfsHash}/`,
-    //     name: name,
-    //     description: description,
-    //     target: target,
-    //     organizer: organizer,
-    //     beneficiary: beneficiary,
-    //     location: location,
-    //     campaign_address:
-    //       txnDet.isSuccess() && txnDet.events.at(1)?.from_address,
-    //     created_at: new Date()
-    //   });
-    //   setCampaignUrl(`/campaign/${address}/${tokenId}`);
-
-    //   ////////////////////////////////////////////
-    //   // UPLOAD NEW METADATA_URI JSON TO PINATA
-    //   ////////////////////////////////////////////
-    //   const metadata_upload_res = await fetch(
-    //     "https://api.pinata.cloud/pinning/pinJSONToIPFS",
-    //     {
-    //       method: "POST",
-    //       headers: {
-    //         "Content-Type": "application/json",
-    //         Authorization: `Bearer ${BEARER_TOKEN}`
-    //       },
-    //       body: new_metadata
-    //     }
-    //   );
-
-    //   const metadata_upload_resData = await metadata_upload_res.json();
-
-    //   metadata_upload_resData.IpfsHash && setCampaignStep(2);
-    //   setLoadingPercentage(80);
-
-    //   ///////////////////////////////////////
-    //   // CALL SET_METADATA_URI FUNCTION
-    //   //////////////////////////////////////
-    //   campaign_contract.connect(account.account);
-    //   const set_campaign_metadata_res =
-    //     await campaign_contract.set_campaign_metadata_uri(
-    //       CallData.compile([
-    //         txnDet.isSuccess() && txnDet.events[1].from_address,
-    //         `ipfs://${metadata_upload_resData.IpfsHash}/`
-    //       ])
-    //     );
-
-    //   setLoadingPercentage(100);
-    //   setCampaignStep(3);
-    //   setTimeout(() => {
-    //     // @ts-ignore
-    //     loadingPopover.hidePopover();
-    //     document.body.style.overflow = "auto";
-    //     // rest form
-    //   }, 10000);
-    // } catch (err) {
-    //   // @ts-ignore
-    //   loadingPopover.hidePopover();
-    //   document.body.style.overflow = "auto";
-    // } finally {
-    //   setCreatingCampaign(false);
-    // }
-    // }
   }
 
   const transformLinks = (formData: z.infer<typeof StepThreeSchema>) => {
@@ -379,7 +276,7 @@ const Page = () => {
   return (
     <>
       <main className="grid h-screen grid-cols-7 2xl:h-[calc(100vh-39.1rem)]">
-        <div className="relative col-span-3 grid h-full place-content-center bg-accent-green">
+        <div className="relative col-span-3 hidden h-full place-content-center bg-accent-green lg:grid">
           <div className="relative h-[700px] w-[500px]">
             <Image
               src="/create-bg.png"
@@ -449,6 +346,7 @@ const Page = () => {
         showReview={showReview}
         createCampaign={handleCreation}
         formData={formData}
+        creatingCampaign={creatingCampaign}
       />
     </>
   );
