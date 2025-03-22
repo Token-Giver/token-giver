@@ -5,6 +5,8 @@ import RightArrowIcon from "@/svgs/RightArrowIcon";
 import Image from "next/image";
 import { Dialog, DialogContent, DialogTitle } from "@/app/ui/dialog";
 import { useState, useEffect, useRef } from "react";
+import ViewModalImage from "@/app/components/viewImageModal";
+import MoreInfo from "./donate/MoreInfo";
 
 interface CampaignProgressProps {
   organizer: string;
@@ -24,7 +26,15 @@ const CampaignDetails = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isTruncated, setIsTruncated] = useState(false);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const [selectedImageId, setSelectedImageId] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const openModal = (id: number) => {
+    setSelectedImageId(id);
+    setIsModalOpen(true);
+   document.getElementsByTagName("header")[0].style.zIndex = "0"
+   document.body.style.overflow = 'hidden';
+  };
   useEffect(() => {
     const element = descriptionRef.current;
     if (element) {
@@ -68,7 +78,9 @@ const CampaignDetails = ({
             </div>
           </DialogContent>
         </Dialog>
-
+        <div className="lg:hidden">
+          <MoreInfo />
+        </div>
         <div className="flex items-center gap-4">
           <button className="w-full rounded-[25px] px-2 py-2 text-accent-green ring-1 ring-accent-green">
             Donate now
@@ -80,7 +92,7 @@ const CampaignDetails = ({
         </div>
         <div>
           <h3 className="mb-6">Organizer and Beneficiary</h3>
-          <div className="mb-8 flex items-center justify-between">
+          <div className="mb-8 flex flex-col lg:flex-row items-start lg:items-center space-y-[10px] lg:space-y-0 justify-between">
             <div className="flex items-center gap-2">
               <div className="grid h-[40px] w-[40px] place-content-center rounded-full bg-[#F7F7F6]">
                 <ProfileIcon />
@@ -93,7 +105,7 @@ const CampaignDetails = ({
             </div>
             {beneficiary && (
               <>
-                <p className="text-xl text-foreground-secondary">
+                <p className="text-xl text-foreground-secondary rotate-90 lg:rotate-0 ml-[7rem] lg:ml-0">
                   <RightArrowIcon />
                 </p>
                 <div className="flex items-center gap-2">
@@ -130,12 +142,16 @@ const CampaignDetails = ({
             >
               <Image
                 src={imageUrl}
+                onClick={() => openModal(index+1)}
                 alt={`campaign image ${index + 1}`}
                 fill
                 className="object-cover"
               />
               {index === 3 && images.length > 4 && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/50">
+                <div
+                  className="absolute inset-0 flex items-center justify-center bg-black/50"
+                  onClick={() => openModal(4)}
+                >
                   <span className="font-agrandir text-2xl text-white">
                     +{images.length - 4}
                   </span>
@@ -143,6 +159,12 @@ const CampaignDetails = ({
               )}
             </div>
           ))}
+        <ViewModalImage
+            selectedImageId={selectedImageId}
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
+            setSelectedImageId={setSelectedImageId}
+          />
         </div>
       </div>
       <div className="space-y-4">
