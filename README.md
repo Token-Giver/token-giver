@@ -1,6 +1,6 @@
 <a id="readme-top"></a>
 
-# Token Giver: Transform Charity with Blockchain! ![product logo](./public/bx--donate-heart.png)
+# Token Giver: Transform Charity with Blockchain! ![product logo](https://github.com/Token-Giver/token-giver/blob/main/public/donation-sent.png)
 
 <!-- ABOUT THE PROJECT -->
 
