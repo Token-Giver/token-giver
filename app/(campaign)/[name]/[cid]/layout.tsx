@@ -18,5 +18,5 @@ export default function CampaignLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <main>{children}</main>;
+  return <main className="min-h-[calc(100vh-707px)]">{children}</main>;
 }

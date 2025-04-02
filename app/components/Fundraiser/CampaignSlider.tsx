@@ -30,8 +30,8 @@ const CampaignSlider = () => {
   const isFirstSlide = currentSlide === 0;
 
   return (
-    <div className="mx-auto max-w-[1204px] space-y-4  lg:px-[20px]">
-      <div className=" hidden sm:flex items-center justify-end gap-4 pr-[14px] lg:pr-0">
+    <div className="mx-auto max-w-[1204px] space-y-4 lg:px-[20px]">
+      <div className="hidden items-center justify-end gap-4 pr-[14px] sm:flex lg:pr-0">
         <button
           onClick={prevSlide}
           className={`grid h-[30px] w-[30px] rotate-180 place-content-center rounded-full ${
@@ -55,13 +55,16 @@ const CampaignSlider = () => {
         </button>
       </div>
       <div className="overflow-hidden">
-        <div 
-          className="flex flex-col sm:flex-row transition-transform duration-500 ease-in-out"
+        <div
+          className="flex flex-col gap-2 transition-transform duration-500 ease-in-out sm:flex-row"
           style={{ transform: `translateX(-${currentSlide * 25}%)` }}
         >
           {loading
             ? Array.from({ length: 4 }).map((_, idx) => (
-                <div key={idx} className="mx-auto max-w-[335px] sm:w-1/2 lg:w-1/3 xl:w-1/4 flex-shrink-0">
+                <div
+                  key={idx}
+                  className="mx-auto max-w-[335px] flex-shrink-0 sm:w-1/2 lg:w-1/3 xl:w-1/4"
+                >
                   <CardLoader />
                 </div>
               ))
@@ -74,7 +77,10 @@ const CampaignSlider = () => {
 
                 const url = `${path}/${data.campaign_address}/${data.cid}`;
                 return (
-                  <div key={idx} className="mx-auto max-w-[335px] sm:w-1/2 lg:w-1/3 xl:w-1/4 flex-shrink-0">
+                  <div
+                    key={idx}
+                    className="mx-auto max-w-[335px] flex-shrink-0 sm:w-1/2 lg:w-1/3 xl:w-1/4"
+                  >
                     <Card
                       cid={data.cid}
                       causeName={data.name || "Unknown Cause"}

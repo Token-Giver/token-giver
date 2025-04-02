@@ -78,7 +78,7 @@ const Fundraisers = () => {
 
           <Link
             href={"/discover"}
-            className="mx-auto mt-8 w-[7rem] rounded-[25px] px-4 py-2 text-sm text-foreground-primary ring-1 ring-[#808080]"
+            className="mx-auto mt-8 w-[7rem] rounded-[25px] px-4 py-2 text-center text-sm text-foreground-primary ring-1 ring-[#808080]"
           >
             See more
           </Link>

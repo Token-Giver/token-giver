@@ -144,44 +144,7 @@ const CampaignDetails = ({
         <h4 className="mb-4 font-agrandir text-base font-bold text-foreground-primary/80">
           More Images
         </h4>
-        <div className="grid grid-cols-2 gap-3">
-          {images.slice(0, 4).map((imageUrl, index) => (
-            <div
-              key={index}
-              className="relative h-[11rem] w-full overflow-clip rounded-[5px]"
-            >
-              {/* <Image
-                src={imageUrl}
-                onClick={() => openModal(index+1)}
-                alt={`campaign image ${index + 1}`}
-                fill
-                className="object-cover"
-              /> */}
-              <img
-                src={imageUrl}
-                onClick={() => openModal(index + 1)}
-                alt={`campaign image ${index + 1}`}
-                className="object-cover"
-              />
-              {index === 3 && images.length > 4 && (
-                <div
-                  className="absolute inset-0 flex items-center justify-center bg-black/50"
-                  onClick={() => openModal(4)}
-                >
-                  <span className="font-agrandir text-2xl text-white">
-                    +{images.length - 4}
-                  </span>
-                </div>
-              )}
-            </div>
-          ))}
-          <ViewModalImage
-            selectedImageId={selectedImageId}
-            isModalOpen={isModalOpen}
-            setIsModalOpen={setIsModalOpen}
-            setSelectedImageId={setSelectedImageId}
-          />
-        </div>
+        <ViewModalImage images={images} />
       </div>
       <div className="space-y-4">
         <h3 className="text-2xl text-foreground-primary">
