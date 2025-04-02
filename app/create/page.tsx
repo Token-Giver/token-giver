@@ -54,11 +54,11 @@ const Page = () => {
 
   // Create separate form instances for each step
   const stepTwoForm = useForm<StepTwoFields>({
-    resolver: zodResolver(StepTwoSchema)
+    // resolver: zodResolver(StepTwoSchema)
   });
 
   const stepThreeForm = useForm<StepThreeFields>({
-    resolver: zodResolver(StepThreeSchema)
+    // resolver: zodResolver(StepThreeSchema)
   });
 
   // Update how currentForm is used
@@ -117,6 +117,8 @@ const Page = () => {
     location: string;
     socials: { [key: string]: string };
   }) {
+    // setCreatingCampaign((prev) => !prev);
+    // setLoadingPercentage(10);
     try {
       setCreatingCampaign(true);
       setLoadingPercentage(10);
@@ -347,6 +349,7 @@ const Page = () => {
         createCampaign={handleCreation}
         formData={formData}
         creatingCampaign={creatingCampaign}
+        loadingPercentage={loadingPercentage}
       />
     </>
   );
