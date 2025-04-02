@@ -6,7 +6,7 @@ import Image from "next/image";
 import { Dialog, DialogContent, DialogTitle } from "@/app/ui/dialog";
 import { useState, useEffect, useRef } from "react";
 import ViewModalImage from "@/app/components/viewImageModal";
-import MoreInfo from "./donate/MoreInfo";
+import MoreInfo from "./MoreInfo";
 
 interface CampaignProgressProps {
   organizer: string;
@@ -32,8 +32,8 @@ const CampaignDetails = ({
   const openModal = (id: number) => {
     setSelectedImageId(id);
     setIsModalOpen(true);
-   document.getElementsByTagName("header")[0].style.zIndex = "0"
-   document.body.style.overflow = 'hidden';
+    document.getElementsByTagName("header")[0].style.zIndex = "0";
+    document.body.style.overflow = "hidden";
   };
   useEffect(() => {
     const element = descriptionRef.current;
@@ -92,7 +92,7 @@ const CampaignDetails = ({
         </div>
         <div>
           <h3 className="mb-6">Organizer and Beneficiary</h3>
-          <div className="mb-8 flex flex-col lg:flex-row items-start lg:items-center space-y-[10px] lg:space-y-0 justify-between">
+          <div className="mb-8 flex flex-col items-start justify-between space-y-[10px] lg:flex-row lg:items-center lg:space-y-0">
             <div className="flex items-center gap-2">
               <div className="grid h-[40px] w-[40px] place-content-center rounded-full bg-[#F7F7F6]">
                 <ProfileIcon />
@@ -105,7 +105,7 @@ const CampaignDetails = ({
             </div>
             {beneficiary && (
               <>
-                <p className="text-xl text-foreground-secondary rotate-90 lg:rotate-0 ml-[7rem] lg:ml-0">
+                <p className="ml-[7rem] rotate-90 text-xl text-foreground-secondary lg:ml-0 lg:rotate-0">
                   <RightArrowIcon />
                 </p>
                 <div className="flex items-center gap-2">
@@ -140,11 +140,17 @@ const CampaignDetails = ({
               key={index}
               className="relative h-[11rem] w-full overflow-clip rounded-[5px]"
             >
-              <Image
+              {/* <Image
                 src={imageUrl}
                 onClick={() => openModal(index+1)}
                 alt={`campaign image ${index + 1}`}
                 fill
+                className="object-cover"
+              /> */}
+              <img
+                src={imageUrl}
+                onClick={() => openModal(index + 1)}
+                alt={`campaign image ${index + 1}`}
                 className="object-cover"
               />
               {index === 3 && images.length > 4 && (
@@ -159,7 +165,7 @@ const CampaignDetails = ({
               )}
             </div>
           ))}
-        <ViewModalImage
+          <ViewModalImage
             selectedImageId={selectedImageId}
             isModalOpen={isModalOpen}
             setIsModalOpen={setIsModalOpen}

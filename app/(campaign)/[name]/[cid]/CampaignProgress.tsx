@@ -1,8 +1,6 @@
 import { formatNumberCompact } from "@/app/utils";
-
 import VerifiedIcon from "@/svgs/VerifiedIcon";
-import Link from "next/link";
-import MoreInfo from "./donate/MoreInfo";
+import MoreInfo from "./MoreInfo";
 
 interface CampaignProgressProps {
   balance: number;
@@ -11,7 +9,6 @@ interface CampaignProgressProps {
   donationCount: number;
   onDonate: () => void;
 }
-
 
 const CampaignProgress = ({
   balance,
@@ -23,7 +20,7 @@ const CampaignProgress = ({
   const width = `${Math.min((balance / parseInt(target)) * 100, 100)}%`;
 
   return (
-    <div className="lg:sticky top-[5rem] flex h-fit max-w-[450px] flex-col gap-4 p-8">
+    <div className="top-[5rem] flex h-fit max-w-[450px] flex-col gap-3 p-8 lg:sticky">
       <p className="flex items-center gap-1 text-accent-green">
         <VerifiedIcon />
         Verified & Protected Campaign{" "}

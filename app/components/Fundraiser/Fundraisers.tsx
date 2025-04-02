@@ -11,7 +11,7 @@ const CampaignGrid = ({ campaigns }: { campaigns: ICampaign[] }) => {
   return (
     <div className="grid animate-fadeIn grid-cols-4 gap-4">
       {campaigns.slice(1).map((data) => {
-        const url = `${data.campaign_name}/${data.campaign_id}`;
+        const url = `${data.campaign_name.toLowerCase().replace(/\s+/g, "-")}/${data.campaign_id}`;
         return (
           <Card
             key={data.campaign_id}
@@ -49,7 +49,7 @@ const HeroCampaign = ({ campaign }: { campaign: ICampaign }) => (
     token_id={campaign.campaign_id}
     campaign_address={campaign.campaign_address || "0x0"}
     target={String(campaign.target_amount)}
-    url={`${campaign.campaign_name}`}
+    url={`${campaign.campaign_name.toLowerCase().replace(/\s+/g, "-")}/${campaign.campaign_id}`}
     description={campaign.campaign_description}
   />
 );

@@ -25,11 +25,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import Stepper from "./components/Stepper";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { StepThreeSchema, StepTwoSchema } from "@/types/create";
-import ReviewCampaign from "../(campaign)/[name]/[address]/[cid]/ReviewCampaign";
 import { CREATE_CAMPAIGN_ABI } from "@/abi/createCampaign.abi";
 import { generateRandomInt } from "@/util";
 import { useMutation } from "@apollo/client";
 import { CREATE_CAMPAIGN } from "@/graphql/mutations";
+import ReviewCampaign from "./components/ReviewCampaign";
 
 // Create union type of both schema types
 type FormData = z.infer<typeof StepTwoSchema> | z.infer<typeof StepThreeSchema>;
