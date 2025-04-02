@@ -2,11 +2,12 @@ import ProfileIcon from "@/svgs/ProfileIcon";
 import Comment from "./Comment";
 import CalenderIcon from "@/svgs/CalenderIcon";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
-import Image from "next/image";
 import { Dialog, DialogContent, DialogTitle } from "@/app/ui/dialog";
 import { useState, useEffect, useRef } from "react";
 import ViewModalImage from "@/app/components/viewImageModal";
 import MoreInfo from "./MoreInfo";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 interface CampaignProgressProps {
   organizer: string;
@@ -28,6 +29,8 @@ const CampaignDetails = ({
   const descriptionRef = useRef<HTMLParagraphElement>(null);
   const [selectedImageId, setSelectedImageId] = useState<number | null>(null);
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+
+  const params = useParams();
 
   const openModal = (id: number) => {
     setSelectedImageId(id);
@@ -82,9 +85,12 @@ const CampaignDetails = ({
           <MoreInfo />
         </div>
         <div className="flex items-center gap-4">
-          <button className="w-full rounded-[25px] px-2 py-2 text-accent-green ring-1 ring-accent-green">
+          <Link
+            href={params ? `/${params.name}/${params.cid}/donate` : "#"}
+            className="w-full rounded-[25px] px-2 py-2 text-center text-accent-green ring-1 ring-accent-green"
+          >
             Donate now
-          </button>
+          </Link>
 
           <button className="w-full rounded-[25px] px-2 py-2 text-accent-green ring-1 ring-accent-green">
             share now
@@ -126,7 +132,11 @@ const CampaignDetails = ({
             <span>
               <CalenderIcon />
             </span>{" "}
-            {date}
+            {new Date(date).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric"
+            })}
           </p>
         </div>
       </div>

@@ -2,7 +2,6 @@
 import ProfileIcon from "@/svgs/ProfileIcon";
 import ShareIcon from "@/svgs/ShareIcon";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 import CampaignProgress from "./CampaignProgress";
@@ -24,16 +23,7 @@ interface CampaignDetails {
 }
 
 const page = ({ params }: { params: { name: string; cid: string } }) => {
-  const router = useRouter();
   const [balance, setBalance] = useState(0);
-
-  const donateNow = () => {
-    if (params.name && params.cid) {
-      const campaignName = params.name;
-      const cid = params.cid;
-      router.push(`/${campaignName}/${cid}/donate`);
-    }
-  };
 
   const { data, loading } = useQuery(GET_CAMPAIGN_BY_ID, {
     variables: {
@@ -56,7 +46,7 @@ const page = ({ params }: { params: { name: string; cid: string } }) => {
           />
         </div>
       ) : (
-        <section className="mx-auto mt-[5rem] min-h-[40vh] w-full animate-fadeIn py-8 lg:px-16">
+        <section className="mx-auto mt-[5rem] min-h-[40vh] w-full max-w-[1204px] animate-fadeIn py-8 lg:px-16">
           <h2 className="mb-6 whitespace-nowrap px-[16px] font-agrandir text-2xl text-foreground-primary md:text-3xl">
             {campaign.campaign_name}
           </h2>
@@ -83,9 +73,14 @@ const page = ({ params }: { params: { name: string; cid: string } }) => {
                 </p>
               </div>
             </div>
-            <div className="relative mb-8 mt-3 h-[389px] max-w-[1204px] md:mx-[16px] md:h-[31rem] md:rounded-[10px] lg:mx-0">
+            <div className="relative mb-8 mt-3 h-[389px] max-w-[1204px] overflow-hidden md:mx-[16px] md:h-[31rem] md:rounded-[10px] lg:mx-0">
+              <div
+                className="absolute inset-0 scale-110 bg-cover bg-center blur-xl"
+                style={{ backgroundImage: `url(${campaign.cover_photo})` }}
+              />
+
               <Image
-                className="h-full w-full bg-cover md:rounded-[10px]"
+                className="relative h-full w-full object-contain md:rounded-[10px]"
                 loader={() => campaign.cover_photo}
                 src={campaign.cover_photo}
                 unoptimized
@@ -108,7 +103,6 @@ const page = ({ params }: { params: { name: string; cid: string } }) => {
               target={campaign.target_amount}
               location={campaign.location}
               donationCount={campaign.total_donations}
-              onDonate={donateNow}
             />
           </div>
         </section>

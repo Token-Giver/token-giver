@@ -1,22 +1,23 @@
 import { formatNumberCompact } from "@/app/utils";
 import VerifiedIcon from "@/svgs/VerifiedIcon";
 import MoreInfo from "./MoreInfo";
+import { useParams } from "next/navigation";
+import Link from "next/link";
 
 interface CampaignProgressProps {
   balance: number;
   target: string;
   location: string;
   donationCount: number;
-  onDonate: () => void;
 }
 
 const CampaignProgress = ({
   balance,
   target,
   location,
-  donationCount,
-  onDonate
+  donationCount
 }: CampaignProgressProps) => {
+  const params = useParams();
   const width = `${Math.min((balance / parseInt(target)) * 100, 100)}%`;
 
   return (
@@ -58,12 +59,12 @@ const CampaignProgress = ({
       <div className="hidden lg:flex">
         <MoreInfo />
       </div>
-      <button
-        className="w-full rounded-[25px] bg-accent-green px-2 py-2 text-white"
-        onClick={onDonate}
+      <Link
+        href={params ? `/${params.name}/${params.cid}/donate` : "#"}
+        className="block w-full rounded-[25px] bg-accent-green px-2 py-2 text-center text-white"
       >
-        <span>Donate now</span>
-      </button>
+        Donate now
+      </Link>
     </div>
   );
 };
