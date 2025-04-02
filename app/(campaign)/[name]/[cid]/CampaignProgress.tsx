@@ -6,7 +6,7 @@ import Link from "next/link";
 
 interface CampaignProgressProps {
   balance: number;
-  target: string;
+  target: number;
   location: string;
   donationCount: number;
 }
@@ -18,7 +18,7 @@ const CampaignProgress = ({
   donationCount
 }: CampaignProgressProps) => {
   const params = useParams();
-  const width = `${Math.min((balance / parseInt(target)) * 100, 100)}%`;
+  const width = `${Math.min((balance / target) * 100, 100)}%`;
 
   return (
     <div className="top-[5rem] flex h-fit max-w-[450px] flex-col gap-3 p-8 lg:sticky">

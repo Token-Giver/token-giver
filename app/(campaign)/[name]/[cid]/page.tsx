@@ -9,6 +9,7 @@ import CampaignDetails from "./CampaignDetails";
 import CampaignSlider from "@/app/components/Fundraiser/CampaignSlider";
 import { useQuery } from "@apollo/client";
 import { GET_CAMPAIGN_BY_ID } from "@/graphql/queries";
+import { ICampaign } from "@/types/campaigns";
 
 interface CampaignDetails {
   name: string;
@@ -30,7 +31,7 @@ const page = ({ params }: { params: { name: string; cid: string } }) => {
       campaignId: Number(params.cid)
     }
   });
-  const campaign = data?.getCampaignById;
+  const campaign: ICampaign = data?.getCampaignById;
 
   return (
     <>
@@ -65,12 +66,9 @@ const page = ({ params }: { params: { name: string; cid: string } }) => {
                     <p>Education</p>
                   </div>
                 </div>
-                <p className="ml-auto flex items-center gap-1">
-                  Share campaign{" "}
-                  <span>
-                    <ShareIcon />
-                  </span>
-                </p>
+                <button className="ml-auto flex items-center gap-1 transition-all hover:text-accent-green">
+                  Share campaign <ShareIcon />
+                </button>
               </div>
             </div>
             <div className="relative mb-8 mt-3 h-[389px] max-w-[1204px] overflow-hidden md:mx-[16px] md:h-[31rem] md:rounded-[10px] lg:mx-0">
