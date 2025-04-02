@@ -1,6 +1,5 @@
 "use client";
 import FeaturedCampaigns from "./FeaturedCampaigns";
-import CardLoader, { BigCardLoader } from "../loading/CardLoader";
 import { BigCard, Card } from "./Card";
 import CategorySlider from "./CategorySlider";
 import { useQuery } from "@apollo/client";
@@ -54,6 +53,7 @@ const HeroCampaign = ({ campaign }: { campaign: ICampaign }) => (
     description={campaign.campaign_description}
   />
 );
+import CardLoader, { BigCardLoader } from "../loading/CardLoader";
 
 const Fundraisers = () => {
   const { data, loading } = useQuery(GET_ALL_CAMPAIGNS, {

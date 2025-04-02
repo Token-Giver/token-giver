@@ -94,8 +94,8 @@ const Donate = ({
   };
 
   return (
-    <main className="grid h-screen grid-cols-2">
-      <div className="relative grid h-full place-content-center bg-accent-green">
+    <main className="grid h-screen grid-cols-1 lg:max-w-full lg:grid-cols-2">
+      <div className="relative hidden h-full place-content-center bg-accent-green lg:grid">
         <div className="relative h-[700px] w-[500px]">
           <Image
             src="/create-bg.png"
@@ -106,8 +106,8 @@ const Donate = ({
           />
         </div>
       </div>
-      <div className="h-full space-y-8 overflow-y-auto bg-white px-16 pt-8">
-        <div className="mx-auto flex max-w-4xl items-center justify-between">
+      <div className="h-full space-y-8 overflow-y-auto bg-white px-5 pt-9 xs:px-2 md:px-16 lg:pt-8">
+        <div className="mx-auto hidden max-w-4xl items-center justify-between lg:flex">
           <button
             onClick={() => router.back()}
             className="flex animate-fadeIn items-center text-accent-green"
@@ -122,7 +122,7 @@ const Donate = ({
             <Connect />
           </div>
         </div>
-        <div className="mx-auto max-w-2xl">
+        <div className="md:max-w-2xl lg:mx-auto">
           <h2 className="mb-4 text-center font-agrandir font-bold text-foreground-primary">
             Make a Difference Today
           </h2>
@@ -131,10 +131,10 @@ const Donate = ({
             achieve their goal of {campaignDetails.target} STRK. Every
             contribution counts!
           </p>
-          <div className="flex flex-col-reverse gap-8 md:flex md:flex-row md:gap-4">
-            <div className="relative hidden h-[130px] w-[200px] flex-shrink-0 rounded-[5px] md:block">
+          <div className="flex flex-col items-center gap-8 lg:flex-row lg:items-start lg:gap-4">
+            <div className="relative hidden h-[95px] w-[122px] flex-shrink-0 rounded-[5px] md:block lg:h-[130px] lg:w-[200px]">
               <Image
-                className="h-full w-full rounded-[5px] object-cover"
+                className="h-full w-full object-cover"
                 src={campaignDetails.image}
                 alt=""
                 fill
@@ -170,12 +170,12 @@ const Donate = ({
               </div>
             </div>
           </div>
-          <div className="mx-auto flex max-w-[500px] flex-col gap-4">
+          <div className="mx-auto flex flex-col gap-4 md:max-w-[500px]">
             <label className="">Enter Amount</label>
 
             <div
               ref={divRef}
-              className="relative grid min-h-[7rem] w-full grid-cols-10 justify-between rounded-[10px] border-[1px] border-solid border-gray-300 bg-transparent px-5 focus:border-[2px] focus:border-[#159968]"
+              className="relative grid min-h-[7rem] w-full grid-cols-10 gap-5 rounded-[10px] border-[1px] border-solid bg-transparent focus:border-[2px] focus:border-[#159968] md:gap-0 lg:px-5"
             >
               <input
                 onFocus={() => {
@@ -195,14 +195,14 @@ const Donate = ({
                 }}
                 name="amount"
                 value={amount}
-                className="col-span-8 w-full bg-transparent py-5 placeholder:text-[1.5em] placeholder:text-foreground-secondary focus:outline-none"
+                className="col-span-8 w-full bg-transparent py-5 placeholder:text-[1.5em] placeholder:text-foreground-secondary focus:outline-none xs:col-span-6 lg:col-span-7 xl:col-span-8"
                 placeholder="0.00"
                 onChange={handleInputChange}
               />
-              <p className="absolute bottom-[.5rem] left-6 min-w-[120px] text-foreground-secondary">
+              <p className="absolute bottom-[.5rem] left-6 text-foreground-secondary">
                 Balance:{parseFloat(balance).toFixed(2)} STRK
               </p>
-              <div className="relative col-span-2 mt-[1.5rem] flex flex-col items-center gap-4">
+              <div className="relative col-span-2 mt-[1.5rem] flex flex-col items-center gap-4 md:col-start-8 lg:col-start-auto">
                 <div className="relative w-full">
                   <button
                     type="button"
