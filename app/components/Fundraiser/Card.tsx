@@ -45,21 +45,16 @@ export const Card = ({
   return (
     <div
       onClick={handleRoute}
-      className="mx-auto flex min-w-[15rem] cursor-pointer flex-col gap-3 rounded-[10px] px-3 py-4 transition-all hover:bg-[#00594C]/10 max-[510px]:min-w-[22rem] max-xMobile:min-w-full sm:max-w-[20rem]"
+      className="max-xMobile:min-w-full mx-auto flex min-w-[15rem] cursor-pointer flex-col gap-3 rounded-[10px] px-3 py-4 transition-all hover:bg-[#00594C]/10 max-[510px]:min-w-[22rem] sm:max-w-[20rem]"
     >
       {/* Image */}
       <div className="h-[150px] overflow-hidden rounded-[10px]">
-        {/* <Image
-          className="h-full w-[303px] rounded-t-[10px] object-cover transition-all hover:scale-105 lg:w-[267px]"
+        <Image
+          className="h-full w-[303px] rounded-t-[10px] object-cover transition-all hover:scale-105 max-[510px]:w-full lg:w-[267px]"
           src={imageSrc}
           alt={imageAltText ? imageAltText : ""}
           width={400}
           height={400}
-        /> */}
-        <img
-          src={imageSrc}
-          alt=""
-          className="h-full w-[303px] rounded-t-[10px] object-cover transition-all hover:scale-105 lg:w-[267px]"
         />
       </div>
 
@@ -122,20 +117,15 @@ export const BigCard = ({
   return (
     <div
       onClick={handleRoute}
-      className="mx-auto grid max-w-[1200px] animate-fadeIn items-center gap-6 mobile:px-4 md:grid-cols-2 md:gap-8"
+      className="mobile:px-4 mx-auto grid max-w-[1200px] animate-fadeIn items-center gap-6 md:grid-cols-2 md:gap-8"
     >
-      <div className="h-[22rem] w-full overflow-clip rounded-[10px]">
-        {/* <Image
+      <div className="mobile:h-[22rem] h-[18rem] w-full overflow-clip rounded-[10px] max-md:max-w-[580px]">
+        <Image
           className="h-full w-full rounded-t-[10px] bg-cover object-cover transition-all group-hover:scale-105"
           src={imageSrc}
           alt={imageAltText ? imageAltText : ""}
           width={400}
           height={400}
-        /> */}
-        <img
-          src={imageSrc}
-          alt=""
-          className="h-full w-full rounded-t-[10px] bg-cover object-cover transition-all group-hover:scale-105"
         />
       </div>
       <div className="flex h-fit flex-col gap-4 rounded-[10px] py-2 max-md:max-w-[580px] md:h-[22rem]">

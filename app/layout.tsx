@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Footer from "./components/Footer";
+import Features from "./components/Features";
+import StarknetProvider from "./components/StarknetProvider";
 import Header from "./components/Header";
-import Provider from "@/providers/Provider";
 
 export const metadata: Metadata = {
   title: "Token Giver",
@@ -17,12 +18,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
-        <Provider>
+      <body className="flex min-h-screen flex-col">
+        <StarknetProvider>
           <Header />
           <main className="flex-1">{children}</main>
           <Footer />
-        </Provider>
+        </StarknetProvider>
       </body>
     </html>
   );
