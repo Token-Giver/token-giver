@@ -18,14 +18,15 @@ const page = () => {
 
   const { data } = useQuery(GET_CAMPAIGNS_BY_CATEGORY, {
     variables: {
-      name: params?.category
+      name: slug,
+      limit: 20
     },
-    skip: !params?.category
+    skip: !slug
   });
   const campaigns: ICampaign[] = data?.getCampaignsByCategory?.items || [];
 
   return (
-    <section className="mx-auto mt-[5rem] min-h-[40vh] animate-fadeIn px-3 py-8 sm:px-8 md:px-12 lg:px-16">
+    <section className="mx-auto mt-[5rem] min-h-[40vh] animate-fadeIn px-3 sm:px-8 md:px-12 lg:px-16">
       <div className="mx-auto mb-16 grid max-w-[1242px] gap-10 px-3 lg:grid-cols-2">
         <div>
           <p className="mb-12 text-foreground-secondary">Category</p>
@@ -49,7 +50,7 @@ const page = () => {
         <div className="flex justify-center">
           <div className="relative top-5 max-w-[400px] rounded-[10px] sm:max-w-[450px] md:max-w-[500px] lg:top-0">
             <Image
-              src={"/categories/community-people-group-svg.svg"}
+              src={`/categories/${slug}.svg`}
               width={521}
               height={581}
               alt={`${categoryName}`}
@@ -69,37 +70,41 @@ const page = () => {
           </div>
         </div>
       </div>
-      <div className="mx-auto max-w-[1242px]">
-        <h3 className="mb-8 text-2xl font-medium capitalize">
-          See {categoryName} Fundraisers
-        </h3>
+      {campaigns.length ? (
+        <div className="mx-auto max-w-[1242px] animate-fadeIn">
+          <h3 className="mb-8 text-2xl font-medium capitalize">
+            See {categoryName} Fundraisers
+          </h3>
 
-        <div className="mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
-          {campaigns.length > 0 &&
-            campaigns.map((campaign, index) => {
-              const url = `/${campaign.campaign_name.toLowerCase().replace(/\s+/g, "-")}/${campaign.campaign_id}`;
-              return (
-                <div key={index} className="mx-auto">
-                  <Card
-                    key={campaign.campaign_id}
-                    cid={campaign.campaign_id}
-                    causeName={campaign.campaign_name || "Unknown Cause"}
-                    imageSrc={campaign.cover_photo || "/default-image.webp"}
-                    location={campaign.location}
-                    progress={campaign.total_donations}
-                    token_id={campaign.campaign_id}
-                    campaign_address={campaign.campaign_address || "0x0"}
-                    target={String(campaign.target_amount)}
-                    url={url}
-                  />
-                </div>
-              );
-            })}
+          <div className="mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+            {campaigns.length > 0 &&
+              campaigns.map((campaign, index) => {
+                const url = `/${campaign.campaign_name.toLowerCase().replace(/\s+/g, "-")}/${campaign.campaign_id}`;
+                return (
+                  <div key={index} className="mx-auto">
+                    <Card
+                      key={campaign.campaign_id}
+                      cid={campaign.campaign_id}
+                      causeName={campaign.campaign_name || "Unknown Cause"}
+                      imageSrc={campaign.cover_photo || "/default-image.webp"}
+                      location={campaign.location}
+                      progress={campaign.total_donations}
+                      token_id={campaign.campaign_id}
+                      campaign_address={campaign.campaign_address || "0x0"}
+                      target={String(campaign.target_amount)}
+                      url={url}
+                    />
+                  </div>
+                );
+              })}
+          </div>
+          {campaigns.length > 20 && (
+            <button className="mx-auto mt-8 block w-fit rounded-[25px] px-4 py-2 text-sm text-foreground-primary ring-1 ring-[#808080]">
+              See More
+            </button>
+          )}
         </div>
-        <button className="mx-auto mt-8 block w-fit rounded-[25px] px-4 py-2 text-sm text-foreground-primary ring-1 ring-[#808080]">
-          See More
-        </button>
-      </div>
+      ) : null}
     </section>
   );
 };

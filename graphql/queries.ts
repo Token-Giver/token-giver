@@ -55,8 +55,10 @@ export const GET_CAMPAIGN_BY_ID = gql`
 `;
 
 export const GET_CAMPAIGNS_BY_CATEGORY = gql`
-  query GetCampaignsByCategory($name: String!) {
-    getCampaignsByCategory(name: $name) {
+  query GetCampaignsByCategory($name: String!, $cursor: String, $limit: Int) {
+    getCampaignsByCategory(name: $name, cursor: $cursor, limit: $limit) {
+      hasNextPage
+      endCursor
       items {
         campaign_id
         token_id

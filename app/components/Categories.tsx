@@ -8,7 +8,7 @@ const Categories = ({ showIntro = true }) => {
     <div>
       {showIntro && (
         <div className="mb-8">
-          <h2 className="max-lgMobile:text-xl mb-4 text-center">
+          <h2 className="mb-4 text-center max-lgMobile:text-xl">
             <span className="font-agrandir">Browse</span> Causes{" "}
             <span className="font-agrandir">By Categories</span>
           </h2>
@@ -22,10 +22,10 @@ const Categories = ({ showIntro = true }) => {
         </div>
       )}
       <div>
-        <div className="max-lgMobile:grid-cols-2 mx-auto grid max-w-[55rem] grid-cols-5 gap-2 max-[950px]:grid-cols-4 max-[850px]:grid-cols-3 max-[340px]:grid-cols-1">
+        <div className="mx-auto grid max-w-[55rem] grid-cols-5 gap-2 max-[950px]:grid-cols-4 max-[850px]:grid-cols-3 max-lgMobile:grid-cols-2 max-[340px]:grid-cols-1">
           {CATEGORIES.map((category, index) => (
             <Link
-              href={`/discover/${category.name.toLowerCase().replace(/\s+/g, "-")}`}
+              href={`/discover/${category.slug}`}
               key={category.name}
               className="flex flex-col items-center justify-center transition-transform hover:scale-105"
             >

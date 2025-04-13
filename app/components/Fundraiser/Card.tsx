@@ -45,22 +45,21 @@ export const Card = ({
   return (
     <div
       onClick={handleRoute}
-      className="mx-auto flex min-w-[15rem] cursor-pointer flex-col gap-3 rounded-[10px] px-3 py-4 transition-all hover:bg-[#00594C]/10 max-[510px]:min-w-[22rem] max-xMobile:min-w-full sm:max-w-[20rem]"
+      className="du group mx-auto flex min-w-[15rem] cursor-pointer flex-col gap-3 rounded-[10px] px-3 py-4 transition-all duration-300 hover:bg-[#00594C]/10 max-[510px]:min-w-[22rem] max-xMobile:min-w-full sm:max-w-[20rem]"
     >
       {/* Image */}
-      <div className="h-[150px] overflow-hidden rounded-[10px]">
+      <div className="relative h-[150px] overflow-hidden rounded-[10px]">
+        <div
+          className="absolute inset-0 scale-110 bg-cover bg-center blur-xl"
+          style={{ backgroundImage: `url(${imageSrc})` }}
+        />
         {/* <Image
-          className="h-full w-[303px] rounded-t-[10px] object-cover transition-all hover:scale-105 lg:w-[267px]"
+          className="absolute h-full transition-all group-hover:scale-105"
           src={imageSrc}
           alt={imageAltText ? imageAltText : ""}
-          width={400}
-          height={400}
+          fill
         /> */}
-        <img
-          src={imageSrc}
-          alt=""
-          className="h-full w-[303px] rounded-t-[10px] object-cover transition-all hover:scale-105 lg:w-[267px]"
-        />
+        <img src={imageSrc} alt="" className="absolute h-full" />
       </div>
 
       {/* Details */}

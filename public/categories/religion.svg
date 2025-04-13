@@ -1,0 +1,21 @@
+<svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="500" height="500" fill="#FFFFFF"/>
+  
+  <!-- Decorative accent circles -->
+  <circle cx="60" cy="80" r="30" fill="#FED12E" opacity="0.8" />
+  <circle cx="440" cy="440" r="40" fill="#FEB3D2" opacity="0.8"/>
+  <circle cx="100" cy="460" r="25" fill="#00594C" opacity="0.8"/>
+  <circle cx="420" cy="100" r="20" fill="#FEB3D2" opacity="0.8"/>
+  
+  <!-- Centered large people icon -->
+  <g clip-path="url(#clip0_8808_3074)" transform="translate(100,100) scale(3.5)">
+    <path opacity="0.4" d="M3.1125 41.0875C1.1875 42.15 0 44.1625 0 46.35V57.8C0 61.1125 2.6875 63.8 6 63.8H16V34L3.1125 41.0875ZM74 63.8C77.3125 63.8 80 61.1125 80 57.8V46.35C80 44.1625 78.8125 42.15 76.8875 41.0875L64 34V63.8H74Z" fill="#00594C"/>
+    <path d="M43 3C43 1.3375 41.6625 0 40 0C38.3375 0 37 1.3375 37 3V6H33C31.3375 6 30 7.3375 30 9C30 10.6625 31.3375 12 33 12H37V17.8L22.9125 26.25C21.1 27.3375 20 29.2875 20 31.4V64H32V52C32 47.5875 35.5875 44 40 44C44.4125 44 48 47.5875 48 52V64H60V31.4C60 29.2875 58.9 27.3375 57.0875 26.25L43 17.8V12H47C48.6625 12 50 10.6625 50 9C50 7.3375 48.6625 6 47 6H43V3Z" fill="#00594C"/>
+  </g>
+  <defs>
+  <clipPath id="clip0_8808_3074">
+  <rect width="80" height="64" fill="white"/>
+  </clipPath>
+  </defs>
+</svg>

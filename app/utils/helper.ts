@@ -24,32 +24,6 @@ export const fetchContentFromIPFS = async (cid: string) => {
   }
 };
 
-export const fetchCampaigns = async (
-  campaign_contract: any,
-  setLoading: any,
-  setCollections: any
-) => {
-  try {
-    const campaigns = await campaign_contract.get_campaigns();
-    const campaignPromises = campaigns.map((cid: string) =>
-      fetchContentFromIPFS(cid.slice(7, -1))
-    );
-    const campaignData: Campaign[] = await Promise.all(campaignPromises);
-    setCollections(
-      campaignData
-        .filter((data) => data !== null)
-        .sort((a, b) => {
-          const dateA = new Date(a.created_at).getTime();
-          const dateB = new Date(b.created_at).getTime();
-          return dateB - dateA;
-        })
-    );
-    setLoading(false);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const fetchBalance = async (address: string, setBalance: any) => {
   try {
     const strk = await strk_contract.balanceOf(address);
