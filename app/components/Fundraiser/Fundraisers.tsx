@@ -18,7 +18,7 @@ const CampaignGrid = ({ campaigns }: { campaigns: ICampaign[] }) => {
             cid={data.campaign_id}
             causeName={data.campaign_name || "Unknown Cause"}
             imageSrc={data.cover_photo || "/default-image.webp"}
-            location={""}
+            location={data.location}
             progress={data.total_donations}
             token_id={data.campaign_id}
             campaign_address={data.campaign_address || "0x0"}

@@ -62,9 +62,7 @@ const page = ({ params }: { params: { name: string; cid: string } }) => {
               <div className="flex w-full flex-col flex-wrap justify-between xs:flex-row xs:items-center">
                 <div className="flex items-center gap-2">
                   <p className="text-foreground-secondary">category:</p>
-                  <div className="w-fit rounded-[25px] bg-[#F7F7F6] px-3 py-2 font-agrandir">
-                    <p>Education</p>
-                  </div>
+                  <p className="font-semibold">Education</p>
                 </div>
                 <button className="ml-auto flex items-center gap-1 transition-all hover:text-accent-green">
                   Share campaign <ShareIcon />

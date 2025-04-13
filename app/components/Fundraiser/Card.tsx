@@ -45,14 +45,15 @@ export const Card = ({
   return (
     <div
       onClick={handleRoute}
-      className="du group mx-auto flex min-w-[15rem] cursor-pointer flex-col gap-3 rounded-[10px] px-3 py-4 transition-all duration-300 hover:bg-[#00594C]/10 max-[510px]:min-w-[22rem] max-xMobile:min-w-full sm:max-w-[20rem]"
+      className="group mx-auto flex min-w-[15rem] cursor-pointer flex-col gap-3 rounded-[10px] px-3 py-4 transition-all duration-1000 hover:bg-[#00594C]/10 max-[510px]:min-w-[22rem] max-xMobile:min-w-full sm:max-w-[20rem]"
     >
       {/* Image */}
-      <div className="relative h-[150px] overflow-hidden rounded-[10px]">
+      <div className="relative h-[150px] w-[303px] overflow-hidden rounded-[10px] lg:w-[267px]">
         <div
           className="absolute inset-0 scale-110 bg-cover bg-center blur-xl"
           style={{ backgroundImage: `url(${imageSrc})` }}
         />
+
         {/* <Image
           className="absolute h-full transition-all group-hover:scale-105"
           src={imageSrc}

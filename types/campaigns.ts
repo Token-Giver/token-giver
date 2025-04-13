@@ -11,4 +11,5 @@ export interface ICampaign {
   beneficiary: string;
   location: string;
   created_at: string;
+  category_id: number;
 }
