@@ -45,17 +45,22 @@ export const Card = ({
   return (
     <div
       onClick={handleRoute}
-      className="mx-auto flex min-w-[15rem] cursor-pointer flex-col gap-3 rounded-[10px] px-3 py-4 transition-all hover:bg-[#00594C]/10 sm:max-w-[20rem]"
+      className="group mx-auto flex min-w-[15rem] cursor-pointer flex-col gap-3 rounded-[10px] px-3 py-4 transition-all duration-1000 hover:bg-[#00594C]/10 max-[510px]:min-w-[22rem] max-xMobile:min-w-full sm:max-w-[20rem]"
     >
       {/* Image */}
-      <div className="h-[150px] overflow-hidden rounded-[10px]">
-        <Image
-          className="h-full w-[303px] rounded-t-[10px] object-cover transition-all hover:scale-105 lg:w-[267px]"
+      <div className="relative h-[150px] w-[303px] overflow-hidden rounded-[10px] lg:w-[267px]">
+        <div
+          className="absolute inset-0 scale-110 bg-cover bg-center blur-xl"
+          style={{ backgroundImage: `url(${imageSrc})` }}
+        />
+
+        {/* <Image
+          className="absolute h-full transition-all group-hover:scale-105"
           src={imageSrc}
           alt={imageAltText ? imageAltText : ""}
-          width={400}
-          height={400}
-        />
+          fill
+        /> */}
+        <img src={imageSrc} alt="" className="absolute h-full" />
       </div>
 
       {/* Details */}
@@ -78,7 +83,7 @@ export const Card = ({
           </div>
         </div>
 
-        <div className="flex justify-between text-[.875rem] max-w-[19rem]">
+        <div className="flex max-w-[19rem] justify-between text-[.875rem]">
           <p>
             {formatNumberCompact(balance || 0)} STRK{" "}
             <span>
@@ -117,18 +122,23 @@ export const BigCard = ({
   return (
     <div
       onClick={handleRoute}
-      className="mx-auto grid max-w-[1200px] animate-fadeIn grid-cols-2 items-center gap-6 px-4 md:gap-8"
+      className="mx-auto grid max-w-[1200px] animate-fadeIn cursor-pointer items-center gap-6 mobile:px-4 md:grid-cols-2 md:gap-8"
     >
       <div className="h-[22rem] w-full overflow-clip rounded-[10px]">
-        <Image
+        {/* <Image
           className="h-full w-full rounded-t-[10px] bg-cover object-cover transition-all group-hover:scale-105"
           src={imageSrc}
           alt={imageAltText ? imageAltText : ""}
           width={400}
           height={400}
+        /> */}
+        <img
+          src={imageSrc}
+          alt=""
+          className="h-full w-full rounded-t-[10px] bg-cover object-cover transition-all group-hover:scale-105"
         />
       </div>
-      <div className="flex h-[22rem] flex-col gap-4 rounded-[10px] py-2">
+      <div className="flex h-fit flex-col gap-4 rounded-[10px] py-2 max-md:max-w-[580px] md:h-[22rem]">
         <div>
           <h4 className="text-l line-clamp overflow-hidden font-agrandir capitalize text-[#282828]">
             {causeName}
@@ -141,7 +151,7 @@ export const BigCard = ({
           </p>
         </div>
 
-        <p className="text-foreground-secondary">{description}</p>
+        <p className="line-clamp-8 text-foreground-secondary">{description}</p>
         <div className="relative mb-2 h-[.25rem] lg:w-full">
           <div className="mb-4 h-[1.5vw] max-h-[.25rem] w-full rounded-full bg-[#EFEFEF]"></div>
           <div
@@ -165,9 +175,6 @@ export const BigCard = ({
             <p className="text-foreground-secondary">Target</p>
           </div>
         </div>
-        <button className="w-[7rem] rounded-[25px] px-4 py-2 text-sm text-foreground-primary ring-1 ring-[#808080]">
-          Learn more
-        </button>
       </div>
     </div>
   );

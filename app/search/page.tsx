@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { fetchCampaigns, searchCampaigns } from "../utils/helper";
+import { searchCampaigns } from "../utils/helper";
 import { campaign_contract } from "../utils/data";
 import { useDebounce } from "../hooks";
 import { Campaign } from "@/types";
@@ -13,38 +13,38 @@ import SearchIcon from "@/svgs/SearchIcon";
 const page = () => {
   const [search, setSearch] = useState("");
   const debouncedSearch = useDebounce(search);
-  const [collections, setCollections] = useState<Campaign[]>([]);
-  const [loading, setLoading] = useState(true);
+  // const [collections, setCollections] = useState<Campaign[]>([]);
+  // const [loading, setLoading] = useState(true);
   const [filteredCampaigns, setFilteredCampaigns] = useState<Campaign[]>([]);
   const [latestCampaigns, setLatestCampaigns] = useState<Campaign[]>([]);
 
-  useEffect(() => {
-    fetchCampaigns(campaign_contract, setLoading, setCollections);
+  // useEffect(() => {
+  //   fetchCampaigns(campaign_contract, setLoading, setCollections);
 
-    return () => {};
-  }, []);
+  //   return () => {};
+  // }, []);
 
-  useEffect(() => {
-    if (collections) {
-      const latestFive = collections.slice(0, 5);
-      setLatestCampaigns(latestFive);
-    }
-  }, [collections]);
+  // useEffect(() => {
+  //   if (collections) {
+  //     const latestFive = collections.slice(0, 5);
+  //     setLatestCampaigns(latestFive);
+  //   }
+  // }, [collections]);
 
-  useEffect(() => {
-    if (debouncedSearch.trim() === "") {
-      setFilteredCampaigns([]);
-    } else {
-      const loadCampaigns = async () => {
-        const campaigns = await searchCampaigns({
-          campaigns: collections,
-          search: debouncedSearch
-        });
-        setFilteredCampaigns(campaigns);
-      };
-      loadCampaigns();
-    }
-  }, [debouncedSearch]);
+  // useEffect(() => {
+  //   if (debouncedSearch.trim() === "") {
+  //     setFilteredCampaigns([]);
+  //   } else {
+  //     const loadCampaigns = async () => {
+  //       const campaigns = await searchCampaigns({
+  //         campaigns: collections,
+  //         search: debouncedSearch
+  //       });
+  //       setFilteredCampaigns(campaigns);
+  //     };
+  //     loadCampaigns();
+  //   }
+  // }, [debouncedSearch]);
 
   return (
     <section className="mx-auto mt-[5rem] min-h-[40vh] animate-fadeIn px-16 py-8">
@@ -78,7 +78,7 @@ const page = () => {
         {filteredCampaigns.length > 0 ? (
           <FilteredCampaigns campaigns={filteredCampaigns} />
         ) : (
-          <LatestCampaigns campaigns={latestCampaigns} loading={loading} />
+          <LatestCampaigns />
         )}
       </div>
       <Categories />

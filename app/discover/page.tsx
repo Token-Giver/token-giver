@@ -2,12 +2,8 @@
 import Categories from "../components/Categories";
 import CategoryPreview from "./CategoryPreview";
 import { CATEGORIES } from "@/static";
-import { useState } from "react";
 
 const page = () => {
-  const [showAll, setShowAll] = useState(false);
-  const displayedCategories = showAll ? CATEGORIES : CATEGORIES.slice(0, 3);
-
   return (
     <section className="mx-auto mt-[5rem] min-h-[40vh] animate-fadeIn px-16 py-8">
       <div className="mb-8">
@@ -27,17 +23,13 @@ const page = () => {
       </div>
       <Categories showIntro={false} />
       <div className="mt-12 space-y-8">
-        {displayedCategories.map((category) => (
-          <CategoryPreview key={category.name} categoryName={category.name} />
+        {CATEGORIES.map((category) => (
+          <CategoryPreview
+            key={category.name}
+            categoryName={category.name}
+            categorySlug={category.slug}
+          />
         ))}
-        {!showAll && CATEGORIES.length > 1 && (
-          <button
-            onClick={() => setShowAll(true)}
-            className="mx-auto mt-8 block w-fit rounded-[25px] px-4 py-2 text-sm text-foreground-primary ring-1 ring-[#808080]"
-          >
-            See More Categories
-          </button>
-        )}
       </div>
     </section>
   );

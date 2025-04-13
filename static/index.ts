@@ -1,62 +1,92 @@
 export const CATEGORIES = [
   {
     name: "Health Care",
-    imageUrl: "/categories/health-care.png"
+    imageUrl: "/categories/health-care.png",
+    id: 17,
+    slug: "health-care"
   },
   {
     name: "Education",
-    imageUrl: "/categories/education.png"
+    imageUrl: "/categories/education.png",
+    id: 18,
+    slug: "education"
   },
   {
     name: "Environment",
-    imageUrl: "/categories/environment.png"
+    imageUrl: "/categories/environment.png",
+    id: 19,
+    slug: "environment"
   },
   {
     name: "Arts and Crafts",
-    imageUrl: "/categories/arts.png"
+    imageUrl: "/categories/arts.png",
+    id: 20,
+    slug: "arts-and-crafts"
   },
   {
     name: "Community development",
-    imageUrl: "/categories/community.png"
+    imageUrl: "/categories/community.png",
+    id: 21,
+    slug: "community-development"
   },
   {
     name: "Science and technology",
-    imageUrl: "/categories/science.png"
+    imageUrl: "/categories/science.png",
+    id: 22,
+    slug: "science-and-technology"
   },
   {
-    name: "Event",
-    imageUrl: "/categories/events.png"
+    name: "Events",
+    imageUrl: "/categories/events.png",
+    id: 23,
+    slug: "events"
   },
   {
     name: "Volunteer",
-    imageUrl: "/categories/volunteer.png"
+    imageUrl: "/categories/volunteer.png",
+    id: 24,
+    slug: "volunteer"
   },
   {
     name: "Animals",
-    imageUrl: "/categories/animals.png"
+    imageUrl: "/categories/animals.png",
+    id: 25,
+    slug: "animals"
   },
   {
     name: "Global Advocacy",
-    imageUrl: "/categories/global.png"
+    imageUrl: "/categories/global.png",
+    id: 26,
+    slug: "global-advocacy"
   },
   {
     name: "Family",
-    imageUrl: "/categories/family.png"
+    imageUrl: "/categories/family.png",
+    id: 27,
+    slug: "family"
   },
   {
     name: "Sports",
-    imageUrl: "/categories/sports.png"
+    imageUrl: "/categories/sports.png",
+    id: 28,
+    slug: "sports"
   },
   {
     name: "Religion",
-    imageUrl: "/categories/religion.png"
+    imageUrl: "/categories/religion.png",
+    id: 29,
+    slug: "religion"
   },
   {
     name: "Travel",
-    imageUrl: "/categories/travel.png"
+    imageUrl: "/categories/travel.png",
+    id: 30,
+    slug: "travel"
   },
   {
     name: "Business",
-    imageUrl: "/categories/business.png"
+    imageUrl: "/categories/business.png",
+    id: 31,
+    slug: "business"
   }
 ];

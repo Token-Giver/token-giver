@@ -2,45 +2,51 @@
 import RightArrowIcon from "@/svgs/RightArrowIcon";
 import CardLoader from "../components/loading/CardLoader";
 import { Card } from "../components/Fundraiser/Card";
-import { useEffect, useState } from "react";
-import { fetchCampaigns } from "../utils/helper";
-import { campaign_contract } from "../utils/data";
+import { useState } from "react";
 import Link from "next/link";
+import { useQuery } from "@apollo/client";
+import { ICampaign } from "@/types/campaigns";
+import { GET_CAMPAIGNS_BY_CATEGORY } from "@/graphql/queries";
 
-const CategoryPreview = ({ categoryName }: { categoryName: string }) => {
-  const [collections, setCollections] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
+const CategoryPreview = ({
+  categoryName,
+  categorySlug
+}: {
+  categoryName: string;
+  categorySlug: string;
+}) => {
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  useEffect(() => {
-    fetchCampaigns(campaign_contract, setLoading, (campaigns: any[]) => {
-      // Limit to first 8 campaigns
-      setCollections(campaigns.slice(0, 8));
-    });
-    return () => {};
-  }, []);
+  const { data, loading } = useQuery(GET_CAMPAIGNS_BY_CATEGORY, {
+    variables: {
+      name: categorySlug,
+      limit: 12
+    }
+  });
+
+  const campaigns: ICampaign[] = data?.getCampaignsByCategory?.items || [];
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 4 >= collections.length ? 0 : prev + 4));
+    setCurrentSlide((prev) => (prev + 4 >= campaigns.length ? 0 : prev + 4));
   };
 
   const prevSlide = () => {
     setCurrentSlide((prev) =>
-      prev - 4 < 0 ? Math.max(collections.length - 4, 0) : prev - 4
+      prev - 4 < 0 ? Math.max(campaigns.length - 4, 0) : prev - 4
     );
   };
 
-  const isLastSlide = currentSlide + 4 >= collections.length;
+  const isLastSlide = currentSlide + 4 >= campaigns.length;
   const isFirstSlide = currentSlide === 0;
 
-  return collections.length > 0 ? (
+  return campaigns.length > 0 ? (
     <div className="mx-auto max-w-[1204px] space-y-4">
-      <div className="flex justify-between px-6">
+      <div className="flex justify-between">
         <h3 className="text-2xl">
-          <span className="font-agrandir">{categoryName}</span>{" "}
+          <span className="font-agrandir capitalize">{categoryName}</span>{" "}
           <span>Fundraisers</span>{" "}
         </h3>
-        {collections.length > 4 && (
+        {campaigns.length > 4 && (
           <div className="flex items-center justify-end gap-4">
             <button
               onClick={prevSlide}
@@ -66,42 +72,37 @@ const CategoryPreview = ({ categoryName }: { categoryName: string }) => {
           </div>
         )}
       </div>
+
       <div className="overflow-hidden">
         <div
-          className="flex transition-transform duration-500 ease-in-out"
+          className="flex gap-2 transition-transform duration-500 ease-in-out sm:flex-row"
           style={{ transform: `translateX(-${currentSlide * 25}%)` }}
         >
           {loading
             ? Array.from({ length: 4 }).map((_, idx) => (
-                <div key={idx} className="w-1/4 flex-shrink-0">
+                <div
+                  key={idx}
+                  className="mx-auto max-w-[335px] flex-shrink-0 sm:w-1/2 lg:w-1/3 xl:w-1/4"
+                >
                   <CardLoader />
                 </div>
               ))
-            : collections.map((data, idx) => {
-                const path = data.name
-                  .replace(/[^a-zA-Z ]/g, "")
-                  .replace(/ /g, "-")
-                  .toLocaleLowerCase()
-                  .replace(/-+/g, "-");
-
-                const url = `${path}/${data.campaign_address}/${data.cid}`;
+            : campaigns.map((campaign, idx) => {
+                const url = `/${campaign.campaign_name.toLowerCase().replace(/\s+/g, "-")}/${campaign.campaign_id}`;
                 return (
-                  <div key={idx} className="w-1/4 flex-shrink-0">
+                  <div
+                    key={campaign.campaign_id}
+                    className="w-full max-w-[335px] flex-shrink-0 sm:w-1/2 lg:w-1/3 xl:w-1/4"
+                  >
                     <Card
-                      cid={data.cid}
-                      causeName={data.name || "Unknown Cause"}
-                      imageSrc={
-                        `${
-                          process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL
-                        }${data.image?.slice(7, -1)}?pinataGatewayToken=${
-                          process.env.NEXT_PUBLIC_PINATA_API_KEY
-                        }` || "/default-image.webp"
-                      }
-                      location={data.location}
-                      progress={0}
-                      token_id={data.id}
-                      campaign_address={data.campaign_address || "0x0"}
-                      target={data.target}
+                      cid={campaign.campaign_id}
+                      causeName={campaign.campaign_name || "Unknown Cause"}
+                      imageSrc={campaign.cover_photo || "/default-image.webp"}
+                      location={campaign.location}
+                      progress={campaign.total_donations}
+                      token_id={campaign.campaign_id}
+                      campaign_address={campaign.campaign_address || "0x0"}
+                      target={String(campaign.target_amount)}
                       url={url}
                     />
                   </div>
@@ -109,17 +110,19 @@ const CategoryPreview = ({ categoryName }: { categoryName: string }) => {
               })}
         </div>
       </div>
-      <div className="px-6">
-        <Link
-          className="group ml-auto flex w-fit items-center gap-1 hover:text-accent-green"
-          href={`/discover/${categoryName.toLowerCase().replace(/\s+/g, "-")}`}
-        >
-          see more{" "}
-          <span className="inline-block transition-transform group-hover:translate-x-1">
-            <RightArrowIcon />
-          </span>
-        </Link>
-      </div>
+      {campaigns.length > 4 && (
+        <div className="px-6">
+          <Link
+            className="group ml-auto flex w-fit items-center gap-1 hover:text-accent-green"
+            href={`/discover/${categoryName.toLowerCase().replace(/\s+/g, "-")}`}
+          >
+            see more{" "}
+            <span className="inline-block transition-transform group-hover:translate-x-1">
+              <RightArrowIcon />
+            </span>
+          </Link>
+        </div>
+      )}
     </div>
   ) : null;
 };

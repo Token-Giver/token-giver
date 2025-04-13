@@ -9,12 +9,18 @@ const config: Config = {
   theme: {
     extend: {
       screens: {
-        'xs': '300px', 
+        xs: "300px",
+        xMobile: "380px",
+        mobile: "480px",
+        lgMobile: "580px",
+        xTablet: "920px"
       },
       fontSize: {
         clamp: "clamp(0.5rem, 5vw, 1rem)"
       },
-
+      lineClamp: {
+        8: "8"
+      },
       fontFamily: {
         "Holly-Bale": ["Belanosima", "sans-serif"],
         poppins: ["Poppins", "sans-serif"],

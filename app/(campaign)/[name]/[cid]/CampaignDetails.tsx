@@ -2,9 +2,12 @@ import ProfileIcon from "@/svgs/ProfileIcon";
 import Comment from "./Comment";
 import CalenderIcon from "@/svgs/CalenderIcon";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
-import Image from "next/image";
 import { Dialog, DialogContent, DialogTitle } from "@/app/ui/dialog";
 import { useState, useEffect, useRef } from "react";
+import ViewModalImage from "@/app/components/viewImageModal";
+import MoreInfo from "./MoreInfo";
+import Link from "next/link";
+import { useParams } from "next/navigation";
 
 interface CampaignProgressProps {
   organizer: string;
@@ -24,7 +27,17 @@ const CampaignDetails = ({
   const [isOpen, setIsOpen] = useState(false);
   const [isTruncated, setIsTruncated] = useState(false);
   const descriptionRef = useRef<HTMLParagraphElement>(null);
+  const [selectedImageId, setSelectedImageId] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
 
+  const params = useParams();
+
+  const openModal = (id: number) => {
+    setSelectedImageId(id);
+    setIsModalOpen(true);
+    document.getElementsByTagName("header")[0].style.zIndex = "0";
+    document.body.style.overflow = "hidden";
+  };
   useEffect(() => {
     const element = descriptionRef.current;
     if (element) {
@@ -68,11 +81,16 @@ const CampaignDetails = ({
             </div>
           </DialogContent>
         </Dialog>
-
+        <div className="lg:hidden">
+          <MoreInfo />
+        </div>
         <div className="flex items-center gap-4">
-          <button className="w-full rounded-[25px] px-2 py-2 text-accent-green ring-1 ring-accent-green">
+          <Link
+            href={params ? `/${params.name}/${params.cid}/donate` : "#"}
+            className="w-full rounded-[25px] px-2 py-2 text-center text-accent-green ring-1 ring-accent-green"
+          >
             Donate now
-          </button>
+          </Link>
 
           <button className="w-full rounded-[25px] px-2 py-2 text-accent-green ring-1 ring-accent-green">
             share now
@@ -80,7 +98,7 @@ const CampaignDetails = ({
         </div>
         <div>
           <h3 className="mb-6">Organizer and Beneficiary</h3>
-          <div className="mb-8 flex items-center justify-between">
+          <div className="mb-8 flex flex-col items-start justify-between space-y-[10px] lg:flex-row lg:items-center lg:space-y-0">
             <div className="flex items-center gap-2">
               <div className="grid h-[40px] w-[40px] place-content-center rounded-full bg-[#F7F7F6]">
                 <ProfileIcon />
@@ -93,7 +111,7 @@ const CampaignDetails = ({
             </div>
             {beneficiary && (
               <>
-                <p className="text-xl text-foreground-secondary">
+                <p className="ml-[7rem] rotate-90 text-xl text-foreground-secondary lg:ml-0 lg:rotate-0">
                   <RightArrowIcon />
                 </p>
                 <div className="flex items-center gap-2">
@@ -114,7 +132,11 @@ const CampaignDetails = ({
             <span>
               <CalenderIcon />
             </span>{" "}
-            {date}
+            {new Date(date).toLocaleDateString("en-US", {
+              year: "numeric",
+              month: "long",
+              day: "numeric"
+            })}
           </p>
         </div>
       </div>
@@ -122,28 +144,7 @@ const CampaignDetails = ({
         <h4 className="mb-4 font-agrandir text-base font-bold text-foreground-primary/80">
           More Images
         </h4>
-        <div className="grid grid-cols-2 gap-3">
-          {images.slice(0, 4).map((imageUrl, index) => (
-            <div
-              key={index}
-              className="relative h-[11rem] w-full overflow-clip rounded-[5px]"
-            >
-              <Image
-                src={imageUrl}
-                alt={`campaign image ${index + 1}`}
-                fill
-                className="object-cover"
-              />
-              {index === 3 && images.length > 4 && (
-                <div className="absolute inset-0 flex items-center justify-center bg-black/50">
-                  <span className="font-agrandir text-2xl text-white">
-                    +{images.length - 4}
-                  </span>
-                </div>
-              )}
-            </div>
-          ))}
-        </div>
+        <ViewModalImage images={images} />
       </div>
       <div className="space-y-4">
         <h3 className="text-2xl text-foreground-primary">
