@@ -1,13 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useAccount, useContract } from "@starknet-react/core";
+import { useAccount } from "@starknet-react/core";
 import StepTwo from "./components/StepTwo";
 import { InputDateType } from "@/types";
 import StepThree from "./components/StepThree";
-import { Call, CallData } from "starknet";
+import { CallData } from "starknet";
 import {
   BEARER_TOKEN,
-  CAMPAIGN_CONTRACT_ADDRESS,
   IMPLEMENTATION_HASH,
   REGISTRY_HASH,
   TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
@@ -26,10 +25,6 @@ import Stepper from "./components/Stepper";
 import { UseFormRegister, FieldErrors } from "react-hook-form";
 import { StepThreeSchema, StepTwoSchema } from "@/types/create";
 import ReviewCampaign from "../(campaign)/[name]/[address]/[cid]/ReviewCampaign";
-import { CREATE_CAMPAIGN_ABI } from "@/abi/createCampaign.abi";
-import { generateRandomInt } from "@/util";
-import { useMutation } from "@apollo/client";
-import { CREATE_CAMPAIGN } from "@/graphql/mutations";
 
 // Create union type of both schema types
 type FormData = z.infer<typeof StepTwoSchema> | z.infer<typeof StepThreeSchema>;
@@ -40,8 +35,8 @@ export type StepThreeFields = z.infer<typeof StepThreeSchema>;
 export type AllFormFields = StepTwoFields & StepThreeFields;
 
 const Page = () => {
-  const { address, account } = useAccount();
-
+  const { address } = useAccount();
+  const account: any = useAccount();
   const [campaignStep, setCampaignStep] = useState(0);
   const [creatingCampaign, setCreatingCampaign] = useState(false);
   const [loadingPercentage, setLoadingPercentage] = useState(0);
@@ -91,102 +86,142 @@ const Page = () => {
     }
   };
 
-  const { contract: createCampaignContract } = useContract({
-    abi: CREATE_CAMPAIGN_ABI,
-    address: CAMPAIGN_CONTRACT_ADDRESS
-  });
-
-  const [createCampaign] = useMutation(CREATE_CAMPAIGN);
-
-  async function handleCreateCampaign({
+  async function createCampaign({
     image,
     name,
     description,
     beneficiary,
     organizer,
-    target,
-    socials,
-    location
+    target
   }: {
     name: string;
     description: string;
     image: null | File;
-    target: number;
+    target: string;
     organizer: string;
     beneficiary: string;
     location: string;
-    socials: { [key: string]: string };
   }) {
+    const loadingPopover = document.querySelector(
+      "#creatingCampaign"
+    ) as HTMLElement;
+    // @ts-ignore
+    loadingPopover.showPopover();
+    document.body.style.overflow = "hidden";
+
     try {
       setCreatingCampaign(true);
       setLoadingPercentage(10);
+      campaign_contract.connect(account.account);
+      const last_minted_id = await nft_contract.get_last_minted_id();
+      const salt = Math.floor(Math.random() * 9999)
+        .toString()
+        .padStart(4, "0");
 
-      if (!createCampaignContract) {
-        throw new Error("Campaign contract not initialized");
-      }
-
-      if (!account) {
-        throw new Error("Please connect your wallet to continue");
-      }
-
-      const campaignId = generateRandomInt(6);
-      const salt = generateRandomInt(4);
-
-      setLoadingPercentage(30);
-      const { data, errors } = await createCampaign({
-        variables: {
-          campaignData: {
-            campaign_id: campaignId,
-            campaign_name: name,
-            campaign_description: description,
-            cover_photo: "https://picsum.photos/500/300",
-            social_links: socials,
-            target_amount: target,
-            organizer: organizer,
-            beneficiary: beneficiary
-          }
-        }
-      });
-
-      if (errors?.length) {
-        throw new Error(`Database error: ${errors[0].message}`);
-      }
-
-      if (!data) {
-        throw new Error("Failed to create campaign in database");
-      }
-
-      setLoadingPercentage(60);
-
-      const createCampaignCall: Call = createCampaignContract.populate(
-        "create_campaign",
-        [
+      // CREATE CAMPAIGN -> campaign address (nft)
+      const create_campaign_res = await campaign_contract.create_campaign(
+        CallData.compile([
           TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
           REGISTRY_HASH,
           IMPLEMENTATION_HASH,
           salt,
           account.address
-        ]
+        ])
+      );
+      const txnDet = await provider.waitForTransaction(
+        create_campaign_res.transaction_hash
+      );
+      txnDet.isSuccess() && setCampaignStep(1);
+      setLoadingPercentage(40);
+
+      /////////////////////////////////////////
+      // UPLOAD CAMPAIGN NFT IMAGE TO PINATA
+      ////////////////////////////////////////
+      if (image) {
+        alert("No Image selected");
+        return;
+      }
+      const formData = new FormData();
+      if (image) {
+        formData.append("file", image);
+      }
+
+      const image_upload_res = await fetch(
+        "https://api.pinata.cloud/pinning/pinFileToIPFS",
+        {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${BEARER_TOKEN}`
+          },
+          body: formData
+        }
+      );
+      const image_upload_resData = await image_upload_res.json();
+      setLoadingPercentage(60);
+
+      //////////////////////////////////
+      // CREATE NEW METADATA URI JSON
+      //////////////////////////////////
+      let tokenId = Number(last_minted_id) + 1;
+      let new_metadata = JSON.stringify({
+        id: tokenId,
+        image: `ipfs://${image_upload_resData.IpfsHash}/`,
+        name: name,
+        description: description,
+        target: target,
+        organizer: organizer,
+        beneficiary: beneficiary,
+        location: location,
+        campaign_address:
+          txnDet.isSuccess() && txnDet.events.at(1)?.from_address,
+        created_at: new Date()
+      });
+      setCampaignUrl(`/campaign/${address}/${tokenId}`);
+
+      ////////////////////////////////////////////
+      // UPLOAD NEW METADATA_URI JSON TO PINATA
+      ////////////////////////////////////////////
+      const metadata_upload_res = await fetch(
+        "https://api.pinata.cloud/pinning/pinJSONToIPFS",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${BEARER_TOKEN}`
+          },
+          body: new_metadata
+        }
       );
 
-      setLoadingPercentage(80);
-      const result = await account.execute(createCampaignCall);
+      const metadata_upload_resData = await metadata_upload_res.json();
 
-      if (!result) {
-        throw new Error("Failed to execute campaign creation transaction");
-      }
+      metadata_upload_resData.IpfsHash && setCampaignStep(2);
+      setLoadingPercentage(80);
+
+      ///////////////////////////////////////
+      // CALL SET_METADATA_URI FUNCTION
+      //////////////////////////////////////
+      campaign_contract.connect(account.account);
+      const set_campaign_metadata_res =
+        await campaign_contract.set_campaign_metadata_uri(
+          CallData.compile([
+            txnDet.isSuccess() && txnDet.events[1].from_address,
+            `ipfs://${metadata_upload_resData.IpfsHash}/`
+          ])
+        );
 
       setLoadingPercentage(100);
-      return { success: true, campaignId };
-    } catch (error) {
-      setLoadingPercentage(0);
-      if (error instanceof Error) {
-        throw error;
-      } else {
-        throw new Error(
-          "An unexpected error occurred while creating the campaign"
-        );
-      }
+      setCampaignStep(3);
+      setTimeout(() => {
+        // @ts-ignore
+        loadingPopover.hidePopover();
+        document.body.style.overflow = "auto";
+        // rest form
+      }, 10000);
+    } catch (err) {
+      // @ts-ignore
+      loadingPopover.hidePopover();
+      document.body.style.overflow = "auto";
     } finally {
       setCreatingCampaign(false);
     }
@@ -224,16 +259,7 @@ const Page = () => {
       console.log("Complete form data:", finalFormData);
       console.log(links);
 
-      handleCreateCampaign({
-        name: finalFormData.name,
-        description: finalFormData.description,
-        image: finalFormData.bannerImage,
-        target: Number(finalFormData.target),
-        organizer: finalFormData.organiser,
-        beneficiary: finalFormData.beneficiary,
-        location: finalFormData.location,
-        socials: Object.fromEntries(links.map((link) => [link.name, link.url]))
-      });
+      // createCampaign()
     }
   };
 
@@ -275,9 +301,9 @@ const Page = () => {
   }, [formData]);
   return (
     <>
-      <main className="grid h-screen grid-cols-7 2xl:h-[calc(100vh-39.1rem)]">
-        <div className="relative col-span-3 hidden h-full place-content-center bg-accent-green lg:grid">
-          <div className="relative h-[700px] w-[500px]">
+      <main className="xl:grid flex flex-col h-screen grid-cols-4 xl:grid-cols-7 2xl:h-[calc(100vh-39.1rem)]">
+        <div className="relative col-span-3 xl:grid h-full place-content-center bg-accent-green hidden">
+          <div className="relative h-[700px] w-[500px] hidden xl:block">
             <Image
               src="/create-bg.png"
               alt="Background description"
@@ -287,58 +313,58 @@ const Page = () => {
             />
           </div>
         </div>
-        <div className="col-span-4 h-full space-y-8 overflow-y-auto px-16 pt-8">
-          <div className="mx-auto flex max-w-4xl items-center justify-between">
-            {currentStep === 3 && (
-              <button
-                onClick={() => setCurrentStep(2)}
-                className="flex animate-fadeIn items-center text-accent-green"
-              >
-                <span className="inline-block rotate-180 text-lg">
-                  <RightArrowIcon />
-                </span>
-                Back
-              </button>
-            )}
-            <div className="ml-auto w-fit text-sm">
-              <Connect />
-            </div>
-          </div>
-          <div>
-            <Stepper currentStep={currentStep} />
-            <div className="mx-auto max-w-2xl">
-              <h2 className="font-agrandir font-bold text-foreground-primary">
-                Create your Campaign
-              </h2>
-              <p className="text-foreground-secondary">
-                Fill in the appropriate details for your campaign and let's get
-                started.
-              </p>
-            </div>
-
-            <form className="">
-              {currentStep !== 3 && (
-                <StepTwo
-                  disabled={!isWalletConnected || currentStep === 1}
-                  onNextStep={handleNextStep}
-                  register={register as UseFormRegister<StepTwoFields>}
-                  errors={errors as FieldErrors<StepTwoFields>}
-                  currentValues={currentValues as StepTwoFields}
-                  setValue={stepTwoForm.setValue}
-                />
-              )}
-
+        <div className="col-span-4 h-full overflow-y-auto px-3 sm:px-7 md:px-16 pt-8 space-y-8">
+            <div className="mx-auto flex max-w-4xl items-center justify-between">
               {currentStep === 3 && (
-                <StepThree
-                  register={register as UseFormRegister<StepThreeFields>}
-                  errors={errors as FieldErrors<StepThreeFields>}
-                  disabled={!isWalletConnected}
-                  onReview={handleReview}
-                />
+                <button
+                  onClick={() => setCurrentStep(2)}
+                  className="flex animate-fadeIn items-center text-accent-green"
+                >
+                  <span className="inline-block rotate-180 text-lg">
+                    <RightArrowIcon />
+                  </span>
+                  Back
+                </button>
               )}
-            </form>
+              <div className="ml-auto w-fit text-sm">
+                <Connect />
+              </div>
+            </div>
+            <div>
+              <Stepper currentStep={currentStep} />
+              <div className="mx-auto max-w-2xl flex flex-col gap-3">
+                <h2 className="font-agrandir font-bold text-foreground-primary md:text-4xl text-3xl">
+                  Create your Campaign
+                </h2>
+                <p className="text-foreground-secondary leading-6">
+                  Fill in the appropriate details for your campaign and let's get
+                  started.
+                </p>
+              </div>
+
+              <form className="mt-6">
+                {currentStep !== 3 && (
+                  <StepTwo
+                    disabled={!isWalletConnected || currentStep === 1}
+                    onNextStep={handleNextStep}
+                    register={register as UseFormRegister<StepTwoFields>}
+                    errors={errors as FieldErrors<StepTwoFields>}
+                    currentValues={currentValues as StepTwoFields}
+                    setValue={stepTwoForm.setValue}
+                  />
+                )}
+
+                {currentStep === 3 && (
+                  <StepThree
+                    register={register as UseFormRegister<StepThreeFields>}
+                    errors={errors as FieldErrors<StepThreeFields>}
+                    disabled={!isWalletConnected}
+                    onReview={handleReview}
+                  />
+                )}
+              </form>
+            </div>
           </div>
-        </div>
       </main>
 
       <ReviewCampaign
@@ -346,7 +372,6 @@ const Page = () => {
         showReview={showReview}
         createCampaign={handleCreation}
         formData={formData}
-        creatingCampaign={creatingCampaign}
       />
     </>
   );
