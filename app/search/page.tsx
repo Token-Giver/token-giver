@@ -78,7 +78,7 @@ const page = () => {
         {filteredCampaigns.length > 0 ? (
           <FilteredCampaigns campaigns={filteredCampaigns} />
         ) : (
-          <LatestCampaigns campaigns={latestCampaigns} loading={loading} />
+          <LatestCampaigns />
         )}
       </div>
       <Categories />

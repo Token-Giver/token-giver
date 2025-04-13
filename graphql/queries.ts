@@ -11,6 +11,7 @@ export const GET_ALL_CAMPAIGNS = gql`
         campaign_id
         cover_photo
         campaign_owner
+        location
         campaign_description
         target_amount
         total_donations
@@ -49,6 +50,33 @@ export const GET_CAMPAIGN_BY_ID = gql`
       location
       updated_at
       created_at
+    }
+  }
+`;
+
+export const GET_CAMPAIGNS_BY_CATEGORY = gql`
+  query GetCampaignsByCategory($name: String!) {
+    getCampaignsByCategory(name: $name) {
+      items {
+        campaign_id
+        token_id
+        campaign_address
+        campaign_owner
+        nft_token_uri
+        token_giver_nft_contract_address
+        campaign_name
+        campaign_description
+        cover_photo
+        social_links
+        target_amount
+        total_donations
+        organizer
+        beneficiary
+        campaign_images
+        location
+        updated_at
+        created_at
+      }
     }
   }
 `;

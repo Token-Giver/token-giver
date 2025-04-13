@@ -151,7 +151,7 @@ export const BigCard = ({
           </p>
         </div>
 
-        <p className="text-foreground-secondary">{description}</p>
+        <p className="line-clamp-8 text-foreground-secondary">{description}</p>
         <div className="relative mb-2 h-[.25rem] lg:w-full">
           <div className="mb-4 h-[1.5vw] max-h-[.25rem] w-full rounded-full bg-[#EFEFEF]"></div>
           <div
@@ -175,9 +175,6 @@ export const BigCard = ({
             <p className="text-foreground-secondary">Target</p>
           </div>
         </div>
-        <button className="w-[7rem] rounded-[25px] px-4 py-2 text-sm text-foreground-primary ring-1 ring-[#808080]">
-          Learn more
-        </button>
       </div>
     </div>
   );

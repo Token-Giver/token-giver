@@ -1,4 +1,5 @@
 import { CATEGORIES } from "@/static";
+import Link from "next/link";
 
 const CategorySlider = () => {
   return (
@@ -11,7 +12,8 @@ const CategorySlider = () => {
       <div className="scrollbar-hide flex gap-4 overflow-x-auto px-4 pb-4 [-ms-overflow-style:'none'] [scrollbar-width:'none'] [&::-webkit-scrollbar]:hidden">
         {/* Category buttons */}
         {CATEGORIES.map((category, index) => (
-          <button
+          <Link
+            href={`/discover/${category.slug}`}
             key={index}
             className={`shrink-0 rounded-full px-2 py-1 font-agrandir text-sm transition-colors ${
               index === 0
@@ -20,7 +22,7 @@ const CategorySlider = () => {
             }`}
           >
             {category.name}
-          </button>
+          </Link>
         ))}
       </div>
     </div>

@@ -1,32 +1,30 @@
 import { Card } from "@/app/components/Fundraiser/Card";
-import { campaign_contract } from "@/app/utils/data";
-import { fetchCampaigns } from "@/app/utils/helper";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import CardLoader from "../loading/CardLoader";
-// import { CardLoader } from "../loading/CardLoader";
+import { GET_ALL_CAMPAIGNS } from "@/graphql/queries";
+import { useQuery } from "@apollo/client";
+import { ICampaign } from "@/types/campaigns";
 
 const CampaignSlider = () => {
-  const [collections, setCollections] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  useEffect(() => {
-    fetchCampaigns(campaign_contract, setLoading, setCollections);
-    return () => {};
-  }, []);
+  const { data, loading } = useQuery(GET_ALL_CAMPAIGNS, {
+    variables: { limit: 12 }
+  });
+  const campaigns: ICampaign[] = data?.getAllCampaigns.items || [];
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 4 >= collections.length ? 0 : prev + 4));
+    setCurrentSlide((prev) => (prev + 4 >= campaigns.length ? 0 : prev + 4));
   };
 
   const prevSlide = () => {
     setCurrentSlide((prev) =>
-      prev - 4 < 0 ? Math.max(collections.length - 4, 0) : prev - 4
+      prev - 4 < 0 ? Math.max(campaigns.length - 4, 0) : prev - 4
     );
   };
 
-  const isLastSlide = currentSlide + 4 >= collections.length;
+  const isLastSlide = currentSlide + 4 >= campaigns.length;
   const isFirstSlide = currentSlide === 0;
 
   return (
@@ -56,7 +54,7 @@ const CampaignSlider = () => {
       </div>
       <div className="overflow-hidden">
         <div
-          className="flex flex-col gap-2 transition-transform duration-500 ease-in-out sm:flex-row"
+          className="flex gap-2 transition-transform duration-500 ease-in-out sm:flex-row"
           style={{ transform: `translateX(-${currentSlide * 25}%)` }}
         >
           {loading
@@ -68,34 +66,22 @@ const CampaignSlider = () => {
                   <CardLoader />
                 </div>
               ))
-            : collections.map((data, idx) => {
-                const path = data.name
-                  .replace(/[^a-zA-Z ]/g, "")
-                  .replace(/ /g, "-")
-                  .toLocaleLowerCase()
-                  .replace(/-+/g, "-");
-
-                const url = `${path}/${data.campaign_address}/${data.cid}`;
+            : campaigns.map((campaign, idx) => {
+                const url = `/${campaign.campaign_name.toLowerCase().replace(/\s+/g, "-")}/${campaign.campaign_id}`;
                 return (
                   <div
-                    key={idx}
-                    className="mx-auto max-w-[335px] flex-shrink-0 sm:w-1/2 lg:w-1/3 xl:w-1/4"
+                    key={campaign.campaign_id}
+                    className="w-full max-w-[335px] flex-shrink-0 sm:w-1/2 lg:w-1/3 xl:w-1/4"
                   >
                     <Card
-                      cid={data.cid}
-                      causeName={data.name || "Unknown Cause"}
-                      imageSrc={
-                        `${
-                          process.env.NEXT_PUBLIC_PINATA_GATEWAY_URL
-                        }${data.image?.slice(7, -1)}?pinataGatewayToken=${
-                          process.env.NEXT_PUBLIC_PINATA_API_KEY
-                        }` || "/default-image.webp"
-                      }
-                      location={data.location}
-                      progress={0}
-                      token_id={data.id}
-                      campaign_address={data.campaign_address || "0x0"}
-                      target={data.target}
+                      cid={campaign.campaign_id}
+                      causeName={campaign.campaign_name || "Unknown Cause"}
+                      imageSrc={campaign.cover_photo || "/default-image.webp"}
+                      location={campaign.location}
+                      progress={campaign.total_donations}
+                      token_id={campaign.campaign_id}
+                      campaign_address={campaign.campaign_address || "0x0"}
+                      target={String(campaign.target_amount)}
                       url={url}
                     />
                   </div>

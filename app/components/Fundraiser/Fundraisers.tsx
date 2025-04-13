@@ -44,7 +44,7 @@ const HeroCampaign = ({ campaign }: { campaign: ICampaign }) => (
     cid={campaign.campaign_id}
     causeName={campaign.campaign_name || "Unknown Cause"}
     imageSrc={campaign.cover_photo || "/default-image.webp"}
-    location={"Nairobi, Kenya"}
+    location={campaign.location}
     progress={campaign.total_donations}
     token_id={campaign.campaign_id}
     campaign_address={campaign.campaign_address || "0x0"}

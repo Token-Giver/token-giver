@@ -1,18 +1,32 @@
 "use client";
 
 import { Card } from "@/app/components/Fundraiser/Card";
+import { GET_CAMPAIGNS_BY_CATEGORY } from "@/graphql/queries";
 import QuotesIcon from "@/svgs/QuotesIcon";
+import { ICampaign } from "@/types/campaigns";
+import { useQuery } from "@apollo/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
+import { CATEGORIES } from "@/static";
 
 const page = () => {
   const params = useParams();
-  const categoryName = String(params?.category ?? "All").replace(/-/g, " ");
+  const slug = String(params?.category ?? "all");
+  const categoryName =
+    CATEGORIES.find((cat) => cat.slug === slug)?.name ?? "All";
+
+  const { data } = useQuery(GET_CAMPAIGNS_BY_CATEGORY, {
+    variables: {
+      name: params?.category
+    },
+    skip: !params?.category
+  });
+  const campaigns: ICampaign[] = data?.getCampaignsByCategory?.items || [];
 
   return (
-    <section className="mx-auto mt-[5rem] min-h-[40vh] animate-fadeIn px-3 sm:px-8 md:px-12 lg:px-16  py-8">
-      <div className="mx-auto mb-16 grid max-w-[1242px] px-3 lg:grid-cols-2 gap-10">
+    <section className="mx-auto mt-[5rem] min-h-[40vh] animate-fadeIn px-3 py-8 sm:px-8 md:px-12 lg:px-16">
+      <div className="mx-auto mb-16 grid max-w-[1242px] gap-10 px-3 lg:grid-cols-2">
         <div>
           <p className="mb-12 text-foreground-secondary">Category</p>
           <h2 className="mb-4 font-agrandir text-4xl capitalize">
@@ -33,16 +47,16 @@ const page = () => {
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="relative top-5 max-w-[400px] sm:max-w-[450px] md:max-w-[500px] rounded-[10px] lg:top-0">
+          <div className="relative top-5 max-w-[400px] rounded-[10px] sm:max-w-[450px] md:max-w-[500px] lg:top-0">
             <Image
-              src={"/404.png"}
+              src={"/categories/community-people-group-svg.svg"}
               width={521}
               height={581}
               alt={`${categoryName}`}
               role="presentation"
-              className="object-cover"
+              className="rounded-lg object-cover"
             />
-            <div className="absolute -left-[3rem] w-[280px] rounded-[5px] bg-white p-6 leading-6 tracking-wider shadow-md hidden lg:block">
+            <div className="absolute hidden w-[280px] -translate-y-full rounded-[5px] bg-white p-6 leading-6 tracking-wider shadow-md lg:block">
               <div className="absolute left-[-20px] top-[-10px] grid h-[40px] w-[40px] place-content-center rounded-full bg-accent-green font-agrandir text-white">
                 <QuotesIcon />
               </div>
@@ -56,28 +70,31 @@ const page = () => {
         </div>
       </div>
       <div className="mx-auto max-w-[1242px]">
-        <h3 className="mb-8 ml-4 text-2xl font-medium capitalize lg:mt-56 mt-24">
+        <h3 className="mb-8 text-2xl font-medium capitalize">
           See {categoryName} Fundraisers
         </h3>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-4 mx-auto">
-          {Array(12)
-            .fill(null)
-            .map((_, index) => (
-              <div key={index} className="mx-auto">
-                <Card
-                  cid={"123"}
-                  causeName={"Unknown Cause"}
-                  imageSrc={"/default-image.webp"}
-                  location={"Lagos, Nigeria"}
-                  progress={0}
-                  token_id={"7777"}
-                  campaign_address={"0x0"}
-                  target={"60"}
-                  url={""}
-                />
-              </div>
-            ))}
+        <div className="mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+          {campaigns.length > 0 &&
+            campaigns.map((campaign, index) => {
+              const url = `/${campaign.campaign_name.toLowerCase().replace(/\s+/g, "-")}/${campaign.campaign_id}`;
+              return (
+                <div key={index} className="mx-auto">
+                  <Card
+                    key={campaign.campaign_id}
+                    cid={campaign.campaign_id}
+                    causeName={campaign.campaign_name || "Unknown Cause"}
+                    imageSrc={campaign.cover_photo || "/default-image.webp"}
+                    location={campaign.location}
+                    progress={campaign.total_donations}
+                    token_id={campaign.campaign_id}
+                    campaign_address={campaign.campaign_address || "0x0"}
+                    target={String(campaign.target_amount)}
+                    url={url}
+                  />
+                </div>
+              );
+            })}
         </div>
         <button className="mx-auto mt-8 block w-fit rounded-[25px] px-4 py-2 text-sm text-foreground-primary ring-1 ring-[#808080]">
           See More

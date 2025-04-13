@@ -18,7 +18,9 @@ const config: Config = {
       fontSize: {
         clamp: "clamp(0.5rem, 5vw, 1rem)"
       },
-
+      lineClamp: {
+        8: "8"
+      },
       fontFamily: {
         "Holly-Bale": ["Belanosima", "sans-serif"],
         poppins: ["Poppins", "sans-serif"],
