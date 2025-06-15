@@ -22,15 +22,15 @@ const Categories = ({ showIntro = true }) => {
         </div>
       )}
       <div>
-        <div className="mx-auto grid max-w-[55rem] grid-cols-5 gap-2 max-[950px]:grid-cols-4 max-[850px]:grid-cols-3 max-lgMobile:grid-cols-2 max-[340px]:grid-cols-1">
+        <div className="mx-auto grid max-w-[25rem] grid-cols-2 gap-2 lgMobile:max-w-[40rem] lgMobile:grid-cols-3 md:max-w-[60rem] md:grid-cols-4 md:gap-3 lg:grid-cols-5">
           {CATEGORIES.map((category, index) => (
             <Link
               href={`/discover/${category.slug}`}
               key={category.name}
-              className="flex flex-col items-center justify-center transition-transform hover:scale-105"
+              className="group flex flex-col items-center justify-center transition-all duration-300"
             >
-              <div className="mb-2 grid h-[10rem] w-full place-content-center rounded-[10px] bg-[#F7F7F6] transition-colors hover:bg-gray-100">
-                <div className="h-[65px] w-[65px]">
+              <div className="mb-2 grid h-[10rem] w-full place-content-center rounded-[10px] bg-[#F7F7F6] transition-all duration-300 hover:bg-gray-100 group-hover:scale-105">
+                <div className="h-[65px] w-[65px] grayscale group-hover:grayscale-0">
                   <Image
                     src={category.imageUrl}
                     alt={category.name}
