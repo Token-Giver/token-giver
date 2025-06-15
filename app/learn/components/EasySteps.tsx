@@ -14,55 +14,55 @@ function EasySteps() {
     );
   };
   return (
-    <div className="px-[100px] py-[90px]">
-      <div className="mx-auto max-w-[925px]">
-        <h3 className="text-raisin-black mb-4 text-center font-agrandir text-3xl">
-          Easy <span className="font-AgrandirRegular">Steps</span> You Can't
-          Miss
-        </h3>
-        <p className="mb-[30px] text-center text-base leading-8 text-foreground-secondary">
-          TokenGiver makes fundraising and donating a seamless experience with
+    <div className="py-8 md:px-8">
+      <div className="space-y-6 text-center">
+        <h2 className="mb-4 text-center max-lgMobile:text-xl">
+          <span className="font-agrandir">Easy</span> Steps{" "}
+          <span className="font-agrandir">You Can't Miss</span>
+        </h2>
+        <p className="text-foreground-secondary">
+          Token Giver makes fundraising and donating a seamless experience with
           cutting-edge blockchain technology.
         </p>
       </div>
 
       <div
         onClick={toggleTab}
-        className="relative mx-auto flex w-fit cursor-pointer items-center gap-x-[10px] rounded-full bg-[#F0F0F0] p-[10px] text-lg leading-6 transition-colors duration-300"
+        className="relative mx-auto mt-8 flex h-10 w-[280px] cursor-pointer items-center gap-x-2 rounded-full bg-[#F0F0F0] p-0.5 text-lg leading-6 transition-all duration-300 hover:bg-[#E8E8E8]"
       >
         <div
-          className={`absolute left-0 top-1/2 h-[43px] w-[140px] -translate-y-1/2 rounded-full bg-white shadow-md transition-transform duration-300 ${
+          className={`absolute left-0.5 top-1/2 h-[calc(100%-4px)] w-[calc(50%-3px)] -translate-y-1/2 rounded-full bg-white shadow-sm transition-all duration-300 ease-in-out ${
             currentTab === "donations"
-              ? "translate-x-[10px]"
-              : "translate-x-[155px]"
+              ? "translate-x-0"
+              : "translate-x-[calc(100%+2px)]"
           }`}
         />
         <span
-          className={`relative z-10 rounded-full px-[30px] py-2 text-sm font-medium transition-colors duration-300 ${
+          className={`relative z-10 flex-1 rounded-full px-4 py-1.5 text-center text-sm transition-colors duration-300 ${
             currentTab === "donations"
               ? "font-semibold text-[#121212]"
-              : "font-medium text-[#8E9BAE]"
+              : "text-[#8E9BAE]"
           }`}
         >
           Donations
         </span>
         <span
-          className={`relative z-10 px-[30px] py-3 text-center text-sm font-medium transition-colors duration-300 ${
+          className={`relative z-10 flex-1 rounded-full px-4 py-1.5 text-center text-sm transition-colors duration-300 ${
             currentTab === "fundraisers"
               ? "font-semibold text-[#121212]"
-              : "font-medium text-[#8E9BAE]"
+              : "text-[#8E9BAE]"
           }`}
         >
           Fundraisers
         </span>
       </div>
 
-      <div className="mt-[38px]">
-        <h2 className="font-AgrandirRegular mb-[14px] text-xl text-foreground-secondary">
+      <div className="mx-auto max-w-[400px] py-8 lg:max-w-none">
+        <h2 className="font-AgrandirRegular text-foreground-secondary">
           {currentTab === "donations" ? "For Donors" : "For Fundraisers"}
         </h2>
 
-        <div className="flex flex-col gap-y-[50px]">
+        <div className="flex flex-col">
           {currentTab === "donations"
             ? donorSteps.map((step) => <StepBlock step={step} key={step.id} />)
             : fundraiserSteps.map((step) => (
