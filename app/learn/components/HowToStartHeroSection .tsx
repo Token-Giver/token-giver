@@ -20,7 +20,7 @@ function HowToStartHeroSection() {
       </div>
 
       <p className="mx-auto max-w-[600px]">
-        At TokenGiver, our mission is to revolutionize the world of fundraising
+        At Token Giver, our mission is to revolutionize the world of fundraising
         by merging the best of blockchain technology with the spirit of giving.
         We aim to create a world where every donation is not only impactful but
         also secure, transparent, and accountable.
