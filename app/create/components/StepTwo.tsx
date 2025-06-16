@@ -64,7 +64,7 @@ const StepTwo = ({
 
   return (
     <fieldset
-      className={`mx-auto h-auto xl:h-[60vh] 2xl:h-auto max-w-2xl animate-fadeIn space-y-6 md:overflow-y-auto pb-8 ${
+      className={`mx-auto max-w-2xl animate-fadeIn space-y-6 ${
         disabled ? "opacity-70" : "opacity-100"
       }`}
     >
@@ -158,7 +158,7 @@ const StepTwo = ({
         )}
       </div>
       <div className="space-y-2">
-        <div className="flex items-center gap-2 flex-wrap">
+        <div className="flex flex-wrap items-center gap-2">
           <p>Additional Campaign Images</p>
           <label className="cursor-pointer text-green-500 hover:text-accent-green/80">
             <span className="font-bold">Choose files</span>

@@ -4,7 +4,7 @@ export const howToSteps = [
   {
     title: "Choose Your Cause",
     description:
-      "Explore verified campaigns and choose the ones closest to your heart.",
+      "Explore  campaigns and choose the ones closest to your heart.",
     index: 1,
     position: "bottom-[64px] left-[400px]",
     isReverse: true
@@ -88,25 +88,25 @@ export const faqs = [
   {
     question: "How do NFTs work in fundraising?",
     answer:
-      "Token Giver is a decentralized application designed to revolutionize charity and fundraising. With Token Giver, users can create and manage campaigns by minting unique campaign NFTs, which have Token Bound Accounts (TBA) deployed on them automatically.",
+      "NFTs are used to represent campaigns and donations. Each NFT has a TBA deployed on it, which is used to track the campaign and donations.",
     index: 2
   },
   {
     question: "What are Token Bound Accounts (TBAs)?",
     answer:
-      "Token Giver is a decentralized application designed to revolutionize charity and fundraising. With Token Giver, users can create and manage campaigns by minting unique campaign NFTs, which have Token Bound Accounts (TBA) deployed on them automatically.",
+      "TBAs are used smart accounts that are deployed on NFTs. Each campaign on Token Giver has a TBA deployed on it, which is used to track the campaign and donations.",
     index: 3
   },
   {
     question: "Is my donation safe?",
     answer:
-      "Token Giver is a decentralized application designed to revolutionize charity and fundraising. With Token Giver, users can create and manage campaigns by minting unique campaign NFTs, which have Token Bound Accounts (TBA) deployed on them automatically.",
+      "Yes, your donation is safe. Each donation is tracked on the blockchain, and you can see the impact of your donation in real-time.",
     index: 4
   },
   {
     question: "Can I support multiple causes?",
     answer:
-      "Token Giver is a decentralized application designed to revolutionize charity and fundraising. With Token Giver, users can create and manage campaigns by minting unique campaign NFTs, which have Token Bound Accounts (TBA) deployed on them automatically.",
+      "Yes, you can support multiple causes. You can donate to multiple campaigns at the same time.",
     index: 5
   }
 ];
@@ -156,11 +156,11 @@ export const donorSteps: Step[] = [
   {
     id: 1,
     title: "Make a Secure Donation",
-    subtext: "Contribute to a campaign securely through TokenGiver.",
+    subtext: "Contribute to a campaign securely through Token Giver.",
     illus: "/steps/donors/step-2.png",
     points: [
       "Select the amount you wish to donate.",
-      "Complete the transaction using crypto or fiat payment options.",
+      "Complete the transaction using crypto  payment options.",
       "Receive a unique NFT as a digital receipt of your donation."
     ]
   },
@@ -170,7 +170,7 @@ export const donorSteps: Step[] = [
     subtext: "Stay connected with your chosen campaign.",
     illus: "/steps/donors/step-3.png",
     points: [
-      "View updates from the fundraiser through your Token Bound Account (TBA).",
+      "View updates from the fundraiser through the Token Giver app.",
       "Monitor how your donation is making a difference."
     ]
   }
@@ -184,7 +184,7 @@ export const fundraiserSteps: Step[] = [
     points: [
       "Add campaign details such as title, description, target goal, and timeline.",
       "Upload multimedia assets like images and videos to make your campaign more engaging.",
-      "Select a unique NFT design to represent your campaign and activate your Token Bound Account (TBA)."
+      "Mint your campaign!"
     ]
   },
   {
@@ -193,8 +193,8 @@ export const fundraiserSteps: Step[] = [
     subtext: "Share your campaign to reach more donors.",
     illus: "/steps/fundraiser/step-2.png",
     points: [
-      "Use the TokenGiver sharing tools to post your campaign on social media, email, and other platforms.",
-      "Engage with the TokenGiver community by featuring your campaign on our trending section."
+      "Use the Token Giver sharing tools to post your campaign on social media, email, and other platforms.",
+      "Engage with the Token Giver community by featuring your campaign on our trending section."
     ]
   },
   {

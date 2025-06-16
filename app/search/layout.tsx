@@ -11,5 +11,5 @@ export default function SearchRootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <main>{children}</main>;
+  return <main className="mx-auto max-w-[1536px]">{children}</main>;
 }

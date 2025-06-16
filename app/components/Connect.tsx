@@ -23,7 +23,7 @@ const Connect = ({ className }: { className?: string }) => {
     <>
       <button
         onClick={() => (address ? disconnect() : setIsOpen(true))}
-        className={`flex items-center rounded-[25px] px-2 py-2 text-accent-green ring-1 ring-accent-green ${className}`}
+        className={`flex items-center rounded-[25px] px-2 py-2 text-sm text-accent-green ring-1 ring-accent-green ${className}`}
       >
         {shortenedAddress && <ProfileIcon width="1.5em" height="1.5em" />}
         <span className="truncate px-2">
@@ -31,7 +31,7 @@ const Connect = ({ className }: { className?: string }) => {
         </span>
       </button>
       <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="h-screen rounded-none p-3 sm:h-auto sm:min-w-[32rem] sm:rounded-lg">
+        <DialogContent className="h-screen w-full rounded-none p-3 sm:h-auto sm:max-w-[28rem] sm:rounded-lg sm:py-4 md:max-w-[clamp(700px,95vw,800px)]">
           <div className="grid h-full grid-cols-1 md:grid-cols-5">
             <div className="relative col-span-2 hidden overflow-hidden md:block">
               <Image
@@ -49,11 +49,11 @@ const Connect = ({ className }: { className?: string }) => {
                   Connect Wallet
                 </DialogTitle>
                 <p className="text-sm text-foreground-secondary md:text-base">
-                  Please choose a wallet you want to connect to TokenGiver.
+                  Please choose a wallet you want to connect to Token Giver.
                   There are several wallet providers.
                 </p>
 
-                <div className="mx-auto grid w-[70%] grid-cols-1 gap-2 overflow-y-auto p-1 xs:grid-cols-2 md:max-h-[270px] md:w-[100%] md:grid-cols-4 md:gap-2 lg:w-[100%]">
+                <div className="mx-auto grid grid-cols-1 gap-2 overflow-y-auto p-1 xs:grid-cols-2 md:max-h-[270px] md:w-[100%] md:grid-cols-4 md:gap-2 lg:w-[100%]">
                   {connectors.map((connector) => {
                     if (!connector.id || !connector.available()) return null;
                     return (
@@ -62,11 +62,11 @@ const Connect = ({ className }: { className?: string }) => {
                         onClick={() => connect({ connector })}
                         className="text-xs md:text-sm"
                       >
-                        <div className="mx-auto mb-1 grid h-[100px] place-content-center rounded-[5.3px] bg-[#F7F6F6] md:h-[100px] md:w-[100px] lg:h-[100px] lg:w-[100px]">
+                        <div className="mx-auto mb-1 grid h-[100px] place-content-center rounded-[5.3px] bg-[#F7F6F6] md:h-[90px] md:w-[90px] lg:h-[100px] lg:w-[100px]">
                           <div className="grid h-[60px] w-[60px] place-content-center md:h-[50px] md:w-[50px]">
                             {typeof connector.icon === "string" ? (
                               <img
-                                className="w-[50px]"
+                                className="w-[30px]"
                                 src={connector.icon}
                                 alt={`${connector.name} icon`}
                               />
@@ -108,7 +108,7 @@ const Connect = ({ className }: { className?: string }) => {
                             )}
                           </div>
                         </div>
-                        <span className="inline-block w-full truncate pb-2 pt-2 text-center text-[16px] font-medium">
+                        <span className="inline-block w-full truncate pb-2 pt-2 text-center font-medium">
                           {connector.name}
                         </span>
                       </button>

@@ -7,7 +7,7 @@ const featuredCampaigns = [
     title: "Clean Water Initiative in Tanzania",
     description:
       "Help us build sustainable water wells in rural communities, providing clean drinking water to over 10,000 people.",
-    image: "/default-image.webp",
+    image: "/temp-2.jpg",
     featured: true
   },
   {
@@ -15,14 +15,14 @@ const featuredCampaigns = [
     title: "Tech Education for Girls",
     description:
       "Supporting young women in STEM through coding bootcamps and mentorship programs across Southeast Asia.",
-    image: "/default-image.webp"
+    image: "/temp-0.jpg"
   },
   {
     id: 3,
     title: "Reforestation Project Amazon",
     description:
       "Join our mission to plant 100,000 trees in deforested areas of the Amazon rainforest and support local communities.",
-    image: "/default-image.webp"
+    image: "/temp-1.jpg"
   }
 ];
 

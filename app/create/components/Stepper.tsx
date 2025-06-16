@@ -1,46 +1,56 @@
 const Stepper = ({ currentStep }: { currentStep: number }) => {
   return (
     <div className="relative mx-auto mb-8 flex max-w-2xl items-center justify-between">
-      {/* Line container that spans full width */}
-      <div className="absolute left-0 top-5 w-full">
-        <div
-          className={`absolute left-[80px] h-[1px] w-[calc(50%-110px)] transition-colors duration-500 ${
-            currentStep >= 2 ? "bg-accent-green" : "bg-[#D9D9D9]"
-          }`}
-        />
-        <div
-          className={`absolute right-[85px] h-[1px] w-[calc(50%-110px)] transition-colors duration-500 ${
-            currentStep >= 3 ? "bg-accent-green" : "bg-[#D9D9D9]"
-          }`}
-        />
-      </div>
+      <div
+        className={`absolute top-[1.3rem] h-[1px] w-full transition-colors duration-500 ${
+          currentStep >= 3 ? "bg-accent-green" : "bg-[#D9D9D9]"
+        }`}
+      />
+
+      {/* Background line */}
+      <div className="absolute top-[1.3rem] h-[1px] w-full bg-[#D9D9D9]" />
+
+      {/* Progress line */}
+      <div
+        className="absolute top-[1.3rem] h-[1px] bg-accent-green transition-all duration-500"
+        style={{
+          width: `${((currentStep - 1) / 2) * 100}%`,
+          maxWidth: "100%"
+        }}
+      />
 
       {/* Steps */}
-      <div className="z-10 flex flex-col items-center justify-center">
+      <div className="relative z-10 flex flex-col items-center justify-center">
         <div
           className={`mb-3 grid h-[40px] w-[40px] place-content-center rounded-full ${currentStep >= 1 ? "bg-accent-green" : "bg-gray-300"} font-agrandir font-bold text-white`}
         >
           1
         </div>
-        <p className="text-foreground-secondary hidden sm:block">Connect Wallet</p>
+        <p className="absolute bottom-[-1rem] ml-4 hidden whitespace-nowrap text-foreground-secondary md:block">
+          Connect Wallet
+        </p>
       </div>
 
-      <div className="z-10 flex flex-col items-center justify-center">
+      <div className="relative z-10 flex flex-col items-center justify-center">
         <div
           className={`mb-3 grid h-[40px] w-[40px] place-content-center rounded-full ${currentStep >= 2 ? "bg-accent-green" : "bg-gray-300"} font-agrandir font-bold text-white`}
         >
           2
         </div>
-        <p className="text-foreground-secondary hidden sm:block">Campaign Details</p>
+        <p className="absolute bottom-[-1rem] hidden whitespace-nowrap text-foreground-secondary md:block">
+          Campaign Details
+        </p>
       </div>
 
-      <div className="z-10 flex flex-col items-center justify-center">
+      <div className="relative z-10 flex flex-col items-center justify-center">
         <div
           className={`mb-3 grid h-[40px] w-[40px] place-content-center rounded-full ${currentStep >= 3 ? "bg-accent-green" : "bg-gray-300"} font-agrandir font-bold text-white`}
         >
           3
         </div>
-        <p className="text-foreground-secondary hidden sm:block">Creator Details</p>
+        <p className="absolute bottom-[-1rem] mr-4 hidden whitespace-nowrap text-foreground-secondary md:block">
+          Creator Details
+        </p>
       </div>
     </div>
   );

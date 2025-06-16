@@ -12,6 +12,7 @@ import {
   MediumIcon,
   XIcon
 } from "@/svgs/social.icons";
+import { useState } from "react";
 
 interface StepThreeProps {
   disabled: boolean;
@@ -74,9 +75,24 @@ const StepThree = ({
   errors,
   onReview
 }: StepThreeProps) => {
+  const [selectedSocials, setSelectedSocials] = useState<string[]>([]);
+  const [customLinkCount, setCustomLinkCount] = useState(1);
+
+  const handleSocialSelect = (platform: string) => {
+    setSelectedSocials((prev) =>
+      prev.includes(platform)
+        ? prev.filter((p) => p !== platform)
+        : [...prev, platform]
+    );
+  };
+
+  const handleAddCustomLink = () => {
+    setCustomLinkCount((prev) => prev + 1);
+  };
+
   return (
     <fieldset
-      className={`mx-auto h-auto xl:h-[60vh] 2xl:h-auto max-w-2xl animate-fadeIn space-y-6 md:overflow-y-auto pb-8 ${
+      className={`mx-auto h-auto max-w-2xl animate-fadeIn space-y-6 pb-8 md:overflow-y-auto ${
         disabled ? "opacity-70" : "opacity-100"
       }`}
     >
@@ -200,29 +216,68 @@ const StepThree = ({
           Social Links
         </label>
         <div className="space-y-3">
-          {predefinedSocialLinks.map((social) => (
-            <div key={social.name} className="relative">
-              <span className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground-secondary">
-                {social.icon}
-              </span>
-              <input
-                {...(register as UseFormRegister<StepThreeFields>)(
-                  `socials.${social.name}` as keyof StepThreeFields
-                )}
-                type="url"
-                className="w-full rounded-[7px] border border-[#DAE0E6] px-3 py-3 pl-10 placeholder:text-sm focus:ring-1 focus:ring-accent-green"
-                placeholder={social.placeholder}
+          <div className="flex flex-wrap gap-2">
+            {predefinedSocialLinks.map((social) => (
+              <button
+                key={social.name}
+                type="button"
+                onClick={() => handleSocialSelect(social.name)}
+                className={`flex items-center gap-2 rounded-full px-4 py-2 text-sm transition-colors ${
+                  selectedSocials.includes(social.name)
+                    ? "bg-accent-green text-white"
+                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                }`}
                 disabled={disabled}
-              />
-            </div>
-          ))}
+              >
+                {social.icon}
+                <span className="capitalize">{social.name}</span>
+              </button>
+            ))}
+          </div>
 
-          {/* Custom links section */}
           <div className="space-y-3">
-            <label className="block text-sm font-medium text-gray-700">
-              Additional Links
-            </label>
-            {[0, 1, 2].map((index) => (
+            {selectedSocials.map((platform) => {
+              const social = predefinedSocialLinks.find(
+                (s) => s.name === platform
+              );
+              if (!social) return null;
+
+              return (
+                <div key={platform} className="relative">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground-secondary">
+                    {social.icon}
+                  </span>
+                  <input
+                    {...(register as UseFormRegister<StepThreeFields>)(
+                      `socials.${platform}` as keyof StepThreeFields
+                    )}
+                    type="url"
+                    className="w-full rounded-[7px] border border-[#DAE0E6] px-3 py-3 pl-10 placeholder:text-sm focus:ring-1 focus:ring-accent-green"
+                    placeholder={social.placeholder}
+                    disabled={disabled}
+                  />
+                </div>
+              );
+            })}
+          </div>
+
+          <div className="space-y-3">
+            <div className="flex items-center justify-between">
+              <label className="block text-sm font-medium text-gray-700">
+                Additional Links
+              </label>
+              <button
+                type="button"
+                onClick={handleAddCustomLink}
+                disabled={disabled}
+                className="flex items-center gap-1 rounded-full bg-gray-100 px-3 py-1 text-sm text-gray-700 transition-colors hover:bg-gray-200"
+              >
+                <span className="text-lg">+</span>
+                <span>Add Link</span>
+              </button>
+            </div>
+
+            {Array.from({ length: customLinkCount }).map((_, index) => (
               <div key={`custom-${index}`} className="relative">
                 <span className="absolute left-3 top-1/2 -translate-y-1/2 text-foreground-secondary">
                   <GlobeIcon />
