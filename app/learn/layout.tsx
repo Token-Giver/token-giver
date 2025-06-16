@@ -9,5 +9,9 @@ export const metadata: Metadata = {
 export default function LearnRootLayout({
   children
 }: Readonly<{ children: React.ReactNode }>) {
-  return <main>{children}</main>;
+  return (
+    <main className="mx-auto mt-[5rem] flex max-w-[1100px] flex-col gap-10 px-4 py-8 md:px-8 xl:px-16">
+      {children}
+    </main>
+  );
 }
