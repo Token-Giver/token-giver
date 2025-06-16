@@ -13,7 +13,7 @@ const Hero = () => {
         Transform Charity with Blockchain.
       </h1>
       <p className="mb-4 text-sm text-foreground-secondary max-lgMobile:mt-2 lgMobile:mb-6 lgMobile:text-base">
-        Fussing compassion with innovation. Maximizing your contributions'
+        Fusing compassion with innovation. Maximizing your contributions'
         impact with security and transparency.
       </p>
       <button
