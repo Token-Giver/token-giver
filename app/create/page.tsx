@@ -281,7 +281,7 @@ const Page = () => {
     <>
       <div className="min-h-screen lg:grid lg:grid-cols-9">
         <div className="col-span-3 bg-accent-green">
-          <div className="relative h-full w-full">
+          <div className="relative h-full max-h-screen w-full">
             <Image
               src="/create-bg.png"
               alt="Background description"
@@ -301,7 +301,6 @@ const Page = () => {
                   <span className="inline-block rotate-180 text-lg">
                     <RightArrowIcon />
                   </span>
-                  Back
                 </button>
               ) : (
                 <button onClick={() => router.back()}>
@@ -355,71 +354,6 @@ const Page = () => {
           </div>
         </div>
       </div>
-      {/* <div className="grid h-screen grid-cols-7 2xl:h-[calc(100vh-39.1rem)]">
-        <div className="relative col-span-3 hidden h-full place-content-center bg-accent-green lg:grid">
-          <div className="relative h-[700px] w-[500px]">
-            <Image
-              src="/create-bg.png"
-              alt="Background description"
-              fill
-              className="object-cover"
-              priority
-            />
-          </div>
-        </div>
-        <div className="0 col-span-4 h-full space-y-8 overflow-y-auto px-16 pt-8">
-          <div className="mx-auto flex max-w-4xl items-center justify-between">
-            {currentStep === 3 && (
-              <button
-                onClick={() => setCurrentStep(2)}
-                className="flex animate-fadeIn items-center text-accent-green"
-              >
-                <span className="inline-block rotate-180 text-lg">
-                  <RightArrowIcon />
-                </span>
-                Back
-              </button>
-            )}
-            <div className="ml-auto w-fit text-sm">
-              <Connect />
-            </div>
-          </div>
-          <div className="mt-auto">
-            <Stepper currentStep={currentStep} />
-            <div className="mx-auto max-w-2xl">
-              <h2 className="font-agrandir font-bold text-foreground-primary">
-                Create your Campaign
-              </h2>
-              <p className="text-foreground-secondary">
-                Fill in the appropriate details for your campaign and let's get
-                started.
-              </p>
-            </div>
-
-            <form className="">
-              {currentStep !== 3 && (
-                <StepTwo
-                  disabled={!isWalletConnected || currentStep === 1}
-                  onNextStep={handleNextStep}
-                  register={register as UseFormRegister<StepTwoFields>}
-                  errors={errors as FieldErrors<StepTwoFields>}
-                  currentValues={currentValues as StepTwoFields}
-                  setValue={stepTwoForm.setValue}
-                />
-              )}
-
-              {currentStep === 3 && (
-                <StepThree
-                  register={register as UseFormRegister<StepThreeFields>}
-                  errors={errors as FieldErrors<StepThreeFields>}
-                  disabled={!isWalletConnected}
-                  onReview={handleReview}
-                />
-              )}
-            </form>
-          </div>
-        </div>
-      </div> */}
 
       <ReviewCampaign
         setShowReview={setShowReview}
