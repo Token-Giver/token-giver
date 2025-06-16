@@ -30,6 +30,7 @@ import { generateRandomInt } from "@/util";
 import { useMutation } from "@apollo/client";
 import { CREATE_CAMPAIGN } from "@/graphql/mutations";
 import ReviewCampaign from "./components/ReviewCampaign";
+import Link from "next/link";
 
 // Create union type of both schema types
 type FormData = z.infer<typeof StepTwoSchema> | z.infer<typeof StepThreeSchema>;
@@ -73,6 +74,7 @@ const Page = () => {
   } = currentForm;
 
   const currentValues = watch();
+  const router = useRouter();
 
   const handleNextStep = async () => {
     const isValid = await stepTwoForm.trigger();
@@ -277,7 +279,83 @@ const Page = () => {
   }, [formData]);
   return (
     <>
-      <main className="grid h-screen grid-cols-7 2xl:h-[calc(100vh-39.1rem)]">
+      <div className="min-h-screen lg:grid lg:grid-cols-9">
+        <div className="col-span-3 bg-accent-green">
+          <div className="relative h-full w-full">
+            <Image
+              src="/create-bg.png"
+              alt="Background description"
+              fill
+              className="object-contain"
+            />
+          </div>
+        </div>
+        <div className="p-4 md:p-8 lg:col-span-6">
+          <div className="mx-auto flex h-full max-w-4xl flex-col gap-8">
+            <div className="mx-auto flex w-full max-w-2xl items-center justify-between lg:max-w-none">
+              {currentStep === 3 ? (
+                <button
+                  onClick={() => setCurrentStep(2)}
+                  className="flex animate-fadeIn items-center text-accent-green"
+                >
+                  <span className="inline-block rotate-180 text-lg">
+                    <RightArrowIcon />
+                  </span>
+                  Back
+                </button>
+              ) : (
+                <button onClick={() => router.back()}>
+                  {" "}
+                  <span className="inline-block rotate-180 text-lg">
+                    <RightArrowIcon />
+                  </span>
+                </button>
+              )}
+              <div className="ml-auto w-fit text-sm">
+                <Connect />
+              </div>
+            </div>
+
+            <div className="w-full flex-1 2xl:flex 2xl:items-center 2xl:justify-center">
+              <div className="h-full w-full space-y-4 2xl:max-h-[896px]">
+                <Stepper currentStep={currentStep} />
+                <div className="mx-auto max-w-2xl">
+                  <h2 className="font-agrandir font-bold text-foreground-primary">
+                    Create your Campaign
+                  </h2>
+                  <p className="text-foreground-secondary">
+                    Fill in the appropriate details for your campaign and let's
+                    get started.
+                  </p>
+                </div>
+
+                <form className="">
+                  {currentStep !== 3 && (
+                    <StepTwo
+                      disabled={!isWalletConnected || currentStep === 1}
+                      onNextStep={handleNextStep}
+                      register={register as UseFormRegister<StepTwoFields>}
+                      errors={errors as FieldErrors<StepTwoFields>}
+                      currentValues={currentValues as StepTwoFields}
+                      setValue={stepTwoForm.setValue}
+                    />
+                  )}
+
+                  {currentStep === 3 && (
+                    <StepThree
+                      register={register as UseFormRegister<StepThreeFields>}
+                      errors={errors as FieldErrors<StepThreeFields>}
+                      disabled={!isWalletConnected}
+                      onReview={handleReview}
+                    />
+                  )}
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <div className="grid h-screen grid-cols-7 2xl:h-[calc(100vh-39.1rem)]">
         <div className="relative col-span-3 hidden h-full place-content-center bg-accent-green lg:grid">
           <div className="relative h-[700px] w-[500px]">
             <Image
@@ -289,7 +367,7 @@ const Page = () => {
             />
           </div>
         </div>
-        <div className="col-span-4 h-full space-y-8 overflow-y-auto px-16 pt-8">
+        <div className="0 col-span-4 h-full space-y-8 overflow-y-auto px-16 pt-8">
           <div className="mx-auto flex max-w-4xl items-center justify-between">
             {currentStep === 3 && (
               <button
@@ -306,7 +384,7 @@ const Page = () => {
               <Connect />
             </div>
           </div>
-          <div>
+          <div className="mt-auto">
             <Stepper currentStep={currentStep} />
             <div className="mx-auto max-w-2xl">
               <h2 className="font-agrandir font-bold text-foreground-primary">
@@ -341,7 +419,7 @@ const Page = () => {
             </form>
           </div>
         </div>
-      </main>
+      </div> */}
 
       <ReviewCampaign
         setShowReview={setShowReview}
