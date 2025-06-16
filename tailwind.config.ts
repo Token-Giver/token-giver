@@ -12,7 +12,7 @@ const config: Config = {
         xs: "300px",
         xMobile: "380px",
         mobile: "480px",
-        lgMobile: "580px",
+        lgMobile: "620px",
         xTablet: "920px"
       },
       fontSize: {

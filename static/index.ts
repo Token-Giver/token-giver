@@ -19,19 +19,19 @@ export const CATEGORIES = [
   },
   {
     name: "Arts and Crafts",
-    imageUrl: "/categories/arts.png",
+    imageUrl: "/categories/arts-and-crafts.png",
     id: 20,
     slug: "arts-and-crafts"
   },
   {
     name: "Community development",
-    imageUrl: "/categories/community.png",
+    imageUrl: "/categories/community-development.png",
     id: 21,
     slug: "community-development"
   },
   {
     name: "Science and technology",
-    imageUrl: "/categories/science.png",
+    imageUrl: "/categories/science-and-technology.png",
     id: 22,
     slug: "science-and-technology"
   },
@@ -55,7 +55,7 @@ export const CATEGORIES = [
   },
   {
     name: "Global Advocacy",
-    imageUrl: "/categories/global.png",
+    imageUrl: "/categories/global-advocacy.png",
     id: 26,
     slug: "global-advocacy"
   },
