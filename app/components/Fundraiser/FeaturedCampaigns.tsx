@@ -47,6 +47,7 @@ const FeaturedCampaigns = () => {
               src={campaign.image}
               alt={campaign.title}
               fill
+              priority
               className="object-cover"
             />
             <div

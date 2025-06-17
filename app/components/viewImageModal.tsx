@@ -32,17 +32,18 @@ const ViewModalImage = ({ images }: CampaignModal) => {
 
   return (
     <>
-      <div className="grid grid-cols-2 gap-3">
+      <div className="grid grid-cols-2 gap-1">
         {images.slice(0, 4).map((imageUrl, index) => (
           <div
             key={index}
             className="relative h-[11rem] w-full cursor-pointer overflow-clip rounded-[5px]"
             onClick={() => openModal(index)}
           >
-            <img
+            <Image
               src={imageUrl}
               alt={`campaign image ${index + 1}`}
               className="object-cover"
+              fill
             />
             {index === 3 && images.length > 4 && (
               <div className="absolute inset-0 flex items-center justify-center bg-black/50">
