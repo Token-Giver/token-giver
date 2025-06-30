@@ -4,9 +4,15 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "bronze-patient-capybara-360.mypinata.cloud",
+        hostname: "picsum.photos",
         port: "",
-        pathname: "/ipfs/**"
+        pathname: "/**"
+      },
+      {
+        protocol: "https",
+        hostname: "token-giver-backend-production.up.railway.app",
+        port: "",
+        pathname: "//images/**"
       }
     ]
   }

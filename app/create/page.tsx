@@ -108,7 +108,9 @@ const Page = () => {
     organizer,
     target,
     socials,
-    location
+    location,
+    additionalImages,
+    category = 1
   }: {
     name: string;
     description: string;
@@ -118,80 +120,255 @@ const Page = () => {
     beneficiary: string;
     location: string;
     socials: { [key: string]: string };
+    additionalImages: File[];
+    category?: number;
   }) {
-    // setCreatingCampaign((prev) => !prev);
-    // setLoadingPercentage(10);
-    try {
-      setCreatingCampaign(true);
-      setLoadingPercentage(10);
+    console.log("🚀 Starting campaign creation process...");
+    console.log("📋 Campaign details:", {
+      name,
+      description: description.substring(0, 50) + "...",
+      target,
+      organizer,
+      beneficiary,
+      location,
+      category,
+      hasImage: !!image,
+      additionalImagesCount: additionalImages?.length || 0,
+      socialsCount: Object.keys(socials || {}).length
+    });
 
+    try {
+      // Step 1: Validate contract and account
+      console.log("🔍 Step 1: Validating contract and account...");
       if (!createCampaignContract) {
+        console.error("❌ Campaign contract not initialized");
         throw new Error("Campaign contract not initialized");
       }
+      console.log("✅ Campaign contract validated");
 
       if (!account) {
+        console.error("❌ No wallet account found");
         throw new Error("Please connect your wallet to continue");
       }
+      console.log("✅ Wallet account validated:", account.address);
 
+      setCreatingCampaign(true);
+      setLoadingPercentage(20);
+
+      // Step 2: Generate campaign ID and salt
+      console.log("🔢 Step 2: Generating campaign ID and salt...");
       const campaignId = generateRandomInt(6);
       const salt = generateRandomInt(4);
+      console.log("✅ Generated campaign ID:", campaignId, "and salt:", salt);
 
-      setLoadingPercentage(30);
-      const { data, errors } = await createCampaign({
-        variables: {
-          campaignData: {
-            campaign_id: campaignId,
-            campaign_name: name,
-            campaign_description: description,
-            cover_photo: "https://picsum.photos/500/300",
-            social_links: socials,
-            target_amount: target,
-            organizer: organizer,
-            beneficiary: beneficiary
+      let bannerUrl = "";
+      let additionalImagesUrls = [];
+
+      // Step 3: Upload banner image
+      if (image) {
+        console.log("📤 Step 3: Uploading banner image...");
+        try {
+          const formData = new FormData();
+          formData.append("files", image);
+          console.log("📁 Image file details:", {
+            name: image.name,
+            size: image.size,
+            type: image.type
+          });
+
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_TOKEN_GIVER_BACKEND_URL}/image`,
+            {
+              method: "POST",
+              body: formData
+            }
+          );
+
+          console.log("📡 Banner upload response status:", response.status);
+
+          if (response.ok) {
+            const result = await response.json();
+            bannerUrl = result[0].url;
+            console.log("✅ Banner upload successful:", {
+              url: bannerUrl,
+              result: result
+            });
+          } else {
+            const errorText = await response.text();
+            console.error("❌ Banner upload failed:", {
+              status: response.status,
+              statusText: response.statusText,
+              error: errorText
+            });
+            throw new Error(
+              `Banner upload failed: ${response.status} ${response.statusText}`
+            );
           }
+        } catch (uploadError) {
+          console.error("❌ Banner upload error:", uploadError);
+          throw new Error(
+            `Failed to upload banner image: ${uploadError instanceof Error ? uploadError.message : "Unknown error"}`
+          );
         }
-      });
-
-      if (errors?.length) {
-        throw new Error(`Database error: ${errors[0].message}`);
+      } else {
+        console.log("ℹ️ No banner image provided, skipping upload");
       }
 
-      if (!data) {
-        throw new Error("Failed to create campaign in database");
+      setLoadingPercentage(40);
+
+      // Step 4: Upload additional images
+      if (additionalImages && additionalImages.length > 0) {
+        console.log("📤 Step 4: Uploading additional images...");
+        console.log("📁 Additional images count:", additionalImages.length);
+
+        try {
+          const additionalFormData = new FormData();
+          additionalImages.forEach((image, index) => {
+            additionalFormData.append("files", image);
+            console.log(`📁 Additional image ${index + 1}:`, {
+              name: image.name,
+              size: image.size,
+              type: image.type
+            });
+          });
+
+          const additionalResponse = await fetch(
+            `${process.env.NEXT_PUBLIC_TOKEN_GIVER_BACKEND_URL}/image`,
+            {
+              method: "POST",
+              body: additionalFormData
+            }
+          );
+
+          console.log(
+            "📡 Additional images upload response status:",
+            additionalResponse.status
+          );
+
+          if (additionalResponse.ok) {
+            const additionalResult = await additionalResponse.json();
+            additionalImagesUrls = additionalResult.map(
+              (item: any) => item.url
+            );
+            console.log("✅ Additional images upload successful:", {
+              urls: additionalImagesUrls,
+              result: additionalResult
+            });
+          } else {
+            const errorText = await additionalResponse.text();
+            console.error("❌ Additional images upload failed:", {
+              status: additionalResponse.status,
+              statusText: additionalResponse.statusText,
+              error: errorText
+            });
+            throw new Error(
+              `Additional images upload failed: ${additionalResponse.status} ${additionalResponse.statusText}`
+            );
+          }
+        } catch (uploadError) {
+          console.error("❌ Additional images upload error:", uploadError);
+          throw new Error(
+            `Failed to upload additional images: ${uploadError instanceof Error ? uploadError.message : "Unknown error"}`
+          );
+        }
+      } else {
+        console.log("ℹ️ No additional images provided, skipping upload");
       }
 
       setLoadingPercentage(60);
 
-      const createCampaignCall: Call = createCampaignContract.populate(
-        "create_campaign",
-        [
-          TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
-          REGISTRY_HASH,
-          IMPLEMENTATION_HASH,
-          salt,
-          account.address
-        ]
-      );
+      // Step 5: Execute blockchain transaction
+      console.log("⛓️ Step 5: Executing blockchain transaction...");
+      try {
+        const createCampaignCall: Call = createCampaignContract.populate(
+          "create_campaign",
+          [
+            TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
+            REGISTRY_HASH,
+            IMPLEMENTATION_HASH,
+            salt,
+            account.address
+          ]
+        );
+
+        console.log("📝 Populated transaction call:", {
+          method: "create_campaign",
+          params: [
+            TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
+            REGISTRY_HASH,
+            IMPLEMENTATION_HASH,
+            salt,
+            account.address
+          ]
+        });
+
+        console.log("🔄 Executing transaction...");
+        const result = await account.execute(createCampaignCall);
+        console.log("✅ Blockchain transaction successful:", result);
+      } catch (blockchainError) {
+        console.error("❌ Blockchain transaction failed:", blockchainError);
+        throw new Error(
+          `Blockchain transaction failed: ${blockchainError instanceof Error ? blockchainError.message : "Unknown error"}`
+        );
+      }
 
       setLoadingPercentage(80);
-      const result = await account.execute(createCampaignCall);
 
-      if (!result) {
-        throw new Error("Failed to execute campaign creation transaction");
+      // Step 6: Create campaign in database
+      console.log("💾 Step 6: Creating campaign in database...");
+      try {
+        const campaignData = {
+          campaign_id: campaignId,
+          campaign_name: name,
+          campaign_description: description,
+          cover_photo: bannerUrl,
+          campaign_images: additionalImagesUrls,
+          social_links: socials,
+          target_amount: target,
+          organizer: organizer,
+          beneficiary: beneficiary,
+          location,
+          category_id: category
+        };
+
+        console.log("📊 Campaign data for database:", campaignData);
+
+        const dbResult = await createCampaign({
+          variables: {
+            campaignData
+          }
+        });
+
+        console.log("✅ Database creation successful:", dbResult);
+      } catch (dbError) {
+        console.error("❌ Database creation failed:", dbError);
+        throw new Error(
+          `Failed to create campaign in database: ${dbError instanceof Error ? dbError.message : "Unknown error"}`
+        );
       }
 
       setLoadingPercentage(100);
+      console.log("🎉 Campaign creation completed successfully!");
+
       return { success: true, campaignId };
     } catch (error) {
+      console.error("💥 Campaign creation failed:", error);
       setLoadingPercentage(0);
+
       if (error instanceof Error) {
+        console.error("📝 Error details:", {
+          message: error.message,
+          stack: error.stack
+        });
         throw error;
       } else {
+        console.error("📝 Unknown error type:", error);
         throw new Error(
           "An unexpected error occurred while creating the campaign"
         );
       }
     } finally {
+      console.log("🏁 Cleaning up campaign creation state...");
       setCreatingCampaign(false);
     }
   }
@@ -210,9 +387,9 @@ const Page = () => {
 
     // Add custom links
     if (formData.customLinks) {
-      formData.customLinks.forEach(({ url }) => {
+      formData.customLinks.forEach(({ url }, index) => {
         if (url) {
-          links.push({ name: "website", url });
+          links.push({ name: `website ${index + 1}`, url });
         }
       });
     }
@@ -221,22 +398,22 @@ const Page = () => {
   };
 
   const onSubmit = async (data: FormData) => {
+    console.log("data in onSubmit", data);
+
     if (currentStep === 3) {
-      const stepThreeData = data as StepThreeFields;
-      const finalFormData = { ...formData, ...stepThreeData };
-      const links = transformLinks(finalFormData);
-      console.log("Complete form data:", finalFormData);
-      console.log(links);
+      const links = transformLinks(formData);
 
       handleCreateCampaign({
-        name: finalFormData.name,
-        description: finalFormData.description,
-        image: finalFormData.bannerImage,
-        target: Number(finalFormData.target),
-        organizer: finalFormData.organiser,
-        beneficiary: finalFormData.beneficiary,
-        location: finalFormData.location,
-        socials: Object.fromEntries(links.map((link) => [link.name, link.url]))
+        name: formData.name,
+        description: formData.description,
+        image: formData.bannerImage,
+        target: Number(formData.target),
+        organizer: formData.organiser,
+        beneficiary: formData.beneficiary,
+        location: formData.location,
+        socials: Object.fromEntries(links.map((link) => [link.name, link.url])),
+        additionalImages: formData.additionalImages,
+        category: Number(formData.category)
       });
     }
   };
@@ -268,15 +445,17 @@ const Page = () => {
           socials: stepThreeData.socials,
           customLinks: stepThreeData.customLinks
         };
-        console.log("Updated form data in review:", updatedData);
+        // console.log("Updated form data in review:", updatedData);
         return updatedData;
       });
       setShowReview(true);
     }
   };
+
   useEffect(() => {
     console.log("formData updated:", formData);
   }, [formData]);
+
   return (
     <>
       <div className="min-h-screen lg:grid lg:grid-cols-9">

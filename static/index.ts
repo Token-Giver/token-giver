@@ -1,4 +1,10 @@
 export const CATEGORIES = [
+  // {
+  //   name: "All",
+  //   imageUrl: "/categories/all.png",
+  //   id: 1,
+  //   slug: "all"
+  // },
   {
     name: "Health Care",
     imageUrl: "/categories/health-care.png",

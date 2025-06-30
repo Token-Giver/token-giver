@@ -7,7 +7,7 @@ import {
 } from "@apollo/client";
 
 const httpLink = new HttpLink({
-  uri: "https://token-giver-backend.onrender.com/graphql"
+  uri: `${process.env.NEXT_PUBLIC_TOKEN_GIVER_BACKEND_URL}/graphql`
 });
 
 // Add error handling
