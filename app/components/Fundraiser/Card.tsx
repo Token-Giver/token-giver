@@ -60,12 +60,16 @@ export const Card = ({
           alt={imageAltText ? imageAltText : ""}
           fill
         /> */}
-        <img src={imageSrc} alt="" className="absolute h-full" />
+        <img
+          src={imageSrc}
+          alt=""
+          className="absolute left-1/2 h-full -translate-x-1/2"
+        />
       </div>
 
       {/* Details */}
       <div className="flex flex-col gap-2">
-        <h4 className="line-clamp overflow-hidden font-agrandir text-[.9em] capitalize text-[#282828]">
+        <h4 className="line-clamp-2 min-h-[3em] overflow-hidden font-agrandir text-[.9em] capitalize text-[#282828]">
           {causeName}
         </h4>
         <p className="flex items-center gap-x-1 text-sm text-foreground-secondary">
@@ -122,7 +126,7 @@ export const BigCard = ({
   return (
     <div
       onClick={handleRoute}
-      className="mx-auto grid max-w-[1200px] animate-fadeIn cursor-pointer items-center gap-6 mobile:px-4 md:grid-cols-2 md:gap-8"
+      className="mx-auto grid max-w-[1200px] animate-fadeIn cursor-pointer items-center gap-6 mobile:px-4 sm:gap-3 md:grid-cols-2 md:gap-8"
     >
       <div className="h-[22rem] w-full overflow-clip rounded-[10px]">
         {/* <Image
@@ -140,7 +144,7 @@ export const BigCard = ({
       </div>
       <div className="flex h-fit flex-col gap-4 rounded-[10px] py-2 max-md:max-w-[580px] md:h-[22rem]">
         <div>
-          <h4 className="text-l line-clamp overflow-hidden font-agrandir capitalize text-[#282828]">
+          <h4 className="text-l line-clamp-3 overflow-hidden font-agrandir capitalize text-[#282828]">
             {causeName}
           </h4>
           <p className="flex items-center gap-x-1 text-foreground-secondary">

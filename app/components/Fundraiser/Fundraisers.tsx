@@ -9,7 +9,7 @@ import { ICampaign } from "@/types/campaigns";
 
 const CampaignGrid = ({ campaigns }: { campaigns: ICampaign[] }) => {
   return (
-    <div className="grid animate-fadeIn grid-cols-4 gap-4">
+    <div className="flex animate-fadeIn flex-col gap-2 md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
       {campaigns.slice(1).map((data) => {
         const url = generateCampaignUrl({
           campaignName: data.campaign_name || "campaign",
