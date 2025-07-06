@@ -146,7 +146,7 @@ const StepTwo = ({
               type="file"
               className="hidden"
               disabled={disabled}
-              accept="image/jpeg,image/png,image/webp"
+              accept="image/jpeg,image/png"
               onChange={handleBannerImageChange}
             />
           </label>
@@ -169,7 +169,7 @@ const StepTwo = ({
               type="file"
               className="hidden"
               multiple
-              accept="image/jpeg,image/png,image/webp"
+              accept="image/jpeg,image/png"
               disabled={disabled}
               onChange={handleAdditionalImagesChange}
             />
@@ -202,7 +202,7 @@ const StepTwo = ({
           >
             <option value="">Select a category</option>
             {CATEGORIES.map((category) => (
-              <option key={category.name} value={category.name}>
+              <option key={category.name} value={category.id}>
                 {category.name}
               </option>
             ))}

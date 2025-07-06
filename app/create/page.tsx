@@ -2,18 +2,13 @@
 import { useEffect, useState } from "react";
 import { useAccount, useContract } from "@starknet-react/core";
 import StepTwo from "./components/StepTwo";
-import { InputDateType } from "@/types";
 import StepThree from "./components/StepThree";
-import { Call, CallData } from "starknet";
+import { Call } from "starknet";
 import {
-  BEARER_TOKEN,
   CAMPAIGN_CONTRACT_ADDRESS,
   IMPLEMENTATION_HASH,
   REGISTRY_HASH,
-  TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
-  campaign_contract,
-  nft_contract,
-  provider
+  TOKEN_GIVER_Nft_CONTRACT_ADDRESS
 } from "../utils/data";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
 import { useRouter } from "next/navigation";
@@ -30,7 +25,6 @@ import { generateRandomInt } from "@/util";
 import { useMutation } from "@apollo/client";
 import { CREATE_CAMPAIGN } from "@/graphql/mutations";
 import ReviewCampaign from "./components/ReviewCampaign";
-import Link from "next/link";
 
 // Create union type of both schema types
 type FormData = z.infer<typeof StepTwoSchema> | z.infer<typeof StepThreeSchema>;
@@ -43,23 +37,23 @@ export type AllFormFields = StepTwoFields & StepThreeFields;
 const Page = () => {
   const { address, account } = useAccount();
 
-  const [campaignStep, setCampaignStep] = useState(0);
   const [creatingCampaign, setCreatingCampaign] = useState(false);
   const [loadingPercentage, setLoadingPercentage] = useState(0);
-  const [campaignUrl, setCampaignUrl] = useState("/");
   const [currentStep, setCurrentStep] = useState(1);
   const [showReview, setShowReview] = useState(false);
+  const [campaignId, setCampaignId] = useState<string | null>(null);
+  const [campaignCompleted, setCampaignCompleted] = useState(false);
 
   // Add state to store combined form data
   const [formData, setFormData] = useState<AllFormFields>({} as AllFormFields);
 
   // Create separate form instances for each step
   const stepTwoForm = useForm<StepTwoFields>({
-    // resolver: zodResolver(StepTwoSchema)
+    resolver: zodResolver(StepTwoSchema)
   });
 
   const stepThreeForm = useForm<StepThreeFields>({
-    // resolver: zodResolver(StepThreeSchema)
+    resolver: zodResolver(StepThreeSchema)
   });
 
   // Update how currentForm is used
@@ -123,58 +117,34 @@ const Page = () => {
     additionalImages: File[];
     category?: number;
   }) {
-    console.log("🚀 Starting campaign creation process...");
-    console.log("📋 Campaign details:", {
-      name,
-      description: description.substring(0, 50) + "...",
-      target,
-      organizer,
-      beneficiary,
-      location,
-      category,
-      hasImage: !!image,
-      additionalImagesCount: additionalImages?.length || 0,
-      socialsCount: Object.keys(socials || {}).length
-    });
-
     try {
       // Step 1: Validate contract and account
-      console.log("🔍 Step 1: Validating contract and account...");
       if (!createCampaignContract) {
-        console.error("❌ Campaign contract not initialized");
         throw new Error("Campaign contract not initialized");
       }
-      console.log("✅ Campaign contract validated");
 
       if (!account) {
-        console.error("❌ No wallet account found");
         throw new Error("Please connect your wallet to continue");
       }
-      console.log("✅ Wallet account validated:", account.address);
 
       setCreatingCampaign(true);
       setLoadingPercentage(20);
 
       // Step 2: Generate campaign ID and salt
-      console.log("🔢 Step 2: Generating campaign ID and salt...");
       const campaignId = generateRandomInt(6);
       const salt = generateRandomInt(4);
-      console.log("✅ Generated campaign ID:", campaignId, "and salt:", salt);
+
+      // Store campaignId in state
+      setCampaignId(campaignId.toString());
 
       let bannerUrl = "";
       let additionalImagesUrls = [];
 
       // Step 3: Upload banner image
       if (image) {
-        console.log("📤 Step 3: Uploading banner image...");
         try {
           const formData = new FormData();
           formData.append("files", image);
-          console.log("📁 Image file details:", {
-            name: image.name,
-            size: image.size,
-            type: image.type
-          });
 
           const response = await fetch(
             `${process.env.NEXT_PUBLIC_TOKEN_GIVER_BACKEND_URL}/image`,
@@ -184,52 +154,30 @@ const Page = () => {
             }
           );
 
-          console.log("📡 Banner upload response status:", response.status);
-
           if (response.ok) {
             const result = await response.json();
             bannerUrl = result[0].url;
-            console.log("✅ Banner upload successful:", {
-              url: bannerUrl,
-              result: result
-            });
           } else {
             const errorText = await response.text();
-            console.error("❌ Banner upload failed:", {
-              status: response.status,
-              statusText: response.statusText,
-              error: errorText
-            });
             throw new Error(
               `Banner upload failed: ${response.status} ${response.statusText}`
             );
           }
         } catch (uploadError) {
-          console.error("❌ Banner upload error:", uploadError);
           throw new Error(
             `Failed to upload banner image: ${uploadError instanceof Error ? uploadError.message : "Unknown error"}`
           );
         }
-      } else {
-        console.log("ℹ️ No banner image provided, skipping upload");
       }
 
       setLoadingPercentage(40);
 
       // Step 4: Upload additional images
       if (additionalImages && additionalImages.length > 0) {
-        console.log("📤 Step 4: Uploading additional images...");
-        console.log("📁 Additional images count:", additionalImages.length);
-
         try {
           const additionalFormData = new FormData();
-          additionalImages.forEach((image, index) => {
+          additionalImages.forEach((image) => {
             additionalFormData.append("files", image);
-            console.log(`📁 Additional image ${index + 1}:`, {
-              name: image.name,
-              size: image.size,
-              type: image.type
-            });
           });
 
           const additionalResponse = await fetch(
@@ -240,45 +188,27 @@ const Page = () => {
             }
           );
 
-          console.log(
-            "📡 Additional images upload response status:",
-            additionalResponse.status
-          );
-
           if (additionalResponse.ok) {
             const additionalResult = await additionalResponse.json();
             additionalImagesUrls = additionalResult.map(
               (item: any) => item.url
             );
-            console.log("✅ Additional images upload successful:", {
-              urls: additionalImagesUrls,
-              result: additionalResult
-            });
           } else {
             const errorText = await additionalResponse.text();
-            console.error("❌ Additional images upload failed:", {
-              status: additionalResponse.status,
-              statusText: additionalResponse.statusText,
-              error: errorText
-            });
             throw new Error(
               `Additional images upload failed: ${additionalResponse.status} ${additionalResponse.statusText}`
             );
           }
         } catch (uploadError) {
-          console.error("❌ Additional images upload error:", uploadError);
           throw new Error(
             `Failed to upload additional images: ${uploadError instanceof Error ? uploadError.message : "Unknown error"}`
           );
         }
-      } else {
-        console.log("ℹ️ No additional images provided, skipping upload");
       }
 
       setLoadingPercentage(60);
 
       // Step 5: Execute blockchain transaction
-      console.log("⛓️ Step 5: Executing blockchain transaction...");
       try {
         const createCampaignCall: Call = createCampaignContract.populate(
           "create_campaign",
@@ -291,22 +221,8 @@ const Page = () => {
           ]
         );
 
-        console.log("📝 Populated transaction call:", {
-          method: "create_campaign",
-          params: [
-            TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
-            REGISTRY_HASH,
-            IMPLEMENTATION_HASH,
-            salt,
-            account.address
-          ]
-        });
-
-        console.log("🔄 Executing transaction...");
-        const result = await account.execute(createCampaignCall);
-        console.log("✅ Blockchain transaction successful:", result);
+        await account.execute(createCampaignCall);
       } catch (blockchainError) {
-        console.error("❌ Blockchain transaction failed:", blockchainError);
         throw new Error(
           `Blockchain transaction failed: ${blockchainError instanceof Error ? blockchainError.message : "Unknown error"}`
         );
@@ -315,7 +231,6 @@ const Page = () => {
       setLoadingPercentage(80);
 
       // Step 6: Create campaign in database
-      console.log("💾 Step 6: Creating campaign in database...");
       try {
         const campaignData = {
           campaign_id: campaignId,
@@ -331,44 +246,33 @@ const Page = () => {
           category_id: category
         };
 
-        console.log("📊 Campaign data for database:", campaignData);
-
-        const dbResult = await createCampaign({
+        await createCampaign({
           variables: {
             campaignData
           }
         });
-
-        console.log("✅ Database creation successful:", dbResult);
       } catch (dbError) {
-        console.error("❌ Database creation failed:", dbError);
         throw new Error(
           `Failed to create campaign in database: ${dbError instanceof Error ? dbError.message : "Unknown error"}`
         );
       }
 
       setLoadingPercentage(100);
-      console.log("🎉 Campaign creation completed successfully!");
 
+      setCampaignCompleted(true);
       return { success: true, campaignId };
     } catch (error) {
-      console.error("💥 Campaign creation failed:", error);
+      console.error("Campaign creation failed:", error);
       setLoadingPercentage(0);
 
       if (error instanceof Error) {
-        console.error("📝 Error details:", {
-          message: error.message,
-          stack: error.stack
-        });
         throw error;
       } else {
-        console.error("📝 Unknown error type:", error);
         throw new Error(
           "An unexpected error occurred while creating the campaign"
         );
       }
     } finally {
-      console.log("🏁 Cleaning up campaign creation state...");
       setCreatingCampaign(false);
     }
   }
@@ -398,8 +302,6 @@ const Page = () => {
   };
 
   const onSubmit = async (data: FormData) => {
-    console.log("data in onSubmit", data);
-
     if (currentStep === 3) {
       const links = transformLinks(formData);
 
@@ -445,16 +347,12 @@ const Page = () => {
           socials: stepThreeData.socials,
           customLinks: stepThreeData.customLinks
         };
-        // console.log("Updated form data in review:", updatedData);
         return updatedData;
       });
+      setCampaignCompleted(false); // Reset completion state for new campaign
       setShowReview(true);
     }
   };
-
-  useEffect(() => {
-    console.log("formData updated:", formData);
-  }, [formData]);
 
   return (
     <>
@@ -541,6 +439,8 @@ const Page = () => {
         formData={formData}
         creatingCampaign={creatingCampaign}
         loadingPercentage={loadingPercentage}
+        campaignId={campaignId}
+        campaignCompleted={campaignCompleted}
       />
     </>
   );

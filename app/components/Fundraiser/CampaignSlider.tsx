@@ -5,6 +5,7 @@ import CardLoader from "../loading/CardLoader";
 import { GET_ALL_CAMPAIGNS } from "@/graphql/queries";
 import { useQuery } from "@apollo/client";
 import { ICampaign } from "@/types/campaigns";
+import { generateCampaignUrl } from "@/util";
 
 const CampaignSlider = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -67,7 +68,11 @@ const CampaignSlider = () => {
                 </div>
               ))
             : campaigns.map((campaign, idx) => {
-                const url = `/${campaign.campaign_name.toLowerCase().replace(/\s+/g, "-")}/${campaign.campaign_id}`;
+                const url = generateCampaignUrl({
+                  campaignName: campaign.campaign_name || "campaign",
+                  campaignId: campaign.campaign_id
+                });
+
                 return (
                   <div
                     key={campaign.campaign_id}

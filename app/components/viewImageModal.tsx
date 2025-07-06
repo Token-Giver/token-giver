@@ -41,6 +41,7 @@ const ViewModalImage = ({ images }: CampaignModal) => {
           >
             <Image
               src={imageUrl}
+              loader={() => imageUrl}
               alt={`campaign image ${index + 1}`}
               className="object-cover"
               fill
