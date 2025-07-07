@@ -7,6 +7,7 @@ import { Spinner } from "@/app/ui/spinner";
 import Link from "next/link";
 import ReviewCampaignDetails from "./ReviewCampaignDetails";
 import ReviewCampaignProgress from "./ReviewCampaignProgress";
+import { generateCampaignUrl } from "@/util";
 
 const ReviewCampaign = ({
   setShowReview,
@@ -14,7 +15,9 @@ const ReviewCampaign = ({
   formData,
   createCampaign,
   creatingCampaign,
-  loadingPercentage
+  loadingPercentage,
+  campaignId,
+  campaignCompleted
 }: {
   setShowReview: (value: React.SetStateAction<boolean>) => void;
   showReview: boolean;
@@ -22,6 +25,8 @@ const ReviewCampaign = ({
   createCampaign: () => void;
   creatingCampaign: boolean;
   loadingPercentage: number;
+  campaignId: string | null;
+  campaignCompleted: boolean;
 }) => {
   const currentDate = new Date().toLocaleDateString("en-US", {
     year: "numeric",
@@ -69,10 +74,15 @@ const ReviewCampaign = ({
     )
   };
 
+  const campaignUrl = generateCampaignUrl({
+    campaignId: campaignId || "",
+    campaignName: formData.name
+  });
+
   return (
     <Dialog open={showReview} onOpenChange={setShowReview}>
       <DialogContent className="h-screen w-screen max-w-none rounded-none sm:max-w-none">
-        {!creatingCampaign ? (
+        {!creatingCampaign && !campaignCompleted && (
           <div className="z-[10] mx-auto max-h-[99vh] w-full max-w-[1204px] animate-fadeIn overflow-y-auto pb-40 pt-16 md:px-16 md:pb-20">
             <h2 className="mb-6 break-words px-4 font-agrandir text-2xl text-foreground-primary lg:text-3xl">
               {formData.name}
@@ -149,7 +159,9 @@ const ReviewCampaign = ({
               </div>
             </div>
           </div>
-        ) : (
+        )}
+
+        {creatingCampaign && !campaignCompleted && (
           <div className="flex animate-fadeIn flex-col items-center gap-4">
             <Image width={100} height={100} src="/minting.png" alt="" />
             <h2 className="font-agrandir text-foreground-primary">
@@ -160,8 +172,8 @@ const ReviewCampaign = ({
               <div className="relative mb-2 h-[5px] w-full overflow-hidden rounded-full bg-[#EFEFEF]">
                 <div
                   style={{ width: width }}
-                  className="absolute left-0 top-0 h-full rounded-full bg-accent-green"
-                ></div>
+                  className="absolute left-0 top-0 h-full rounded-full bg-accent-green transition-all duration-1000"
+                />
               </div>
             </div>
 
@@ -171,8 +183,8 @@ const ReviewCampaign = ({
             </p>
           </div>
         )}
-        {!createCampaign && loadingPercentage === 100 && (
-          <div className="flex h-[70vh] animate-fadeIn flex-col">
+        {campaignCompleted && (
+          <div className="mx-auto flex h-[70vh] max-w-2xl animate-fadeIn flex-col">
             <div className="h-[200px]">
               <Image
                 src={"/minting-set.png"}
@@ -203,10 +215,10 @@ const ReviewCampaign = ({
               </div>
 
               <Link
-                href={"/search"}
+                href={campaignUrl}
                 className="inline-block w-full rounded-[10px] bg-[#F5F5F5] px-6 py-3 text-center text-accent-green"
               >
-                View Campaigns
+                View Campaign
               </Link>
             </div>
           </div>

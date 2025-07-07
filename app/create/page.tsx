@@ -2,18 +2,13 @@
 import { useEffect, useState } from "react";
 import { useAccount, useContract } from "@starknet-react/core";
 import StepTwo from "./components/StepTwo";
-import { InputDateType } from "@/types";
 import StepThree from "./components/StepThree";
-import { Call, CallData } from "starknet";
+import { Call } from "starknet";
 import {
-  BEARER_TOKEN,
   CAMPAIGN_CONTRACT_ADDRESS,
   IMPLEMENTATION_HASH,
   REGISTRY_HASH,
-  TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
-  campaign_contract,
-  nft_contract,
-  provider
+  TOKEN_GIVER_Nft_CONTRACT_ADDRESS
 } from "../utils/data";
 import RightArrowIcon from "@/svgs/RightArrowIcon";
 import { useRouter } from "next/navigation";
@@ -30,7 +25,6 @@ import { generateRandomInt } from "@/util";
 import { useMutation } from "@apollo/client";
 import { CREATE_CAMPAIGN } from "@/graphql/mutations";
 import ReviewCampaign from "./components/ReviewCampaign";
-import Link from "next/link";
 
 // Create union type of both schema types
 type FormData = z.infer<typeof StepTwoSchema> | z.infer<typeof StepThreeSchema>;
@@ -43,23 +37,23 @@ export type AllFormFields = StepTwoFields & StepThreeFields;
 const Page = () => {
   const { address, account } = useAccount();
 
-  const [campaignStep, setCampaignStep] = useState(0);
   const [creatingCampaign, setCreatingCampaign] = useState(false);
   const [loadingPercentage, setLoadingPercentage] = useState(0);
-  const [campaignUrl, setCampaignUrl] = useState("/");
   const [currentStep, setCurrentStep] = useState(1);
   const [showReview, setShowReview] = useState(false);
+  const [campaignId, setCampaignId] = useState<string | null>(null);
+  const [campaignCompleted, setCampaignCompleted] = useState(false);
 
   // Add state to store combined form data
   const [formData, setFormData] = useState<AllFormFields>({} as AllFormFields);
 
   // Create separate form instances for each step
   const stepTwoForm = useForm<StepTwoFields>({
-    // resolver: zodResolver(StepTwoSchema)
+    resolver: zodResolver(StepTwoSchema)
   });
 
   const stepThreeForm = useForm<StepThreeFields>({
-    // resolver: zodResolver(StepThreeSchema)
+    resolver: zodResolver(StepThreeSchema)
   });
 
   // Update how currentForm is used
@@ -108,7 +102,9 @@ const Page = () => {
     organizer,
     target,
     socials,
-    location
+    location,
+    additionalImages,
+    category = 1
   }: {
     name: string;
     description: string;
@@ -118,13 +114,11 @@ const Page = () => {
     beneficiary: string;
     location: string;
     socials: { [key: string]: string };
+    additionalImages: File[];
+    category?: number;
   }) {
-    // setCreatingCampaign((prev) => !prev);
-    // setLoadingPercentage(10);
     try {
-      setCreatingCampaign(true);
-      setLoadingPercentage(10);
-
+      // Step 1: Validate contract and account
       if (!createCampaignContract) {
         throw new Error("Campaign contract not initialized");
       }
@@ -133,57 +127,144 @@ const Page = () => {
         throw new Error("Please connect your wallet to continue");
       }
 
+      setCreatingCampaign(true);
+      setLoadingPercentage(20);
+
+      // Step 2: Generate campaign ID and salt
       const campaignId = generateRandomInt(6);
       const salt = generateRandomInt(4);
 
-      setLoadingPercentage(30);
-      const { data, errors } = await createCampaign({
-        variables: {
-          campaignData: {
-            campaign_id: campaignId,
-            campaign_name: name,
-            campaign_description: description,
-            cover_photo: "https://picsum.photos/500/300",
-            social_links: socials,
-            target_amount: target,
-            organizer: organizer,
-            beneficiary: beneficiary
-          }
-        }
-      });
+      // Store campaignId in state
+      setCampaignId(campaignId.toString());
 
-      if (errors?.length) {
-        throw new Error(`Database error: ${errors[0].message}`);
+      let bannerUrl = "";
+      let additionalImagesUrls = [];
+
+      // Step 3: Upload banner image
+      if (image) {
+        try {
+          const formData = new FormData();
+          formData.append("files", image);
+
+          const response = await fetch(
+            `${process.env.NEXT_PUBLIC_TOKEN_GIVER_BACKEND_URL}/image`,
+            {
+              method: "POST",
+              body: formData
+            }
+          );
+
+          if (response.ok) {
+            const result = await response.json();
+            bannerUrl = result[0].url;
+          } else {
+            const errorText = await response.text();
+            throw new Error(
+              `Banner upload failed: ${response.status} ${response.statusText}`
+            );
+          }
+        } catch (uploadError) {
+          throw new Error(
+            `Failed to upload banner image: ${uploadError instanceof Error ? uploadError.message : "Unknown error"}`
+          );
+        }
       }
 
-      if (!data) {
-        throw new Error("Failed to create campaign in database");
+      setLoadingPercentage(40);
+
+      // Step 4: Upload additional images
+      if (additionalImages && additionalImages.length > 0) {
+        try {
+          const additionalFormData = new FormData();
+          additionalImages.forEach((image) => {
+            additionalFormData.append("files", image);
+          });
+
+          const additionalResponse = await fetch(
+            `${process.env.NEXT_PUBLIC_TOKEN_GIVER_BACKEND_URL}/image`,
+            {
+              method: "POST",
+              body: additionalFormData
+            }
+          );
+
+          if (additionalResponse.ok) {
+            const additionalResult = await additionalResponse.json();
+            additionalImagesUrls = additionalResult.map(
+              (item: any) => item.url
+            );
+          } else {
+            const errorText = await additionalResponse.text();
+            throw new Error(
+              `Additional images upload failed: ${additionalResponse.status} ${additionalResponse.statusText}`
+            );
+          }
+        } catch (uploadError) {
+          throw new Error(
+            `Failed to upload additional images: ${uploadError instanceof Error ? uploadError.message : "Unknown error"}`
+          );
+        }
       }
 
       setLoadingPercentage(60);
 
-      const createCampaignCall: Call = createCampaignContract.populate(
-        "create_campaign",
-        [
-          TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
-          REGISTRY_HASH,
-          IMPLEMENTATION_HASH,
-          salt,
-          account.address
-        ]
-      );
+      // Step 5: Execute blockchain transaction
+      try {
+        const createCampaignCall: Call = createCampaignContract.populate(
+          "create_campaign",
+          [
+            TOKEN_GIVER_Nft_CONTRACT_ADDRESS,
+            REGISTRY_HASH,
+            IMPLEMENTATION_HASH,
+            salt,
+            account.address
+          ]
+        );
+
+        await account.execute(createCampaignCall);
+      } catch (blockchainError) {
+        throw new Error(
+          `Blockchain transaction failed: ${blockchainError instanceof Error ? blockchainError.message : "Unknown error"}`
+        );
+      }
 
       setLoadingPercentage(80);
-      const result = await account.execute(createCampaignCall);
 
-      if (!result) {
-        throw new Error("Failed to execute campaign creation transaction");
+      // Step 6: Create campaign in database
+      try {
+        const campaignData = {
+          campaign_id: campaignId,
+          campaign_name: name,
+          campaign_description: description,
+          cover_photo: bannerUrl,
+          campaign_images: additionalImagesUrls,
+          social_links: socials,
+          target_amount: target,
+          organizer: organizer,
+          beneficiary: beneficiary,
+          location,
+          category_id: category
+        };
+
+        await createCampaign({
+          variables: {
+            campaignData
+          }
+        });
+      } catch (dbError) {
+        throw new Error(
+          `Failed to create campaign in database: ${dbError instanceof Error ? dbError.message : "Unknown error"}`
+        );
       }
 
       setLoadingPercentage(100);
+
+      setCampaignCompleted(true);
       return { success: true, campaignId };
     } catch (error) {
+      console.error("Campaign creation failed:", error);
       setLoadingPercentage(0);
+
       if (error instanceof Error) {
         throw error;
       } else {
@@ -210,9 +291,9 @@ const Page = () => {
 
     // Add custom links
     if (formData.customLinks) {
-      formData.customLinks.forEach(({ url }) => {
+      formData.customLinks.forEach(({ url }, index) => {
         if (url) {
-          links.push({ name: "website", url });
+          links.push({ name: `website ${index + 1}`, url });
         }
       });
     }
@@ -222,21 +303,19 @@ const Page = () => {
 
   const onSubmit = async (data: FormData) => {
     if (currentStep === 3) {
-      const stepThreeData = data as StepThreeFields;
-      const finalFormData = { ...formData, ...stepThreeData };
-      const links = transformLinks(finalFormData);
-      console.log("Complete form data:", finalFormData);
-      console.log(links);
+      const links = transformLinks(formData);
 
       handleCreateCampaign({
-        name: finalFormData.name,
-        description: finalFormData.description,
-        image: finalFormData.bannerImage,
-        target: Number(finalFormData.target),
-        organizer: finalFormData.organiser,
-        beneficiary: finalFormData.beneficiary,
-        location: finalFormData.location,
-        socials: Object.fromEntries(links.map((link) => [link.name, link.url]))
+        name: formData.name,
+        description: formData.description,
+        image: formData.bannerImage,
+        target: Number(formData.target),
+        organizer: formData.organiser,
+        beneficiary: formData.beneficiary,
+        location: formData.location,
+        socials: Object.fromEntries(links.map((link) => [link.name, link.url])),
+        additionalImages: formData.additionalImages,
+        category: Number(formData.category)
       });
     }
   };
@@ -268,15 +347,13 @@ const Page = () => {
           socials: stepThreeData.socials,
           customLinks: stepThreeData.customLinks
         };
-        console.log("Updated form data in review:", updatedData);
         return updatedData;
       });
+      setCampaignCompleted(false); // Reset completion state for new campaign
       setShowReview(true);
     }
   };
-  useEffect(() => {
-    console.log("formData updated:", formData);
-  }, [formData]);
+
   return (
     <>
       <div className="min-h-screen lg:grid lg:grid-cols-9">
@@ -362,6 +439,8 @@ const Page = () => {
         formData={formData}
         creatingCampaign={creatingCampaign}
         loadingPercentage={loadingPercentage}
+        campaignId={campaignId}
+        campaignCompleted={campaignCompleted}
       />
     </>
   );

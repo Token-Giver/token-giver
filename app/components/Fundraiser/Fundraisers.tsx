@@ -9,9 +9,13 @@ import { ICampaign } from "@/types/campaigns";
 
 const CampaignGrid = ({ campaigns }: { campaigns: ICampaign[] }) => {
   return (
-    <div className="grid animate-fadeIn grid-cols-4 gap-4">
+    <div className="flex animate-fadeIn flex-col gap-2 md:grid md:grid-cols-2 md:gap-4 lg:grid-cols-3 xl:grid-cols-4">
       {campaigns.slice(1).map((data) => {
-        const url = `${data.campaign_name.toLowerCase().replace(/\s+/g, "-")}/${data.campaign_id}`;
+        const url = generateCampaignUrl({
+          campaignName: data.campaign_name || "campaign",
+          campaignId: data.campaign_id
+        });
+
         return (
           <Card
             key={data.campaign_id}
@@ -49,11 +53,15 @@ const HeroCampaign = ({ campaign }: { campaign: ICampaign }) => (
     token_id={campaign.campaign_id}
     campaign_address={campaign.campaign_address || "0x0"}
     target={String(campaign.target_amount)}
-    url={`${campaign.campaign_name.toLowerCase().replace(/\s+/g, "-")}/${campaign.campaign_id}`}
+    url={generateCampaignUrl({
+      campaignName: campaign.campaign_name || "campaign",
+      campaignId: campaign.campaign_id
+    })}
     description={campaign.campaign_description}
   />
 );
 import CardLoader, { BigCardLoader } from "../loading/CardLoader";
+import { generateCampaignUrl } from "@/util";
 
 const Fundraisers = () => {
   const { data, loading } = useQuery(GET_ALL_CAMPAIGNS, {
